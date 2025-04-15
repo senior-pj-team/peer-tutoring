@@ -56,10 +56,10 @@ export default function SearchBar() {
 						setShowSuggestions(true);
 					}}
 					placeholder="Search anything..."
-					className="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-orange-400  focus:ring-orange-400"
+					className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-full focus:outline-orange-400  focus:ring-orange-400 overflow-clip"
 				/>
 				<Search
-					className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+					className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
 					size={18}
 				/>
 			</div>

@@ -1,21 +1,78 @@
-import { Heart, Bell } from "lucide-react";
+"use client";
+
+import { Heart, Bell, Search, AlignJustify } from "lucide-react";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
+
 import Image from "next/image";
 import HoverCustomCard from "./hover-custom-card";
 import SearchBar from "./search-bar";
+import { useState, useEffect } from "react";
+import clsx from "clsx";
+import CustomSheet from "./custom-sheet";
 
 export default function Navbar() {
+	const [showMobileSearch, setShowMobileSearch] = useState(false);
+	const [showNavbar, setShowNavbar] = useState(true);
+	const [lastScrollY, setLastScrollY] = useState(0);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const currentScrollY = window.scrollY;
+			if (currentScrollY > lastScrollY && currentScrollY > 100) {
+				setShowNavbar(false);
+			} else {
+				setShowNavbar(true);
+			}
+			setLastScrollY(currentScrollY);
+		};
+
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, [lastScrollY]);
 	return (
-		<div className="min-h-[4rem] py-4 px-4 drop-shadow-sm bg-white">
+		<div
+			className={clsx(
+				"min-h-[5rem] py-4 px-4 drop-shadow-sm bg-white  w-full z-50 fixed top-0 left-0 transition-transform duration-300",
+				{
+					"-translate-y-full": !showNavbar,
+					"translate-y-0": showNavbar,
+				},
+			)}>
 			<div className="flex items-center justify-between w-full">
-				<div className="flex gap-x-5 items-center justify-around">
+				<div className="flex gap-x-5 justify-around w-full md:w-[8rem] lg:w-[12rem] items-center">
+					<div className="md:hidden  flex items-center">
+						<button
+							onClick={() => setShowMobileSearch((prev) => !prev)}
+							className="text-gray-700 hover:text-orange-400">
+							<Search size={22} />
+						</button>
+					</div>
 					<div className="font-bold text-3xl">Orion</div>
-					<HoverCustomCard content="Explore" />
+					<div>
+						<Sheet>
+							<SheetTrigger>
+								<AlignJustify size={22} className="lg:hidden" />
+							</SheetTrigger>
+							<CustomSheet />
+						</Sheet>
+					</div>
+
+					<div className="hidden lg:block">
+						<HoverCustomCard content="Explore" />
+					</div>
 				</div>
-				<div className="flex-1 flex-shrink">
+				<div className="flex-1 flex-shrink hidden md:block md:ml-6">
 					<SearchBar />
 				</div>
 
-				<div className="hidden lg:flex  items-center justify-around gap-x-2">
+				<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 					<HoverCustomCard content="Become a tutor" />
 					<HoverCustomCard content="MySessions" />
 					<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
@@ -45,6 +102,13 @@ export default function Navbar() {
 						}
 					/>
 				</div>
+			</div>
+			<div
+				className={clsx(
+					"transition-all duration-300 ease-in-out overflow-hidden md:hidden",
+					showMobileSearch ? "max-h-[5rem] py-2" : "max-h-0 py-0",
+				)}>
+				<SearchBar />
 			</div>
 		</div>
 	);
