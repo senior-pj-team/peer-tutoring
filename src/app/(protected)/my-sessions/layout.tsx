@@ -1,31 +1,28 @@
 import Tabs from "@/components/custom/tabs";
 import React from "react";
 import { Roboto_Mono } from "next/font/google";
-const gothic= Roboto_Mono({
-  weight: ["700"],
-  subsets: ["latin"]
-})
+const roboto_mono = Roboto_Mono({
+	weight: ["700"],
+	subsets: ["latin"],
+});
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const tabs = [
-    { name: 'Upcoming', path: '/my-sessions/upcoming-sessions' },
-    { name: 'Refunded', path: '/my-sessions/refunded-sessions' },
-    { name: 'Completed', path: '/my-sessions/completed-sessions' },
-    { name: 'Archived', path: '/my-sessions/archived-sessions' },
-  ];
-  return (
-    <div>
-      <div className="px-6 pt-12 pb-6">
-      <h1 className={`text-4xl font-extrabold ${gothic.className} antialiased`}>My Sessions</h1>
-      <p className="mt-2 font-bold text-gray-500">Manage and view all your sessions in one place</p>
-      </div>
-      <div className="p-6">
-        <Tabs tabs={tabs}/>
-      </div>
-      <div className="p-6">
-        {children}
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<div className="px-6 pt-12 pb-6">
+				<h1
+					className={`text-4xl font-extrabold ${roboto_mono.className} antialiased`}>
+					My Sessions
+				</h1>
+				<p className="mt-2 font-bold text-gray-500">
+					Manage and view all your sessions in one place
+				</p>
+			</div>
+			<div className="p-6">
+				<Tabs />
+			</div>
+			<div className="p-6">{children}</div>
+		</div>
+	);
 };
 
 export default Layout;

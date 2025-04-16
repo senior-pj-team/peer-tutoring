@@ -59,15 +59,17 @@ export default function SearchBar() {
 						filtered.map((item, index) => (
 							<div
 								key={index}
-								className="flex items-center gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-orange-50 hover:text-orange-400"
+								className="flex items-center gap-3 px-4 py-4 text-sm cursor-pointer hover:bg-orange-50 hover:text-orange-400"
 								onClick={() => {
 									setQuery(item);
 									setShowSuggestions(false);
 								}}>
 								<Image
 									src={sessionPicOne}
+									width={50}
+									height={50}
 									alt="Session Pic"
-									className="w-5 h-5 object-contain"
+									className=" object-contain"
 								/>
 								<span>{item}</span>
 							</div>

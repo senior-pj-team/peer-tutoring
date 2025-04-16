@@ -16,6 +16,7 @@ import SearchBar from "./search-bar";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 import CustomSheet from "./custom-sheet";
+import Link from "next/link";
 
 export default function Navbar() {
 	const [showMobileSearch, setShowMobileSearch] = useState(false);
@@ -54,7 +55,10 @@ export default function Navbar() {
 							<Search size={22} />
 						</button>
 					</div>
-					<div className="font-bold text-3xl">Orion</div>
+					<Link href="/">
+						<div className="font-bold text-3xl cursor-pointer">Orion</div>
+					</Link>
+
 					<div>
 						<Sheet>
 							<SheetTrigger>
@@ -74,7 +78,9 @@ export default function Navbar() {
 
 				<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 					<HoverCustomCard content="Become a tutor" />
-					<HoverCustomCard content="MySessions" />
+					<Link href="/my-sessions/upcoming-sessions">
+						<HoverCustomCard content="MySessions" />
+					</Link>
 					<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
 					<HoverCustomCard
 						content="Notification"

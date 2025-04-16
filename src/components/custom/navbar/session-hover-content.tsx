@@ -5,6 +5,7 @@ import sessionPicTwo from "../../../../public/session-two.jpg";
 import sessionPicThree from "../../../../public/session-two.jpg";
 import { Button } from "../../ui/button";
 import { StaticImageData } from "next/image";
+import Link from "next/link";
 
 export default function SessionHoverContent({ content }: { content: string }) {
 	const sessions = [
@@ -60,9 +61,16 @@ export default function SessionHoverContent({ content }: { content: string }) {
 					})}
 			</div>
 			<div className="flex justify-center mt-3 px-3 ">
-				<Button className=" w-full px-4 py-2 rounded-md bg-orange-400 text-white font-semibold shadow-sm hover:bg-orange-400/85 cursor-pointer">
-					{content === "MySessions" ? "Go to My Sessions" : "Go to WishList"}
-				</Button>
+				<Link
+					href={
+						content === "MySessions"
+							? "/my-sessions/upcoming-sessions"
+							: "/wishlist"
+					}>
+					<Button className=" w-full px-4 py-2 rounded-md bg-orange-400 text-white font-semibold shadow-sm hover:bg-orange-400/85 cursor-pointer">
+						{content === "MySessions" ? "Go to My Sessions" : "Go to WishList"}
+					</Button>
+				</Link>
 			</div>
 		</HoverCardContent>
 	);
