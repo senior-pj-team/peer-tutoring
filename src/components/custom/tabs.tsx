@@ -3,6 +3,7 @@ import React from 'react'
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+//seperate component
 const Tabs = ({tabs}: {tabs:{name: string, path: string}[]}) => {
     const pathname = usePathname();
   return (
