@@ -1,10 +1,10 @@
 import React from "react";
 import {
   Card,
-  CardBody,
+  CardContent,
   CardFooter,
   CardHeader,
-  CardInfo,
+  CardDescription,
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
@@ -24,14 +24,22 @@ const SessionCards = ({
   cardType?: string
 }) => {
   return (
-    <Card className="cursor-pointer">
-      <CardHeader imgSrc="/React.png">
-        <CardTitle className="flex justify-between items-center">
+    <Card className="cursor-pointer rounded-none pt-0">
+      <CardHeader className="px-0">
+        <div className="relative w-full h-48">
+          <Image
+            src={"/React.png"}
+            alt="Card image"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <CardTitle className="flex justify-between items-center px-3 mt-1">
           <h3 className="max-w-[80%] trancate">{sessionName}</h3>
-          
+
           {
             cardType == "upcoming"
-            && 
+            &&
             <div className="flex items-center gap-1 text-xs">
               <Clock className="w-4 h-4" />
               <span>25 mins</span>
@@ -43,15 +51,15 @@ const SessionCards = ({
             <div className="flex items-center gap-1 text-xs text-bg-200">
               <span className="text-green-500">Refunded</span>
             </div>
-            
+
           }
         </CardTitle>
-        <CardInfo>
+        <CardDescription className="px-3">
           <span className="me-1">{courseCode}</span>|
           <span className="ms-1">{courseName}</span>
-        </CardInfo>
+        </CardDescription>
       </CardHeader>
-      <CardBody>
+      <CardContent className="px-3">
         <div className="flex items-center gap-1 text-sm text-gray-700">
           <span className="font-semibold">Date:</span>
           <span>01 May 2025</span>
@@ -69,8 +77,8 @@ const SessionCards = ({
         <div>
           <span className="text-xl">฿150</span>
         </div>
-      </CardBody>
-      <CardFooter>
+      </CardContent>
+      <CardFooter className="px-3">
         <div className="flex items-center">
           <div className="relative w-8 h-8 rounded-full overflow-hidden me-3">
             <Image
