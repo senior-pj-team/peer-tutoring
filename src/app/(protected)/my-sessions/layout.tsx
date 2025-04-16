@@ -6,6 +6,12 @@ const roboto_mono = Roboto_Mono({
 	subsets: ["latin"],
 });
 const Layout = ({ children }: { children: React.ReactNode }) => {
+	const tabs = [
+		{ name: "Upcoming", path: "/my-sessions/upcoming-sessions" },
+		{ name: "Refunded", path: "/my-sessions/refunded-sessions" },
+		{ name: "Completed", path: "/my-sessions/completed-sessions" },
+		{ name: "Archived", path: "/my-sessions/archived-sessions" },
+	];
 	return (
 		<div>
 			<div className="px-6 pt-12 pb-6">
@@ -18,7 +24,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 				</p>
 			</div>
 			<div className="p-6">
-				<Tabs />
+				<Tabs tabs={tabs} />
 			</div>
 			<div className="p-6">{children}</div>
 		</div>

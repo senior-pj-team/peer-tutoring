@@ -1,10 +1,10 @@
 import React from "react";
 import {
 	Card,
-	CardContent as CardBody,
+	CardContent,
 	CardFooter,
 	CardHeader,
-	CardDescription as CardInfo,
+	CardDescription,
 	CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
@@ -24,9 +24,17 @@ const SessionCards = ({
 	cardType?: string;
 }) => {
 	return (
-		<Card className="cursor-pointer">
-			<CardHeader>
-				<CardTitle className="flex justify-between items-center">
+		<Card className="cursor-pointer rounded-none pt-0">
+			<CardHeader className="px-0">
+				<div className="relative w-full h-48">
+					<Image
+						src={"/React.png"}
+						alt="Card image"
+						fill
+						className="object-cover"
+					/>
+				</div>
+				<CardTitle className="flex justify-between items-center px-3 mt-1">
 					<h3 className="max-w-[80%] trancate">{sessionName}</h3>
 
 					{cardType == "upcoming" && (
@@ -41,12 +49,12 @@ const SessionCards = ({
 						</div>
 					)}
 				</CardTitle>
-				<CardInfo>
+				<CardDescription className="px-3">
 					<span className="me-1">{courseCode}</span>|
 					<span className="ms-1">{courseName}</span>
-				</CardInfo>
+				</CardDescription>
 			</CardHeader>
-			<CardBody>
+			<CardContent className="px-3">
 				<div className="flex items-center gap-1 text-sm text-gray-700">
 					<span className="font-semibold">Date:</span>
 					<span>01 May 2025</span>
@@ -64,8 +72,8 @@ const SessionCards = ({
 				<div>
 					<span className="text-xl">฿150</span>
 				</div>
-			</CardBody>
-			<CardFooter>
+			</CardContent>
+			<CardFooter className="px-3">
 				<div className="flex items-center">
 					<div className="relative w-8 h-8 rounded-full overflow-hidden me-3">
 						<Image
