@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import Rating from "./rating";
+import Rating from "../custom/rating";
 import { Clock } from "lucide-react";
 
 const SessionCards = ({
@@ -54,7 +54,7 @@ const SessionCards = ({
       <CardBody>
         <div className="flex items-center gap-1 text-sm text-gray-700">
           <span className="font-semibold">Date:</span>
-          <span>01/05/2025</span>
+          <span>01 May 2025</span>
         </div>
         <div className="flex items-center gap-4 text-sm text-gray-700">
           <div className="flex items-center gap-1">

@@ -1,9 +1,9 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
 import Image from "next/image";
-import sessionPicOne from "../../../public/session-one.jpg";
-import sessionPicTwo from "../../../public/session-two.jpg";
-import sessionPicThree from "../../../public/session-two.jpg";
-import { Button } from "../ui/button";
+import sessionPicOne from "../../../../public/session-one.jpg";
+import sessionPicTwo from "../../../../public/session-two.jpg";
+import sessionPicThree from "../../../../public/session-two.jpg";
+import { Button } from "../../ui/button";
 import { StaticImageData } from "next/image";
 
 export default function SessionHoverContent({ content }: { content: string }) {

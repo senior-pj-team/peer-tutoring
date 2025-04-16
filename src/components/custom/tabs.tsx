@@ -21,10 +21,10 @@ const Tabs = () => {
             <li key={tab.name} className="me-2">
               <Link
                 href={tab.path}
-                className={`inline-block p-4 rounded-t-lg transition-colors duration-200 ${
+                className={`inline-block p-4 transition-colors duration-200 ${
                   isActive
-                    ? 'text-orange-400 bg-orange-50'
-                    : 'text-gray-500 hover:text-gray-600 hover:bg-gray-50'
+                    ? 'text-white bg-orange-400'
+                    : 'text-gray-500 hover:text-gray-600 hover:bg-gray-50 hover:text-orange-400 hover:bg-orange-50'
                 }`}
               >
                 {tab.name}

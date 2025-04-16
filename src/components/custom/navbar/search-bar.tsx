@@ -1,19 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import sessionPicOne from "../../../public/session-one.jpg";
+import sessionPicOne from "../../../../public/session-one.jpg";
 import { Search } from "lucide-react";
-import {
-	Command,
-	CommandDialog,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-	CommandSeparator,
-	CommandShortcut,
-} from "@/components/ui/command";
 export default function SearchBar() {
 	const [query, setQuery] = useState<string>("");
 	const items = [

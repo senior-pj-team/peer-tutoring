@@ -1,13 +1,15 @@
-import Navbar from "@/components/custom/navbar";
+import Navbar from "@/components/custom/navbar/navbar";
 import React from "react";
 
 export default function Layout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<div className="overflow-auto">
+		<>
 			<Navbar />
-			{children}
-		</div>
+			<div className="overflow-auto pt-[5rem]">
+				{children}
+			</div>
+		</>
 	);
 }
