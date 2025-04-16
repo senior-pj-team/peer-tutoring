@@ -1,8 +1,7 @@
 import SessionHeader from "@/components/session/session-header";
 import React from "react"
 import Tabs from "@/components/custom/tabs"
-import Image from "next/image";
-import EnrolledStudents from "@/components/session/enrolled-students";
+
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const tabs = [
