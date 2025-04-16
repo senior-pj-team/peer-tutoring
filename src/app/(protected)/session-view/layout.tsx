@@ -1,4 +1,4 @@
-import SessionHeader from "@/components/session/sessionHeader";
+import SessionHeader from "@/components/session/session-header";
 import React from "react"
 import Tabs from "@/components/custom/tabs"
 import Image from "next/image";
