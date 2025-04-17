@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import Rating from "../rating";
+import Rating from "../rating-review-report-refund/rating";
 import { Clock } from "lucide-react";
 
 const SessionCards = ({

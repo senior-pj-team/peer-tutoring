@@ -4,6 +4,7 @@ import Tabs from "@/components/custom/tabs"
 import EnrollAction from "@/components/custom/session/enroll-action";
 import UpcomingAction from "@/components/custom/session/upcoming-action";
 import CompletedAction from "@/components/custom/session/completed-action";
+import ArchivedAction from "@/components/custom/session/archived-action";
 
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -22,9 +23,12 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           {children}
           <hr className="block xl:hidden"/>
           <div className="static xl:absolute xl:top-15 xl:right-30 xl:shadow xl:border xl:shadow-sm xl:max-w-sm p-5 space-y-2">
+            
+            {/* Action card will be different according to what route it came from */}
             {/* <EnrollAction/> */}
             {/* <UpcomingAction/> */}
-            <CompletedAction/>
+            {/* <CompletedAction/> */}
+            {/* <ArchivedAction/> */}
           </div>
         </div>
       </div>

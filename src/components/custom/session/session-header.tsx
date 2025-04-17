@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image";
 import Link from "next/link";
-import Rating from "@/components/custom/rating";
+import Rating from "@/components/custom/rating-review-report-refund/rating";
 import clsx from "clsx";
 
 const SessionHeader = () => {
@@ -28,7 +28,7 @@ const status = "OPEN";
                   <Link href={""}>John Doe</Link>
                 </div>
                 |
-                <Rating className="ms-3" />
+                <Rating className="ms-3" rating={4}/>
               </div>
             </div>
             <div className="mt-5">
