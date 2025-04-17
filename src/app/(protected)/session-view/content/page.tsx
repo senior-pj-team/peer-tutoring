@@ -1,5 +1,7 @@
 import React from 'react'
-import EnrolledStudents from '@/components/session/enrolled-students'
+import EnrolledStudents from '@/components/custom/session/enrolled-students'
+import Expandable from '@/components/custom/session/expandable-text';
+
 
 const page = () => {
   const sessionData = {
@@ -8,11 +10,7 @@ const page = () => {
     courseName: "Web Application Development",
     description:
       "This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-    requirements: [
-      "Basic knowledge of React",
-      "Laptop with Node.js installed",
-      "GitHub account",
-    ],
+    requirements: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi reiciendis laborum iure, provident accusantium quos facilis impedit enim hic necessitatibus minima maxime molestiae ipsum. Molestiae modi nemo soluta voluptates in.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi reiciendis laborum iure, provident accusantium quos facilis impedit enim hic necessitatibus minima maxime molestiae ipsum. Molestiae modi nemo soluta voluptates in.",
     date: "April 20, 2025",
     startTime: "10:00 AM",
     endTime: "12:00 PM",
@@ -28,58 +26,43 @@ const page = () => {
   return (
     <div>
             <div className="max-w-4xl p-6 bg-white space-y-6">
-              <h1 className="text-4xl font-bold">{sessionData.sessionName}</h1>
-
-              {/* Course Info */}
-              <div className="text-gray-600 text-sm">
-                <span>{sessionData.courseCode}</span> |{" "}
-                <span>{sessionData.courseName}</span>
-              </div>
-
-              {/* Description */}
               <div>
                 <h2 className="text-lg font-semibold mb-1">Description</h2>
-                <p className="text-gray-700">{sessionData.description}</p>
+                <Expandable text={sessionData.description}/>
               </div>
-
-              {/* Requirements */}
               <div>
                 <h2 className="text-lg font-semibold mb-1">Requirements</h2>
-                <ul className="list-disc list-inside text-gray-700">
-                  {sessionData.requirements.map((req, idx) => (
-                    <li key={idx}>{req}</li>
-                  ))}
-                </ul>
+                <Expandable text={sessionData.requirements}/>
               </div>
-
+              {/* date time */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
                 <div>
                   <span className="font-semibold">Date:</span> {sessionData.date}
                 </div>
                 <div>
-                  <span className="font-semibold">Start Time:</span>{" "}
+                  <span className="font-semibold">Start Time: </span>
                   {sessionData.startTime}
                 </div>
                 <div>
-                  <span className="font-semibold">End Time:</span>{" "}
+                  <span className="font-semibold">End Time: </span>
                   {sessionData.endTime}
                 </div>
               </div>
+              {/* max student, enrolled students, remaining slots*/}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
                 <div>
-                  <span className="font-semibold">Max Students:</span>{" "}
+                  <span className="font-semibold">Max Students: </span>
                   {sessionData.maxStudents}
                 </div>
                 <div>
-                  <span className="font-semibold">Enrolled:</span>{" "}
+                  <span className="font-semibold">Enrolled: </span>
                   {sessionData.enrolledStudents.length}
                 </div>
                 <div>
-                  <span className="font-semibold">Remaining Slots:</span>{" "}
+                  <span className="font-semibold">Remaining Slots: </span>
                   {remainingSlots}
                 </div>
               </div>
-
               <EnrolledStudents data={sessionData.enrolledStudents} />
             </div>
           </div>

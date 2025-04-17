@@ -5,10 +5,10 @@ import Rating from "@/components/custom/rating";
 import clsx from "clsx";
 
 const SessionHeader = () => {
-const status = "CLOSED";
+const status = "OPEN";
   return (
-    <div className="relative bg-white overflow-hidden">
-        <div className="flex flex-col lg:flex-row relative">
+    <div className="bg-white">
+        <div className="flex flex-col relative">
 
           <div className="px-6 py-15 z-1">
             <h1 className="text-6xl">Example Session Name</h1>
@@ -22,7 +22,6 @@ const status = "CLOSED";
                     src="/profile.jpg"
                     alt="Tutor avatar"
                     fill
-                    className="object-fill"
                   />
                 </div>
                 <div className="text-xs underline me-3">
@@ -37,8 +36,8 @@ const status = "CLOSED";
                 className={clsx(
                   "inline-block text-xs font-semibold px-3 py-1 rounded-full",
                   {
-                    // "bg-green-100 text-green-800": status === "OPEN",
-                    "bg-red-100 text-red-800": status === "CLOSED",
+                    "bg-green-100 text-green-800": status === "OPEN",
+                    // "bg-red-100 text-red-800": status === "CLOSED",
                   }
                 )}
               >
@@ -53,7 +52,7 @@ const status = "CLOSED";
               src="/React.png"
               alt="Session Banner"
               fill
-              className="object-cover object-right"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent"></div>
           </div>

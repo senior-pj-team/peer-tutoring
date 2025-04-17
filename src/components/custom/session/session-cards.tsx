@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import Rating from "../custom/rating";
+import Rating from "../rating";
 import { Clock } from "lucide-react";
 
 const SessionCards = ({
@@ -75,7 +75,7 @@ const SessionCards = ({
 			</CardContent>
 			<CardFooter className="px-3">
 				<div className="flex items-center">
-					<div className="relative w-8 h-8 rounded-full overflow-hidden me-3">
+					<div className="relative w-9 h-9 rounded-full overflow-hidden me-3">
 						<Image
 							src="/profile.jpg"
 							alt="Tutor avatar"
@@ -83,11 +83,12 @@ const SessionCards = ({
 							className="object-fill"
 						/>
 					</div>
-					<div className="text-xs underline me-3">
-						<Link href={""}>John Doe</Link>
+					<div className="space-y-1">
+						<div className="text-xs underline ms-3">
+							<Link href={""}>John Doe</Link>
+						</div>
+						<Rating className="ms-3" rating={4.95}/>
 					</div>
-					|
-					<Rating className="ms-3" />
 				</div>
 			</CardFooter>
 		</Card>
