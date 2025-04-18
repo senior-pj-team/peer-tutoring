@@ -1,4 +1,7 @@
 import CustomHeroCarousel from "@/components/custom/carousel/custom-hero-carousel";
+import FreeSessionsSection from "@/components/custom/carousel/free-sessions-section";
+import SessionsSection from "@/components/custom/carousel/my-sessions-section";
+import TopTutorsSection from "@/components/custom/carousel/top-tutors-section";
 
 import { Roboto_Mono } from "next/font/google";
 
@@ -14,12 +17,12 @@ export default function Home() {
 				className={`text-3xl font-extrabold ${roboto_mono.className} antialiased`}>
 				Welcome to ORION
 			</div>
-			<div className="lg:min-h-[24rem]">
+			<div className="xl:min-h-[24rem] lg:min-h-[20rem] min-h-[24rem] ">
 				<CustomHeroCarousel />
 			</div>
-			<div className="mt-5 px-10">
-				<div className="text-3xl font-bold tracking-wider">Sessions</div>
-			</div>
+			<SessionsSection />
+			<TopTutorsSection />
+			<FreeSessionsSection />
 		</div>
 	);
 }

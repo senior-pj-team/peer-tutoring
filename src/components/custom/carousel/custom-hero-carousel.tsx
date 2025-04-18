@@ -87,8 +87,8 @@ export default function CustomHeroCarousel() {
 					backgroundImageUrl="/connect.png"
 				/>
 			</CarouselContent>
-			<CarouselPrevious className="absolute left-5 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white font-extrabold" />
-			<CarouselNext className="absolute right-5 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white " />
+			<CarouselPrevious className=" hidden md:inline absolute left-5 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer" />
+			<CarouselNext className=" hidden md:inline right-5 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer" />
 		</Carousel>
 	);
 }
@@ -107,30 +107,38 @@ function Item({
 	image?: boolean;
 }) {
 	return (
-		<CarouselItem className="lg:min-h-[24rem] relative pl-4 ">
+		<CarouselItem className="xl:min-h-[24rem] lg:min-h-[20rem] min-h-[24rem] relative pl-4 ">
 			<div
 				className={clsx(
-					"h-full overflow-hidden  bg-no-repeat",
-					image ? " bg-cover" : "bg-contain bg-blue-400",
+					"h-[80%] md:h-full overflow-hidden bg-center bg-cover md:bg-left-top bg-no-repeat",
+					image ? " md:bg-cover" : "md:bg-contain bg-blue-400",
 				)}
 				style={{
 					backgroundImage: `url(${backgroundImageUrl})`,
 				}}></div>
 			<Card
 				className={clsx(
-					" hidden md:block absolute top-1/5  min-w-[24rem] border-none rounded-xs drop-shadow-xl",
+					" hidden md:block absolute top-1/5 lg:min-w-[24rem] lg:h-[12rem] border-none rounded-xs drop-shadow-xl md:w-[12rem] md:bottom-4  ",
 					image ? "left-30" : "right-30",
 				)}>
 				<CardHeader>
 					<CardTitle
-						className={`leading-8 text-2xl tracking-wide ${roboto_slab.className} antialiased`}>
+						className={`lg:leading-8 lg:text-2xl md:text-lg lg:tracking-wide ${roboto_slab.className} antialiased`}>
 						{cardTitle}
 					</CardTitle>
-					<CardDescription className="mt-4">{cardText}</CardDescription>
+					<CardDescription className="lg:mt-4 md:mt-1 md:leading-tight">
+						{cardText}
+					</CardDescription>
 				</CardHeader>
 			</Card>
-			<div className="h-full border flex items-center justify-center">
-				<p className="text-center text-lg">{content}</p>
+
+			<div className="md:hidden mt-2  w-full h-full">
+				<div
+					className={`leading-5 text-sm ${roboto_slab.className} antialiased`}>
+					{" "}
+					{cardTitle}
+				</div>
+				<div className=" mt-1 leading-tight text-xs">{cardText}</div>
 			</div>
 		</CarouselItem>
 	);

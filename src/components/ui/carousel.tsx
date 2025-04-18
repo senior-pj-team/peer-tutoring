@@ -191,7 +191,7 @@ function CarouselPrevious({
 			disabled={!canScrollPrev}
 			onClick={scrollPrev}
 			{...props}>
-			<ChevronLeft size={12} />
+			<ChevronLeft size={12} className="mx-auto" />
 			<span className="sr-only">Previous slide</span>
 		</Button>
 	);
@@ -220,7 +220,7 @@ function CarouselNext({
 			disabled={!canScrollNext}
 			onClick={scrollNext}
 			{...props}>
-			<ChevronRight size={12} />
+			<ChevronRight size={12} className="mx-auto" />
 			<span className="sr-only">Next slide</span>
 		</Button>
 	);

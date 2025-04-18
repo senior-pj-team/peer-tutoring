@@ -1,4 +1,5 @@
 import SessionHeader from "@/components/custom/session/session-header";
+<<<<<<< HEAD
 import React from "react"
 import Tabs from "@/components/custom/tabs"
 import EnrollAction from "@/components/custom/session/enroll-action";
@@ -34,6 +35,29 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
       </div>
     </div>
   );
+=======
+import React from "react";
+import Tabs from "@/components/custom/tabs";
+import Image from "next/image";
+import EnrolledStudents from "@/components/custom/session/enrolled-students";
+
+const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+	const tabs = [
+		{ name: "Content", path: "/session-view/content" },
+		{ name: "Tutor Info", path: "/session-view/tutor-info" },
+		{ name: "Payment", path: "/session-view/payment-info" },
+	];
+	return (
+		<div>
+			<SessionHeader />
+			<hr />
+			<div className="px-6">
+				<Tabs tabs={tabs} />
+				<div>{children}</div>
+			</div>
+		</div>
+	);
+>>>>>>> 6f75e8e (homepage tutor section finished)
 };
 
 export default layout;
