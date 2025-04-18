@@ -1,6 +1,7 @@
+import CustomCarousel from "@/components/custom/home/custom-carousel";
 import Link from "next/link";
-import CustomCarousel from "@/components/custom/carousel/custom-carousel";
-export default function FreeSessionsSection() {
+
+export default function MySessionsSection() {
 	const sessions = [
 		{
 			sessionName: "Example session name",
@@ -43,7 +44,7 @@ export default function FreeSessionsSection() {
 				<Link
 					href="/"
 					className="text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm hidden md:block">
-					View free sessions
+					View my sessions
 				</Link>
 			</div>
 

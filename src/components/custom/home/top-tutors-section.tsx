@@ -1,4 +1,4 @@
-import CustomCarousel from "@/components/custom/carousel/custom-carousel";
+import CustomCarousel from "@/components/custom/home/custom-carousel";
 import TutorCard from "../tutor-card";
 
 export default function TopTutorsSection() {
