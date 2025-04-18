@@ -10,7 +10,7 @@ export function Footer() {
       </div>
       <aside>
         <p className="text-lg">
-          © {new Date().getFullYear()} Orion Group. All rights reserved.
+          © {new Date().getFullYear()} Orion Group. All rights reserved...
         </p>
       </aside>
 
