@@ -28,7 +28,7 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
             {/* Action card will be different according to what route it came from */}
             {/* <EnrollAction/> */}
             {/* <UpcomingAction/> */}
-            {/* <CompletedAction/> */}
+            <CompletedAction/>
             {/* <ArchivedAction/> */}
           </div>
         </div>

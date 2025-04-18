@@ -1,12 +1,4 @@
 import React, { useRef, useState } from 'react'
-const options = [
-    "Inappropriate Behavior",
-    "Harassment or Discriminationmakes",
-    "Unreliable or No-Show",
-    "Inaccurate or Misleading Information",
-    "Unethical Practices",
-    "other"
-];
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -20,8 +12,25 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 
 
-const RefundForm = () => {
-    const [position, setPosition] = useState("Select a reason ▼")
+const RefundReportForm = ({ isReport }: { isReport: boolean }) => {
+    const options =
+
+        isReport ? [
+            "Inappropriate Behavior",
+            "Harassment or Discriminationmakes",
+            "Unreliable or No-Show",
+            "Inaccurate or Misleading Information",
+            "Unethical Practices",
+            "other"
+        ]
+            : [
+                "Scheduling Conflict",
+                "Emergency or Personal Issues",
+                "Mistaken Booking",
+                "Change of Plans",
+                "other"
+            ];
+    const [position, setPosition] = useState("Select a reason")
     const [report, setReview] = useState("")
     const [error, setError] = useState("");
     const textRef = useRef<HTMLTextAreaElement>(null);
@@ -29,21 +38,31 @@ const RefundForm = () => {
         if (position === "other" && report.trim() === "") {
             textRef.current?.focus();
             if (textRef.current) textRef.current.style.boxShadow = "0 0 0 1px red"
-
             setError("Please enter your reason..")
         } else {
             setError("")
-            if (textRef.current)  textRef.current.style.boxShadow = ""
+            if (textRef.current) textRef.current.style.boxShadow = ""
         }
     };
     return (
         <div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline">{position}</Button>
+                    <Button variant="outline" className='w-full'>
+                        <div className='flex justify-between w-full'>
+                            <div>{position}</div>
+                            <div>▼</div>
+                        </div>
+                    </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                    <DropdownMenuLabel className='text-xs'>Reasons to refund</DropdownMenuLabel>
+                <DropdownMenuContent className="w-full">
+                    <DropdownMenuLabel className='text-xs'>
+                        {
+                            isReport
+                                ? <span>Reason for Reporting</span>
+                                : <span>Reason to refund</span>
+                        }
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuRadioGroup value={position} onValueChange={setPosition} className='text-xs'>
                         {
@@ -54,13 +73,14 @@ const RefundForm = () => {
             </DropdownMenu>
             <Textarea
                 ref={textRef}
-                placeholder="Write your review here..."
+                placeholder="Write your reason here..."
                 value={report}
                 onChange={(e) => setReview(e.target.value)}
-                className="min-h-[50px] mt-5"
+                className="h-[5rem] mt-5 w-full whitespace-normal"
+                style={{ overflowWrap: "anywhere" }}
             />
             {error && <p className="text-sm text-red-500">{error}</p>}
-            <div className="mt-4">
+            <div className="mt-4 text-right">
                 <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm cursor-pointer rounded" onClick={handleSubmit}>
                     Submit
                 </button>
@@ -69,4 +89,4 @@ const RefundForm = () => {
     )
 }
 
-export default RefundForm
+export default RefundReportForm

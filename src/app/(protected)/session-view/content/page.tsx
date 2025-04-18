@@ -25,47 +25,56 @@ const page = () => {
     sessionData.maxStudents - sessionData.enrolledStudents.length;
   return (
     <div>
-            <div className="max-w-4xl p-6 bg-white space-y-6">
-              <div>
-                <h2 className="text-lg font-semibold mb-1">Description</h2>
-                <Expandable text={sessionData.description}/>
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold mb-1">Requirements</h2>
-                <Expandable text={sessionData.requirements}/>
-              </div>
-              {/* date time */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
-                <div>
-                  <span className="font-semibold">Date:</span> {sessionData.date}
-                </div>
-                <div>
-                  <span className="font-semibold">Start Time: </span>
-                  {sessionData.startTime}
-                </div>
-                <div>
-                  <span className="font-semibold">End Time: </span>
-                  {sessionData.endTime}
-                </div>
-              </div>
-              {/* max student, enrolled students, remaining slots*/}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
-                <div>
-                  <span className="font-semibold">Max Students: </span>
-                  {sessionData.maxStudents}
-                </div>
-                <div>
-                  <span className="font-semibold">Enrolled: </span>
-                  {sessionData.enrolledStudents.length}
-                </div>
-                <div>
-                  <span className="font-semibold">Remaining Slots: </span>
-                  {remainingSlots}
-                </div>
-              </div>
-              <EnrolledStudents data={sessionData.enrolledStudents} />
-            </div>
+      <div className="max-w-4xl p-6 bg-white space-y-6">
+        <div className="text-sm text-gray-800 space-y-2">
+          <div>
+            <span className="font-semibold">School</span> Applied Digital Technology
           </div>
+          <div>
+            <span className="font-semibold">Major </span>
+            Computer Engineering
+          </div>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold mb-1">Description</h2>
+          <Expandable text={sessionData.description} />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold mb-1">Requirements</h2>
+          <Expandable text={sessionData.requirements} />
+        </div>
+        {/* date time */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
+          <div>
+            <span className="font-semibold">Date:</span> {sessionData.date}
+          </div>
+          <div>
+            <span className="font-semibold">Start Time: </span>
+            {sessionData.startTime}
+          </div>
+          <div>
+            <span className="font-semibold">End Time: </span>
+            {sessionData.endTime}
+          </div>
+        </div>
+        {/* max student, enrolled students, remaining slots*/}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
+          <div>
+            <span className="font-semibold">Max Students: </span>
+            {sessionData.maxStudents}
+          </div>
+          <div>
+            <span className="font-semibold">Enrolled: </span>
+            {sessionData.enrolledStudents.length}
+          </div>
+          <div>
+            <span className="font-semibold">Remaining Slots: </span>
+            {remainingSlots}
+          </div>
+        </div>
+        <EnrolledStudents data={sessionData.enrolledStudents} />
+      </div>
+    </div>
   )
 }
 

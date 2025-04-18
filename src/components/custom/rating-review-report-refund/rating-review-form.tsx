@@ -29,9 +29,10 @@ const RatingReviewForm = () => {
         placeholder="Write your review here..."
         value={review}
         onChange={(e) => setReview(e.target.value)}
-        className="min-h-[100px]"
+        className="h-[5rem] mt-5 w-full whitespace-normal"
+        style={{ overflowWrap: "anywhere" }}
       />
-      <div className="mt-4">
+      <div className="mt-4 text-right">
         <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm cursor-pointer rounded">
           Submit
         </button>
