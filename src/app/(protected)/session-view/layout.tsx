@@ -7,6 +7,7 @@ import CompletedAction from "@/components/custom/session/completed-action";
 import ArchivedAction from "@/components/custom/session/archived-action";
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+<<<<<<< HEAD
 	const tabs = [
 		{ name: "Content", path: "/session-view/content" },
 		{ name: "Tutor Info", path: "/session-view/tutor-info" },
@@ -32,6 +33,34 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
 			</div>
 		</div>
 	);
+=======
+  const tabs = [
+    { name: 'Content', path: '/session-view/content' },
+    { name: 'Tutor Info', path: '/session-view/tutor-info' },
+    { name: 'Payment', path: '/session-view/payment-info' }
+  ];
+  return (
+    <div>
+      <SessionHeader />
+      <hr />
+      <div className="px-6 pb-10">
+        <Tabs tabs={tabs} />
+        <div className="relative">
+          {children}
+          <hr className="block xl:hidden"/>
+          <div className="static xl:absolute xl:top-15 xl:right-30 xl:shadow xl:border xl:shadow-sm xl:max-w-sm p-5 space-y-2">
+            
+            {/* Action card will be different according to what route it came from */}
+            {/* <EnrollAction/> */}
+            {/* <UpcomingAction/> */}
+            <CompletedAction/>
+            {/* <ArchivedAction/> */}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+>>>>>>> 2817ccb (session payment added)
 };
 
 export default layout;
