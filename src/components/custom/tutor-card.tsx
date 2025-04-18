@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import Rating from "@/components/custom/rating";
+import Rating from "./rating-review-report-refund/rating";
 import Image from "next/image";
 import { MessageCircleCode, Mail, Phone } from "lucide-react";
 import {
@@ -39,7 +39,7 @@ export default function TutorCard({
 						<CardTitle>
 							<div className="px-3 flex flex-col items-center justify-center w-full">
 								<div className="max-w-[full] text-xl truncate mb-2">{name}</div>
-								<Rating className="ms-0 mb-2" />
+								<Rating className="ms-0 mb-2" rating={4}/>
 								<div className="flex items-center justify-center gap-2 mb-2">
 									<div className="flex flex-col gap-1 justify-center">
 										<span className="text-sm font-bold text-gray-500">
