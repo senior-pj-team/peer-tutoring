@@ -1,14 +1,7 @@
 "use client";
 
 import { Heart, Bell, Search, AlignJustify } from "lucide-react";
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 import Image from "next/image";
 import HoverCustomCard from "./hover-custom-card";

@@ -53,19 +53,21 @@ export default function CustomCarousel({
 	type?: string;
 }) {
 	const [api, setApi] = useState<CarouselApi>();
-	const [current, setCurrent] = useState(0);
-	const [count, setCount] = useState(0);
+	const [canScrollNext, setCanScrollNext] = useState<boolean>(true);
+	const [canScrollPrev, setCanScrollPrev] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (!api) {
 			return;
 		}
-
-		setCount(api.scrollSnapList().length);
-		setCurrent(api.selectedScrollSnap() + 1);
+		// setCount(api.scrollSnapList().length);
+		setCanScrollNext(api.canScrollNext());
+		setCanScrollPrev(api.canScrollPrev());
 
 		api.on("select", () => {
-			setCurrent(api.selectedScrollSnap() + 1);
+			// setCurrent(api.selectedScrollSnap() + 1);
+			setCanScrollNext(api.canScrollNext());
+			setCanScrollPrev(api.canScrollPrev());
 		});
 	}, [api]);
 	return (
@@ -122,11 +124,11 @@ export default function CustomCarousel({
 							return null;
 						})}
 				</CarouselContent>
-				{current > 1 && (
+				{canScrollPrev && (
 					<CarouselPrevious className="absolute -left-5 top-1/3 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer z-20" />
 				)}
 
-				{current !== count && content.length > 4 && (
+				{canScrollNext && (
 					<CarouselNext className="absolute -right-5 top-1/3 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer z-20" />
 				)}
 			</Carousel>
