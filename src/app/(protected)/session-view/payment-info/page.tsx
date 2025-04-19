@@ -12,7 +12,7 @@ const page = () => {
   ]
   const status = "refunded"
   return (
-    <>
+    <div className='p-6'>
       <div>
         <h3 className='text-xl font-semibold mt-2'>Orion</h3>
         <div className='flex flex-col text-gray-700 text-sm mt-2'>
@@ -32,7 +32,7 @@ const page = () => {
           <PaymentTable payments={payments} />
         </div>
       }
-    </>
+    </div>
   )
 }
 

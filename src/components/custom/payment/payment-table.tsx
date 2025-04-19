@@ -4,7 +4,7 @@ import React from 'react'
 const PaymentTable = ({ payments }: { payments: any[] }) => {
   return (
     <div className="w-full mt-6 overflow-x-auto">
-      <div className="min-w-full inline-block align-middle border border-gray-200">
+      <div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">
         <table className="min-w-full text-sm text-gray-700">
           <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-600">
             <tr>

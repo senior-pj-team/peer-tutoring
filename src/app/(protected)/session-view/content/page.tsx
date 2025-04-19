@@ -1,7 +1,6 @@
 import React from 'react'
 import EnrolledStudents from '@/components/custom/session/enrolled-students'
-import Expandable from '@/components/custom/session/expandable-text';
-
+import Expandable from '@/components/custom/expandable-text';
 
 const page = () => {
   const sessionData = {
@@ -37,14 +36,14 @@ const page = () => {
         </div>
         <div>
           <h2 className="text-lg font-semibold mb-1">Description</h2>
-          <Expandable text={sessionData.description} />
+          <Expandable text={sessionData.description} className='mt-5 text-sm'/>
         </div>
         <div>
           <h2 className="text-lg font-semibold mb-1">Requirements</h2>
-          <Expandable text={sessionData.requirements} />
+          <Expandable text={sessionData.requirements} className='mt-5 text-sm' />
         </div>
         {/* date time */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700 mt-10">
           <div>
             <span className="font-semibold">Date:</span> {sessionData.date}
           </div>
@@ -58,7 +57,7 @@ const page = () => {
           </div>
         </div>
         {/* max student, enrolled students, remaining slots*/}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700 mt-5">
           <div>
             <span className="font-semibold">Max Students: </span>
             {sessionData.maxStudents}

@@ -14,6 +14,7 @@ import Rating from "./rating-review-report-refund/rating";
 import { ClockAlert } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
 type Session = {
 	sessionName: string;
@@ -34,15 +35,17 @@ type Session = {
 export default function GeneralSessionCard({
 	content,
 	type,
+	className
 }: {
 	content: Session;
 	type: string;
+	className?: string
 }) {
 	const router = useRouter();
 	return (
 		<div>
 			<Card
-				className="cursor-pointer pt-0 pb-2 px-3 border-none shadow-none group"
+				className={clsx("cursor-pointer pt-0 pb-2 px-3 border-none shadow-none group", className)}
 				onClick={() => {
 					router.push("/session-view/content");
 				}}>
@@ -50,12 +53,12 @@ export default function GeneralSessionCard({
 					<HoverCardTrigger>
 						{" "}
 						<CardHeader className="px-0 m-0  gap-0">
-							<div className="relative w-full h-38  mb-2 group rounded-md ">
+							<div className={clsx("relative w-full h-38  mb-2 group rounded-md ", className)}>
 								<Image
 									src={"/React.png"}
 									alt="Card image"
 									fill
-									className="object-cover rounded-md"
+									className={clsx("object-cover rounded-md", className)}
 								/>
 								<div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200 rounded-md" />
 							</div>
