@@ -9,9 +9,9 @@ const EnrolledStudents = ({ data }: { data: {}[] }) => {
         { name: "Chandler Bing", image: "/profile.jpg", email: "chandler@gmail.com" },
     ];
     return (
-        <div>
+        <div className="mt-10">
             <h2 className="text-lg font-semibold mb-2">Enrolled Students</h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 mt-5">
                 {enrolledStudents.map((student, index) => (
                     <div key={index} className="flex items-center gap-3 text-sm">
                         <div className="relative w-8 h-8 rounded-full overflow-hidden">
