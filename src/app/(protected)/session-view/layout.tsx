@@ -18,7 +18,7 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
       <hr />
       <div className="px-6 pb-10">
         <Tabs tabs={tabs} />
-        <div className="relative">
+        <div className="relative px-6">
           {children}
           <hr className="block xl:hidden" />
           <div className="static xl:absolute xl:top-15 xl:right-30 xl:shadow xl:border xl:shadow-sm xl:max-w-sm p-5 space-y-2">
