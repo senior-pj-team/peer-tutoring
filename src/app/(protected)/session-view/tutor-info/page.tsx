@@ -112,6 +112,10 @@ const page = () => {
           <ReviewCard />
           <ReviewCard />
         </div>
+        <div>
+        <h1 className='text-lg font-bold mt-5'>
+          More sessions by John Doe
+        </h1>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8'>
           {
             sessions.map((session) => <GeneralSessionCard className='rounded-none' key={session.sessionName} content={session} type={""} />)
@@ -120,6 +124,7 @@ const page = () => {
         <button className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
           View all sessions
         </button>
+        </div>
       </div>
     </div>
   )

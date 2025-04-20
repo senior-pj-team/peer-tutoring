@@ -7,7 +7,7 @@ import clsx from "clsx";
 const SessionHeader = () => {
   const status = "OPEN";
   return (
-    <div className="bg-white">
+    <div className="bg-white ps-6">
       <div className="flex flex-col relative">
 
         <div className="px-6 py-15 z-1">
