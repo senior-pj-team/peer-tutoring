@@ -67,52 +67,6 @@ export default function TutorCard({
 			</HoverCard>
 		</Card>
 	);
-	return (
-		<Card className="cursor-pointer shadow-none border-none max-w-[20rem] pt-0 pb-2 overflow-hidden">
-			<HoverCard>
-				<HoverCardTrigger>
-					<CardHeader className="p-0">
-						{" "}
-						<div className="relative mx-auto">
-							<Image
-								src={image}
-								alt="tutor image"
-								className="rounded-full object-cover bg-clip-border border-4 bg-indigo-500"
-								width={180}
-								height={150}
-							/>
-						</div>
-						<CardTitle>
-							<div className="px-3 flex flex-col items-center justify-center w-full">
-								<div className="max-w-[full] text-xl truncate mb-2">{name}</div>
-								<Rating className="ms-0 mb-2" rating={4} />
-								<div className="flex items-center justify-center gap-2 mb-2">
-									<div className="flex flex-col gap-1 justify-center">
-										<span className="text-sm font-bold text-gray-500">
-											Total Sessions -{" "}
-										</span>
-										<span className="text-sm font-bold text-gray-500">
-											Total Students -{" "}
-										</span>
-									</div>
-									<div className="flex flex-col gap-1 justify-center">
-										<span className="text-sm font-medium ">
-											{totalSessions}
-										</span>
-										<span className="text-sm font-medium">{totalStudents}</span>
-									</div>
-								</div>
-								<span className="mx-auto text-orange-400 underline hover:text-orange-500  text-md font-bold leading-5.5 md:hidden">
-									View Profile
-								</span>
-							</div>
-						</CardTitle>
-					</CardHeader>
-				</HoverCardTrigger>
-				<CustomHoverCard />
-			</HoverCard>
-		</Card>
-	);
 }
 
 function CustomHoverCard() {
