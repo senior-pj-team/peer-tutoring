@@ -34,6 +34,7 @@
     "lucide-react": "^0.488.0",
     "next": "15.3.0",
     "react": "^19.0.0",
+    "react-cam": "^1.1.11",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-webcam": "^7.2.0",
