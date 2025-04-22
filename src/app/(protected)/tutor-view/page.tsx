@@ -2,8 +2,8 @@ import React from 'react'
 import { Mail, Phone, MessageCircle } from 'lucide-react'
 import Rating from '@/components/custom/rating-review-report-refund/rating'
 import Expandable from '@/components/custom/expandable-text'
-import ReviewCard from '@/components/custom/rating-review-report-refund/review-card'
 import GeneralSessionCard from '@/components/custom/general-session-card'
+import Reviews from '@/components/custom/tutor/reviews'
 
 const page = () => {
     const sessions = [
@@ -148,20 +148,8 @@ const page = () => {
                 </div>
             </div>
             <div className='xl:px-30 px-5 my-6'>
-                <h1 className='text-lg font-bold'>
-                    86 ratings and review
-                </h1>
-                <div className='grid grid-cols-1 xl:grid-cols-2 gap-20 mt-8'>
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                    <ReviewCard />
-                </div>
+                <Reviews/>
+                
                 <h1 className='text-lg font-bold'>
                     Sessions offered by John Doe
                 </h1>
