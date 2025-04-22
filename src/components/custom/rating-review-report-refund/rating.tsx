@@ -5,9 +5,11 @@ import clsx from "clsx";
 const Rating = ({
 	className,
 	rating,
+	showText = true,
 }: {
 	className?: string;
 	rating: number;
+	showText?: boolean
 }) => {
 	return (
 		<div className={"flex items-center text-sm " + className}>
@@ -21,15 +23,21 @@ const Rating = ({
 					fill="currentColor"
 				/>
 			))}
-			<p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-				{rating}
-			</p>
-			<p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-				out of
-			</p>
-			<p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-				5
-			</p>
+			{
+				showText && <p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+					{rating}
+				</p>
+			}
+			{
+				showText && <p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+					out of
+				</p>
+			}
+			{
+				showText && <p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+					5
+				</p>
+			}
 		</div>
 	);
 };

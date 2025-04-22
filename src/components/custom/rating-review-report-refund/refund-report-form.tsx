@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
@@ -10,6 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Textarea } from '@/components/ui/textarea';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 
 const RefundReportForm = ({ isReport }: { isReport: boolean }) => {
@@ -34,6 +36,8 @@ const RefundReportForm = ({ isReport }: { isReport: boolean }) => {
     const [report, setReview] = useState("")
     const [error, setError] = useState("");
     const textRef = useRef<HTMLTextAreaElement>(null);
+    const [check, setCheck] = useState(false);
+    const [open, setOpen] = useState(false);
     const handleSubmit = () => {
         if (position === "other" && report.trim() === "") {
             textRef.current?.focus();
@@ -44,14 +48,17 @@ const RefundReportForm = ({ isReport }: { isReport: boolean }) => {
             if (textRef.current) textRef.current.style.boxShadow = ""
         }
     };
+    const handleCheck= (e: React.ChangeEvent<HTMLInputElement>)=>{
+        setCheck(e.target.checked)
+    }
     return (
         <div>
-            <DropdownMenu>
+            <DropdownMenu onOpenChange={setOpen}>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className='w-full'>
                         <div className='flex justify-between w-full'>
                             <div>{position}</div>
-                            <div>▼</div>
+                            <div> <ChevronDown size={10} className={`transition-transform duration-200 ${open ? 'rotate-180' : 'rotate-0'}`}/> </div>
                         </div>
                     </Button>
                 </DropdownMenuTrigger>
@@ -79,6 +86,18 @@ const RefundReportForm = ({ isReport }: { isReport: boolean }) => {
                 className="h-[5rem] mt-5 w-full whitespace-normal"
                 style={{ overflowWrap: "anywhere" }}
             />
+            {
+                isReport &&
+                <label className="flex items-center space-x-2 text-xs mt-3">
+                    <input
+                        type="checkbox"
+                        checked={check}
+                        onChange={handleCheck}
+                        className="form-checkbox text-blue-600 pointer-cursor"
+                    />
+                    <span>Request refund for this session</span>
+                </label>
+            }
             {error && <p className="text-sm text-red-500">{error}</p>}
             <div className="mt-4 text-right">
                 <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm cursor-pointer rounded" onClick={handleSubmit}>

@@ -29,6 +29,7 @@ export interface PaginationWithLinksProps {
 	pageSize: number;
 	page: number;
 	pageSearchParam?: string;
+	scroll?: boolean;
 }
 
 /**
@@ -49,6 +50,7 @@ export function PaginationWithLinks({
 	totalCount,
 	page,
 	pageSearchParam,
+	scroll= true
 }: PaginationWithLinksProps) {
 	const router = useRouter();
 	const pathname = usePathname();
@@ -86,7 +88,7 @@ export function PaginationWithLinks({
 			for (let i = 1; i <= totalPageCount; i++) {
 				items.push(
 					<PaginationItem key={i}>
-						<PaginationLink href={buildLink(i)} isActive={page === i}>
+						<PaginationLink href={buildLink(i)} isActive={page === i} scroll={scroll}>
 							{i}
 						</PaginationLink>
 					</PaginationItem>,
@@ -96,7 +98,7 @@ export function PaginationWithLinks({
 			for (let i = 1; i <= 3; i++) {
 				items.push(
 					<PaginationItem key={i}>
-						<PaginationLink href={buildLink(i)} isActive={page === i}>
+						<PaginationLink href={buildLink(i)} isActive={page === i}  scroll={scroll}>
 							{i}
 						</PaginationLink>
 					</PaginationItem>,
@@ -118,7 +120,7 @@ export function PaginationWithLinks({
 			for (let i = start; i <= end; i++) {
 				items.push(
 					<PaginationItem key={i}>
-						<PaginationLink href={buildLink(i)} isActive={page === i}>
+						<PaginationLink href={buildLink(i)} isActive={page === i} scroll={scroll}>
 							{i}
 						</PaginationLink>
 					</PaginationItem>,
@@ -137,7 +139,8 @@ export function PaginationWithLinks({
 				<PaginationItem key={totalPageCount}>
 					<PaginationLink
 						href={buildLink(totalPageCount)}
-						isActive={page === totalPageCount}>
+						isActive={page === totalPageCount}
+						scroll={scroll}>
 						{totalPageCount}
 					</PaginationLink>
 				</PaginationItem>,
@@ -166,6 +169,7 @@ export function PaginationWithLinks({
 							aria-disabled={page === 1}
 							tabIndex={page === 1 ? -1 : undefined}
 							className={page === 1 ? "pointer-events-none opacity-50" : " "}
+							scroll={scroll}
 						/>
 					</PaginationItem>
 					{renderPageNumbers()}
@@ -179,6 +183,7 @@ export function PaginationWithLinks({
 									? "pointer-events-none opacity-50 "
 									: undefined
 							}
+							scroll={scroll}
 						/>
 					</PaginationItem>
 				</PaginationContent>
