@@ -18,7 +18,7 @@ const ReviewCard = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <Link href="" className="font-semibold text-gray-800 hover:text-blue-600">
+                    <Link href="" className="font-semibold text-gray-800 hover:text-orange-500">
                         John Doe
                     </Link>
                     <div className='flex items-center justify-between'>
