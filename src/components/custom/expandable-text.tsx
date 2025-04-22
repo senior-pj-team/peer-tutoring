@@ -1,10 +1,10 @@
 'use client'
 import clsx from 'clsx';
 import React, { useState } from 'react'
-const Expandable = ({ text, className}: { text: string, className?: string }) => {
+const Expandable = ({ text, max, className}: { text: string, max: number, className?: string }) => {
     const [expanded, setExpanded] = useState(false);
-    const isLong = text.length > 400;
-    const visibleText = isLong && !expanded ? text.slice(0, 500) : text
+    const isLong = text.length > max;
+    const visibleText = isLong && !expanded ? text.slice(0, max) : text
     const handleToggle = () => {
         setExpanded(!expanded);
     }

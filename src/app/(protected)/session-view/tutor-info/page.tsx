@@ -4,6 +4,7 @@ import Expandable from '@/components/custom/expandable-text'
 import { Star, Mail, Phone } from 'lucide-react'
 import ReviewCard from '@/components/custom/rating-review-report-refund/review-card'
 import GeneralSessionCard from '@/components/custom/general-session-card'
+import MoreReviewBtn from '@/components/custom/rating-review-report-refund/review-dialog'
 const page = () => {
   const sessions = [
     {
@@ -93,7 +94,7 @@ const page = () => {
           </div>
         </div>
         <TutorOverallStats />
-        <Expandable text={bio} className='mt-5 text-sm' />
+        <Expandable text={bio} className='mt-5 text-sm' max={300}/>
       </div>
 
       <div>
@@ -110,8 +111,8 @@ const page = () => {
           <ReviewCard />
           <ReviewCard />
           <ReviewCard />
-          <ReviewCard />
         </div>
+        <MoreReviewBtn/>
         <div>
         <h1 className='text-lg font-bold mt-5'>
           More sessions by John Doe

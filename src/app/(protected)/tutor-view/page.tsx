@@ -3,9 +3,12 @@ import { Mail, Phone, MessageCircle } from 'lucide-react'
 import Rating from '@/components/custom/rating-review-report-refund/rating'
 import Expandable from '@/components/custom/expandable-text'
 import GeneralSessionCard from '@/components/custom/general-session-card'
-import Reviews from '@/components/custom/tutor/reviews'
+import Reviews from '@/components/custom/rating-review-report-refund/reviews'
+import { PaginationWithLinks } from '@/components/custom/browse/pagination-with-links'
+import MoreReviewBtn from '@/components/custom/rating-review-report-refund/review-dialog'
 
-const page = () => {
+const page = async ({ searchParams }: { searchParams: Promise<{ page: string }> }) => {
+    const { page = "1" } = await searchParams;
     const sessions = [
         {
             sessionName: "React Redux Nodejs and Kafka basic",
@@ -142,22 +145,29 @@ const page = () => {
                         <div className='mt-6'>
                             <h1 className='text-3xl font-extrabold'>About me</h1>
                             <p className='my-6 text-xl'>Experienced tutor helping students master Math and Coding with clear and engaging lessons.</p>
-                            <Expandable className='text-gray-100' text={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?"} />
+                            <Expandable max={350} className='text-gray-100' text={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed non quaerat molestias nemo deserunt qui optio sapiente beatae officia earum soluta explicabo vero iusto vitae saepe, minima corrupti magni esse?"} />
                         </div>
                     </div>
                 </div>
             </div>
             <div className='xl:px-30 px-5 my-6'>
-                <Reviews/>
-                
-                <h1 className='text-lg font-bold'>
+                <Reviews searchParams={searchParams} />
+                <MoreReviewBtn/>
+
+                <h1 className='text-lg font-bold mt-7'>
                     Sessions offered by John Doe
                 </h1>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8'>
                     {
                         sessions.map((session) => <GeneralSessionCard className='rounded-none' key={session.sessionName} content={session} type={""} />)
                     }
                 </div>
+                <PaginationWithLinks
+                    page={parseInt(page)}
+                    pageSize={6}
+                    totalCount={17}
+                    scroll={false}
+                />
             </div>
 
         </>

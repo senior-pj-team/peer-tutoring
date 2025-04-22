@@ -3,6 +3,7 @@ import { Star } from 'lucide-react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import Link from 'next/link'
+import Expandable from '../expandable-text'
 
 const ReviewCard = () => {
     const review = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?"
@@ -41,19 +42,7 @@ const ReviewCard = () => {
                 </div>
             </div>
             <div className='text-sm mt-5'>
-                <p className='text-justify'>
-                    {
-                        review.length > 200
-                            ? review.slice(0, 200) + "..."
-                            : review
-                    }
-                </p>
-                {
-                    review.length > 200 && <button className='cursor-pointer hover:bg-orange-100 p-2 rounded underline'
-                    >
-                        Show More
-                    </button>
-                }
+                <Expandable max={200} text={review}/>
             </div>
         </div>
     )
