@@ -279,7 +279,7 @@ export default async function Sessions({
 						<PaginationWithLinks
 							page={parseInt(page)}
 							pageSize={20}
-							totalCount={500}
+							totalCount={50}
 						/>
 					</div>
 				</div>

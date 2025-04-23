@@ -105,7 +105,7 @@ export function PaginationWithLinks({
 				);
 			}
 
-			if (page > 4) {
+			if (page > 7) {
 				items.push(
 					<PaginationItem key="ellipsis-start">
 						<PaginationEllipsis />
@@ -152,15 +152,6 @@ export function PaginationWithLinks({
 
 	return (
 		<div className="flex flex-col md:flex-row items-center gap-3 w-full">
-			{pageSizeSelectOptions && (
-				<div className="flex flex-col gap-4 flex-1">
-					<SelectRowsPerPage
-						options={pageSizeSelectOptions.pageSizeOptions}
-						setPageSize={navToPageSize}
-						pageSize={pageSize}
-					/>
-				</div>
-			)}
 			<Pagination className={cn({ "md:justify-end": pageSizeSelectOptions })}>
 				<PaginationContent className="max-sm:gap-0 flex flex-wrap">
 					<PaginationItem>
@@ -188,39 +179,6 @@ export function PaginationWithLinks({
 					</PaginationItem>
 				</PaginationContent>
 			</Pagination>
-		</div>
-	);
-}
-
-function SelectRowsPerPage({
-	options,
-	setPageSize,
-	pageSize,
-}: {
-	options: number[];
-	setPageSize: (newSize: number) => void;
-	pageSize: number;
-}) {
-	return (
-		<div className="flex items-center gap-4">
-			<span className="whitespace-nowrap text-sm">Rows per page</span>
-
-			<Select
-				value={String(pageSize)}
-				onValueChange={(value) => setPageSize(Number(value))}>
-				<SelectTrigger>
-					<SelectValue placeholder="Select page size">
-						{String(pageSize)}
-					</SelectValue>
-				</SelectTrigger>
-				<SelectContent>
-					{options.map((option) => (
-						<SelectItem key={option} value={String(option)}>
-							{option}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
 		</div>
 	);
 }

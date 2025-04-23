@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 import * as React from "react";
 import {
 	ChevronLeftIcon,
@@ -40,7 +40,8 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
 	isActive?: boolean;
-} & Pick<React.ComponentProps<typeof Button>, "size"> & React.ComponentProps<typeof Link>;
+} & Pick<React.ComponentProps<typeof Button>, "size"> &
+	React.ComponentProps<typeof Link>;
 
 function PaginationLink({
 	className,
@@ -60,8 +61,7 @@ function PaginationLink({
 				}),
 				className,
 			)}
-			{...props}
-		/>
+			{...props}></Link>
 	);
 }
 
@@ -76,7 +76,7 @@ function PaginationPrevious({
 			className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
 			{...props}>
 			<ChevronLeftIcon />
-			<span className="hidden xl:block">Previous</span>
+			<span className="hidden sm:block">Previous</span>
 		</PaginationLink>
 	);
 }
@@ -91,7 +91,7 @@ function PaginationNext({
 			size="default"
 			className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
 			{...props}>
-			<span className="hidden xl:block">Next</span>
+			<span className="hidden sm:block">Next</span>
 			<ChevronRightIcon />
 		</PaginationLink>
 	);
