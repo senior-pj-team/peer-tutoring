@@ -6,18 +6,20 @@ const Rating = ({
 	className,
 	rating,
 	showText = true,
+	size=10
 }: {
 	className?: string;
 	rating: number;
 	showText?: boolean
+	size?: number
 }) => {
 	return (
 		<div className={"flex items-center text-sm " + className}>
 			{[1, 2, 3, 4, 5].map((star) => (
 				<Star
 					key={star}
+					size={size}
 					className={clsx(
-						"w-3 h-3",
 						rating >= star ? "text-yellow-300" : "text-gray-300",
 					)}
 					fill="currentColor"
