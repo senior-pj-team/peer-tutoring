@@ -18,18 +18,28 @@ const ReviewDialogContent = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-6 w-full max-w-6xl mx-auto items-start">
 
-            <div className="grid grid-cols-2 gap-y-3">
-                {ratings.map((item, index) => (
-                    <React.Fragment key={index}>
-                        <Rating rating={item.rating} showText={false} />
-                        <span className="text-sm md:text-base font-medium text-muted-foreground">{item.percent}</span>
-                    </React.Fragment>
-                ))}
+            <div>
+                <div className="grid grid-cols-2 gap-x-20 gap-y-3 mt-5 mx-auto px-3">
+                    {ratings.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <Rating rating={item.rating} showText={false} size={25}/>
+                            <span className="text-sm md:text-base font-medium text-muted-foreground">{item.percent}</span>
+                        </React.Fragment>
+                    ))}
+                </div>
+                <div className='mt-3'>
+                <input
+                    type="text"
+                    placeholder="Search reviews..."
+                    className="w-40 px-2 py-1 text-sm border border-orange-400 rounded-sm focus:border-orange-800 mt-3"
+                />
+                <Button className='rounded-sm ms-2'>Search</Button>
+                </div>
             </div>
 
             <ScrollArea className="h-[60vh] md:h-[75vh] w-full p-4 bg-white space-y-4">
                 {[...Array(6)].map((_, idx) => (
-                    <ReviewCard key={idx} />
+                    <ReviewCard key={idx} cut={false} />
                 ))}
                 <div className="flex justify-center pt-4">
                     <Button

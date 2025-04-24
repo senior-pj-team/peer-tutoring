@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import Expandable from '../expandable-text'
 
-const ReviewCard = () => {
+const ReviewCard = ({cut= true}: {cut?: boolean}) => {
     const review = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?"
     return (
         <div className='border-t border-gray-200 py-5'>
@@ -42,7 +42,7 @@ const ReviewCard = () => {
                 </div>
             </div>
             <div className='text-sm mt-5'>
-                <Expandable max={200} text={review}/>
+                <Expandable max={cut ? 200 : 1000} text={review}/>
             </div>
         </div>
     )
