@@ -2,7 +2,6 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
 
 export type Payouts = {
 	id: string;
@@ -61,5 +60,14 @@ export const columns: ColumnDef<Payouts>[] = [
 	{
 		accessorKey: "amount",
 		header: "Amount",
+		cell: ({ row }) => {
+			const amount = parseFloat(row.getValue("amount"));
+			const formatted = new Intl.NumberFormat("th-TH", {
+				style: "currency",
+				currency: "THB",
+			}).format(amount);
+
+			return <div className=" right">{formatted}</div>;
+		},
 	},
 ];
