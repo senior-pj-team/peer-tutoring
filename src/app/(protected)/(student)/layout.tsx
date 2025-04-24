@@ -8,9 +8,7 @@ export default function Layout({
     return (
         <>
             <Navbar />
-            <div className="min-h-screen flex flex-col pt-[5rem]">
-                <div className="flex-grow overflow-auto">{children}</div>
-            </div>
+            {children}
         </>
     );
 }

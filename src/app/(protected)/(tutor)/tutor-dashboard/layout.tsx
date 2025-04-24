@@ -1,4 +1,3 @@
-import { Footer } from "@/components/custom/footer";
 import AppSideBar from "@/components/custom/sidebar/app-sidebar";
 import { SiteHeader } from "@/components/custom/sidebar/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
