@@ -3,12 +3,14 @@ import { Footer } from "@/components/custom/footer";
 import React from "react";
 
 export default function Layout({
-    children,
+	children,
 }: Readonly<{ children: React.ReactNode }>) {
-    return (
-        <>
-            <Navbar />
-            {children}
-        </>
-    );
+	return (
+		<>
+			<div className="min-h-screen flex flex-col pt-[5rem]">
+				<div className="flex-grow overflow-auto">{children}</div>
+				<Footer />
+			</div>
+		</>
+	);
 }
