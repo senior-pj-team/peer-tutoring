@@ -35,25 +35,32 @@ type Session = {
 export default function GeneralSessionCard({
 	content,
 	type,
-	className
+	className,
 }: {
 	content: Session;
 	type: string;
-	className?: string
+	className?: string;
 }) {
 	const router = useRouter();
 	return (
 		<div>
 			<Card
-				className={clsx("cursor-pointer pt-0 pb-2 px-3 border-none shadow-none group", className)}
+				className={clsx(
+					"cursor-pointer pt-0 pb-2 px-3 border-none shadow-none group",
+					className,
+				)}
 				onClick={() => {
 					router.push("/session-view/content");
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>
 						{" "}
-						<CardHeader className="px-0 m-0  gap-0">
-							<div className={clsx("relative w-full h-38  mb-2 group rounded-md ", className)}>
+						<CardHeader className="px-0 m-0 gap-0">
+							<div
+								className={clsx(
+									"relative w-full h-38  mb-2 group rounded-md ",
+									className,
+								)}>
 								<Image
 									src={"/React.png"}
 									alt="Card image"
@@ -62,12 +69,14 @@ export default function GeneralSessionCard({
 								/>
 								<div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200 rounded-md" />
 							</div>
-							<span className="line-clamp-2 font-extrabold leading-tight text-[1.15rem] mb-1 ">
+
+							<p className="line-clamp-2 font-extrabold leading-tight text-[1.15rem] mb-1 ">
 								{content.sessionName}
-							</span>
+							</p>
 							<span className="line-clamp-1 font-extrabold text-[0.75rem] text-gray-500 underline mb-1">
 								Tutor {content.tutor}
 							</span>
+
 							<Rating className="ms-0 mb-1" rating={4.4} />
 							<div className="flex justify-between items-center">
 								<span className="font-extrabold text-black text-[0.98rem]">
@@ -87,20 +96,14 @@ export default function GeneralSessionCard({
 							</div>
 						</CardHeader>
 					</HoverCardTrigger>
-					<CustomHoverCard content={content} type={type} />
+					<CustomHoverCard content={content} />
 				</HoverCard>
 			</Card>
 		</div>
 	);
 }
 
-function CustomHoverCard({
-	content,
-	type,
-}: {
-	content: Session;
-	type: string;
-}) {
+function CustomHoverCard({ content }: { content: Session }) {
 	return (
 		<HoverCardContent
 			className="w-80 drop-shadow-md py-4 px-5 bg-white hidden md:block"

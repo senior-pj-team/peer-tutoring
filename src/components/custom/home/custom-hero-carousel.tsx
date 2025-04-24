@@ -37,7 +37,6 @@ export default function CustomHeroCarousel() {
 			className="mt-8 mx-5 relative">
 			<CarouselContent className="-ml-4">
 				<Item
-					content="Item 1"
 					cardTitle="Sessions are Free Now!"
 					cardText={
 						<span className="text-gray-600 text-md leading-5.5">
@@ -54,7 +53,6 @@ export default function CustomHeroCarousel() {
 					image={true}
 				/>
 				<Item
-					content="Item 2"
 					cardTitle="Build your tutor career with Orion!"
 					cardText={
 						<span className="text-gray-600 text-md leading-5.5">
@@ -71,7 +69,6 @@ export default function CustomHeroCarousel() {
 					backgroundImageUrl="/free.png"
 				/>
 				<Item
-					content="Item 3"
 					cardTitle="Explore your desired sessions and tutors!"
 					cardText={
 						<span className="text-gray-600 text-md leading-5.5">
@@ -94,13 +91,11 @@ export default function CustomHeroCarousel() {
 }
 
 function Item({
-	content,
 	cardTitle,
 	cardText,
 	backgroundImageUrl,
 	image,
 }: {
-	content: string;
 	cardTitle: string;
 	cardText: React.ReactNode;
 	backgroundImageUrl: string;

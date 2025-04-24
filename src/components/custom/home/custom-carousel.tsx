@@ -1,6 +1,6 @@
 "use client";
 
-import SessionCards from "@/components/custom/session/session-cards";
+import SessionCard from "@/components/custom/session/session-card";
 import { type CarouselApi } from "@/components/ui/carousel";
 
 import {
@@ -19,6 +19,7 @@ type MySession = {
 	courseCode: string;
 	courseName: string;
 	cardType: string;
+	remainingTime: string;
 };
 
 type Tutor = {
@@ -86,11 +87,12 @@ export default function CustomCarousel({
 									<CarouselItem
 										key={index}
 										className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5 ">
-										<SessionCards
+										<SessionCard
 											sessionName={c.sessionName}
 											courseCode={c.courseCode}
 											courseName={c.courseName}
 											cardType={c.cardType}
+											remainingTime={c.remainingTime}
 										/>
 									</CarouselItem>
 								);

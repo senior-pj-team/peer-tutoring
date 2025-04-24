@@ -3,7 +3,6 @@
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarHeader,
@@ -29,7 +28,7 @@ const menus = [
 	},
 	{
 		title: "Sessions",
-		url: "/tutor-dashboard/sessions",
+		url: "/tutor-dashboard/sessions/upcoming-sessions",
 		icon: Shapes,
 	},
 	{
@@ -39,7 +38,7 @@ const menus = [
 	},
 	{
 		title: "Financial",
-		url: "/tutor-dashboard/financial",
+		url: "/tutor-dashboard/financial/stats",
 		icon: BarChartIcon,
 	},
 	{

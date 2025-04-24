@@ -1,5 +1,4 @@
 import CustomCarousel from "@/components/custom/home/custom-carousel";
-import TutorCard from "../tutor-card";
 
 export default function TopTutorsSection() {
 	const tutors = [

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import sessionPicOne from "../../../../public/session-one.jpg";
 import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 export default function SearchBar() {
 	const [query, setQuery] = useState<string>("");
 	const items = [
@@ -37,7 +38,7 @@ export default function SearchBar() {
 	return (
 		<div className="relative w-full" ref={containerRef}>
 			<div className="relative">
-				<input
+				<Input
 					type="text"
 					value={query}
 					onChange={(e) => {
@@ -45,7 +46,7 @@ export default function SearchBar() {
 						setShowSuggestions(true);
 					}}
 					placeholder="Search anything..."
-					className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-full focus:outline-orange-400  focus:ring-orange-400 overflow-clip"
+					className="w-full px-4 py-5 pr-10 border border-gray-300 rounded-full focus:outline-orange-400  focus:ring-orange-400 overflow-clip"
 				/>
 				<Search
 					className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
