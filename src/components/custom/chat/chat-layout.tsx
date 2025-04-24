@@ -338,7 +338,7 @@ export default function ChatLayout({ userId }: { userId: string | null }) {
     return (
         <>
             {/* Mobile */}
-            <div className="md:hidden h-screen mt-10">
+            <div className="lg:hidden h-screen mt-20">
                 {userId ? (
                     <Conversation chatName={selectedChat?.chatName || "example"} messages={messages} />
                 ) : (
@@ -347,7 +347,7 @@ export default function ChatLayout({ userId }: { userId: string | null }) {
             </div>
 
             {/* Desktop */}
-            <div className="hidden md:grid grid-cols-4">
+            <div className="hidden lg:grid grid-cols-4 mt-20">
                 <ChatList userId={userId} chats={chatnames} />
                 <div className="col-span-3">
                     {userId ? (
