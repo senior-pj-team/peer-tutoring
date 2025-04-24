@@ -99,16 +99,17 @@ function CustomHoverCard() {
 				About me
 			</div>
 			<div className=" overflow-hidden text-[0.65rem] text-ellipsis line-clamp-6 mb-5">
-				Hello! I'm Alex, a passionate and experienced tutor dedicated to helping
-				students reach their full academic potential. With over 3 years of
-				tutoring experience, I specialize in subjects like Mathematics, Physics,
-				and Computer Science, offering clear explanations, real-world examples,
-				and personalized support. Whether you're struggling with fundamentals or
-				aiming for top grades, I adapt my teaching to your pace and learning
-				style. I believe that learning should be engaging, supportive, and
-				confidence-building, and I take pride in seeing my students grow both
-				academically and personally. Sessions are interactive, goal-oriented,
-				and focused on practical understanding — not just memorization.
+				Hello! I&apos; Alex, a passionate and experienced tutor dedicated to
+				helping students reach their full academic potential. With over 3 years
+				of tutoring experience, I specialize in subjects like Mathematics,
+				Physics, and Computer Science, offering clear explanations, real-world
+				examples, and personalized support. Whether you&apos;re struggling with
+				fundamentals or aiming for top grades, I adapt my teaching to your pace
+				and learning style. I believe that learning should be engaging,
+				supportive, and confidence-building, and I take pride in seeing my
+				students grow both academically and personally. Sessions are
+				interactive, goal-oriented, and focused on practical understanding — not
+				just memorization.
 			</div>
 			<div className="flex w-full justify-between items-center">
 				<Button

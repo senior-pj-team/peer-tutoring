@@ -260,7 +260,7 @@ export default async function Sessions({
 	return (
 		<div className="lg:px-[6rem] lg:pt-[4rem] md:px-[4rem] md:pt-[3rem] px-[3rem] pt-[2rem] w-full">
 			<span className="lg:text-4xl md:text-2xl text-xl font-bold">
-				Result for "database management"
+				Result for &quot;database management&quot;
 			</span>
 			<FilterSheet />
 			<div className="flex gap-x-5 mt-10">

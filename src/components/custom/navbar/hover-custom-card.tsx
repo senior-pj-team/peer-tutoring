@@ -1,8 +1,4 @@
-import {
-	HoverCard,
-	HoverCardContent,
-	HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
 import ExploreHoverContent from "./explore-hover-content";
 import SessionHoverContent from "./session-hover-content";
 import NotiHoverContent from "./noti-hover-content";

@@ -10,14 +10,8 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export interface PaginationWithLinksProps {
@@ -50,9 +44,8 @@ export function PaginationWithLinks({
 	totalCount,
 	page,
 	pageSearchParam,
-	scroll= true
+	scroll = true,
 }: PaginationWithLinksProps) {
-	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
@@ -66,18 +59,7 @@ export function PaginationWithLinks({
 			newSearchParams.set(key, String(newPage));
 			return `${pathname}?${newSearchParams.toString()}`;
 		},
-		[searchParams, pathname],
-	);
-
-	const navToPageSize = useCallback(
-		(newPageSize: number) => {
-			const key = pageSizeSelectOptions?.pageSizeSearchParam || "pageSize";
-			const newSearchParams = new URLSearchParams(searchParams || undefined);
-			newSearchParams.set(key, String(newPageSize));
-			newSearchParams.delete(pageSearchParam || "page"); // Clear the page number when changing page size
-			router.push(`${pathname}?${newSearchParams.toString()}`);
-		},
-		[searchParams, pathname],
+		[searchParams, pathname, pageSearchParam],
 	);
 
 	const renderPageNumbers = () => {
@@ -88,7 +70,10 @@ export function PaginationWithLinks({
 			for (let i = 1; i <= totalPageCount; i++) {
 				items.push(
 					<PaginationItem key={i}>
-						<PaginationLink href={buildLink(i)} isActive={page === i} scroll={scroll}>
+						<PaginationLink
+							href={buildLink(i)}
+							isActive={page === i}
+							scroll={scroll}>
 							{i}
 						</PaginationLink>
 					</PaginationItem>,
@@ -98,7 +83,10 @@ export function PaginationWithLinks({
 			for (let i = 1; i <= 3; i++) {
 				items.push(
 					<PaginationItem key={i}>
-						<PaginationLink href={buildLink(i)} isActive={page === i}  scroll={scroll}>
+						<PaginationLink
+							href={buildLink(i)}
+							isActive={page === i}
+							scroll={scroll}>
 							{i}
 						</PaginationLink>
 					</PaginationItem>,
@@ -120,7 +108,10 @@ export function PaginationWithLinks({
 			for (let i = start; i <= end; i++) {
 				items.push(
 					<PaginationItem key={i}>
-						<PaginationLink href={buildLink(i)} isActive={page === i} scroll={scroll}>
+						<PaginationLink
+							href={buildLink(i)}
+							isActive={page === i}
+							scroll={scroll}>
 							{i}
 						</PaginationLink>
 					</PaginationItem>,
