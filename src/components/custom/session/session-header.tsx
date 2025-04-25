@@ -4,7 +4,7 @@ import Link from "next/link";
 import Rating from "@/components/custom/rating-review-report-refund/rating";
 import clsx from "clsx";
 
-const SessionHeader = () => {
+const SessionHeader = ({ isTutor = false }: { isTutor?: boolean }) => {
   const status = "OPEN";
   return (
     <div className="bg-white ps-6">
@@ -13,23 +13,32 @@ const SessionHeader = () => {
         <div className="px-6 py-15 z-1">
           <h1 className="text-6xl">Example Session Name</h1>
           <div className="mt-5 text-gray-500">
-            <div className="text-sm">
-              <span>110125 </span>|<span> Web Application Development</span>
-            </div>
-            <div className="flex items-center">
-              <div className="relative w-6 h-6 rounded-full overflow-hidden me-3">
-                <Image
-                  src="/profile.jpg"
-                  alt="Tutor avatar"
-                  fill
-                />
+            <div className='space-y-1 my-3'>
+              <div className="text-sm">
+                <span>110125 </span>|<span> Web Application Development</span>
               </div>
-              <div className="text-xs underline me-3">
-                <Link href={""}>John Doe</Link>
+              <div className="text-xs font-extrabold">
+                <span> Applied Digital Technology ● </span> <span>Computer Engineering</span>
               </div>
-              |
-              <Rating className="ms-3" rating={4} />
             </div>
+            {
+              !isTutor && (
+                <div className="flex items-center">
+                  <div className="relative w-6 h-6 rounded-full overflow-hidden me-3">
+                    <Image
+                      src="/profile.jpg"
+                      alt="Tutor avatar"
+                      fill
+                    />
+                  </div>
+                  <div className="text-xs underline me-3">
+                    <Link href={""}>John Doe</Link>
+                  </div>
+                  |
+                  <Rating className="ms-3" rating={4} />
+                </div>
+              )
+            }
           </div>
           <div className="mt-5">
             <span

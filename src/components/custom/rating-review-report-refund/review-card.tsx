@@ -4,8 +4,9 @@ import Image from 'next/image'
 import clsx from 'clsx'
 import Link from 'next/link'
 import Expandable from '../expandable-text'
+import Rating from './rating'
 
-const ReviewCard = ({cut= true}: {cut?: boolean}) => {
+const ReviewCard = ({cutAt= 200}: {cutAt?: number}) => {
     const review = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?"
     return (
         <div className='border-t border-gray-200 py-5'>
@@ -24,16 +25,7 @@ const ReviewCard = ({cut= true}: {cut?: boolean}) => {
                     </Link>
                     <div className='flex items-center justify-between'>
                         <div className="flex items-center mt-[2px]">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                    key={star}
-                                    className={clsx(
-                                        "w-3 h-3 mr-1",
-                                        4 >= star ? "text-yellow-700" : "text-gray-300"
-                                    )}
-                                    fill="currentColor"
-                                />
-                            ))}
+                            <Rating rating ={4} size={10}/>
                         </div>
                         <div className='text-xs text-gray-700'>
                             a week ago
@@ -42,7 +34,7 @@ const ReviewCard = ({cut= true}: {cut?: boolean}) => {
                 </div>
             </div>
             <div className='text-sm mt-5'>
-                <Expandable max={cut ? 200 : 1000} text={review}/>
+                <Expandable max={cutAt} text={review}/>
             </div>
         </div>
     )
