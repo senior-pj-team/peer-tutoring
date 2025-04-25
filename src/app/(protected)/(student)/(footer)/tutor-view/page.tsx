@@ -92,6 +92,8 @@ const page = async ({
 					<Image
 						src="/profile.jpg"
 						alt="Tutor avatar"
+						width={200}
+						height={200}
 						className="w-[20rem] h-[20rem] mx-auto md:mx-0 object-cover"
 					/>
 					<h2 className="mt-4 text-xl font-semibold mb-3">John Doe</h2>

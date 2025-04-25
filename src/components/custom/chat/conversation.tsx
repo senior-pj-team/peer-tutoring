@@ -20,7 +20,7 @@ const Conversation = ({ messages, chatName }: { messages: Message[], chatName: s
 
     }
     return (
-        <div className='px-3 py-0'>
+        <div className='px-3 lg:ml-25 xl:ml-0'>
             <div className="flex items-center gap-4 px-6 py-4 border-b bg-white">
                 <Avatar>
                     <AvatarImage src="/avatar-placeholder.png" alt={chatName} />
@@ -28,7 +28,7 @@ const Conversation = ({ messages, chatName }: { messages: Message[], chatName: s
                 </Avatar>
                 <h2 className="text-lg font-semibold text-orange-800">{chatName}</h2>
             </div>
-            <div className="p-4 overflow-y-auto h-[75svh] flex flex-col-reverse">
+            <div className="p-4 overflow-y-auto h-[75svh] flex flex-col-reverse gap-4">
 
                 {
                     messages.length==0 && <EmptyChat/>

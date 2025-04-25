@@ -30,7 +30,7 @@ const ChatList = ({ userId, chats }: ChatListProps) => {
   };
 
   return (
-    <aside className="w-[360px] h-full border-r bg-white px-4 py-6">
+    <aside className="w-full lg:w-[360px] h-full lg:border-r bg-white px-4 py-6">
       <div className="space-y-5">
         {/* Header */}
         <h2 className="text-2xl font-semibold text-orange-700 px-1">Chats</h2>

@@ -4,9 +4,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 export default function ProfilePage() {
 	const [links, setLinks] = useState([""]);
+	const [open, setOpen] = useState(false);
+	const [position, setPosition] = useState("Select your year");
+
+	const years = [
+		"First Year",
+		"Second Year", "Third Year",
+		"Fourth Year",
+	]
 
 	const handleChange = (index: number, value: string) => {
 		const newLinks = [...links];
@@ -66,6 +76,39 @@ export default function ProfilePage() {
 						className="text-[0.6rem] md:text-sm"
 					/>
 				</div>
+				<DropdownMenu onOpenChange={setOpen}>
+					<DropdownMenuTrigger asChild className="w-full">
+						<Button variant="outline" className="w-full">
+							<div className="flex justify-between w-full">
+								<div>{position}</div>
+								<div>
+									{" "}
+									<ChevronDown
+										size={10}
+										className={`transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"
+											}`}
+									/>{" "}
+								</div>
+							</div>
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className="xl:w-[50rem] lg:w-[45rem] md:w-[40rem] w-[20rem]">
+						<DropdownMenuLabel className="text-xs w-full">
+							Choose year
+						</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuRadioGroup
+							value={position}
+							onValueChange={setPosition}
+							className="text-xs w-full">
+							{years.map((year, index) => (
+								<DropdownMenuRadioItem key={index} value={year}>
+									{year}
+								</DropdownMenuRadioItem>
+							))}
+						</DropdownMenuRadioGroup>
+					</DropdownMenuContent>
+				</DropdownMenu>
 
 				<div className="grid w-full items-center gap-y-2">
 					<Label htmlFor="url" className="text-xs md:text-sm">
