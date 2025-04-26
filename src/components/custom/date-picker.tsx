@@ -17,9 +17,9 @@ import { cn } from "@/lib/utils";
 import { ControllerRenderProps } from "react-hook-form";
 
 export default function DatePicker({
-	field,
+	field, disable= false
 }: {
-	field: ControllerRenderProps<any, string>;
+	field: ControllerRenderProps<any, string>; disable: boolean
 }) {
 	return (
 		<FormItem className="flex flex-col ">
@@ -31,8 +31,9 @@ export default function DatePicker({
 							variant={"outline"}
 							className={cn(
 								"xl:w-[18rem] md:w-[12rem] w-[18rem] text-left font-normal",
-								!field.value && "text-muted-foreground",
-							)}>
+								!field.value && "text-muted-foreground"
+							)}
+							disabled={disable}>
 							{field.value ? (
 								format(field.value, "PPP")
 							) : (

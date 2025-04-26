@@ -3,6 +3,7 @@
 import { sessionSchema, SessionSchemaT } from "@/schema/sessionSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { Pencil } from "lucide-react";
 
 import {
 	Form,
@@ -22,6 +23,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useState } from "react";
+import clsx from "clsx";
 
 type SessionFormProps = {
 	school?: string;
@@ -36,6 +38,8 @@ type SessionFormProps = {
 	maxStudents?: number;
 	paid?: boolean;
 	amount?: number;
+	image?: string;
+	isEdit?: boolean
 };
 export default function SessionForm({
 	school = "",
@@ -50,6 +54,8 @@ export default function SessionForm({
 	maxStudents = 1,
 	paid = true,
 	amount = 0,
+	image = "",
+	isEdit = false
 }: SessionFormProps) {
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
@@ -70,7 +76,8 @@ export default function SessionForm({
 	});
 
 	const isPaid = form.watch("paid");
-	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(image);
+	const [isDisable, setDisable] = useState(isEdit);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -83,8 +90,21 @@ export default function SessionForm({
 	function onSubmit(values: SessionSchemaT) {
 		console.log(values);
 	}
+
+	const handleDisableToggle = () => {
+		setDisable(!isDisable)
+	}
+
 	return (
 		<div className="px-4 lg:px-6">
+			{
+				isEdit &&
+				<div className="text-end">
+					<Button variant="ghost" size="icon" onClick={handleDisableToggle} className={clsx('hover:bg-orange-200 cursor-pointer', isDisable ? "bg-white" : "bg-orange-200")}>
+						<Pencil className="w-5 h-5" />
+					</Button>
+				</div>
+			}
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
@@ -124,6 +144,7 @@ export default function SessionForm({
 													placeholder={placeholder}
 													{...field}
 													className="bg-slate-50"
+													disabled={isDisable}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -148,6 +169,7 @@ export default function SessionForm({
 												alt="Profile Preview"
 												width={120}
 												height={120}
+												priority
 												className="object-cover w-full h-full"
 											/>
 										) : (
@@ -167,7 +189,11 @@ export default function SessionForm({
 														id="picture"
 														type="file"
 														className="text-[0.6rem] md:text-sm lg:w-[30%]"
-														onChange={handleImageChange}
+														onChange={(e) => {
+															handleImageChange(e);
+															field.onChange(e);
+														}}
+														disabled={isDisable}
 													/>
 												</FormControl>
 												<FormMessage />
@@ -188,6 +214,7 @@ export default function SessionForm({
 											placeholder="Course description"
 											{...field}
 											className="h-[8rem] w-full whitespace-normal overflow-y-auto bg-slate-50"
+											disabled={isDisable}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -197,16 +224,22 @@ export default function SessionForm({
 						<Controller
 							name="requirements"
 							control={form.control}
-							render={({ fieldState }) => (
-								<TipTap setValue={form.setValue} fieldState={fieldState} />
+							render={({ field, fieldState }) => (
+								<TipTap
+									value={field.value}
+									onChange={field.onChange}
+									fieldState={fieldState}
+									disable={isDisable}
+								/>
 							)}
 						/>
+
 						<FormField
 							control={form.control}
 							name="date"
 							render={({ field }) => (
 								<div className="grid items-start md:grid-cols-3 w-full gap-y-6 gap-x-10">
-									<DatePicker field={field} />
+									<DatePicker field={field} disable={isDisable} />
 									<FormField
 										control={form.control}
 										name="startTime"
@@ -222,6 +255,7 @@ export default function SessionForm({
 															step={60}
 															className="w-[10rem] "
 															{...field}
+															disabled={isDisable}
 														/>
 													</FormControl>
 													<FormMessage />
@@ -246,6 +280,7 @@ export default function SessionForm({
 															step={60}
 															className="w-[10rem] "
 															{...field}
+															disabled={isDisable}
 														/>
 													</FormControl>
 													<FormMessage />
@@ -270,6 +305,7 @@ export default function SessionForm({
 											min={1}
 											{...field}
 											className="w-[10%]"
+											disabled={isDisable}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -288,7 +324,7 @@ export default function SessionForm({
 											type="number"
 											step="0.01"
 											min={1}
-											disabled={!isPaid}
+											disabled={isDisable || !isPaid}
 											{...field}
 										/>
 									</FormControl>
@@ -317,8 +353,13 @@ export default function SessionForm({
 					</div>
 
 					<Button type="submit" size="lg" className="md:w-[30%] mx-auto">
-						Submit
+						{isEdit ? (
+							<span>Save Changes</span>
+						) : (
+							<span>Submit</span>
+						)}
 					</Button>
+
 				</form>
 			</Form>
 		</div>

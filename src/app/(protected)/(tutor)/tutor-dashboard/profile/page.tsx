@@ -1,9 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Pencil, CreditCard, Sparkles, BookText } from "lucide-react";
 import TutorBioBox from "@/components/custom/profile-settings/tutor-bio-box";
 import TutorHighLightBox from "@/components/custom/profile-settings/tutor-highlight-box";
 import TutorBankBox from "@/components/custom/profile-settings/tutor-bank-box";
