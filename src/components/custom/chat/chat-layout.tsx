@@ -337,34 +337,28 @@ export default function ChatLayout({ userId }: { userId: string | null }) {
 	const selectedChat = chats.find((chat) => chat.chatId === userId);
 	const messages = selectedChat?.messages || [];
 
-	return (
-		<>
-			{/* Mobile */}
-			<div className="md:hidden h-screen">
-				{userId ? (
-					<Conversation
-						chatName={selectedChat?.chatName || "example"}
-						messages={messages}
-					/>
-				) : (
-					<ChatList userId={userId} chats={chatnames} />
-				)}
-			</div>
+    return (
+        <>
+            {/* Mobile */}
+            <div className="lg:hidden h-screen mt-20">
+                {userId ? (
+                    <Conversation chatName={selectedChat?.chatName || "example"} messages={messages} />
+                ) : (
+                    <ChatList userId={userId} chats={chatnames} />
+                )}
+            </div>
 
-			{/* Desktop */}
-			<div className="hidden md:grid grid-cols-4">
-				<ChatList userId={userId} chats={chatnames} />
-				<div className="col-span-3">
-					{userId ? (
-						<Conversation
-							chatName={selectedChat?.chatName || "example"}
-							messages={messages}
-						/>
-					) : (
-						<SelectConversation />
-					)}
-				</div>
-			</div>
-		</>
-	);
+            {/* Desktop */}
+            <div className="hidden lg:grid grid-cols-4 mt-20">
+                <ChatList userId={userId} chats={chatnames} />
+                <div className="col-span-3">
+                    {userId ? (
+                        <Conversation chatName={selectedChat?.chatName || "example"} messages={messages} />
+                    ) : (
+                        <SelectConversation/>
+                    )}
+                </div>
+            </div>
+        </>
+    );
 }

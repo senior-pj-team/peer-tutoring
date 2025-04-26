@@ -4,6 +4,7 @@ type Payment = {
 	enrolledDate: string;
 	price: string;
 	invoiceNumber: string;
+	status: string
 };
 const PaymentTable = ({ payments }: { payments: Payment[] }) => {
 	return (
@@ -16,6 +17,7 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
 							<th className="px-6 py-3 text-left">Enrolled On</th>
 							<th className="px-6 py-3 text-left">Price</th>
 							<th className="px-6 py-3 text-left">Invoice #</th>
+							<th className="px-6 py-3 text-left"></th>
 						</tr>
 					</thead>
 					<tbody className="divide-y divide-gray-100">
@@ -34,6 +36,9 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
 								</td>
 								<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
 									{payment.invoiceNumber}
+								</td>
+								<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
+									{payment.status}
 								</td>
 							</tr>
 						))}

@@ -30,7 +30,7 @@ const mockNotifications = [
 const page = () => {
     return (
         <div className='mt-10'>
-            <NotificationList initialNotifications={mockNotifications}/>
+            <NotificationList initialNotifications={mockNotifications} className='min-h-[90vh]'/>
         </div>
     )
 }

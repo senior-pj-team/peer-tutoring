@@ -81,10 +81,13 @@ const page = () => {
     <div className="max-w-4xl p-6 bg-white space-y-6">
       <div>
         <div className="flex flex-col mb-2 text">
-          <span className="max-w-[full] font-bold text-2xl truncate mb-5">
+          <span className="max-w-[full] font-bold text-2xl truncate">
             John Mayer
           </span>
-          <div className="text-xs font-bold text-gray-500 ml-[0.2rem] flex item-centers space-x-1.5">
+        </div>
+        <TutorOverallStats />
+        <div>
+          <div className="text-xs font-bold text-gray-500 ml-[0.2rem] flex item-centers space-x-1.5 mt-5">
             <Mail size={12} />
             <span className="text-gray-700 font-extrabold">john@example.com</span>
           </div>
@@ -93,8 +96,7 @@ const page = () => {
             <span className="text-gray-700 font-extrabold">+66 847782371</span>
           </div>
         </div>
-        <TutorOverallStats />
-        <Expandable text={bio} className='mt-5 text-sm' max={300}/>
+        <Expandable text={bio} className='mt-5 text-sm' max={300} />
       </div>
 
       <div>
@@ -112,19 +114,19 @@ const page = () => {
           <ReviewCard />
           <ReviewCard />
         </div>
-        <MoreReviewBtn/>
+        <MoreReviewBtn />
         <div>
-        <h1 className='text-lg font-bold mt-5'>
-          More sessions by John Doe
-        </h1>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8'>
-          {
-            sessions.map((session) => <GeneralSessionCard className='rounded-none' key={session.sessionName} content={session} type={""} />)
-          }
-        </div>
-        <button className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
-          View all sessions
-        </button>
+          <h1 className='text-lg font-bold mt-5'>
+            More sessions by John Doe
+          </h1>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8'>
+            {
+              sessions.map((session) => <GeneralSessionCard className='rounded-none' key={session.sessionName} content={session} type={""} />)
+            }
+          </div>
+          <button className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
+            View all sessions
+          </button>
         </div>
       </div>
     </div>

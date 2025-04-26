@@ -8,9 +8,16 @@ const page = () => {
       enrolledDate: 'April 10, 2025',
       price: '฿ 500',
       invoiceNumber: 'INV-20250410-001',
+      status: 'refunded',
+    },
+    {
+      sessionName: 'React Basics',
+      enrolledDate: 'April 9, 2025',
+      price: '฿ 500',
+      invoiceNumber: 'INV-20250410-001',
+      status: 'purchase', 
     },
   ]
-  const status = "refunded"
   return (
     <div className='p-6'>
       <div>
@@ -25,13 +32,6 @@ const page = () => {
         <h3 className='text-xl font-semibold mt-2'>Enrollment</h3>
         <PaymentTable payments={payments} />
       </div>
-      {
-        status == "refunded" &&
-        <div className='mt-10'>
-          <h3 className='text-xl font-semibold mt-2'>Refunds</h3>
-          <PaymentTable payments={payments} />
-        </div>
-      }
     </div>
   )
 }

@@ -23,10 +23,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 					Manage and view all your sessions in one place
 				</p>
 			</div>
-			<div className="p-6">
+			<div className="p-6 px-15">
 				<Tabs tabs={tabs} />
 			</div>
-			<div className="p-6">{children}</div>
+			<div className="px-15">{children}</div>
 		</div>
 	);
 };
