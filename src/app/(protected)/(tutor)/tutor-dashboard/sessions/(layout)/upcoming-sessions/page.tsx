@@ -8,7 +8,11 @@ export default function UpcomingSessions() {
 	const [sessions, setSessions] = useState("");
 	return (
 		<div className="py-5">
-			<SessionSearchBar query={sessions} setQuery={setSessions} />
+			<SessionSearchBar
+				query={sessions}
+				setQuery={setSessions}
+				type="session"
+			/>
 			<div className="grid grid-cols-1  md:grid-cols-2 gap-4 xl:grid-cols-3 ">
 				{Array.from({ length: 8 }).map((_, index) => (
 					<SessionCard
