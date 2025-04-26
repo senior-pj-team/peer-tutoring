@@ -44,7 +44,7 @@ export default function SecurityPage() {
 				</div>
 				<div className="grid w-full items-center gap-y-2">
 					<Label htmlFor="confirm-password" className="text-xs md:text-sm">
-						Username
+						Confirm Password
 					</Label>
 					<Input
 						type="password"

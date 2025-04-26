@@ -1,14 +1,14 @@
 import React from "react";
 import Tabs from "@/components/custom/tabs";
 
-const layout = ({
+const layout = async ({
 	children,
 	params,
 }: {
 	children: React.ReactNode;
 	params: { sessionId: string };
 }) => {
-	const { sessionId } = params;
+	const { sessionId } = await params;
 
 	const tabs = [
 		{ name: "Content", path: `/tutor-dashboard/session/${sessionId}/content` },

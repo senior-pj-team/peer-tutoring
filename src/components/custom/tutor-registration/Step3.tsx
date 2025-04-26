@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Box, Typography, CircularProgress, Paper } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,6 @@ export default function Step3ApprovalPending() {
       flexDirection="column"
       gap={3}
       alignItems="center"
-      sx={{
-        fontFamily: "'Poppins', sans-serif", // Apply Poppins font family globally
-      }}
     >
       <Typography variant="h6" sx={{ fontFamily: "'Poppins', sans-serif" }}>
         Application Submitted
@@ -23,7 +20,6 @@ export default function Step3ApprovalPending() {
         variant="body2"
         color="text.secondary"
         textAlign="center"
-        sx={{ fontFamily: "'Poppins', sans-serif" }}
       >
         Your information is being reviewed by our team
       </Typography>
@@ -41,12 +37,9 @@ export default function Step3ApprovalPending() {
           maxWidth: 400,
           width: "100%",
           bgcolor: "background.paper",
-          fontFamily: "'Poppins', sans-serif", // Apply Poppins font family to Paper
         }}
       >
         <PendingActionsIcon color="primary" sx={{ fontSize: 60, mb: 2 }} />
-
-        <CircularProgress size={50} thickness={4} sx={{ mb: 3 }} />
 
         <Typography
           variant="body1"

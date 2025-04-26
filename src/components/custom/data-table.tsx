@@ -25,19 +25,19 @@ import TutorDashboardSearchBar from "./tutor-dashboard/tutor-search-bar";
 import { DatePickerWithRange } from "./date-range-picker";
 import { DateRange } from "react-day-picker";
 import { isAfter, isBefore, isSameDay, isToday } from "date-fns";
+import { fuzzyFilter } from "@/lib/fuzzyFilter";
 
-interface DataTableProps<
-	TData extends { released_at: string | number | Date },
-	TValue,
-> {
+interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	type: string;
 }
 
-export function DataTable<
-	TData extends { released_at: string | number | Date },
-	TValue,
->({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+	columns,
+	data,
+	type,
+}: DataTableProps<TData, TValue>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [date, setDate] = useState<DateRange | undefined>({
 		from: new Date(),
@@ -50,8 +50,7 @@ export function DataTable<
 			if (date.from && isToday(date.from) && date.to && isToday(date.to)) {
 				return true;
 			}
-			console.log(item);
-			const itemDate = new Date(item.released_at);
+			const itemDate = new Date((item as { released_at: string }).released_at);
 			const from = date.from!;
 			const to = date.to ?? from;
 
@@ -73,6 +72,9 @@ export function DataTable<
 		state: {
 			columnFilters,
 		},
+		filterFns: {
+			fuzzy: fuzzyFilter,
+		},
 	});
 
 	return (
@@ -81,13 +83,16 @@ export function DataTable<
 				<div className="flex flex-wrap gap-3  py-4 px-2 w-full ">
 					<TutorDashboardSearchBar
 						query={
-							(table.getColumn("session")?.getFilterValue() as string) ?? ""
+							(table.getColumn("search")?.getFilterValue() as string) ?? ""
 						}
 						setQuery={(query) =>
-							table.getColumn("session")?.setFilterValue(query)
+							table.getColumn("search")?.setFilterValue(query)
 						}
+						type="data-table"
 					/>
-					<DatePickerWithRange date={date} setDate={setDate} />
+					{type === "payouts" && (
+						<DatePickerWithRange date={date} setDate={setDate} />
+					)}
 				</div>
 				<Table>
 					<TableHeader>
