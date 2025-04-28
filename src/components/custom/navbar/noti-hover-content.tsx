@@ -1,5 +1,6 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
 import { BookOpen, MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 const notifications = [
 	{
@@ -29,19 +30,21 @@ export default function NotiHoverContent() {
 				</div>
 			) : (
 				<div className="flex flex-col divide-y divide-gray-100">
-					{notifications.map((note) => (
-						<div
-							key={note.id}
-							className="flex items-start gap-3 px-4 py-2 hover:bg-orange-50 transition-colors duration-150 cursor-pointer">
-							<div className="mt-0.5">{note.icon}</div>
-							<div className="flex-1 text-sm text-gray-700 truncate">
-								{note.text}
+					<Link href={"/notification"}>
+						{notifications.map((note) => (
+							<div
+								key={note.id}
+								className="flex items-start gap-3 px-4 py-2 hover:bg-orange-50 transition-colors duration-150 cursor-pointer">
+								<div className="mt-0.5">{note.icon}</div>
+								<div className="flex-1 text-sm text-gray-700 truncate">
+									{note.text}
+								</div>
+								{!note.read && (
+									<span className="mt-1 h-2 w-2 rounded-full bg-orange-400" />
+								)}
 							</div>
-							{!note.read && (
-								<span className="mt-1 h-2 w-2 rounded-full bg-orange-400" />
-							)}
-						</div>
-					))}
+						))}
+					</Link>
 				</div>
 			)}
 		</HoverCardContent>
