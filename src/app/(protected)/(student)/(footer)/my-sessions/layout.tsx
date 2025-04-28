@@ -26,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			<div className="p-6 px-15">
 				<Tabs tabs={tabs} />
 			</div>
-			<div className="px-15">{children}</div>
+			<div className="px-15 min-h-[60vh] py-3">{children}</div>
 		</div>
 	);
 };

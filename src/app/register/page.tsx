@@ -26,6 +26,8 @@ export default function RegisterPage() {
 				<Image
 					src="/login-fig.svg" // Image path
 					alt="Registration Figure"
+					width={40}
+					height={40}
 					className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale lg:object-contain md:object-cover" // Ensure it's responsive
 				/>
 			</div>

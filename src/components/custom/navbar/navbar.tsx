@@ -70,11 +70,16 @@ export default function Navbar() {
 				</div>
 
 				<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
-					<HoverCustomCard content="Become a tutor" />
+					<Link href={"/become-tutor"}>
+						<HoverCustomCard content="Become a tutor" />
+					</Link>
 					<Link href="/my-sessions/upcoming-sessions">
 						<HoverCustomCard content="MySessions" />
 					</Link>
-					<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
+					<Link href="/my-sessions/whishlist">
+						<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
+					</Link>
+					<Link href="/notification">
 					<HoverCustomCard
 						content="Notification"
 						icon={
@@ -86,6 +91,7 @@ export default function Navbar() {
 							</div>
 						}
 					/>
+					</Link>
 					<HoverCustomCard
 						content="Profile"
 						icon={

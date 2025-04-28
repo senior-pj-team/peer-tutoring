@@ -1,5 +1,6 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfileHoverContent() {
 	return (
@@ -14,40 +15,59 @@ export default function ProfileHoverContent() {
 						className="w-full h-full object-cover"
 					/>
 				</div>
-				<div className="flex flex-col  overflow-hidden">
-					<div className="font-extrabold text-lg text-gray-800"> William</div>
+				<div className="flex flex-col overflow-hidden">
+					<div className="font-extrabold text-lg text-gray-800">William</div>
 					<div className="font-light text-xs max-w-full truncate text-gray-800">
 						williamkhant4@gmail.com
 					</div>
 				</div>
 			</div>
+
 			<hr className="mb-2" />
-			<div className="flex flex-col  my-2">
-				<ContentItem content="My Sessions" />
-				<ContentItem content="WishList" />
-				<ContentItem content="Become a Tutor" />
+
+			<div className="flex flex-col my-2">
+				<Link href="/my-sessions/upcoming-sessions">
+					<ContentItem content="My Sessions" />
+				</Link>
+				<Link href="/my-sessions/whishlist">
+					<ContentItem content="WishList" />
+				</Link>
+				<Link href="/become-tutor">
+					<ContentItem content="Become a Tutor" />
+				</Link>
 				<hr />
-				<ContentItem content="Notification" />
-				<ContentItem content="Chat" />
+				<Link href="/notification">
+					<ContentItem content="Notification" />
+				</Link>
+				<Link href="/chat">
+					<ContentItem content="Chat" />
+				</Link>
 				<hr />
-				<ContentItem content="Profile Setting" />
-				<ContentItem content="Setup Payment" />
-				<ContentItem content="Payment History" />
+				<Link href="/profile-setting/profile">
+					<ContentItem content="Profile Setting" />
+				</Link>
+				<Link href="/profile-setting/payment">
+					<ContentItem content="Setup Payment" />
+				</Link>
+				<Link href="/payment-history">
+					<ContentItem content="Payment History" />
+				</Link>
 				<hr />
-				<ContentItem content="Log Out" />
+				<Link href="/logout">
+					<ContentItem content="Log Out" />
+				</Link>
 			</div>
 		</HoverCardContent>
 	);
 }
+
 function ContentItem({ content }: { content: string }) {
 	return (
-		<div className="flex justify-between items-center hover:bg-orange-50 hover:text-orange-400">
-			<div className=" text-sm py-3 cursor-pointer">
-				<div className="px-3">{content}</div>
-			</div>
+		<div className="flex justify-between items-center hover:bg-orange-50 hover:text-orange-400 text-sm py-3 cursor-pointer w-full px-3">
+			<div>{content}</div>
 
 			{content === "WishList" && (
-				<span className=" p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
+				<span className="p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
 					1
 				</span>
 			)}
