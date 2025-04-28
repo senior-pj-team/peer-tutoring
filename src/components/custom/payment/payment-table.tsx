@@ -1,10 +1,13 @@
 "use client";
+
+import { cn } from "@/lib/utils";
+
 type Payment = {
 	sessionName: string;
 	enrolledDate: string;
 	price: string;
 	invoiceNumber: string;
-	status: string
+	status: string;
 };
 const PaymentTable = ({ payments }: { payments: Payment[] }) => {
 	return (
@@ -38,7 +41,10 @@ const PaymentTable = ({ payments }: { payments: Payment[] }) => {
 									{payment.invoiceNumber}
 								</td>
 								<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-									{payment.status}
+									<span
+										className={cn(payment.status !== "refuned" ? "text-" : "")}>
+										{payment.status}
+									</span>
 								</td>
 							</tr>
 						))}

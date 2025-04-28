@@ -11,7 +11,7 @@ export type Student = {
 	};
 	enrolled_at: string;
 	released_amount: number;
-	payment_status: "held" | "released" | "refunded" | "disputes";
+	payment_status: "Held" | "Paid" | "Refunded" | "Pending refund";
 };
 
 export const columns: ColumnDef<Student>[] = [
@@ -77,15 +77,15 @@ export const columns: ColumnDef<Student>[] = [
 			) as Student["payment_status"];
 
 			const color =
-				status === "held"
+				status === "Held"
 					? "text-yellow-500"
-					: status === "released"
+					: status === "Paid"
 					? "text-green-500"
-					: status === "disputes"
+					: status === "Pending refund"
 					? "text-orange-500"
 					: "text-red-500";
 
-			return <div className={color}>{status}</div>;
+			return <div className={`${color} font-extrabold`}>{status}</div>;
 		},
 	},
 	{

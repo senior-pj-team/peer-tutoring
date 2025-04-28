@@ -39,7 +39,9 @@ type SessionFormProps = {
 	paid?: boolean;
 	amount?: number;
 	image?: string;
-	isEdit?: boolean
+	isEdit?: boolean;
+	sessionName?: string;
+	location?: string;
 };
 export default function SessionForm({
 	school = "",
@@ -55,7 +57,9 @@ export default function SessionForm({
 	paid = true,
 	amount = 0,
 	image = "",
-	isEdit = false
+	sessionName = "",
+	location = "",
+	isEdit = false,
 }: SessionFormProps) {
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
@@ -72,6 +76,8 @@ export default function SessionForm({
 			maxStudents,
 			paid,
 			amount,
+			sessionName,
+			location,
 		},
 	});
 
@@ -92,29 +98,43 @@ export default function SessionForm({
 	}
 
 	const handleDisableToggle = () => {
-		setDisable(!isDisable)
-	}
+		setDisable(!isDisable);
+	};
 
 	return (
 		<div className="px-4 lg:px-6">
-			{
-				isEdit &&
+			{isEdit && (
 				<div className="text-end">
-					<Button variant="ghost" size="icon" onClick={handleDisableToggle} className={clsx('hover:bg-orange-200 cursor-pointer', isDisable ? "bg-white" : "bg-orange-200")}>
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={handleDisableToggle}
+						className={clsx(
+							"hover:bg-orange-200 cursor-pointer",
+							isDisable ? "bg-white" : "bg-orange-200",
+						)}>
 						<Pencil className="w-5 h-5" />
 					</Button>
 				</div>
-			}
+			)}
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
 					className="flex flex-col gap-y-8">
 					<div className="flex flex-col gap-y-6">
 						<div className="font-bold xl:text-xl text-lg ">
-							Course Information
+							Course Information{" "}
+							<span className="text-gray-400 font-bold text-sm">
+								(optional information. required only for university courses)
+							</span>
 						</div>
 						<div className="grid lg:grid-cols-2 gap-x-10 gap-y-5 mb-5">
 							{[
+								{
+									name: "courseName",
+									label: "Course Name",
+									placeholder: "Enter course name",
+								},
 								{
 									name: "school",
 									label: "School",
@@ -125,11 +145,6 @@ export default function SessionForm({
 									name: "courseCode",
 									label: "Course Code",
 									placeholder: "E.g. CS101",
-								},
-								{
-									name: "courseName",
-									label: "Course Name",
-									placeholder: "Enter course name",
 								},
 							].map(({ name, label, placeholder }) => (
 								<FormField
@@ -205,6 +220,24 @@ export default function SessionForm({
 						</div>
 						<FormField
 							control={form.control}
+							name="sessionName"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="text-[1rem]">Session Name</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="Enter session name"
+											{...field}
+											className="bg-slate-50"
+											disabled={isDisable}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
 							name="description"
 							render={({ field }) => (
 								<FormItem>
@@ -233,7 +266,6 @@ export default function SessionForm({
 								/>
 							)}
 						/>
-
 						<FormField
 							control={form.control}
 							name="date"
@@ -245,7 +277,7 @@ export default function SessionForm({
 										name="startTime"
 										render={({ field }) => (
 											<div className="min-h-[4.5rem] ">
-												<FormItem className="md:w-[8rem] ">
+												<FormItem className="">
 													<FormLabel className="text-[1rem]">
 														Start Time
 													</FormLabel>
@@ -253,7 +285,7 @@ export default function SessionForm({
 														<Input
 															type="time"
 															step={60}
-															className="w-[10rem] "
+															className="w-[8rem] "
 															{...field}
 															disabled={isDisable}
 														/>
@@ -278,7 +310,7 @@ export default function SessionForm({
 														<Input
 															type="time"
 															step={60}
-															className="w-[10rem] "
+															className="w-[8rem]"
 															{...field}
 															disabled={isDisable}
 														/>
@@ -307,6 +339,19 @@ export default function SessionForm({
 											className="w-[10%]"
 											disabled={isDisable}
 										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="location"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="text-[1rem]">Location</FormLabel>
+									<FormControl>
+										<Input type="string" {...field} disabled={isDisable} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -353,13 +398,8 @@ export default function SessionForm({
 					</div>
 
 					<Button type="submit" size="lg" className="md:w-[30%] mx-auto">
-						{isEdit ? (
-							<span>Save Changes</span>
-						) : (
-							<span>Submit</span>
-						)}
+						{isEdit ? <span>Save Changes</span> : <span>Submit</span>}
 					</Button>
-
 				</form>
 			</Form>
 		</div>

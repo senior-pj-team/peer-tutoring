@@ -4,39 +4,44 @@ import Link from "next/link";
 export default function MySessionsSection() {
 	const sessions = [
 		{
+			id: 1,
+			image: '/React.png',
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",
 			remainingTime: "15hr",
-			cardType: "upcoming",
 		},
 		{
+			id: 2,
+			image: '/Chinese.jpg',
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",
 			remainingTime: "15hr",
-			cardType: "upcoming",
 		},
 		{
+			id: 3,
+			image: "/Courses.jpg",
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",
 			remainingTime: "15hr",
-			cardType: "upcoming",
 		},
 		{
+			id: 4,
+			image: "/React.png",
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",
 			remainingTime: "15hr",
-			cardType: "upcoming",
 		},
 		{
+			id: 5,
+			image: "/Chinese.jpg",
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",
 			remainingTime: "15hr",
-			cardType: "upcoming",
 		},
 	];
 	return (

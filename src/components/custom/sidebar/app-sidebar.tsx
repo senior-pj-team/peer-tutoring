@@ -3,6 +3,7 @@
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarHeader,
@@ -17,6 +18,7 @@ import {
 	Star,
 	CircleAlert,
 	Shapes,
+	Book,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -94,6 +96,16 @@ export default function AppSideBar({
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
+			<SidebarFooter className="bg-gray-900">
+				<SidebarMenuItem>
+					<Link href="/">
+						<SidebarMenuButton className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2">
+							<Book size={18} />
+							<span>Go to Student</span>
+						</SidebarMenuButton>
+					</Link>
+				</SidebarMenuItem>
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

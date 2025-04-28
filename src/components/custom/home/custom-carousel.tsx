@@ -15,10 +15,11 @@ import TutorCard from "@/components/custom/tutor-card";
 import GeneralSessionCard from "../general-session-card";
 
 type MySession = {
+	id: number;
+	image: string;
 	sessionName: string;
 	courseCode: string;
 	courseName: string;
-	cardType: string;
 	remainingTime: string;
 };
 
@@ -82,16 +83,17 @@ export default function CustomCarousel({
 				<CarouselContent className="-ml-4">
 					{!type &&
 						content.map((c, index) => {
-							if ("cardType" in c) {
+							if ("remainingTime" in c) {
 								return (
 									<CarouselItem
 										key={index}
 										className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5 ">
 										<SessionCard
+											id={c.id}
+											image={c.image}
 											sessionName={c.sessionName}
 											courseCode={c.courseCode}
 											courseName={c.courseName}
-											cardType={c.cardType}
 											remainingTime={c.remainingTime}
 										/>
 									</CarouselItem>

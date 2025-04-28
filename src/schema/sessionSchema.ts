@@ -2,11 +2,13 @@ import { z } from "zod";
 const timeRegex = /^\d{2}:\d{2}$/;
 export const sessionSchema = z
 	.object({
-		school: z.string().min(1, "School is required"),
-		major: z.string().min(1, "Major is required"),
-		courseCode: z.string().min(1, "Course code is required"),
-		courseName: z.string().min(1, "Course name is required"),
+		school: z.string(),
+		major: z.string(),
+		courseCode: z.string(),
+		courseName: z.string(),
+		sessionName: z.string().min(1, "Session name is required"),
 		description: z.string().min(1, "Description is required"),
+		location: z.string().min(1, "Location is required"),
 		requirements: z.string().refine(
 			(html) => {
 				const text = html

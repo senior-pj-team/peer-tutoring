@@ -1,5 +1,5 @@
 import Filter from "@/components/custom/browse/filter";
-import { PaginationWithLinks } from "@/components/custom/browse/pagination-with-links";
+import { PaginationWithLinks } from "@/components/custom/pagination-with-links";
 import GeneralSessionCard from "@/components/custom/general-session-card";
 import {
 	Sheet,
@@ -279,7 +279,7 @@ export default async function Sessions({
 						<PaginationWithLinks
 							page={parseInt(page)}
 							pageSize={20}
-							totalCount={50}
+							totalCount={500}
 						/>
 					</div>
 				</div>

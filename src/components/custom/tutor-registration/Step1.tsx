@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,8 @@ export default function Step1AcademicInfo() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [photoConfirmed, setPhotoConfirmed] = useState(false);
 
+  const [isClient, setIsClient] = useState(false);
+
   const handleCapture = () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
@@ -33,6 +35,10 @@ export default function Step1AcademicInfo() {
     setPhotoConfirmed(true);
     // Save image logic here
   };
+
+  useEffect(() => {
+    setIsClient(true);
+  }, [])
 
   return (
     <div className="flex flex-col gap-6 font-sans">
@@ -85,15 +91,18 @@ export default function Step1AcademicInfo() {
           </div>
         ) : (
           <div>
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              width={300}
-              height={300}
-              videoConstraints={videoConstraints}
-              style={{ borderRadius: 8 }}
-            />
+            {
+              isClient &&
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width={300}
+                height={300}
+                videoConstraints={videoConstraints}
+                style={{ borderRadius: 8 }}
+              />
+            }
             <Button onClick={handleCapture} className="mt-2">
               Capture Photo
             </Button>

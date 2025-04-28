@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
 	Card,
@@ -10,10 +11,12 @@ import Link from "next/link";
 import Rating from "../rating-review-report-refund/rating";
 import {
 	Clock,
+	User,
 	UserRoundCheck,
 	EllipsisVertical,
 	Folder,
-	Trash2,
+	TriangleAlert,
+	TicketX,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -89,17 +92,13 @@ const SessionCard = ({
 									<EllipsisVertical size={20} color="black" />
 								</DropdownMenuTrigger>
 								<DropdownMenuContent>
-									<DropdownMenuItem
-										className={cn(
-											"text-xs flex items-center gap-2",
-											action === "Delete"
-												? "text-red-500 focus:text-red-500"
-												: "",
-										)}>
-										{action === "archive" && <Folder />}
-										{action === "Delete" && <Trash2 color="red" />}
-										{action === "archive" && "Move to "}
-										{action}
+									<DropdownMenuItem className="text-xs flex items-center gap-2">
+										{action && (
+											<div className="flex items-center gap-x-2">
+												<Folder />
+												<span> Move to archive</span>
+											</div>
+										)}
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
