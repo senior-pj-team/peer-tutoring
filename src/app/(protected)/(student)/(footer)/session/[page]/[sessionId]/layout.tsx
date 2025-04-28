@@ -14,14 +14,14 @@ const layout = ({
 	params,
 }: {
 	children: React.ReactNode;
-	params: { sessionId: string, from: string };
+	params: { sessionId: string; page: string };
 }) => {
-	const { sessionId, from } = params;
+	const { sessionId, page } = params;
 
 	const tabs = [
-		{ name: "Content", path: `/session/${from}/${sessionId}/content` },
-		{ name: "Tutor", path: `/session/${from}/${sessionId}/tutor-info` },
-		{ name: "Payment", path: `/session/${from}/${sessionId}/payment-info`},
+		{ name: "Content", path: `/session/${page}/${sessionId}/content` },
+		{ name: "Tutor", path: `/session/${page}/${sessionId}/tutor-info` },
+		{ name: "Payment", path: `/session/${page}/${sessionId}/payment-info` },
 	];
 	return (
 		<div>
@@ -32,11 +32,11 @@ const layout = ({
 				<div className="relative">
 					{children}
 					<hr className="block xl:hidden" />
-					<div className="static xl:absolute xl:top-15 xl:right-15 xl:shadow xl:border xl:shadow-sm xl:max-w-sm p-5 space-y-2">
-						{from=="complete" && <CompletedAction />}
-						{from=="upcoming" && <UpcomingAction />}
-						{from=="browse" && <EnrollAction />}
-						{from=="archived" && <ArchivedAction />}
+					<div className="static xl:absolute xl:top-15 xl:right-15 xl:shadow xl:border  xl:max-w-sm p-5 space-y-2">
+						{page == "complete" && <CompletedAction />}
+						{page == "upcoming" && <UpcomingAction />}
+						{page == "browse" && <EnrollAction />}
+						{page == "archived" && <ArchivedAction />}
 					</div>
 				</div>
 			</div>

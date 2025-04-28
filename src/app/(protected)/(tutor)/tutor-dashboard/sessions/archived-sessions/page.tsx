@@ -22,10 +22,9 @@ export default function ArchivedSessions() {
 						courseName="Web development"
 						cardType="upcoming"
 						enrollments={5}
-						dispute_students={4}
+						pending_refund_students={4}
 						refunded_students={1}
-						released_students={1}
-						action="Delete"
+						paid_students={1}
 					/>
 				))}
 			</div>

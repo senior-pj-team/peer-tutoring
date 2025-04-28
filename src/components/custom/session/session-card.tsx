@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
 	Card,
@@ -10,10 +11,12 @@ import Link from "next/link";
 import Rating from "../rating-review-report-refund/rating";
 import {
 	Clock,
+	User,
 	UserRoundCheck,
 	EllipsisVertical,
 	Folder,
-	Trash2,
+	TriangleAlert,
+	TicketX,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -32,9 +35,9 @@ type SessionCardProp = {
 	remainingTime?: string;
 	status?: string;
 	enrollments?: number;
-	dispute_students?: number;
+	pending_refund_students?: number;
 	refunded_students?: number;
-	released_students?: number;
+	paid_students?: number;
 	action?: string;
 };
 
@@ -45,9 +48,9 @@ const SessionCard = ({
 	remainingTime,
 	status,
 	enrollments,
-	dispute_students,
+	pending_refund_students,
 	refunded_students,
-	released_students,
+	paid_students,
 	action,
 	cardType,
 }: SessionCardProp) => {
@@ -69,17 +72,13 @@ const SessionCard = ({
 									<EllipsisVertical size={20} color="black" />
 								</DropdownMenuTrigger>
 								<DropdownMenuContent>
-									<DropdownMenuItem
-										className={cn(
-											"text-xs flex items-center gap-2",
-											action === "Delete"
-												? "text-red-500 focus:text-red-500"
-												: "",
-										)}>
-										{action === "archive" && <Folder />}
-										{action === "Delete" && <Trash2 color="red" />}
-										{action === "archive" && "Move to "}
-										{action}
+									<DropdownMenuItem className="text-xs flex items-center gap-2">
+										{action && (
+											<div className="flex items-center gap-x-2">
+												<Folder />
+												<span> Move to archive</span>
+											</div>
+										)}
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
@@ -141,7 +140,7 @@ const SessionCard = ({
 					</div>
 				)}
 				<div className="px-3 mt-2 w-full">
-					{!enrollments && !dispute_students && !refunded_students && (
+					{!enrollments && !pending_refund_students && !refunded_students && (
 						<div className="flex items-center flex-wrap">
 							<div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
 								<Image
@@ -164,21 +163,21 @@ const SessionCard = ({
 								<Badge
 									variant="outline"
 									className="flex gap-1 rounded-lg text-xs bg-green-100">
-									<UserRoundCheck />
+									<User />
 									<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
 										enrollments: {enrollments}
 									</span>
 								</Badge>
 							</>
 						)}
-						{dispute_students && (
+						{pending_refund_students && (
 							<>
 								<Badge
 									variant="outline"
 									className="flex gap-1 rounded-lg text-xs bg-orange-100">
-									<UserRoundCheck />
+									<TriangleAlert />
 									<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
-										disputes: {dispute_students}
+										pending refunds: {pending_refund_students}
 									</span>
 								</Badge>
 							</>
@@ -188,21 +187,21 @@ const SessionCard = ({
 								<Badge
 									variant="outline"
 									className="flex gap-1 rounded-lg text-xs bg-red-100">
-									<UserRoundCheck />
+									<TicketX />
 									<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
-										refunded: {refunded_students}
+										refuned: {refunded_students}
 									</span>
 								</Badge>
 							</>
 						)}
-						{released_students && (
+						{paid_students && (
 							<>
 								<Badge
 									variant="outline"
 									className="flex gap-1 rounded-lg text-xs bg-green-300">
 									<UserRoundCheck />
 									<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
-										released: {refunded_students}
+										paid: {paid_students}
 									</span>
 								</Badge>
 							</>

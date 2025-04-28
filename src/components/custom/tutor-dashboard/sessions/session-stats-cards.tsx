@@ -16,7 +16,13 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { UserRoundCheck, TriangleAlert, TicketX, Percent } from "lucide-react";
+import {
+	User,
+	UserRoundCheck,
+	TriangleAlert,
+	TicketX,
+	Percent,
+} from "lucide-react";
 import { useState } from "react";
 
 type SessionStatsCardProps = {
@@ -25,7 +31,8 @@ type SessionStatsCardProps = {
 	period: string;
 	statsPercent?: number;
 	enrollments?: number;
-	dispute_students?: number;
+	paid_students?: number;
+	pending_refund_students?: number;
 	refunded_students?: number;
 };
 
@@ -52,7 +59,8 @@ export default function SessionStatsCards() {
 					stats={126}
 					period={period}
 					enrollments={215}
-					dispute_students={5}
+					paid_students={200}
+					pending_refund_students={5}
 					refunded_students={3}
 				/>
 				<SessionStatsCard
@@ -60,8 +68,9 @@ export default function SessionStatsCards() {
 					stats={9}
 					period={period}
 					enrollments={14}
+					paid_students={12}
 					statsPercent={9}
-					dispute_students={0}
+					pending_refund_students={0}
 					refunded_students={0}
 				/>
 				<SessionStatsCard
@@ -69,8 +78,9 @@ export default function SessionStatsCards() {
 					stats={117}
 					period={period}
 					enrollments={199}
+					paid_students={195}
 					statsPercent={79}
-					dispute_students={3}
+					pending_refund_students={3}
 					refunded_students={1}
 				/>
 				<SessionStatsCard
@@ -78,8 +88,9 @@ export default function SessionStatsCards() {
 					stats={2}
 					period={period}
 					enrollments={2}
+					paid_students={0}
 					statsPercent={0.54}
-					dispute_students={2}
+					pending_refund_students={2}
 					refunded_students={2}
 				/>
 			</div>
@@ -93,7 +104,8 @@ function SessionStatsCard({
 	period,
 	statsPercent,
 	enrollments,
-	dispute_students,
+	paid_students,
+	pending_refund_students,
 	refunded_students,
 }: SessionStatsCardProps) {
 	function generateDescription() {
@@ -134,9 +146,18 @@ function SessionStatsCard({
 					<Badge
 						variant="outline"
 						className="flex gap-1 rounded-lg text-xs bg-green-100">
-						<UserRoundCheck />
+						<User />
 						<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
 							enrollments: {enrollments}
+						</span>
+					</Badge>
+
+					<Badge
+						variant="outline"
+						className="flex gap-1 rounded-lg text-xs bg-green-300">
+						<UserRoundCheck />
+						<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
+							paid: {paid_students}
 						</span>
 					</Badge>
 
@@ -145,7 +166,7 @@ function SessionStatsCard({
 						className="flex gap-1 rounded-lg text-xs bg-orange-100">
 						<TriangleAlert className="size-2" />
 						<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
-							disputes: {dispute_students}
+							pending refunds: {pending_refund_students}
 						</span>
 					</Badge>
 

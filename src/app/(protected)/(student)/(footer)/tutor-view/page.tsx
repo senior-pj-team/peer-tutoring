@@ -4,7 +4,7 @@ import Rating from "@/components/custom/rating-review-report-refund/rating";
 import Expandable from "@/components/custom/expandable-text";
 import GeneralSessionCard from "@/components/custom/general-session-card";
 import Reviews from "@/components/custom/rating-review-report-refund/reviews";
-import { PaginationWithLinks } from "@/components/custom/browse/pagination-with-links";
+import { PaginationWithLinks } from "@/components/custom/pagination-with-links";
 import MoreReviewBtn from "@/components/custom/rating-review-report-refund/review-dialog";
 import Image from "next/image";
 
