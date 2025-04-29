@@ -11,7 +11,6 @@ import Link from "next/link";
 import Rating from "../features/rating-review/rating";
 import {
 	Clock,
-	User,
 	UserRoundCheck,
 	EllipsisVertical,
 	Folder,
@@ -24,6 +23,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 type SessionCardProp = {
 	id: number;
@@ -70,10 +70,14 @@ const SessionCard = ({
 	paid_students,
 	action,
 
-	page="my-session"
+	page = "my-session"
 }: SessionCardProp) => {
+	const router = useRouter();
 	return (
-		<Card className="cursor-pointer rounded-none pt-0 pb-2">
+		<Card className="cursor-pointer rounded-none pt-0 pb-2" onClick={() => {
+			const nextPage = page == 'tutor' ? `/tutor-dashboard/session/${id}/content` : `/session/${page}/${id}/content`;
+			router.push(nextPage);
+		}}>
 			<CardHeader className="px-0 m-0">
 				<div className="relative w-full h-38">
 					<Image
@@ -104,11 +108,11 @@ const SessionCard = ({
 					)}
 				</div>
 				<CardTitle className="flex justify-between items-start gap-5 px-3 mt-1 w-full min-w-0">
-					<Link href={page=='tutor'?`/tutor-dashboard/session/${id}/content`:`/session/${page}/${id}/content`} className="flex-1 min-w-0">
+					<div className="flex-1 min-w-0">
 						<h3 className="xl:text-lg md:text-sm font-semibold overflow-hidden text-ellipsis line-clamp-2 leading-tight break-words">
 							{sessionName}
 						</h3>
-					</Link>
+					</div>
 
 					{remainingTime && (
 						<div className="flex items-center gap-1 xl:text-xs md:text-[0.6rem] text-red-700 shrink-0 mt-1">
@@ -122,10 +126,10 @@ const SessionCard = ({
 						</div>
 					)}
 					{
-						enroll_status == "pending_refund" &&(
+						enroll_status == "pending_refund" && (
 							<div className="flex items-center gap-1 text-xs shrink-0 mt-1">
-							<span className="text-yellow-500">pending</span>
-						</div>
+								<span className="text-yellow-500">pending</span>
+							</div>
 						)
 					}
 				</CardTitle>
@@ -182,7 +186,9 @@ const SessionCard = ({
 								/>
 							</div>
 							<div className="text-xs underline me-3">
-								<Link href={"/tutor-view"}>{tutor_name ? tutor_name : "Unknown Tutor"}</Link>
+									<Link href="/tutor-view" onClick={(e)=>e.stopPropagation()}>
+										{tutor_name ? tutor_name : "Unknown Tutor"}
+									</Link>
 							</div>
 							|
 							<Rating className="ms-3" rating={tutor_rating ? tutor_rating : 0} />
@@ -199,7 +205,7 @@ const SessionCard = ({
 								</span>
 							</Badge>
 						)}
-						{(pending_refund_students || 0) !=0 && (
+						{(pending_refund_students || 0) != 0 && (
 							<Badge
 								variant="outline"
 								className="flex gap-1 rounded-lg text-xs bg-orange-100">
@@ -209,7 +215,7 @@ const SessionCard = ({
 								</span>
 							</Badge>
 						)}
-						{(refunded_students || 0) !=0 && (
+						{(refunded_students || 0) != 0 && (
 							<Badge
 								variant="outline"
 								className="flex gap-1 rounded-lg text-xs bg-red-100">
@@ -219,7 +225,7 @@ const SessionCard = ({
 								</span>
 							</Badge>
 						)}
-						{(paid_students || 0) !=0 && (
+						{(paid_students || 0) != 0 && (
 							<Badge
 								variant="outline"
 								className="flex gap-1 rounded-lg text-xs bg-green-300">

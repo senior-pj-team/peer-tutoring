@@ -31,6 +31,7 @@ type Tutor = {
 };
 
 type Session = {
+	id: number,
 	sessionName: string;
 	courseCode: string;
 	courseName: string;
@@ -45,6 +46,7 @@ type Session = {
 	from: string;
 	to: string;
 	date: string;
+	page: string
 };
 
 export default function CustomCarousel({

@@ -1,4 +1,4 @@
-import SessionForm from "@/components/custom/features/tutor-dashboard/session-form";
+import SessionForm from "@/components/custom/shared/session-form";
 import React from "react";
 
 const page = () => {

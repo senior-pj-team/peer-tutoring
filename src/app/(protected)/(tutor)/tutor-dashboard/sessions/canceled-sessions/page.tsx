@@ -66,6 +66,7 @@ export default function ArchivedSessions() {
 						pending_refund_students={session.pending_refund_students}
 						refunded_students={session.refunded_students}
 						action={session.action}
+						page="tutor"
 					/>
 				))}
 			</div>
