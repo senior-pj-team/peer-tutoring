@@ -1,7 +1,7 @@
-import CustomHeroCarousel from "@/components/custom/home/custom-hero-carousel";
-import SessionsSection from "@/components/custom/home/sessions-section";
-import MySessionsSection from "@/components/custom/home/my-sessions-section";
-import TopTutorsSection from "@/components/custom/home/top-tutors-section";
+import CustomHeroCarousel from "@/components/custom/features/home/custom-hero-carousel";
+import SessionsSection from "@/components/custom/features/home/sessions-section";
+import MySessionsSection from "@/components/custom/features/home/my-sessions-section";
+import TopTutorsSection from "@/components/custom/features/home/top-tutors-section";
 
 import { Roboto_Mono } from "next/font/google";
 

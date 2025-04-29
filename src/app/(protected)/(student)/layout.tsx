@@ -1,4 +1,4 @@
-import Navbar from "@/components/custom/navbar/navbar";
+import Navbar from "@/components/custom/layout/navbar/navbar";
 import React from "react";
 
 export default function Layout({

@@ -10,9 +10,9 @@ import { Heart } from "lucide-react";
 
 import * as RadixHoverCard from "@radix-ui/react-hover-card";
 import Image from "next/image";
-import Rating from "./rating-review-report-refund/rating";
+import Rating from "../features/rating-review/rating";
 import { ClockAlert } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 

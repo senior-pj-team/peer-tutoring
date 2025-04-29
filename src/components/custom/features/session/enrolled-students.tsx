@@ -1,3 +1,4 @@
+// this components is not being used
 import React from "react";
 import Image from "next/image";
 import { MessageCircle } from "lucide-react";

@@ -1,6 +1,6 @@
 "use client";
 
-import SessionCard from "@/components/custom/session/session-card";
+import SessionCard from "../../shared/session-card";
 import { type CarouselApi } from "@/components/ui/carousel";
 
 import {
@@ -11,8 +11,8 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
-import TutorCard from "@/components/custom/tutor-card";
-import GeneralSessionCard from "../general-session-card";
+import TutorCard from "@/components/custom/shared/tutor-card";
+import GeneralSessionCard from "@/components/custom/shared/general-session-card";
 
 type MySession = {
 	id: number;

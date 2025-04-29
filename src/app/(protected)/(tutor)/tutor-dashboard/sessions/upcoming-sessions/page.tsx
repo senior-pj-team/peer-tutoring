@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import SessionCard from "@/components/custom/session/session-card";
-import SessionSearchBar from "@/components/custom/tutor-dashboard/tutor-search-bar";
+import SessionCard from "@/components/custom/shared/session-card";
+import SessionSearchBar from "@/components/custom/features/tutor-dashboard/tutor-search-bar";
 
 export default function ArchivedSessions() {
 	// Sample data for sessions (same as before, you can replace this with actual dynamic data)
@@ -62,6 +62,7 @@ export default function ArchivedSessions() {
 						courseName={session.courseName}
 						enrollments={session.enrollments}
 						pending_refund_students={session.pending_refund_students}
+						page="tutor"
 					/>
 				))}
 			</div>

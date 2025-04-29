@@ -1,4 +1,4 @@
-import ChatLayout from "@/components/custom/chat/chat-layout";
+import ChatLayout from "@/components/custom/features/chat/chat-layout";
 
 type Params = Promise<{ userId: string }>
 

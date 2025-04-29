@@ -1,4 +1,4 @@
-import ReviewDialogContent from '@/components/custom/rating-review-report-refund/review-dialog-content'
+import ReviewDialogContent from '@/components/custom/features/rating-review/review-dialog-content'
 import { Star } from 'lucide-react'
 import React from 'react'
 

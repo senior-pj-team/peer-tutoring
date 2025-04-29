@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image";
 import Link from "next/link";
-import Rating from "@/components/custom/rating-review-report-refund/rating";
+import Rating from "@/components/custom/features/rating-review/rating";
 import clsx from "clsx";
 
 const SessionHeader = ({ isTutor = false }: { isTutor?: boolean }) => {

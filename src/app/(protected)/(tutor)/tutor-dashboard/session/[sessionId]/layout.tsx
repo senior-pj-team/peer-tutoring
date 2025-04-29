@@ -1,5 +1,5 @@
 import React from "react";
-import Tabs from "@/components/custom/tabs";
+import Tabs from "@/components/custom/shared/tabs";
 
 const layout = async ({
 	children,

@@ -3,7 +3,7 @@ import { Star } from 'lucide-react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import Link from 'next/link'
-import Expandable from '../expandable-text'
+import Expandable from '../../shared/expandable-text'
 import Rating from './rating'
 
 const ReviewCard = ({cutAt= 200}: {cutAt?: number}) => {

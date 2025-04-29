@@ -1,5 +1,5 @@
 import React from 'react'
-import ShowReviewRating from '../rating-review-report-refund/show-review-rating'
+import ShowReviewRating from '../rating-review/show-review-rating'
 
 const ArchivedAction = () => {
     return (

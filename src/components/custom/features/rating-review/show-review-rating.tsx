@@ -1,6 +1,6 @@
 import React from 'react'
 import Rating from './rating'
-import Expandable from '../expandable-text'
+import Expandable from '../../shared/expandable-text'
 
 const ShowReviewRating = () => {
   return (

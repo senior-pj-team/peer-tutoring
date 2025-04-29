@@ -1,10 +1,10 @@
-import SessionHeader from "@/components/custom/session/session-header";
+import SessionHeader from "@/components/custom/features/session/session-header";
 import React from "react";
-import Tabs from "@/components/custom/tabs";
-import CompletedAction from "@/components/custom/session/completed-action";
-import UpcomingAction from "@/components/custom/session/upcoming-action";
-import EnrollAction from "@/components/custom/session/enroll-action";
-import ArchivedAction from "@/components/custom/session/archived-action";
+import Tabs from "@/components/custom/shared/tabs";
+import CompletedAction from "@/components/custom/features/session/completed-action";
+import UpcomingAction from "@/components/custom/features/session/upcoming-action";
+import EnrollAction from "@/components/custom/features/session/enroll-action";
+import ArchivedAction from "@/components/custom/features/session/archived-action";
 
 const layout = ({
 	children,

@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import TipTap from "@/components/custom/tip-tap";
+import TipTap from "../../shared/tip-tap";
 import { Button } from "@/components/ui/button";
-import DatePicker from "@/components/custom/date-picker";
+import DatePicker from "../../shared/date-picker";
 import { addDays } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
