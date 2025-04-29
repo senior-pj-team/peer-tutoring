@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/custom/data-table";
+import { DataTable } from "@/components/custom/shared/data-table";
 import { columns } from "./columns";
 import { students } from "./data";
 

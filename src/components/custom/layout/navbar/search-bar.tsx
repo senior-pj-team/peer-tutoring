@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import sessionPicOne from "../../../../public/session-one.jpg";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 export default function SearchBar() {
@@ -66,7 +65,7 @@ export default function SearchBar() {
 									setShowSuggestions(false);
 								}}>
 								<Image
-									src={sessionPicOne}
+									src="/session-one.jpg"
 									width={50}
 									height={50}
 									alt="Session Pic"

@@ -21,7 +21,7 @@ import {
 import { DataTablePagination } from "./data-table-pagination";
 import { useMemo, useState } from "react";
 
-import TutorDashboardSearchBar from "./tutor-dashboard/tutor-search-bar";
+import TutorDashboardSearchBar from "../features/tutor-dashboard/tutor-search-bar";
 import { DatePickerWithRange } from "./date-range-picker";
 import { DateRange } from "react-day-picker";
 import { isAfter, isBefore, isSameDay, isToday } from "date-fns";

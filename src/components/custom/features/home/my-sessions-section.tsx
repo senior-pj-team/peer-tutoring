@@ -1,4 +1,4 @@
-import CustomCarousel from "@/components/custom/home/custom-carousel";
+import CustomCarousel from "@/components/custom/features/home/custom-carousel";
 import Link from "next/link";
 
 export default function MySessionsSection() {

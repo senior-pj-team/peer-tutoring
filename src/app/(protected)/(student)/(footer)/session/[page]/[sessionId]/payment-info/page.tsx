@@ -1,5 +1,5 @@
 import React from 'react'
-import PaymentTable from '@/components/custom/payment/payment-table'
+import PaymentTable from '@/components/custom/features/payment/payment-table'
 
 const page = () => {
   const payments = [

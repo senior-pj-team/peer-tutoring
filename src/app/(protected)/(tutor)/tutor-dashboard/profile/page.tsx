@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import TutorBioBox from "@/components/custom/profile-settings/tutor-bio-box";
-import TutorHighLightBox from "@/components/custom/profile-settings/tutor-highlight-box";
-import TutorBankBox from "@/components/custom/profile-settings/tutor-bank-box";
+import TutorBioBox from "@/components/custom/features/profile-settings/tutor-bio-box";
+import TutorHighLightBox from "@/components/custom/features/profile-settings/tutor-highlight-box";
+import TutorBankBox from "@/components/custom/features/profile-settings/tutor-bank-box";
 
 export default function TutorProfilePage() {
 

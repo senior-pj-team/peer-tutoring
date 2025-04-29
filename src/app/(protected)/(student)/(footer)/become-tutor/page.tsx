@@ -1,5 +1,5 @@
 import React from "react";
-import Stepper from "@/components/custom/tutor-registration/Stepper";
+import Stepper from "@/components/custom/features/tutor-registration/Stepper";
 
 export default function BecomeTutorPage() {
   return (

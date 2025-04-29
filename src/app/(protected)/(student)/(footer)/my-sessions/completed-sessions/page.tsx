@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SessionCard from "@/components/custom/session/session-card";
+import SessionCard from "@/components/custom/shared/session-card";
 
 const Page = () => {
   const sessions = [

@@ -32,7 +32,6 @@ export const columns: ColumnDef<Student>[] = [
 			);
 		},
 	},
-
 	{
 		accessorKey: "session",
 		header: "Session",
@@ -40,7 +39,6 @@ export const columns: ColumnDef<Student>[] = [
 			return <div className=" w-full truncate">{row.getValue("session")}</div>;
 		},
 	},
-
 	{
 		accessorKey: "enrolled_at",
 		header: "Enrolled Date",

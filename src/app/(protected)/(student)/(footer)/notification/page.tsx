@@ -1,4 +1,4 @@
-import NotificationList from '@/components/custom/notification/noti-list'
+import NotificationList from '@/components/custom/shared/noti-list'
 import React from 'react'
 const mockNotifications = [
     {

@@ -1,4 +1,4 @@
-import StudentList from "@/components/custom/tutor-dashboard/session-view/student-list";
+import StudentList from "@/components/custom/features/tutor-dashboard/session-view/student-list";
 import React from "react";
 
 const page = () => {

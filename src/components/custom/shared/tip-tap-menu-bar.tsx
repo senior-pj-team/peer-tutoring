@@ -8,7 +8,7 @@ import {
 	List,
 	ListOrdered,
 } from "lucide-react";
-import { Toggle } from "../ui/toggle";
+import { Toggle } from "@/components/ui/toggle";
 
 export default function TipTapMenuBar({ editor }: { editor: Editor | null }) {
 	if (!editor) {

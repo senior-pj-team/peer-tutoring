@@ -1,5 +1,5 @@
 import React from 'react'
-import NotificationList from '@/components/custom/notification/noti-list'
+import NotificationList from '@/components/custom/shared/noti-list'
 const mockNotifications = [
     {
         id: "1",

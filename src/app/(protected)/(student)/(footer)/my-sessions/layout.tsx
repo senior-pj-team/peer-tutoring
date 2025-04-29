@@ -1,4 +1,4 @@
-import Tabs from "@/components/custom/tabs";
+import Tabs from "@/components/custom/shared/tabs";
 import React from "react";
 import { Roboto_Mono } from "next/font/google";
 const roboto_mono = Roboto_Mono({

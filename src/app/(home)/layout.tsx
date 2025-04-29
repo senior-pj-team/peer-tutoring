@@ -1,5 +1,5 @@
-import { Footer } from "@/components/custom/footer";
-import Navbar from "@/components/custom/navbar/navbar";
+import { Footer } from "@/components/custom/layout/footer";
+import Navbar from "@/components/custom/layout/navbar/navbar";
 import React from "react";
 
 export default function Layout({

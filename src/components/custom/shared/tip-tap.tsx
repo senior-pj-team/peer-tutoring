@@ -2,7 +2,7 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { FormControl, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ControllerFieldState } from "react-hook-form";
 import TipTapMenuBar from "./tip-tap-menu-bar";
 

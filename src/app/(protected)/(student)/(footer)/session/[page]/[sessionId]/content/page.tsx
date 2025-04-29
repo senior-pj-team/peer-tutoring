@@ -1,6 +1,6 @@
 import React from "react";
-import EnrolledStudents from "@/components/custom/session/enrolled-students";
-import Expandable from "@/components/custom/expandable-text";
+import EnrolledStudents from "@/components/custom/features/session/enrolled-students";
+import Expandable from "@/components/custom/shared/expandable-text";
 
 const page = () => {
 	const sessionData = {

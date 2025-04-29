@@ -8,15 +8,13 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import Rating from "../rating-review-report-refund/rating";
+import Rating from "../features/rating-review/rating";
 import {
 	Clock,
 	User,
 	UserRoundCheck,
 	EllipsisVertical,
 	Folder,
-	TriangleAlert,
-	TicketX,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -106,7 +104,7 @@ const SessionCard = ({
 					)}
 				</div>
 				<CardTitle className="flex justify-between items-start gap-5 px-3 mt-1 w-full min-w-0">
-					<Link href={`/session/${page}/${id}/content`} className="flex-1 min-w-0">
+					<Link href={page=='tutor'?`/tutor-dashboard/session/${id}/content`:`/session/${page}/${id}/content`} className="flex-1 min-w-0">
 						<h3 className="xl:text-lg md:text-sm font-semibold overflow-hidden text-ellipsis line-clamp-2 leading-tight break-words">
 							{sessionName}
 						</h3>

@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import Rating from "@/components/custom/rating-review-report-refund/rating";
+import Rating from "@/components/custom/features/rating-review/rating";
 import Image from "next/image";
 import { MessageCircleCode, Mail, Phone } from "lucide-react";
 import {
@@ -8,7 +8,7 @@ import {
 	HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import * as RadixHoverCard from "@radix-ui/react-hover-card";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export default function TutorCard({
 	name,
