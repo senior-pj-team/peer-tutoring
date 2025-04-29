@@ -5,6 +5,7 @@ import GeneralSessionCard from "@/components/custom/shared/general-session-card"
 export default function SessionsSection({ type }: { type: string }) {
 	const freeSessions = [
 		{
+			id: 1,
 			sessionName: "React Redux Nodejs and Kafka basic",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -20,8 +21,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "React with NodeJS",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -37,8 +40,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "Next JS",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -54,8 +59,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "Machine Learing with SkitLearn",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -71,8 +78,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "Database Management Miderm Course",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -88,11 +97,13 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 	];
 
 	const closingSessions = [
 		{
+			id: 1,
 			sessionName: "React Redux Nodejs and Kafka basic",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -108,8 +119,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "React with NodeJS",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -125,8 +138,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "Next JS",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -142,8 +157,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "Machine Learing with SkitLearn",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -159,8 +176,10 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 		{
+			id: 1,
 			sessionName: "Database Management Miderm Course",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -176,6 +195,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
+			page: "browse"
 		},
 	];
 	return (

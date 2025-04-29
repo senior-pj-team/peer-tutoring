@@ -1,5 +1,4 @@
 "use client";
-
 import { Card, CardHeader } from "@/components/ui/card";
 import {
 	HoverCard,
@@ -17,20 +16,22 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 type Session = {
+	id: number;
 	sessionName: string;
 	courseCode: string;
 	courseName: string;
 	school: string;
 	major: string;
 	price: string;
-	remaining: string;
+	remaining?: string;
 	description: string;
 	tutor: string;
 	rating: string;
-	type: string;
+	type?: string;
 	from: string;
 	to: string;
 	date: string;
+	page: string;
 };
 export default function GeneralSessionCard({
 	content,
@@ -38,7 +39,7 @@ export default function GeneralSessionCard({
 	className,
 }: {
 	content: Session;
-	type: string;
+	type?: string;
 	className?: string;
 }) {
 	const router = useRouter();
@@ -50,7 +51,7 @@ export default function GeneralSessionCard({
 					className,
 				)}
 				onClick={() => {
-					router.push("/session-view/content");
+					router.push(`/session/${content.page}/${content.id}/content`);
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>

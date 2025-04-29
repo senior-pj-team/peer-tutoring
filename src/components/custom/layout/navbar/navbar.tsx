@@ -82,7 +82,9 @@ export default function Navbar() {
 						<Link href="/my-sessions/upcoming-sessions">
 							<HoverCustomCard content="MySessions" />
 						</Link>
-						<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
+						<Link href="/my-sessions/wishlist-sessions">
+							<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
+						</Link>
 						<HoverCustomCard
 							content="Notification"
 							icon={

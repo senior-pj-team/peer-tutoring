@@ -68,6 +68,7 @@ export default function ArchivedSessions() {
 						refunded_students={session.refunded_students}
 						paid_students={session.paid_students}
 						action={session.action}
+						page="tutor"
 					/>
 				))}
 			</div>

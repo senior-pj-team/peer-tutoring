@@ -16,10 +16,15 @@ const layout = ({
 	const { sessionId, page } = params;
 
 	const tabs = [
-		{ name: "Content", path: `/session/${page}/${sessionId}/content` },
-		{ name: "Tutor", path: `/session/${page}/${sessionId}/tutor-info` },
-		{ name: "Payment", path: `/session/${page}/${sessionId}/payment-info` },
+		{ name: "Content", path: `/session/${page}/${sessionId}/content` }
 	];
+	if(page=="browse"){
+		tabs.push({ name: "Tutor", path: `/session/${page}/${sessionId}/tutor-info` })
+	}else if(page=="my-session"){
+		tabs.push({ name: "Payment", path: `/session/${page}/${sessionId}/payment-info` })
+	}
+	// action will be decided with status fetched from backend
+	// fetch data with student_id (from jwt) and session_id (from params)
 	return (
 		<div>
 			<SessionHeader />
