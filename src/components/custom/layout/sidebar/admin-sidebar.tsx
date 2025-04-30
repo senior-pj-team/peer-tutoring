@@ -21,11 +21,15 @@ const adminMenus = [
     icon: LayoutDashboard,
   },
   {
-    title: "Session",
-    url: "/admin-dashboard/session",
+    title: "Manage Transfer",
+    url: "/admin-dashboard/manage-transfer",
     icon: LayoutDashboard,
   },
-
+  {
+    title: "Tutor Onboarding Requests",
+    url: "/admin-dashboard/tutor-onboarding-requests",
+    icon: UserCog,
+  },
   {
     title: "Manage Tutor",
     url: "/admin-dashboard/manage-tutor",
