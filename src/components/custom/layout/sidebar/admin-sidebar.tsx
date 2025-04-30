@@ -61,7 +61,7 @@ export default function AdminSideBar({
               <Link href="#">
                 <span className="font-semibold text-2xl text-white">
                   Orion{" "}
-                  <span className="text-sm font-medium text-yellow-400">
+                  <span className="text-sm font-medium text-orange-400">
                     Admin
                   </span>
                 </span>
