@@ -6,19 +6,19 @@ import UpcomingAction from "@/components/custom/features/session/upcoming-action
 import EnrollAction from "@/components/custom/features/session/enroll-action";
 import ArchivedAction from "@/components/custom/features/session/archived-action";
 
-const layout = ({
+const layout =async ({
 	children,
 	params,
 }: {
 	children: React.ReactNode;
 	params: { sessionId: string; page: string };
 }) => {
-	const { sessionId, page } = params;
+	const { sessionId, page } =await params;
 
 	const tabs = [
 		{ name: "Content", path: `/session/${page}/${sessionId}/content` }
 	];
-	if(page=="browse"){
+	if(page=="browse"|| page=="view"){
 		tabs.push({ name: "Tutor", path: `/session/${page}/${sessionId}/tutor-info` })
 	}else if(page=="my-session"){
 		tabs.push({ name: "Payment", path: `/session/${page}/${sessionId}/payment-info` })

@@ -181,6 +181,7 @@ const SessionCard = ({
 								<Image
 									src="/profile.jpg"
 									alt="Tutor avatar"
+									sizes="12"
 									fill
 									className="object-fill"
 								/>
