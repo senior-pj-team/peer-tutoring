@@ -37,7 +37,7 @@ const adminMenus = [
   },
   {
     title: "Manage Report & Refund",
-    url: "/admin-dashboard/manage-report-refund",
+    url: "/admin-dashboard/manage-report-refund/report",
     icon: FileWarning,
   },
 ];

@@ -130,7 +130,11 @@ const ViewRefundRequest: React.FC<ViewRefundRequestProps> = ({
                 </div>
               </div>
 
-              <Button className="w-full" onClick={handleApproveRefund}>
+              <Button
+                className="w-full"
+                onClick={handleApproveRefund}
+                variant="success"
+              >
                 Approve Refund
               </Button>
               <Button
