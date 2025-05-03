@@ -20,16 +20,16 @@ export default function Navbar() {
 	const [showNavbar, setShowNavbar] = useState<boolean>(true);
 	const [lastScrollY, setLastScrollY] = useState<number>(0);
 
-	useEffect(() => {
-		const handleScroll = () => {
-			const currentScrollY = window.scrollY;
-			if (currentScrollY > lastScrollY && currentScrollY > 100) {
-				setShowNavbar(false);
-			} else {
-				setShowNavbar(true);
-			}
-			setLastScrollY(currentScrollY);
-		};
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
 
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
