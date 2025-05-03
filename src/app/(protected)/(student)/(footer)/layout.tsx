@@ -1,4 +1,3 @@
-import Navbar from "@/components/custom/navbar/navbar";
 import { Footer } from "@/components/custom/layout/footer";
 import React from "react";
 
