@@ -1,5 +1,4 @@
 import React from "react";
-import EnrolledStudents from "@/components/custom/features/session/enrolled-students";
 import Expandable from "@/components/custom/shared/expandable-text";
 
 const page = () => {

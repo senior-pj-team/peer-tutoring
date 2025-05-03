@@ -31,7 +31,7 @@ type Tutor = {
 };
 
 type Session = {
-	id: number,
+	id: number;
 	sessionName: string;
 	courseCode: string;
 	courseName: string;
@@ -46,7 +46,7 @@ type Session = {
 	from: string;
 	to: string;
 	date: string;
-	page: string
+	page: string;
 };
 
 export default function CustomCarousel({
@@ -123,7 +123,7 @@ export default function CustomCarousel({
 									<CarouselItem
 										key={index}
 										className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
-										<GeneralSessionCard content={c} type={type} />
+										<GeneralSessionCard page="browse" content={c} type={type} />
 									</CarouselItem>
 								);
 							}

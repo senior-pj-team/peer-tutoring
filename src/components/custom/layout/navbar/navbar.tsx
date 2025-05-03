@@ -6,17 +6,19 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
 import HoverCustomCard from "./hover-custom-card";
 import SearchBar from "./search-bar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import clsx from "clsx";
 import CustomSheet from "./custom-sheet";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Navbar() {
-	const isLoggedIn = true;
-	const [showMobileSearch, setShowMobileSearch] = useState(false);
-	const [showNavbar, setShowNavbar] = useState(true);
-	const [lastScrollY, setLastScrollY] = useState(0);
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+	const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
+	const [showNavbar, setShowNavbar] = useState<boolean>(true);
+	const [lastScrollY, setLastScrollY] = useState<number>(0);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -32,6 +34,17 @@ export default function Navbar() {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [lastScrollY]);
+
+	useEffect(() => {
+		const isAuthenticated = async () => {
+			const supabase = createClient();
+			const {
+				data: { user },
+			} = await supabase.auth.getUser();
+			setIsLoggedIn(!!user);
+		};
+		isAuthenticated();
+	}, [isLoggedIn]);
 	return (
 		<div
 			className={clsx(
@@ -50,10 +63,14 @@ export default function Navbar() {
 							<Search size={22} />
 						</button>
 					</div>{" "}
-					<Link href="/">
+					<Link href="/home">
 						<div className="font-bold text-3xl cursor-pointer">Orion</div>
 					</Link>
-					{isLoggedIn ? (
+					{isLoggedIn === null ? (
+						<div className=" lg:hidden  items-center justify-around gap-x-2 ">
+							<Skeleton className="h-6 w-[80px] md:w-[40px]" />
+						</div>
+					) : isLoggedIn ? (
 						<div className="pt-2">
 							<Sheet>
 								<SheetTrigger>
@@ -63,20 +80,32 @@ export default function Navbar() {
 							</Sheet>
 						</div>
 					) : (
-						<Button
-							variant="outline"
-							className="hover:bg-orange-500 hover:text-white md:hidden cursor-pointer">
-							Sign In
-						</Button>
+						<Link href={"/login"}>
+							<Button
+								variant="outline"
+								className="hover:bg-orange-500 hover:text-white md:hidden cursor-pointer">
+								Sign In
+							</Button>
+						</Link>
 					)}
 					<div className="hidden lg:block">
-						<HoverCustomCard content="Explore" />
+						<Link href={"/home/sessions?page=1"}>
+							<HoverCustomCard content="Explore" />
+						</Link>
 					</div>
 				</div>
 				<div className="flex-1 flex-shrink hidden md:block md:mx-6 ">
 					<SearchBar />
 				</div>
-				{isLoggedIn ? (
+
+				{isLoggedIn === null ? (
+					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
+						<Skeleton className="h-6 w-[80px]" />
+						<Skeleton className="h-6 w-[50px]" />
+						<Skeleton className="h-6 w-[50px]" />
+						<Skeleton className="h-6 w-[50px]" />
+					</div>
+				) : isLoggedIn ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 						<HoverCustomCard content="Become a tutor" />
 						<Link href="/my-sessions/upcoming-sessions">
@@ -112,11 +141,13 @@ export default function Navbar() {
 						/>
 					</div>
 				) : (
-					<Button
-						variant="outline"
-						className="hidden md:block cursor-pointer hover:bg-orange-500 hover:text-white">
-						Sign In
-					</Button>
+					<Link href={"/login"}>
+						<Button
+							variant="outline"
+							className="hidden md:block cursor-pointer hover:bg-orange-500 hover:text-white">
+							Sign In
+						</Button>
+					</Link>
 				)}
 			</div>
 			<div

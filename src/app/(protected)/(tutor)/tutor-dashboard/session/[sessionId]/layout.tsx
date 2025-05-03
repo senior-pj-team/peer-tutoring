@@ -6,13 +6,16 @@ const layout = async ({
 	params,
 }: {
 	children: React.ReactNode;
-	params: { sessionId: string };
+	params: Promise<{ sessionId: string }>;
 }) => {
 	const { sessionId } = await params;
 
 	const tabs = [
 		{ name: "Content", path: `/tutor-dashboard/session/${sessionId}/content` },
-		{ name: "Students", path: `/tutor-dashboard/session/${sessionId}/students` },
+		{
+			name: "Students",
+			path: `/tutor-dashboard/session/${sessionId}/students`,
+		},
 	];
 
 	return (

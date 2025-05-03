@@ -150,7 +150,7 @@ export default function SessionForm({
 								<FormField
 									key={name}
 									control={form.control}
-									name={name as any}
+									name={name as keyof SessionSchemaT}
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel className="text-[1rem]">{label}</FormLabel>
@@ -158,6 +158,7 @@ export default function SessionForm({
 												<Input
 													placeholder={placeholder}
 													{...field}
+													value={field.value?.toString() || ""}
 													className="bg-slate-50"
 													disabled={isDisable}
 												/>

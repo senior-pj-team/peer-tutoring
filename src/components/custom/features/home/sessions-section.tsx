@@ -21,7 +21,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -40,7 +40,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -59,7 +59,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -78,7 +78,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -97,7 +97,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 	];
 
@@ -119,7 +119,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -138,7 +138,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -157,7 +157,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -176,7 +176,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 		{
 			id: 1,
@@ -195,7 +195,7 @@ export default function SessionsSection({ type }: { type: string }) {
 			from: "11:00 AM",
 			to: "2:00 PM",
 			date: "23 April 2025",
-			page: "browse"
+			page: "browse",
 		},
 	];
 	return (
@@ -224,7 +224,12 @@ export default function SessionsSection({ type }: { type: string }) {
 							return null;
 						}
 						return (
-							<GeneralSessionCard content={session} type={type} key={index} />
+							<GeneralSessionCard
+								page="browse"
+								content={session}
+								type={type}
+								key={index}
+							/>
 						);
 					})}
 					<div className="max-auto text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm  md:hidden">
@@ -243,7 +248,12 @@ export default function SessionsSection({ type }: { type: string }) {
 							return null;
 						}
 						return (
-							<GeneralSessionCard content={session} type={type} key={index} />
+							<GeneralSessionCard
+								page="browse"
+								content={session}
+								type={type}
+								key={index}
+							/>
 						);
 					})}
 					<div className="max-auto text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm  md:hidden">

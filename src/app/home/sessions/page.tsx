@@ -271,7 +271,12 @@ export default async function Sessions({
 					<div className="grid lg:grid-cols-3 md:grid-cols-2  gap-4">
 						{sessions.map((session, index) => {
 							return (
-								<GeneralSessionCard content={session} type="a" key={index} />
+								<GeneralSessionCard
+									content={session}
+									type="a"
+									key={index}
+									page="browse"
+								/>
 							);
 						})}
 					</div>

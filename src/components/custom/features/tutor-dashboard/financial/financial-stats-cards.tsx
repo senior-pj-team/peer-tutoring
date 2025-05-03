@@ -15,8 +15,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { UserRoundCheck, TriangleAlert, TicketX, Percent } from "lucide-react";
+import { Percent } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -76,9 +75,6 @@ function FinancialStatsCards({
 	stats,
 	period,
 	statsPercent,
-	enrollments,
-	dispute_students,
-	refunded_students,
 }: SessionStatsCardProps) {
 	function generateDescription() {
 		switch (title) {
