@@ -81,15 +81,17 @@ export function DataTable<TData, TValue>({
 		<div>
 			<div className="rounded-md border">
 				<div className="flex flex-wrap gap-3  py-4 px-2 w-full ">
-					<TutorDashboardSearchBar
-						query={
-							(table.getColumn("search")?.getFilterValue() as string) ?? ""
-						}
-						setQuery={(query) =>
-							table.getColumn("search")?.setFilterValue(query)
-						}
-						type="data-table"
-					/>
+					{(type == "students" || type === "payouts") && (
+						<TutorDashboardSearchBar
+							query={
+								(table.getColumn("search")?.getFilterValue() as string) ?? ""
+							}
+							setQuery={(query) =>
+								table.getColumn("search")?.setFilterValue(query)
+							}
+							type="data-table"
+						/>
+					)}
 					{type === "payouts" && (
 						<DatePickerWithRange date={date} setDate={setDate} />
 					)}
