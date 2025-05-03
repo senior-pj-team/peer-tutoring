@@ -21,12 +21,12 @@ const adminMenus = [
     icon: LayoutDashboard,
   },
   {
-    title: "Manage Transfer",
-    url: "/admin-dashboard/manage-transfer",
+    title: "Transfer to Tutor",
+    url: "/admin-dashboard/manage-transfer/pending",
     icon: LayoutDashboard,
   },
   {
-    title: "Tutor Onboarding Requests",
+    title: "Tutor Onboarding",
     url: "/admin-dashboard/tutor-onboarding-requests",
     icon: UserCog,
   },
@@ -37,7 +37,7 @@ const adminMenus = [
   },
   {
     title: "Manage Report & Refund",
-    url: "/admin-dashboard/manage-report-refund",
+    url: "/admin-dashboard/manage-report-refund/report",
     icon: FileWarning,
   },
 ];

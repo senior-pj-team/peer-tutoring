@@ -1,41 +1,41 @@
-import StudentList from "@/components/custom/shared/student-list";
+"use client";
 import React from "react";
-import AmountCard from "@/components/custom/shared/amount-card";
+import StudentList from "@/components/custom/shared/student-list";
+import { Button } from "@/components/ui/button";
 
-const Page = () => {
-  const amounts = [
-    {
-      label: "Total Amount",
-      amount: 500,
-      color: "text-blue-600"
-    },
-    {
-      label: "Refunded Amount",
-      amount: 100,
-      color: "text-red-500"
-    },
-    {
-      label: "Paid Amount",
-      amount: 400,
-      color: "text-green-600"
-    },
-  ];
+// Mock data for pending refund requests
+const pendingRefundRequests = [
+  {
+    studentId: "3", // Matching Charlie's ID from your StudentList
+    name: "Charlie",
+    email: "charlie@mfu.ac.th",
+    amount: 50,
+    reason: "Session was cancelled",
+  },
+  {
+    studentId: "7", // Matching George's ID from your StudentList
+    name: "George",
+    email: "george@mfu.ac.th",
+    amount: 50,
+    reason: "Unable to attend",
+  },
+];
 
+const StudentsTab = () => {
   return (
-    <div className="w-full p-4 space-y-6">
-      <div className="flex flex-wrap gap-4 items-center my-5">
-        {amounts.map((item) => (
-          <AmountCard
-            key={item.label}
-            label={item.label}
-            amount={item.amount}
-            textColor={item.color}
-          />
-        ))}
-      </div>
-
+    <div className="min-w-full">
       <StudentList />
+
+      {/* Floating action button for demo purposes */}
+      {pendingRefundRequests.length > 0 && (
+        <div className="fixed bottom-6 right-6 flex gap-2">
+          <Button variant="default" className="shadow-lg">
+            View Refund Requests ({pendingRefundRequests.length})
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
-export default Page;
+
+export default StudentsTab;
