@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 type Session = {
-	id: number;
+	id?: number;
 	sessionName: string;
 	courseCode: string;
 	courseName: string;
@@ -31,16 +31,17 @@ type Session = {
 	from: string;
 	to: string;
 	date: string;
-	page: string;
 };
 export default function GeneralSessionCard({
 	content,
 	type,
 	className,
+	page,
 }: {
 	content: Session;
 	type?: string;
 	className?: string;
+	page: string;
 }) {
 	const router = useRouter();
 	return (
@@ -51,7 +52,7 @@ export default function GeneralSessionCard({
 					className,
 				)}
 				onClick={() => {
-					router.push(`/session/${content.page}/${content.id}/content`);
+					router.push(`/session/${page}/${content.id}/content`);
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>

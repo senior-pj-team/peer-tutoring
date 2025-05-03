@@ -1,26 +1,60 @@
+import { signOut } from "@/app/(auth)/actions";
+import { useAuth } from "@/components/providers/auth-provider";
 import { HoverCardContent } from "@/components/ui/hover-card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { createClient } from "@/utils/supabase/client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 export default function ProfileHoverContent() {
+	const { user, setUser, loading } = useAuth();
+	async function handleSignOut() {
+		const { error } = await signOut();
+		if (error) {
+			toast("Log out Error!");
+		} else {
+			setUser(null);
+			redirect("/login");
+		}
+	}
 	return (
 		<HoverCardContent className="w-70 absolute -right-5">
 			<div className="py-4 px-3 flex gap-x-5">
-				<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
-					<Image
-						src="https://avatar.iran.liara.run/public"
-						width={56}
-						height={56}
-						alt="User Avatar"
-						className="w-full h-full object-cover"
-					/>
-				</div>
-				<div className="flex flex-col overflow-hidden">
-					<div className="font-extrabold text-lg text-gray-800">William</div>
-					<div className="font-light text-xs max-w-full truncate text-gray-800">
-						williamkhant4@gmail.com
+				{!user && loading && (
+					<div>
+						<div className="flex items-center space-x-4">
+							<Skeleton className="h-12 w-12 rounded-full" />
+							<div className="space-y-2">
+								<Skeleton className="h-4 w-[250px]" />
+								<Skeleton className="h-4 w-[200px]" />
+							</div>
+						</div>
 					</div>
-				</div>
+				)}
+				{user && !loading && (
+					<>
+						<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
+							<Image
+								src="https://avatar.iran.liara.run/public"
+								width={56}
+								height={56}
+								alt="User Avatar"
+								className="w-full h-full object-cover"
+							/>
+						</div>
+						<div className="flex flex-col overflow-hidden">
+							<div className="font-extrabold text-lg text-gray-800">
+								{user.user_metadata.full_name}
+							</div>
+							<div className="font-light text-xs max-w-full truncate text-gray-800">
+								{user.email}
+							</div>
+						</div>
+					</>
+				)}
 			</div>
 
 			<hr className="mb-2" />
@@ -53,9 +87,11 @@ export default function ProfileHoverContent() {
 					<ContentItem content="Payment History" />
 				</Link>
 				<hr />
-				<Link href="/logout">
-					<ContentItem content="Log Out" />
-				</Link>
+				<div
+					className="flex justify-between items-center hover:bg-orange-50 hover:text-orange-400 text-sm py-3 cursor-pointer w-full px-3"
+					onClick={handleSignOut}>
+					<div>Sign out</div>
+				</div>
 			</div>
 		</HoverCardContent>
 	);

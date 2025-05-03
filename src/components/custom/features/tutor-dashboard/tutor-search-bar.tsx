@@ -27,7 +27,7 @@ export default function TutorDashboardSearchBar({
 		}, debounce);
 
 		return () => clearTimeout(timeout);
-	}, [value]);
+	}, [value, debounce]);
 
 	return (
 		<div className="mb-5 lg:w-[40%] md:w-[60%] w-full lg:flex-2">

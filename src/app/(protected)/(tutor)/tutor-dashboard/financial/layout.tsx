@@ -1,6 +1,4 @@
 import Tabs from "@/components/custom/shared/tabs";
-import FinanacialStatsCards from "@/components/custom/features/tutor-dashboard/financial/financial-stats-cards";
-import { Separator } from "@/components/ui/separator";
 
 export default function layout({
 	children,

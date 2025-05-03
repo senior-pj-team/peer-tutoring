@@ -1,8 +1,9 @@
 import { Footer } from "@/components/custom/layout/footer";
 import Navbar from "@/components/custom/layout/navbar/navbar";
+import { createClient } from "../../utils/supabase/server";
 import React from "react";
 
-export default function Layout({
+export default async function Layout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
