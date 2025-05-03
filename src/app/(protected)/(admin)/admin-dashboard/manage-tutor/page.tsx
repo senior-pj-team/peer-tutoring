@@ -141,7 +141,7 @@ export default function ManageTutorPage() {
             accessorKey: "name",
             header: "Tutor Name",
             cell: ({ row }) => {
-              const tutor = row.original;
+              const tutor = row.original as Tutor;
               return (
                 <div>
                   <p className="font-medium">{tutor.name}</p>
@@ -154,7 +154,7 @@ export default function ManageTutorPage() {
             id: "status",
             header: "Account Status",
             cell: ({ row }) => {
-              const tutor = row.original;
+              const tutor = row.original as Tutor;
               if (
                 tutor.suspendedUntil &&
                 new Date(tutor.suspendedUntil) > new Date()
@@ -188,7 +188,7 @@ export default function ManageTutorPage() {
             id: "warnings",
             header: "Warnings",
             cell: ({ row }) => {
-              const tutor = row.original;
+              const tutor = row.original as Tutor;
               return (
                 <div className="flex items-center gap-2">
                   <div
@@ -210,7 +210,7 @@ export default function ManageTutorPage() {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => {
-              const tutor = row.original;
+              const tutor = row.original as Tutor;
               const isSuspended =
                 tutor.suspendedUntil &&
                 new Date(tutor.suspendedUntil) > new Date();
@@ -253,16 +253,24 @@ export default function ManageTutorPage() {
               );
             },
           },
+          {
+            id: "search",
+            header: () => null,
+            cell: () => null,
+            enableColumnFilter: true,
+            filterFn: "fuzzy",
+          },
         ]}
         data={filteredData}
-        emptyState={
-          <div className="text-center py-12">
-            <h3 className="text-lg font-medium">No tutors found</h3>
-            <p className="text-muted-foreground">
-              Try adjusting your search or filters
-            </p>
-          </div>
-        }
+        type="tutors"
+        // emptyState={
+        //   <div className="text-center py-12">
+        //     <h3 className="text-lg font-medium">No tutors found</h3>
+        //     <p className="text-muted-foreground">
+        //       Try adjusting your search or filters
+        //     </p>
+        //   </div>
+        // }
       />
     </div>
   );

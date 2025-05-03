@@ -95,10 +95,10 @@ export default function AdminSideBar({
 
       <SidebarFooter className="bg-gray-900">
         <SidebarMenuItem>
-          <Link href="/">
+          <Link href="/login">
             <SidebarMenuButton className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2">
               <Book size={18} className="mr-2" />
-              <span>Go to Student</span>
+              <span>Logout</span>
             </SidebarMenuButton>
           </Link>
         </SidebarMenuItem>
