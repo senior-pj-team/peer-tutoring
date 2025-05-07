@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { signOut } from "@/app/(auth)/actions";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default function CustomSheet() {
 	const { user, setUser, loading } = useAuth();
@@ -63,9 +64,15 @@ export default function CustomSheet() {
 					<span className="pl-4 font-extrabold text-xs text-gray-700">
 						Learning
 					</span>
-					<ContentItem content="My Sessions" />
-					<ContentItem content="WishList" />
-					<ContentItem content="Become a Tutor" />
+					<ContentItem
+						content="My Sessions"
+						url="/my-sessions/upcoming-sessions"
+					/>
+					<ContentItem
+						content="WishList"
+						url="/my-sessions/wishlist-sessions"
+					/>
+					<ContentItem content="Become a Tutor" url="/become-tutor" />
 				</div>
 
 				<hr className="mb-2" />
@@ -73,8 +80,8 @@ export default function CustomSheet() {
 					<span className="pl-4 font-extrabold text-xs text-gray-700">
 						Alert
 					</span>
-					<ContentItem content="Notification" />
-					<ContentItem content="Chat" />
+					<ContentItem content="Notification" url="/notification" />
+					<ContentItem content="Chat" url="/chat" />
 				</div>
 
 				<hr className="mb-2" />
@@ -82,9 +89,12 @@ export default function CustomSheet() {
 					<span className="pl-4 font-extrabold text-xs text-gray-700">
 						Account
 					</span>
-					<ContentItem content="Profile Setting" />
-					<ContentItem content="Setup Payment" />
-					<ContentItem content="Payment History" />
+					<ContentItem
+						content="Profile Setting"
+						url="/profile-setting/profile"
+					/>
+					<ContentItem content="Setup Payment" url="/profile-setting/payment" />
+					<ContentItem content="Payment History" url="/payment-history" />
 				</div>
 
 				<hr className="mb-2" />
@@ -101,18 +111,20 @@ export default function CustomSheet() {
 	);
 }
 
-function ContentItem({ content }: { content: string }) {
+function ContentItem({ content, url }: { content: string; url: string }) {
 	return (
-		<div className="flex justify-between items-center hover:bg-orange-50 hover:text-orange-400">
-			<div className=" text-sm py-3 cursor-pointer">
-				<div className="px-3">{content}</div>
-			</div>
+		<Link href={url}>
+			<div className="flex justify-between items-center hover:bg-orange-50 hover:text-orange-400">
+				<div className=" text-sm py-3 cursor-pointer">
+					<div className="px-3">{content}</div>
+				</div>
 
-			{content === "WishList" && (
-				<span className=" p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
-					1
-				</span>
-			)}
-		</div>
+				{content === "WishList" && (
+					<span className=" p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
+						1
+					</span>
+				)}
+			</div>
+		</Link>
 	);
 }

@@ -207,7 +207,7 @@ export default function SessionsSection({ type }: { type: string }) {
 				</div>
 
 				<Link
-					href="/"
+					href="/home/sessions?page=1"
 					className="text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm hidden md:block">
 					View more
 				</Link>
@@ -232,9 +232,11 @@ export default function SessionsSection({ type }: { type: string }) {
 							/>
 						);
 					})}
-					<div className="max-auto text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm  md:hidden">
+					<Link
+						href="/home/sessions?page=1"
+						className="max-auto text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm  md:hidden">
 						View more
-					</div>
+					</Link>
 				</div>
 			)}
 			{type === "closing" ? (
@@ -256,9 +258,11 @@ export default function SessionsSection({ type }: { type: string }) {
 							/>
 						);
 					})}
-					<div className="max-auto text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm  md:hidden">
+					<Link
+						href="/home/sessions?page=1"
+						className="max-auto text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm  md:hidden">
 						View more
-					</div>
+					</Link>
 				</div>
 			)}
 		</div>

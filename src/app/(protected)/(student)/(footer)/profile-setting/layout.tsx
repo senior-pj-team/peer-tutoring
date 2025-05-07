@@ -19,16 +19,15 @@ export default function layout({
 				<Separator className="my-4 font-extrabold" />
 
 				<div className="lg:hidden mb-4 flex gap-1 items-center">
-					<ChevronLeftIcon size={18} className=" md:hidden" />
+					{/* <ChevronLeftIcon size={18} className=" md:hidden" /> */}
 					<Tabs
 						tabs={[
 							{ name: "Profile", path: "/profile-setting/profile" },
 							{ name: "Picture", path: "/profile-setting/picture" },
-							{ name: "Security", path: "/profile-setting/security" },
 							{ name: "Payment", path: "/profile-setting/payment" },
 						]}
 					/>
-					<ChevronRightIcon size={18} className="md:hidden" />
+					{/* <ChevronRightIcon size={18} className="md:hidden" /> */}
 				</div>
 				<div className="grid lg:grid-cols-5 gap-5 ">
 					<div className="hidden lg:block">

@@ -63,7 +63,7 @@ export default function ProfileHoverContent() {
 				<Link href="/my-sessions/upcoming-sessions">
 					<ContentItem content="My Sessions" />
 				</Link>
-				<Link href="/my-sessions/whishlist">
+				<Link href="/my-sessions/wishlist-sessions">
 					<ContentItem content="WishList" />
 				</Link>
 				<Link href="/become-tutor">

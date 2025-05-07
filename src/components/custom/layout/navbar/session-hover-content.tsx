@@ -65,7 +65,7 @@ export default function SessionHoverContent({ content }: { content: string }) {
 					href={
 						content === "MySessions"
 							? "/my-sessions/upcoming-sessions"
-							: "/wishlist"
+							: "/my-sessions/wishlist-sessions"
 					}>
 					<Button className=" w-full px-4 py-2 rounded-md bg-orange-400 text-white font-semibold shadow-sm hover:bg-orange-400/85 cursor-pointer">
 						{content === "MySessions" ? "Go to My Sessions" : "Go to WishList"}

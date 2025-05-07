@@ -6,14 +6,14 @@ const Rating = ({
 	className,
 	rating,
 	showText = true,
-	size=10,
-	color= "text-yellow-700"
+	size = 10,
+	color = "text-yellow-700",
 }: {
 	className?: string;
 	rating: number;
-	showText?: boolean
-	size?: number,
-	color?: string
+	showText?: boolean;
+	size?: number;
+	color?: string;
 }) => {
 	return (
 		<div className={"flex items-center text-sm " + className}>
@@ -21,27 +21,17 @@ const Rating = ({
 				<Star
 					key={star}
 					size={size}
-					className={clsx(
-						rating >= star ? color : "text-gray-300",
-					)}
+					className={clsx(rating >= star ? color : "text-gray-300")}
 					fill="currentColor"
 				/>
 			))}
-			{
-				showText && <p className="ms-1 text-xs font-medium text-gray-500 w-6 text-center">
-					{rating}
-				</p>
-			}
-			{
-				showText && <p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-					out of
-				</p>
-			}
-			{
-				showText && <p className="ms-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-					5
-				</p>
-			}
+			<div className="ms-3">
+				{showText && (
+					<p className=" text-xs font-medium text-gray-500  text-center">
+						{rating} / 5
+					</p>
+				)}
+			</div>
 		</div>
 	);
 };

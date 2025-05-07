@@ -20,16 +20,16 @@ export default function Navbar() {
 	const [showNavbar, setShowNavbar] = useState<boolean>(true);
 	const [lastScrollY, setLastScrollY] = useState<number>(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setShowNavbar(false);
-      } else {
-        setShowNavbar(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
+	useEffect(() => {
+		const handleScroll = () => {
+			const currentScrollY = window.scrollY;
+			if (currentScrollY > lastScrollY && currentScrollY > 100) {
+				setShowNavbar(false);
+			} else {
+				setShowNavbar(true);
+			}
+			setLastScrollY(currentScrollY);
+		};
 
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
@@ -107,38 +107,44 @@ export default function Navbar() {
 					</div>
 				) : isLoggedIn ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
-						<HoverCustomCard content="Become a tutor" />
+						<Link href="/become-tutor">
+							<HoverCustomCard content="Become a tutor" />
+						</Link>
 						<Link href="/my-sessions/upcoming-sessions">
 							<HoverCustomCard content="MySessions" />
 						</Link>
 						<Link href="/my-sessions/wishlist-sessions">
 							<HoverCustomCard content="WishList" icon={<Heart size="20" />} />
 						</Link>
-						<HoverCustomCard
-							content="Notification"
-							icon={
-								<div className=" hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-sm">
-									<Bell size="20 " className="relative" />
-									<span className="absolute p-3 top-0 right-0 bg-red-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center">
-										3
-									</span>
-								</div>
-							}
-						/>
-						<HoverCustomCard
-							content="Profile"
-							icon={
-								<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
-									<Image
-										src="https://avatar.iran.liara.run/public"
-										width={30}
-										height={30}
-										alt="User Avatar"
-										className="w-full h-full object-cover "
-									/>
-								</div>
-							}
-						/>
+						<Link href="/notification">
+							<HoverCustomCard
+								content="Notification"
+								icon={
+									<div className=" hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-sm">
+										<Bell size="20 " className="relative" />
+										<span className="absolute p-3 top-0 right-0 bg-red-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center">
+											3
+										</span>
+									</div>
+								}
+							/>
+						</Link>
+						<Link href="/profile-setting/profile">
+							<HoverCustomCard
+								content="Profile"
+								icon={
+									<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
+										<Image
+											src="https://avatar.iran.liara.run/public"
+											width={30}
+											height={30}
+											alt="User Avatar"
+											className="w-full h-full object-cover "
+										/>
+									</div>
+								}
+							/>
+						</Link>
 					</div>
 				) : (
 					<Link href={"/login"}>

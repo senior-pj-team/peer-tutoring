@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 export default function SearchBar() {
 	const [query, setQuery] = useState<string>("");
+	const router = useRouter();
 	const items = [
 		"Web Developement",
 		"Math3 MidTerm Revision",
@@ -62,6 +64,7 @@ export default function SearchBar() {
 								className="flex items-center gap-3 px-4 py-4 text-sm cursor-pointer hover:bg-orange-50 hover:text-orange-400"
 								onClick={() => {
 									setQuery(item);
+									router.push(`/home/sessions?search=${item}`);
 									setShowSuggestions(false);
 								}}>
 								<Image

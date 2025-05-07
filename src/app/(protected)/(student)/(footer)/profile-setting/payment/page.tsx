@@ -23,7 +23,18 @@ export default function PaymentPage() {
 					<Input
 						type="text"
 						id="bank-name"
-						placeholder="Bangkok Bank"
+						placeholder="Enter Bangkok Bank"
+						className="text-[0.6rem] md:text-sm"
+					/>
+				</div>
+				<div className="grid w-full items-center gap-y-2">
+					<Label htmlFor="bank-account-name" className="text-xs md:text-sm">
+						Bank Account Name
+					</Label>
+					<Input
+						type="text"
+						id="bank-account-name"
+						placeholder="Enter Bank Account Name"
 						className="text-[0.6rem] md:text-sm"
 					/>
 				</div>
@@ -35,7 +46,7 @@ export default function PaymentPage() {
 					<Input
 						type="text"
 						id="bank-number"
-						placeholder="111-11-1111"
+						placeholder="Enter Bank Account Number"
 						className="text-[0.6rem] md:text-sm"
 					/>
 				</div>

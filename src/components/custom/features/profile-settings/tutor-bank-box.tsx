@@ -17,9 +17,11 @@ import {
 const TutorBankBox = ({
 	bankName,
 	bankNumber,
+	bankAccountName,
 }: {
 	bankName: string;
 	bankNumber: string;
+	bankAccountName: string;
 }) => {
 	const banks = [
 		"Bangkok Bank",
@@ -90,6 +92,15 @@ const TutorBankBox = ({
 							</DropdownMenuRadioGroup>
 						</DropdownMenuContent>
 					</DropdownMenu>
+				</div>
+				<div className="w-full">
+					<label className="text-sm font-medium">Bank Account Name</label>
+					<Input
+						placeholder="Enter account name"
+						defaultValue={bankAccountName}
+						disabled={disable}
+						className="w-full"
+					/>
 				</div>
 				<div className="w-full">
 					<label className="text-sm font-medium">Bank Number</label>
