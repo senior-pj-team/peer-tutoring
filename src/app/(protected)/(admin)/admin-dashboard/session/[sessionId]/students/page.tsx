@@ -3,6 +3,7 @@
 import React from "react";
 import StudentList from "@/components/custom/shared/student-list";
 import ViewRefundRequest from "@/components/custom/features/admin/view-refund-request";
+import AmountCard from "@/components/custom/shared/amount-card";
 
 const StudentsTab = () => {
   const sessionId = "12345"; // Example session ID
@@ -11,6 +12,10 @@ const StudentsTab = () => {
 
   return (
     <div className="min-w-full">
+      <div className="flex gap-4 mb-6">
+        <AmountCard label={"Amount to transfer"} amount={500} textColor="text-green-500"/>
+        <AmountCard label={"Refunded amount"} amount={100} textColor="text-yellow-500"/>
+      </div>
       <StudentList
         renderActions={(student) =>
           student.status === "Pending_Refund" ? (

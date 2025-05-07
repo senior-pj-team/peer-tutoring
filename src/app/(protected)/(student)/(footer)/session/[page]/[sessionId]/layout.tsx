@@ -6,6 +6,7 @@ import UpcomingAction from "@/components/custom/features/session/upcoming-action
 import EnrollAction from "@/components/custom/features/session/enroll-action";
 import ArchivedAction from "@/components/custom/features/session/archived-action";
 import RefundStatus from "@/components/custom/features/session/refund-status";
+import { Separator } from "@/components/ui/separator";
 
 const layout = async ({
 	children,
