@@ -5,7 +5,7 @@ import CompletedAction from "@/components/custom/features/session/completed-acti
 import UpcomingAction from "@/components/custom/features/session/upcoming-action";
 import EnrollAction from "@/components/custom/features/session/enroll-action";
 import ArchivedAction from "@/components/custom/features/session/archived-action";
-import { Separator } from "@/components/ui/separator";
+import RefundStatus from "@/components/custom/features/session/refund-status";
 
 const layout = async ({
 	children,
@@ -30,8 +30,7 @@ const layout = async ({
 			path: `/session/${page}/${sessionId}/payment-info`,
 		});
 	}
-	// action will be decided with status fetched from backend
-	// fetch data with student_id (from jwt) and session_id (from params)
+	
 	return (
 		<div>
 			<SessionHeader />
@@ -47,6 +46,7 @@ const layout = async ({
 						{page == "upcoming" && <UpcomingAction />}
 						{page == "browse" && <EnrollAction />}
 						{page == "archived" && <ArchivedAction />}
+						{page == "refund" && <RefundStatus status="rejected" />}
 					</div>
 				</div>
 			</div>
