@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import Tabs from "@/components/custom/shared/tabs";
-import { useParams } from "next/navigation"; // Import the 'useParams' hook
+import { useParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -34,7 +35,18 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Demo toggle for UI purposes - remove in production */}
         <Tabs tabs={tabs} />
       </div>
-      <div className="px-4 lg:px-6">{children}</div>
+      <div className="px-4 lg:px-6">
+        {
+          sessionId == "sess-001" && (
+            <div className="ms-auto mb-5 flex w-fit gap-2 px-4 lg:px-6">
+              <Button variant="outline" className="text-red-600 hover:bg-red-50">
+                Cancel
+              </Button>
+            </div>
+          )
+        }
+        {children}
+      </div>
     </div>
   );
 };
