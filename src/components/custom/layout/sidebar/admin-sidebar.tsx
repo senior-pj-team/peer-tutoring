@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, UserCog, FileWarning, Book } from "lucide-react";
+import { LayoutDashboard, UserCog, FileWarning, Book, CheckCircle, RefreshCw, Banknote } from "lucide-react";
 import Link from "next/link";
 
 const adminMenus = [
@@ -23,23 +23,28 @@ const adminMenus = [
   {
     title: "Transfer to Tutor",
     url: "/admin-dashboard/manage-transfer/pending",
-    icon: LayoutDashboard,
+    icon: RefreshCw,
   },
   {
     title: "Tutor Onboarding",
     url: "/admin-dashboard/tutor-onboarding-requests",
-    icon: UserCog,
+    icon: CheckCircle,
   },
   {
     title: "Manage Tutor",
     url: "/admin-dashboard/manage-tutor",
-    icon: UserCog,
+    icon: UserCog ,
   },
   {
     title: "Manage Report & Refund",
     url: "/admin-dashboard/manage-report-refund/report",
     icon: FileWarning,
   },
+  {
+    title: "Financial Analysis",
+    url: "/admin-dashboard/financial-analysis",
+    icon: Banknote,
+  }
 ];
 
 export default function AdminSideBar({

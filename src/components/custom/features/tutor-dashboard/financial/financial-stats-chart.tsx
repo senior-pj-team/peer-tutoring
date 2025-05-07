@@ -42,14 +42,20 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-export function FinancialChart() {
+export function FinancialChart({ isAdmin = false }: { isAdmin?: boolean }) {
 	return (
 		<Card className="@container/card">
 			<CardHeader className="relative">
-				<CardTitle>Gross Revenue </CardTitle>
+				<CardTitle>
+					{
+						isAdmin ? "System Earnings" : "Gross Revenue"
+					}
+				</CardTitle>
 				<CardDescription>
 					<span className="@[540px]/card:block hidden">
-						Gross Revenue over last 12 months
+						{
+							isAdmin ? "System Earnings over last 12 months" : "Gross Revenue over last 12 months"
+						}
 					</span>
 					<span className="@[540px]/card:hidden">Last 12 months</span>
 				</CardDescription>
