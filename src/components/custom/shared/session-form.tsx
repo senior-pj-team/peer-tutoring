@@ -25,6 +25,10 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 
+import {createClient} from "../../../utils/supabase/client"
+import { create } from "domain";
+const supabase = createClient();
+
 type SessionFormProps = {
 	school?: string;
 	major?: string;
@@ -94,12 +98,52 @@ export default function SessionForm({
 	};
 
 	function onSubmit(values: SessionSchemaT) {
-		console.log(values);
+		console.log("Hello");
+		createSession(values);
 	}
 
 	const handleDisableToggle = () => {
 		setDisable(!isDisable);
-	};
+	}
+
+	const createSession = async (values: SessionSchemaT) => {
+		const startTime = new Date(values.date);
+		const [startHours, startMinutes] = values.startTime.split(":").map(Number);
+		startTime.setHours(startHours, startMinutes, 0, 0);
+
+		const endTime = new Date(values.date);
+		const [endHours, endMinutes] = values.endTime.split(":").map(Number);
+		endTime.setHours(endHours, endMinutes, 0, 0);
+		const { data, error } = await supabase
+			.from("sessions")
+			.insert(
+				{
+					session_name: values.sessionName,
+					course_code: values.courseCode,
+					course_name: values.courseName,
+					school: values.school,
+					major: values.major,
+					image: previewUrl,
+					description: values.description,
+					requirement: values.requirements,
+					start_time: startTime.toISOString(),
+					end_time: endTime.toISOString(),
+					max_students: values.maxStudents,
+					location: values.location,
+					isPaid: isPaid,
+					price: isPaid ? values.amount : 0,
+					tutor_id: 0, 
+				}
+			)
+			.select("*")
+			.single();
+
+		if (error) {
+			console.error("Error creating session:", error.message);
+		} else {
+			console.log("Session created successfully:", data);
+		}
+	}
 
 	return (
 		<div className="px-4 lg:px-6">
