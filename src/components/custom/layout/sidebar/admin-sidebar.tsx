@@ -18,6 +18,7 @@ import {
 	Book,
 	Database,
 	DollarSign,
+	Banknote,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -46,6 +47,11 @@ const adminMenus = [
 		title: "Manage Report & Refund",
 		url: "/admin-dashboard/manage-report-refund/report",
 		icon: FileWarning,
+	},
+	{
+		title: "Financial Analysis",
+		url: "/admin-dashboard/financial-analysis",
+		icon: Banknote,
 	},
 ];
 
