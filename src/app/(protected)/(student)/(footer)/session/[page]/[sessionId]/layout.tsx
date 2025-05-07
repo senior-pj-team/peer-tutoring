@@ -31,7 +31,7 @@ const layout = async ({
 			path: `/session/${page}/${sessionId}/payment-info`,
 		});
 	}
-	
+
 	return (
 		<div>
 			<SessionHeader />

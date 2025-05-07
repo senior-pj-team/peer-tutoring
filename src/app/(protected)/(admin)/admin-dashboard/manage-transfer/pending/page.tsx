@@ -8,88 +8,88 @@ import AdminTransfer from "@/components/custom/features/admin/admin-transfer";
 
 // Example session-based transfers
 const mockSessionTransfers = [
-  {
-    sessionId: "sess-001",
-    courseName: "Intro to Python",
-    sessionDate: "2025-05-01",
-    transferTarget: "Tutor", // or "Student"
-    name: "Alice Wong",
-    amount: 400,
-    bankInfo: {
-      bankName: "SCB",
-      accountName: "Alice Wong",
-      accountNumber: "123-456-7890",
-    },
-  },
-  {
-    sessionId: "sess-002",
-    courseName: "Business English",
-    sessionDate: "2025-04-28",
-    transferTarget: "Student", // refund case
-    name: "Bob Tan",
-    amount: 250,
-    bankInfo: {
-      bankName: "Bangkok Bank",
-      accountName: "Bob Tan",
-      accountNumber: "987-654-3210",
-    },
-  },
+	{
+		sessionId: "sess-001",
+		courseName: "Intro to Python",
+		sessionDate: "2025-05-01",
+		transferTarget: "Tutor", // or "Student"
+		name: "Alice Wong",
+		amount: 400,
+		bankInfo: {
+			bankName: "SCB",
+			accountName: "Alice Wong",
+			accountNumber: "123-456-7890",
+		},
+	},
+	{
+		sessionId: "sess-002",
+		courseName: "Business English",
+		sessionDate: "2025-04-28",
+		transferTarget: "Student", // refund case
+		name: "Bob Tan",
+		amount: 250,
+		bankInfo: {
+			bankName: "Bangkok Bank",
+			accountName: "Bob Tan",
+			accountNumber: "987-654-3210",
+		},
+	},
 ];
 
 const ManageTransferPage = () => {
-  const [selectedTransfer, setSelectedTransfer] = useState<
-    null | (typeof mockSessionTransfers)[0]
-  >(null);
+	// const [selectedTransfer, setSelectedTransfer] = useState<
+	// 	  (typeof mockSessionTransfers)[0]
+	// >(
+	// });
 
-  const handleConfirm = () => {
-    alert(
-      `Transfer issued to ${selectedTransfer?.name} for session ${selectedTransfer?.sessionId}`
-    );
-    setSelectedTransfer(null);
-  };
+	const handleConfirm = () => {
+		alert(
+			`Transfer issued to ${mockSessionTransfers[0].name} for session ${mockSessionTransfers[0].sessionId}`,
+		);
+	};
 
-  return (
-    <div className="space-y-6 px-4 lg:px-6">
-      <h1 className="text-xl font-semibold">Manage Session Transfers</h1>
-      <div className="grid gap-4">
-        {mockSessionTransfers.map((transfer) => (
-          <Link
-            key={transfer.sessionId}
-            href={`/admin-dashboard/session/${transfer.sessionId}/content`}
-          >
-            <Card className="cursor-pointer hover:bg-gray-100 transition-all duration-300">
-              <CardContent className="flex justify-between items-center p-4">
-                <div>
-                  <p className="font-medium">{transfer.courseName}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Session on {transfer.sessionDate} —{" "}
-                    {transfer.transferTarget} Transfer to {transfer.name}
-                  </p>
-                </div>
-                <Button onClick={(e) => e.stopPropagation()}>Transfer</Button>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
-
-      {selectedTransfer && (
-        <AdminTransfer
-          type={
-            selectedTransfer.transferTarget.toLowerCase() === "tutor"
-              ? "tutor"
-              : "refund"
-          }
-          autoOpen
-          amount={selectedTransfer.amount}
-          name={selectedTransfer.name}
-          bankInfo={selectedTransfer.bankInfo}
-          onConfirm={handleConfirm}
-          isDialogVersion={true}
-        />
-      )}
-    </div>
-  );
+	return (
+		<div className="space-y-6 px-4 lg:px-6">
+			<h1 className="text-xl font-semibold">Manage Session Transfers</h1>
+			<div className="grid gap-4">
+				{mockSessionTransfers.map((transfer) => (
+					<Card
+						className="cursor-pointer hover:bg-gray-100 transition-all duration-300"
+						key={transfer.sessionId}>
+						<div className="flex justify-between items-center pe-4">
+							<Link
+								key={transfer.sessionId}
+								href={`/admin-dashboard/session/${transfer.sessionId}/content`}>
+								<div className="flex"></div>
+								<CardContent className="flex justify-between items-center p-4">
+									<div>
+										<p className="font-medium">{transfer.courseName}</p>
+										<p className="text-sm text-muted-foreground">
+											Session on {transfer.sessionDate} —{" "}
+											{transfer.transferTarget} Transfer to {transfer.name}
+										</p>
+									</div>
+								</CardContent>
+							</Link>
+							<AdminTransfer
+								type={
+									mockSessionTransfers[0].transferTarget.toLowerCase() ===
+									"tutor"
+										? "tutor"
+										: "refund"
+								}
+								amount={1000}
+								name="Bob Tan"
+								bankInfo={mockSessionTransfers[0].bankInfo}
+								onConfirm={handleConfirm}
+								isDialogVersion={true}
+							/>
+						</div>
+					</Card>
+				))}
+			</div>
+		</div>
+	);
 };
 
 export default ManageTransferPage;
