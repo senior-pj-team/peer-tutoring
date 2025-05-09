@@ -20,12 +20,12 @@ const layout = async ({
 	const tabs = [
 		{ name: "Content", path: `/session/${page}/${sessionId}/content` },
 	];
-	if (page == "browse" || page == "view") {
+	if (page == "browse") {
 		tabs.push({
 			name: "Tutor",
 			path: `/session/${page}/${sessionId}/tutor-info`,
 		});
-	} else if (page == "my-session") {
+	} else if (page != "browse") {
 		tabs.push({
 			name: "Payment",
 			path: `/session/${page}/${sessionId}/payment-info`,
