@@ -28,7 +28,7 @@ const ReviewCard = ({ cutAt = 200 }: { cutAt?: number }) => {
 						<div className="flex items-center mt-[2px]">
 							<Rating rating={4} size={10} />
 						</div>
-						<div className="text-xs text-gray-700">a week ago</div>
+						<div className="text-xs text-gray-700 ms-1">a week ago</div>
 					</div>
 				</div>
 			</div>

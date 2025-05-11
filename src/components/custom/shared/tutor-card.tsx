@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import Rating from "@/components/custom/features/rating-review/rating";
 import Image from "next/image";
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/hover-card";
 import * as RadixHoverCard from "@radix-ui/react-hover-card";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function TutorCard({
 	name,
@@ -21,6 +24,7 @@ export default function TutorCard({
 	totalStudents: number;
 	image: string;
 }) {
+	const router = useRouter();
 	return (
 		<Card className="cursor-pointer shadow-none border-none max-w-[20rem] pt-0 pb-2 overflow-hidden">
 			<HoverCard>
@@ -56,7 +60,13 @@ export default function TutorCard({
 										<span className="text-sm font-medium">{totalStudents}</span>
 									</div>
 								</div>
-								<span className="mx-auto text-orange-400 underline hover:text-orange-500  text-md font-bold leading-5.5 md:hidden">
+
+								<span
+									className="mx-auto text-orange-400 underline hover:text-orange-500  text-md font-bold leading-5.5 md:hidden"
+									onClick={(e) => {
+										e.stopPropagation();
+										router.push("/tutor-view");
+									}}>
 									View Profile
 								</span>
 							</div>
@@ -70,6 +80,8 @@ export default function TutorCard({
 }
 
 function CustomHoverCard() {
+	const router = useRouter();
+
 	return (
 		<HoverCardContent
 			className="w-80 drop-shadow-md py-4 px-5 bg-white hidden md:block"
@@ -113,11 +125,19 @@ function CustomHoverCard() {
 			</div>
 			<div className="flex w-full justify-between items-center">
 				<Button
+					onClick={(e) => {
+						e.stopPropagation();
+						router.push("/tutor-view");
+					}}
 					variant="outline"
 					className="border-orange-500 text-orange-600 font-semibold hover:bg-orange-50 hover:text-orange-700 hover:border-orange-400 hover:ring-2 hover:ring-orange-500  transition-all duration-200 cursor-pointer">
 					View Profile
 				</Button>
 				<MessageCircleCode
+					onClick={(e) => {
+						e.stopPropagation();
+						router.push("/chat");
+					}}
 					size={40}
 					className=" text-orange-500 hover:text-orange-600 transition-colors duration-200 cursor-pointer p-1 rounded-full hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 w-15"
 				/>

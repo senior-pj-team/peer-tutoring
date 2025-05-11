@@ -29,6 +29,17 @@ import {createClient} from "../../../utils/supabase/client"
 import { create } from "domain";
 const supabase = createClient();
 
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+
 type SessionFormProps = {
 	school?: string;
 	major?: string;
@@ -46,6 +57,7 @@ type SessionFormProps = {
 	isEdit?: boolean;
 	sessionName?: string;
 	location?: string;
+	category?: string;
 };
 export default function SessionForm({
 	school = "",
@@ -63,6 +75,7 @@ export default function SessionForm({
 	image = "",
 	sessionName = "",
 	location = "",
+	category = "",
 	isEdit = false,
 }: SessionFormProps) {
 	const form = useForm<SessionSchemaT>({
@@ -82,6 +95,7 @@ export default function SessionForm({
 			amount,
 			sessionName,
 			location,
+			category,
 		},
 	});
 
@@ -276,6 +290,47 @@ export default function SessionForm({
 											className="bg-slate-50"
 											disabled={isDisable}
 										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="category"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="text-[1rem]">
+										Session Category
+									</FormLabel>
+									<FormControl>
+										<Select
+											{...field}
+											disabled={isDisable}
+											defaultValue={field.value}
+											value={field.value.toString() || ""}
+											onValueChange={field.onChange}>
+											<SelectTrigger className="w-full">
+												<SelectValue placeholder="Select a session category" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectGroup>
+													<SelectLabel>Categories</SelectLabel>
+													<SelectItem value="Science">Science</SelectItem>
+													<SelectItem value="Technology">Technology</SelectItem>
+													<SelectItem value="Libral Arts">
+														Libral Arts
+													</SelectItem>
+													<SelectItem value="Business">Business</SelectItem>
+													<SelectItem value="Engineering">
+														Engineering
+													</SelectItem>
+													<SelectItem value="Elective Courses">
+														Elective Courses
+													</SelectItem>
+												</SelectGroup>
+											</SelectContent>{" "}
+										</Select>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

@@ -68,7 +68,7 @@ const RefundReportForm = ({ isReport }: { isReport: boolean }) => {
 						</div>
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-full">
+				<DropdownMenuContent className="w-[32rem] md:w-[24rem]">
 					<DropdownMenuLabel className="text-xs">
 						{isReport ? (
 							<span>Reason for Reporting</span>

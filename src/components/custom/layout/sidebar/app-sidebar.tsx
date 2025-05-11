@@ -98,7 +98,7 @@ export default function AppSideBar({
 			</SidebarContent>
 			<SidebarFooter className="bg-gray-900">
 				<SidebarMenuItem>
-					<Link href="/">
+					<Link href="/home">
 						<SidebarMenuButton className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2">
 							<Book size={18} />
 							<span>Go to Student</span>

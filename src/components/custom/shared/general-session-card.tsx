@@ -75,7 +75,13 @@ export default function GeneralSessionCard({
 							<p className="line-clamp-2 font-extrabold leading-tight text-[1.15rem] mb-1 ">
 								{content.sessionName}
 							</p>
-							<span className="line-clamp-1 font-extrabold text-[0.75rem] text-gray-500 underline mb-1">
+							<span
+								className="line-clamp-1 font-extrabold text-[0.75rem] text-gray-500 underline mb-1"
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									router.push(`/tutor-view`);
+								}}>
 								Tutor {content.tutor}
 							</span>
 

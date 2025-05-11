@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 export type Student = {
 	session: string;
@@ -27,7 +28,12 @@ export const columns: ColumnDef<Student>[] = [
 						<AvatarImage src={student.proile_picture} alt="profile_picture" />
 						<AvatarFallback>P</AvatarFallback>
 					</Avatar>
-					<span className="w-full truncate">{student.name}</span>
+					<Link href="/student-view">
+						{" "}
+						<span className="w-full truncate cursor-pointer hover:underline">
+							{student.name}
+						</span>
+					</Link>
 				</div>
 			);
 		},

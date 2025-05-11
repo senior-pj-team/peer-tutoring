@@ -7,6 +7,7 @@ export const sessionSchema = z
 		courseCode: z.string(),
 		courseName: z.string(),
 		sessionName: z.string().min(1, "Session name is required"),
+		category: z.string().min(1, "Category is required"),
 		description: z.string().min(1, "Description is required"),
 		location: z.string().min(1, "Location is required"),
 		requirements: z.string().refine(

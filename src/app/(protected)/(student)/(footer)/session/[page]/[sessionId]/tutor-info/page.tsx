@@ -5,6 +5,8 @@ import { Star, Mail, Phone } from "lucide-react";
 import ReviewCard from "@/components/custom/features/rating-review/review-card";
 import GeneralSessionCard from "@/components/custom/shared/general-session-card";
 import MoreReviewBtn from "@/components/custom/features/rating-review/review-dialog";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 const page = () => {
 	const sessions = [
 		{
@@ -79,7 +81,7 @@ const page = () => {
 	const bio =
 		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor corporis recusandae dolorem aliquam aut? In recusandae nulla culpa, cupiditate voluptatibus adipisci alias excepturi, pariatur quasi quis quidem explicabo vitae fuga?";
 	return (
-		<div className="max-w-4xl p-6 bg-white space-y-6">
+		<div className="max-w-[53rem] p-6 bg-white space-y-6">
 			<div>
 				<div className="flex flex-col mb-2 text">
 					<span className="max-w-[full] font-bold text-2xl truncate">
@@ -130,9 +132,13 @@ const page = () => {
 							/>
 						))}
 					</div>
-					<button className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
-						View all sessions
-					</button>
+					<Link href={"/tutor-view"}>
+						<Button
+							variant="outline"
+							className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
+							View all sessions
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</div>

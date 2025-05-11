@@ -5,7 +5,6 @@ export default function SettingNavbar() {
 	const links = [
 		{ label: "Profile", value: "profile" },
 		{ label: "Picture", value: "picture" },
-		{ label: "Security", value: "security" },
 		{ label: "Payment setup", value: "payment" },
 	];
 	const pathname = usePathname();

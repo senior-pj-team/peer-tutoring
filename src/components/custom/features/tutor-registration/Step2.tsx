@@ -104,6 +104,40 @@ export default function Step2BankAccountSetup() {
 				{/* Account Number */}
 				<FormControl fullWidth error={!isFormValid && !accountNumber}>
 					<TextField
+						label="Bank Account Name"
+						value={accountNumber}
+						onChange={handleAccountNumberChange}
+						variant="outlined"
+						size="small"
+						placeholder="Account Name"
+						InputProps={{
+							startAdornment: (
+								<InputAdornment position="start">
+									<AccountCircleIcon
+										color={accountNumber ? "primary" : "inherit"}
+									/>
+								</InputAdornment>
+							),
+						}}
+						inputProps={{
+							maxLength: 10,
+						}}
+						sx={{
+							"& .MuiOutlinedInput-root": {
+								borderRadius: 2,
+							},
+						}}
+					/>
+					{!isFormValid && !accountNumber && (
+						<FormHelperText sx={{ ml: 1.5 }}>
+							Please enter your account number
+						</FormHelperText>
+					)}
+				</FormControl>
+
+				{/* Account Number */}
+				<FormControl fullWidth error={!isFormValid && !accountNumber}>
+					<TextField
 						label="Account Number"
 						value={accountNumber}
 						onChange={handleAccountNumberChange}
@@ -133,61 +167,6 @@ export default function Step2BankAccountSetup() {
 							Please enter your account number
 						</FormHelperText>
 					)}
-				</FormControl>
-
-				{/* Account Type */}
-				<FormControl fullWidth error={!isFormValid && !accountType}>
-					<TextField
-						label="Account Type"
-						value={accountType}
-						onChange={handleAccountTypeChange}
-						variant="outlined"
-						select
-						size="small"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<CreditCardIcon color={accountType ? "primary" : "inherit"} />
-								</InputAdornment>
-							),
-						}}
-						sx={{
-							"& .MuiOutlinedInput-root": {
-								borderRadius: 2,
-							},
-						}}>
-						<MenuItem value="Savings">Savings Account</MenuItem>
-						<MenuItem value="Current">Current Account</MenuItem>
-					</TextField>
-					{!isFormValid && !accountType && (
-						<FormHelperText sx={{ ml: 1.5 }}>
-							Please select account type
-						</FormHelperText>
-					)}
-				</FormControl>
-
-				{/* Branch Name */}
-				<FormControl fullWidth>
-					<TextField
-						label="Branch (Optional)"
-						value={branch}
-						onChange={handleBranchChange}
-						variant="outlined"
-						size="small"
-						placeholder="Main Branch, Bangkok"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<AccountBalanceIcon color={branch ? "primary" : "inherit"} />
-								</InputAdornment>
-							),
-						}}
-						sx={{
-							"& .MuiOutlinedInput-root": {
-								borderRadius: 2,
-							},
-						}}
-					/>
 				</FormControl>
 
 				{/* Custom Submit Button */}

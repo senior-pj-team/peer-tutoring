@@ -49,7 +49,6 @@ export default function HorizontalLinearStepper() {
 
 	return (
 		<Box
-			className="font-sans"
 			sx={{
 				width: "100%",
 				maxWidth: 600,
@@ -64,7 +63,8 @@ export default function HorizontalLinearStepper() {
 			<Stepper activeStep={activeStep} alternativeLabel>
 				{steps.map((label) => (
 					<Step key={label}>
-						<StepLabel sx={{ typography: "caption", textAlign: "center" }}>
+						<StepLabel
+							sx={{ typography: "caption", textAlign: "center", fontSize: 20 }}>
 							{label}
 						</StepLabel>
 					</Step>
