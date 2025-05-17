@@ -7,6 +7,8 @@ import { signOut } from "@/app/(auth)/actions";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarFallback } from "@/lib/getAvatarFallback";
 
 export default function CustomSheet() {
 	const { user, setUser, loading } = useAuth();
@@ -38,17 +40,21 @@ export default function CustomSheet() {
 					{user && !loading && (
 						<>
 							<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
-								<Image
-									src="https://avatar.iran.liara.run/public"
-									width={56}
-									height={56}
-									alt="User Avatar"
-									className="w-full h-full object-cover"
-								/>
+								<Avatar>
+									<AvatarImage
+										src={user.profile_url}
+										width={56}
+										height={56}
+										alt="User Avatar"
+									/>
+									<AvatarFallback>
+										{getAvatarFallback(user.full_name)}
+									</AvatarFallback>
+								</Avatar>
 							</div>
 							<div className="flex flex-col overflow-hidden">
 								<div className="font-extrabold text-lg text-gray-800">
-									{user.user_metadata.full_name}
+									{user.full_name}
 								</div>
 								<div className="font-light text-xs max-w-full truncate text-gray-800">
 									{user.email}

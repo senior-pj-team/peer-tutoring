@@ -1,7 +1,9 @@
 import { signOut } from "@/app/(auth)/actions";
 import { useAuth } from "@/components/providers/auth-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HoverCardContent } from "@/components/ui/hover-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getAvatarFallback } from "@/lib/getAvatarFallback";
 import { createClient } from "@/utils/supabase/client";
 
 import Image from "next/image";
@@ -20,6 +22,7 @@ export default function ProfileHoverContent() {
 			redirect("/login");
 		}
 	}
+
 	return (
 		<HoverCardContent className="w-70 absolute -right-5">
 			<div className="py-4 px-3 flex gap-x-5">
@@ -37,17 +40,21 @@ export default function ProfileHoverContent() {
 				{user && !loading && (
 					<>
 						<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
-							<Image
-								src="https://avatar.iran.liara.run/public"
-								width={56}
-								height={56}
-								alt="User Avatar"
-								className="w-full h-full object-cover"
-							/>
+							<Avatar>
+								<AvatarImage
+									src={user.profile_url}
+									width={56}
+									height={56}
+									alt="User Avatar"
+								/>
+								<AvatarFallback>
+									{getAvatarFallback(user.full_name)}
+								</AvatarFallback>
+							</Avatar>
 						</div>
 						<div className="flex flex-col overflow-hidden">
 							<div className="font-extrabold text-lg text-gray-800">
-								{user.user_metadata.full_name}
+								{user.full_name}
 							</div>
 							<div className="font-light text-xs max-w-full truncate text-gray-800">
 								{user.email}
