@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
 				search: "",
 			},
 		],
+		domains: ['jwvartwshnsxrrtpgtlc.supabase.co']
 	},
 };
 

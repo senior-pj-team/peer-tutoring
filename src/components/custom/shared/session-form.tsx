@@ -18,12 +18,15 @@ import { Textarea } from "@/components/ui/textarea";
 import TipTap from "./tip-tap";
 import { Button } from "@/components/ui/button";
 import DatePicker from "./date-picker";
-import { addDays } from "date-fns";
+import { addDays, set } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
+
+import { createClient } from "../../../utils/supabase/client"
+const supabase = createClient();
 
 import {
 	Select,
@@ -34,7 +37,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 
 type SessionFormProps = {
 	school?: string;
@@ -49,12 +51,13 @@ type SessionFormProps = {
 	maxStudents?: number;
 	paid?: boolean;
 	amount?: number;
-	image?: string;
+	image?: File | undefined;
 	isEdit?: boolean;
 	sessionName?: string;
 	location?: string;
 	category?: string;
 };
+
 export default function SessionForm({
 	school = "",
 	major = "",
@@ -68,7 +71,7 @@ export default function SessionForm({
 	maxStudents = 1,
 	paid = true,
 	amount = 0,
-	image = "",
+	image = undefined,
 	sessionName = "",
 	location = "",
 	category = "",
@@ -92,29 +95,104 @@ export default function SessionForm({
 			sessionName,
 			location,
 			category,
+			image,
 		},
 	});
 
 	const isPaid = form.watch("paid");
-	const [previewUrl, setPreviewUrl] = useState<string | null>(image);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [isDisable, setDisable] = useState(isEdit);
+
+	const handleDisableToggle = () => setDisable((prev) => !prev);
+
+	const getDateWithTime = (date: Date, time: string): Date => {
+		const [hours, minutes] = time.split(":").map(Number);
+		const dateTime = new Date(date);
+		dateTime.setHours(hours, minutes, 0, 0);
+		return dateTime;
+	};
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
 			const objectUrl = URL.createObjectURL(file);
 			setPreviewUrl(objectUrl);
+			form.setValue("image", file);
 		}
 	};
 
-	function onSubmit(values: SessionSchemaT) {
-		console.log(values);
-	}
+	const uploadImage = async (image: File): Promise<string | null> => {
+		const fileExt = image.name.split(".").pop();
+		const filePath = `${Date.now()}.${fileExt}`;
 
-	const handleDisableToggle = () => {
-		setDisable(!isDisable);
+		const { error } = await supabase.storage
+			.from("session-images")
+			.upload(filePath, image);
+
+		if (error) {
+			console.error("Upload error:", error.message);
+			return null;
+		}
+
+		const { data } = supabase.storage
+			.from("session-images")
+			.getPublicUrl(filePath);
+
+		return data?.publicUrl ?? null;
 	};
 
+	const createSession = async (values: SessionSchemaT) => {
+		const start = getDateWithTime(values.date, values.startTime);
+		const end = getDateWithTime(values.date, values.endTime);
+
+		if (end <= start) {
+			alert("End time must be after start time");
+			return;
+		}
+
+		let uploadedUrl = previewUrl;
+		if (values.image) {
+			uploadedUrl = await uploadImage(values.image);
+			if (!uploadedUrl) {
+				alert("Failed to upload image");
+				return;
+			}
+		}
+
+		const { data, error } = await supabase.from("sessions").insert({
+			session_name: values.sessionName,
+			course_code: values.courseCode,
+			course_name: values.courseName,
+			school: values.school,
+			major: values.major,
+			image: uploadedUrl,
+			description: values.description,
+			requirement: values.requirements,
+			start_time: start.toISOString(),
+			end_time: end.toISOString(),
+			max_students: values.maxStudents,
+			location: values.location,
+			category: values.category,
+			isPaid: values.paid,
+			price: values.paid ? values.amount : 0,
+			status: "open",
+			tutor_id: 0,
+		});
+
+		if (error) {
+			console.error("Error creating session:", error.message);
+		} else {
+			console.log("Session created:", data);
+		}
+	};
+
+	const editSession = async (values: SessionSchemaT) => {
+		console.log("Edit session not yet implemented", values);
+	};
+
+	const onSubmit = (values: SessionSchemaT) => {
+		isEdit ? editSession(values) : createSession(values);
+	};
 	return (
 		<div className="px-4 lg:px-6">
 			{isEdit && (
@@ -154,7 +232,11 @@ export default function SessionForm({
 									label: "School",
 									placeholder: "Enter school name",
 								},
-								{ name: "major", label: "Major", placeholder: "Enter major" },
+								{
+									name: "major",
+									label: "Major",
+									placeholder: "Enter major"
+								},
 								{
 									name: "courseCode",
 									label: "Course Code",
@@ -221,7 +303,7 @@ export default function SessionForm({
 														className="text-[0.6rem] md:text-sm lg:w-[30%]"
 														onChange={(e) => {
 															handleImageChange(e);
-															field.onChange(e);
+															field.onChange(e.target.files?.[0]);
 														}}
 														disabled={isDisable}
 													/>
