@@ -45,15 +45,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			supabase.auth.onAuthStateChange(async (event, session) => {
 				if (session) {
 					const jwt = jwtDecode<MyJwtPayload>(session.access_token);
-					console.log(jwt);
+
 					setUser({
 						email: jwt.email,
 						full_name: jwt.user_metadata.full_name,
 						profile_url: jwt.profile_url,
 						user_role: jwt.user_role,
 					});
-					setLoading(false);
 				}
+				setLoading(false);
 			});
 		})();
 	}, []);

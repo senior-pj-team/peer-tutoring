@@ -25,7 +25,7 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 
-import { createClient } from "../../../utils/supabase/client"
+import { createClient } from "../../../utils/supabase/client";
 const supabase = createClient();
 
 import {
@@ -142,13 +142,9 @@ export default function SessionForm({
 	};
 
 	const createSession = async (values: SessionSchemaT) => {
+		const validated = sessionSchema.safeParse(values);
 		const start = getDateWithTime(values.date, values.startTime);
 		const end = getDateWithTime(values.date, values.endTime);
-
-		if (end <= start) {
-			alert("End time must be after start time");
-			return;
-		}
 
 		let uploadedUrl = previewUrl;
 		if (values.image) {
@@ -191,6 +187,7 @@ export default function SessionForm({
 	};
 
 	const onSubmit = (values: SessionSchemaT) => {
+		console.log("sumitted");
 		isEdit ? editSession(values) : createSession(values);
 	};
 	return (
@@ -235,7 +232,7 @@ export default function SessionForm({
 								{
 									name: "major",
 									label: "Major",
-									placeholder: "Enter major"
+									placeholder: "Enter major",
 								},
 								{
 									name: "courseCode",

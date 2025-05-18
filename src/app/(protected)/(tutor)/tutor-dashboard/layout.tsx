@@ -9,8 +9,8 @@ export default function layout({
 }: {
 	children: Readonly<React.ReactNode>;
 }) {
-	const { user } = useAuth();
-	if (user?.user_role !== "tutor") {
+	const { user, loading } = useAuth();
+	if (!loading && user?.user_role !== "tutor") {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 	return (

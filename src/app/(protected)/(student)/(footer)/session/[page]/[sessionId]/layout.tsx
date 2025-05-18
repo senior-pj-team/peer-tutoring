@@ -16,7 +16,7 @@ const layout = async ({
 	params: { sessionId: string; page: string };
 }) => {
 	const { sessionId, page } = await params;
-
+	console.log(sessionId);
 	const tabs = [
 		{ name: "Content", path: `/session/${page}/${sessionId}/content` },
 	];
