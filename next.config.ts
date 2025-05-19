@@ -12,7 +12,12 @@ const nextConfig: NextConfig = {
 				search: "",
 			},
 		],
-		domains: ['jwvartwshnsxrrtpgtlc.supabase.co']
+		domains: ["jwvartwshnsxrrtpgtlc.supabase.co"],
+	},
+	logging: {
+		fetches: {
+			fullUrl: true,
+		},
 	},
 };
 

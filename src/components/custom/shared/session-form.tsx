@@ -25,7 +25,7 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 
-import { createClient } from "../../../utils/supabase/client"
+import { createClient } from "../../../utils/supabase/client";
 const supabase = createClient();
 
 import {
@@ -165,7 +165,7 @@ export default function SessionForm({
 								{
 									name: "major",
 									label: "Major",
-									placeholder: "Enter major"
+									placeholder: "Enter major",
 								},
 								{
 									name: "courseCode",

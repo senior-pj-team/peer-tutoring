@@ -11,14 +11,16 @@ import clsx from "clsx";
 import CustomSheet from "./custom-sheet";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/components/providers/auth-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarFallback } from "@/lib/getAvatarFallback";
 
 export default function Navbar() {
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 	const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
 	const [showNavbar, setShowNavbar] = useState<boolean>(true);
 	const [lastScrollY, setLastScrollY] = useState<number>(0);
+	const { user, loading } = useAuth();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -34,17 +36,7 @@ export default function Navbar() {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [lastScrollY]);
-
-	useEffect(() => {
-		const isAuthenticated = async () => {
-			const supabase = createClient();
-			const {
-				data: { user },
-			} = await supabase.auth.getUser();
-			setIsLoggedIn(!!user);
-		};
-		isAuthenticated();
-	}, [isLoggedIn]);
+	console.log(user);
 	return (
 		<div
 			className={clsx(
@@ -66,11 +58,11 @@ export default function Navbar() {
 					<Link href="/home">
 						<div className="font-bold text-3xl cursor-pointer">Orion</div>
 					</Link>
-					{isLoggedIn === null ? (
+					{!user && loading ? (
 						<div className=" lg:hidden  items-center justify-around gap-x-2 ">
 							<Skeleton className="h-6 w-[80px] md:w-[40px]" />
 						</div>
-					) : isLoggedIn ? (
+					) : user ? (
 						<div className="pt-2">
 							<Sheet>
 								<SheetTrigger>
@@ -98,14 +90,14 @@ export default function Navbar() {
 					<SearchBar />
 				</div>
 
-				{isLoggedIn === null ? (
+				{!user && loading ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 						<Skeleton className="h-6 w-[80px]" />
 						<Skeleton className="h-6 w-[50px]" />
 						<Skeleton className="h-6 w-[50px]" />
 						<Skeleton className="h-6 w-[50px]" />
 					</div>
-				) : isLoggedIn ? (
+				) : user ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 						<Link href="/become-tutor">
 							<HoverCustomCard content="Become a tutor" />
@@ -134,13 +126,17 @@ export default function Navbar() {
 								content="Profile"
 								icon={
 									<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
-										<Image
-											src="https://avatar.iran.liara.run/public"
-											width={30}
-											height={30}
-											alt="User Avatar"
-											className="w-full h-full object-cover "
-										/>
+										<Avatar>
+											<AvatarImage
+												src={user.profile_url}
+												width={56}
+												height={56}
+												alt="User Avatar"
+											/>
+											<AvatarFallback>
+												{getAvatarFallback(user.full_name)}
+											</AvatarFallback>
+										</Avatar>
 									</div>
 								}
 							/>

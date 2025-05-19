@@ -2,7 +2,8 @@
 "use client"; // ← this entire file must be a client component
 
 import { createClient } from "@/utils/supabase/client";
-import { SupabaseClient, User } from "@supabase/supabase-js";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { jwtDecode } from "jwt-decode";
 import {
 	ReactNode,
 	createContext,
@@ -19,6 +20,19 @@ type AuthContextType = {
 	supabase: SupabaseClient;
 };
 
+type MyJwtPayload = {
+	user_role: string;
+	profile_url: string;
+	[key: string]: any;
+};
+
+type User = {
+	email: string;
+	full_name: string;
+	profile_url: string;
+	user_role: string;
+};
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -27,16 +41,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		(async () => {
-			const {
-				data: { user },
-			} = await supabase.auth.getUser();
-			setUser(user ?? null);
-			setLoading(false);
-		})();
-	}, [supabase]);
+		(() => {
+			supabase.auth.onAuthStateChange(async (event, session) => {
+				if (session) {
+					const jwt = jwtDecode<MyJwtPayload>(session.access_token);
 
-	console.log(user);
+					setUser({
+						email: jwt.email,
+						full_name: jwt.user_metadata.full_name,
+						profile_url: jwt.profile_url,
+						user_role: jwt.user_role,
+					});
+				}
+				setLoading(false);
+			});
+		})();
+	}, []);
+
 	return (
 		<AuthContext.Provider value={{ user, setUser, loading, supabase }}>
 			{children}

@@ -1,5 +1,7 @@
+"use client";
 import AppSideBar from "@/components/custom/layout/sidebar/app-sidebar";
 import { SiteHeader } from "@/components/custom/layout/sidebar/site-header";
+import { useAuth } from "@/components/providers/auth-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function layout({
@@ -7,6 +9,10 @@ export default function layout({
 }: {
 	children: Readonly<React.ReactNode>;
 }) {
+	const { user, loading } = useAuth();
+	if (!loading && user?.user_role !== "tutor") {
+		return <div className="pt-5 px-5"> Access Denied for this page </div>;
+	}
 	return (
 		<div>
 			<SidebarProvider>
