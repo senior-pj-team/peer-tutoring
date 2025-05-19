@@ -38,6 +38,9 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 
+import { createSession, editSession } from "@/app/(protected)/(tutor)/tutor-dashboard/create-session/actions";
+import { useAuth } from "@/components/providers/auth-provider";
+
 type SessionFormProps = {
 	school?: string;
 	major?: string;
@@ -105,13 +108,6 @@ export default function SessionForm({
 
 	const handleDisableToggle = () => setDisable((prev) => !prev);
 
-	const getDateWithTime = (date: Date, time: string): Date => {
-		const [hours, minutes] = time.split(":").map(Number);
-		const dateTime = new Date(date);
-		dateTime.setHours(hours, minutes, 0, 0);
-		return dateTime;
-	};
-
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
@@ -121,78 +117,12 @@ export default function SessionForm({
 		}
 	};
 
-	const uploadImage = async (image: File): Promise<string | null> => {
-		const fileExt = image.name.split(".").pop();
-		const filePath = `${Date.now()}.${fileExt}`;
-
-		const { error } = await supabase.storage
-			.from("session-images")
-			.upload(filePath, image);
-
-		if (error) {
-			console.error("Upload error:", error.message);
-			return null;
-		}
-
-		const { data } = supabase.storage
-			.from("session-images")
-			.getPublicUrl(filePath);
-
-		return data?.publicUrl ?? null;
+	const {user}= useAuth()
+	const onSubmit = async (values: SessionSchemaT) => {
+		const response= isEdit ? editSession(values) : await createSession(values, user);
+		console.log(response);
 	};
 
-	const createSession = async (values: SessionSchemaT) => {
-		const start = getDateWithTime(values.date, values.startTime);
-		const end = getDateWithTime(values.date, values.endTime);
-
-		if (end <= start) {
-			alert("End time must be after start time");
-			return;
-		}
-
-		let uploadedUrl = previewUrl;
-		if (values.image) {
-			uploadedUrl = await uploadImage(values.image);
-			if (!uploadedUrl) {
-				alert("Failed to upload image");
-				return;
-			}
-		}
-
-		const { data, error } = await supabase.from("sessions").insert({
-			session_name: values.sessionName,
-			course_code: values.courseCode,
-			course_name: values.courseName,
-			school: values.school,
-			major: values.major,
-			image: uploadedUrl,
-			description: values.description,
-			requirement: values.requirements,
-			start_time: start.toISOString(),
-			end_time: end.toISOString(),
-			max_students: values.maxStudents,
-			location: values.location,
-			category: values.category,
-			isPaid: values.paid,
-			price: values.paid ? values.amount : 0,
-			status: "open",
-			tutor_id: 0,
-		});
-
-		if (error) {
-			console.error("Error creating session:", error.message);
-		} else {
-			console.log("Session created:", data);
-		}
-	};
-
-	const editSession = async (values: SessionSchemaT) => {
-		console.log("Edit session not yet implemented", values);
-	};
-
-	const onSubmit = (values: SessionSchemaT) => {
-		isEdit ? editSession(values) : createSession(values);
-	};
 	return (
 		<div className="px-4 lg:px-6">
 			{isEdit && (
@@ -354,16 +284,19 @@ export default function SessionForm({
 											<SelectContent>
 												<SelectGroup>
 													<SelectLabel>Categories</SelectLabel>
-													<SelectItem value="Science">Science</SelectItem>
-													<SelectItem value="Technology">Technology</SelectItem>
-													<SelectItem value="Libral Arts">
+													<SelectItem value="1">Science</SelectItem>
+													<SelectItem value="2">Technology</SelectItem>
+													<SelectItem value="3">
 														Libral Arts
 													</SelectItem>
-													<SelectItem value="Business">Business</SelectItem>
-													<SelectItem value="Engineering">
+													<SelectItem value="4">Business</SelectItem>
+													<SelectItem value="5">
 														Engineering
 													</SelectItem>
-													<SelectItem value="Elective Courses">
+													<SelectItem value="7">
+														Health Science
+													</SelectItem>
+													<SelectItem value="6">
 														Elective Courses
 													</SelectItem>
 												</SelectGroup>
