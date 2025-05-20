@@ -12,25 +12,13 @@ import {
 	useMemo,
 } from "react";
 
+import { UserSession, MyJwtPayload } from "@/types/userSession";
+
 type AuthContextType = {
-	user: User | null;
-	setUser: React.Dispatch<React.SetStateAction<User | null>>;
+	user: UserSession | null;
+	setUser: React.Dispatch<React.SetStateAction<UserSession | null>>;
 	loading: boolean;
 	supabase: SupabaseClient;
-};
-
-type MyJwtPayload = {
-	user_role: string;
-	profile_url: string;
-	[key: string]: any;
-};
-
-export type User = {
-	email: string;
-	full_name: string;
-	profile_url: string;
-	user_role: string;
-	user_id: string
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,7 +26,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
 
 	const supabase = useMemo(() => createClient(), []);
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<UserSession | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -47,18 +35,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				if (session) {
 					const jwt = jwtDecode<MyJwtPayload>(session.access_token);
 					setUser({
+						user_id: jwt.app_user_id,
 						email: jwt.email,
 						full_name: jwt.user_metadata.full_name,
 						profile_url: jwt.profile_image,
 						user_role: jwt.user_role,
-						user_id: jwt.app_user_id,
 					});
 				}
 				setLoading(false);
 			});
 		})();
 	}, []);
-
 	return (
 		<AuthContext.Provider value={{ user, setUser, loading, supabase }}>
 			{children}

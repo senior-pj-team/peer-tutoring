@@ -37,8 +37,19 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogDescription,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
 
-import { createSession, editSession } from "@/app/(protected)/(tutor)/tutor-dashboard/create-session/actions";
+import {
+	createSession,
+	editSession,
+} from "@/app/(protected)/(tutor)/tutor-dashboard/create-session/actions";
 import { useAuth } from "@/components/providers/auth-provider";
 
 type SessionFormProps = {
@@ -59,6 +70,7 @@ type SessionFormProps = {
 	sessionName?: string;
 	location?: string;
 	category?: string;
+	sessionId?: string;
 };
 
 export default function SessionForm({
@@ -79,6 +91,7 @@ export default function SessionForm({
 	location = "",
 	category = "",
 	isEdit = false,
+	sessionId= ""
 }: SessionFormProps) {
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
@@ -105,6 +118,8 @@ export default function SessionForm({
 	const isPaid = form.watch("paid");
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [isDisable, setDisable] = useState(isEdit);
+	const [isDialogOpen, setisDialogOpen] = useState(false);
+	const [formValues, setFormValues] = useState<SessionSchemaT>();
 
 	const handleDisableToggle = () => setDisable((prev) => !prev);
 
@@ -117,10 +132,50 @@ export default function SessionForm({
 		}
 	};
 
-	const {user}= useAuth()
-	const onSubmit = async (values: SessionSchemaT) => {
-		const response= isEdit ? editSession(values) : await createSession(values, user);
-		console.log(response);
+	const { user } = useAuth(); // get the custom claims
+	const handleSubmit = (values: SessionSchemaT) => {
+		setFormValues(values);
+		setisDialogOpen(true);
+	};
+
+	const handleConfirm = async () => {
+		if (!formValues) return;
+
+		try {
+			const response = isEdit
+				? await editSession(sessionId, formValues)
+				: await createSession(formValues);
+
+			const actionType = isEdit ? "updated" : "created";
+
+			response.success ?
+			toast(`Session ${actionType} successfully`, {
+				description: (
+					<div className="text-muted-foreground text-sm">
+						{`Session was ${actionType}. Session will start on ${formValues.date}`}
+					</div>
+				),
+			
+				// action: {
+				// 	label: "Undo",
+				// 	onClick: () => {
+				// 		console.log("Undo action clicked");
+				// 	},
+				// },
+			})
+			:
+			toast.error("Something went wrong", {
+				description: "We couldn't complete your request. Please try again.",
+			});
+			setisDialogOpen(false);
+			console.log("sessionId", sessionId);
+			console.log("Response", response);
+		} catch (error) {
+			console.error(error);
+			toast.error("Something went wrong", {
+				description: "We couldn't complete your request. Please try again.",
+			});
+		}
 	};
 
 	return (
@@ -133,16 +188,18 @@ export default function SessionForm({
 						onClick={handleDisableToggle}
 						className={clsx(
 							"hover:bg-orange-200 cursor-pointer",
-							isDisable ? "bg-white" : "bg-orange-200",
-						)}>
+							isDisable ? "bg-white" : "bg-orange-200"
+						)}
+					>
 						<Pencil className="w-5 h-5" />
 					</Button>
 				</div>
 			)}
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="flex flex-col gap-y-8">
+					onSubmit={form.handleSubmit(handleSubmit)}
+					className="flex flex-col gap-y-8"
+				>
 					<div className="flex flex-col gap-y-6">
 						<div className="font-bold xl:text-xl text-lg ">
 							Course Information{" "}
@@ -277,30 +334,22 @@ export default function SessionForm({
 											disabled={isDisable}
 											defaultValue={field.value}
 											value={field.value.toString() || ""}
-											onValueChange={field.onChange}>
+											onValueChange={field.onChange}
+										>
 											<SelectTrigger className="w-full">
 												<SelectValue placeholder="Select a session category" />
 											</SelectTrigger>
 											<SelectContent>
 												<SelectGroup>
 													<SelectLabel>Categories</SelectLabel>
-													<SelectItem value="1">Science</SelectItem>
 													<SelectItem value="2">Technology</SelectItem>
-													<SelectItem value="3">
-														Libral Arts
-													</SelectItem>
+													<SelectItem value="3">Libral Arts</SelectItem>
 													<SelectItem value="4">Business</SelectItem>
-													<SelectItem value="5">
-														Engineering
-													</SelectItem>
-													<SelectItem value="7">
-														Health Science
-													</SelectItem>
-													<SelectItem value="6">
-														Elective Courses
-													</SelectItem>
+													<SelectItem value="5">Engineering</SelectItem>
+													<SelectItem value="7">Health Science</SelectItem>
+													<SelectItem value="6">Elective Courses</SelectItem>
 												</SelectGroup>
-											</SelectContent>{" "}
+											</SelectContent>{}
 										</Select>
 									</FormControl>
 									<FormMessage />
@@ -467,12 +516,42 @@ export default function SessionForm({
 							)}
 						/>
 					</div>
-
 					<Button type="submit" size="lg" className="md:w-[30%] mx-auto">
 						{isEdit ? <span>Save Changes</span> : <span>Submit</span>}
 					</Button>
 				</form>
 			</Form>
+			<Dialog open={isDialogOpen} onOpenChange={setisDialogOpen}>
+				<DialogContent className="sm:max-w-md">
+					<DialogHeader>
+						<DialogTitle className="text-xl font-semibold text-gray-800">
+							{isEdit ? "Save Changes?" : "Create New Session?"}
+						</DialogTitle>
+						<DialogDescription className="text-gray-600 mt-2">
+							{isEdit
+								? "You are about to save changes to this session. Please confirm to proceed."
+								: "You are about to create a new session. Are you sure everything is correct?"}
+						</DialogDescription>
+					</DialogHeader>
+
+					<div className="mt-6 flex justify-end gap-4">
+						<Button
+							variant="outline"
+							onClick={() => setisDialogOpen(false)}
+							className="w-24"
+						>
+							Cancel
+						</Button>
+						<Button
+							type="button"
+							onClick={handleConfirm}
+							className="w-24 bg-orange-500 hover:bg-orange-600 text-white"
+						>
+							{isEdit ? "Save" : "Create"}
+						</Button>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

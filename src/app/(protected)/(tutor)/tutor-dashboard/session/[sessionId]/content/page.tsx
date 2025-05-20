@@ -1,7 +1,8 @@
 import SessionForm from "@/components/custom/shared/session-form";
 import React from "react";
 
-const page = () => {
+const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
+	const { sessionId } = await params;
 	const data = {
 		school: "Applied Digital Technology",
 		major: "Computer Engineering",
@@ -39,6 +40,7 @@ const page = () => {
 			image={data.image}
 			isEdit={true}
 			category={data.category}
+			sessionId= {sessionId}
 		/>
 	);
 };
