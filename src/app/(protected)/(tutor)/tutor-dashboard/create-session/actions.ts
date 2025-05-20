@@ -4,7 +4,8 @@ import { getDateWithTime, uploadImage } from "@/utils/sessionsUtils";
 import { SessionSchemaT } from "@/schema/sessionSchema";
 import { createClient } from "@/utils/supabase/server";
 import { insertSession } from "@/data/sessionsRepo";
-import { User } from "@supabase/supabase-js";
+import { User } from "@/components/providers/auth-provider";
+import { getUserId } from "@/utils/users";
 
 type ResponseType<T> = 
     { success: true; data: T }
@@ -25,16 +26,17 @@ export const createSession = async (values: SessionSchemaT, user: User | null): 
         error: { message: "User not found" },
       };
   }
-
   if(user.user_role != "tutor"){
-    console.log(user.role);
+    console.log(user.user_role);
     return {
         success: false,
         error: { message: "User not authorized" },
       };
   }
 
-  const tutor_id: String= user.id;
+  const tutor_id= await getUserId();
+  console.log("tutor_id", tutor_id);
+  
 
   let uploadedUrl: string | null = null;
   if (values.image) {
