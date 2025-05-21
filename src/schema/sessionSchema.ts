@@ -33,7 +33,7 @@ export const sessionSchema = z
     amount: z.coerce.number().min(1, "Amount must be non-negative"),
     image: z.instanceof(File).refine((file) => file.size > 0, {
       message: "Image file is required",
-    }),
+    }).nullable(),
   })
   .superRefine(({ startTime, endTime }, ctx) => {
     const [sh, sm] = startTime.split(":").map(Number);

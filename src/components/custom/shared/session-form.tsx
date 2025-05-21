@@ -45,12 +45,8 @@ import {
 	DialogDescription,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { createSession, editSession } from "@/actions/sessionActions";
 
-import {
-	createSession,
-	editSession,
-} from "@/app/(protected)/(tutor)/tutor-dashboard/create-session/actions";
-import { useAuth } from "@/components/providers/auth-provider";
 
 type SessionFormProps = {
 	school?: string;
@@ -65,7 +61,7 @@ type SessionFormProps = {
 	maxStudents?: number;
 	paid?: boolean;
 	amount?: number;
-	image?: File | undefined;
+	imageString?: string;
 	isEdit?: boolean;
 	sessionName?: string;
 	location?: string;
@@ -86,13 +82,16 @@ export default function SessionForm({
 	maxStudents = 1,
 	paid = true,
 	amount = 0,
-	image = undefined,
+	imageString = "",
 	sessionName = "",
 	location = "",
 	category = "",
 	isEdit = false,
-	sessionId= ""
+	sessionId = ""
 }: SessionFormProps) {
+
+	let image: File | null = null;
+
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
 		defaultValues: {
@@ -116,7 +115,7 @@ export default function SessionForm({
 	});
 
 	const isPaid = form.watch("paid");
-	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(imageString);
 	const [isDisable, setDisable] = useState(isEdit);
 	const [isDialogOpen, setisDialogOpen] = useState(false);
 	const [formValues, setFormValues] = useState<SessionSchemaT>();
@@ -132,7 +131,6 @@ export default function SessionForm({
 		}
 	};
 
-	const { user } = useAuth(); // get the custom claims
 	const handleSubmit = (values: SessionSchemaT) => {
 		setFormValues(values);
 		setisDialogOpen(true);
@@ -140,33 +138,40 @@ export default function SessionForm({
 
 	const handleConfirm = async () => {
 		if (!formValues) return;
-
 		try {
-			const response = isEdit
-				? await editSession(sessionId, formValues)
-				: await createSession(formValues);
+			console.log("Handle confirm", isEdit);
+
+			let response;
+
+			if (isEdit) {
+				console.log("Calling editSession");
+				response = await editSession(sessionId, formValues, imageString, previewUrl);
+			} else {
+				console.log("Calling createSession");
+				response = await createSession(formValues);
+			}
+
 
 			const actionType = isEdit ? "updated" : "created";
 
 			response.success ?
-			toast(`Session ${actionType} successfully`, {
-				description: (
-					<div className="text-muted-foreground text-sm">
-						{`Session was ${actionType}. Session will start on ${formValues.date}`}
-					</div>
-				),
-			
-				// action: {
-				// 	label: "Undo",
-				// 	onClick: () => {
-				// 		console.log("Undo action clicked");
-				// 	},
-				// },
-			})
-			:
-			toast.error("Something went wrong", {
-				description: "We couldn't complete your request. Please try again.",
-			});
+				toast(`Session ${actionType} successfully`, {
+					description: (
+						<div className="text-muted-foreground text-sm">
+							{`Session was ${actionType}. Session will start on ${formValues.date}`}
+						</div>
+					),
+					// action: {
+					// 	label: "Undo",
+					// 	onClick: () => {
+					// 		console.log("Undo action clicked");
+					// 	},
+					// },
+				})
+				:
+				toast.error("Something went wrong", {
+					description: `We couldn't complete your request. ${response.error.message}`,
+				});
 			setisDialogOpen(false);
 			console.log("sessionId", sessionId);
 			console.log("Response", response);
@@ -260,29 +265,41 @@ export default function SessionForm({
 						<div>
 							<div className="grid w-full items-center gap-y-8">
 								<div>
-									<Label className="mb-1 block text-[1rem] ">Image</Label>
-									<div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
+									<Label className="mb-1 block text-[1rem]">Image</Label>
+									<div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 relative">
 										{previewUrl ? (
-											<Image
-												src={previewUrl}
-												alt="Profile Preview"
-												width={120}
-												height={120}
-												priority
-												className="object-cover w-full h-full"
-											/>
+											<>
+												<Image
+													src={previewUrl}
+													alt="Profile Preview"
+													width={120}
+													height={120}
+													priority
+													className="object-cover w-full h-full"
+												/>
+												<button
+													type="button"
+													onClick={() => {
+														setPreviewUrl(null);
+														form.setValue("image", image);
+													}}
+													disabled={isDisable}
+													className="absolute top-2 right-2 text-white bg-red-500 hover:bg-red-600 rounded px-2 py-1 text-xs"
+												>
+													Remove
+												</button>
+											</>
 										) : (
-											<span className="text-sm text-gray-400">
-												No image selected
-											</span>
+											<span className="text-sm text-gray-400">No image selected</span>
 										)}
 									</div>
+
 									<FormField
 										control={form.control}
 										name="image"
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel className=""></FormLabel>
+												<FormLabel></FormLabel>
 												<FormControl>
 													<Input
 														id="picture"
@@ -290,7 +307,7 @@ export default function SessionForm({
 														className="text-[0.6rem] md:text-sm lg:w-[30%]"
 														onChange={(e) => {
 															handleImageChange(e);
-															field.onChange(e.target.files?.[0]);
+															field.onChange(e.target.files?.[0] || null);
 														}}
 														disabled={isDisable}
 													/>
@@ -300,6 +317,7 @@ export default function SessionForm({
 										)}
 									/>
 								</div>
+
 							</div>
 						</div>
 						<FormField
@@ -349,7 +367,7 @@ export default function SessionForm({
 													<SelectItem value="7">Health Science</SelectItem>
 													<SelectItem value="6">Elective Courses</SelectItem>
 												</SelectGroup>
-											</SelectContent>{}
+											</SelectContent>{ }
 										</Select>
 									</FormControl>
 									<FormMessage />

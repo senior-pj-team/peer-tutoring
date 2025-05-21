@@ -19,7 +19,7 @@ const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
 		paid: true,
 		amount: 150,
 		category: "Engineering",
-		image: "/React.png",
+		image: "https://jwvartwshnsxrrtpgtlc.supabase.co/storage/v1/object/public/session-images//1747818925993.png",
 		sessionName: "React JS",
 	};
 	return (
@@ -37,7 +37,7 @@ const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
 			maxStudents={data.maxStudents}
 			paid={data.paid}
 			amount={data.amount}
-			image={data.image}
+			imageString={data.image}
 			isEdit={true}
 			category={data.category}
 			sessionId= {sessionId}
