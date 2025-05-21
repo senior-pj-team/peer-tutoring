@@ -18,7 +18,6 @@ export default function ProfileHoverContent() {
 		if (error) {
 			toast("Log out Error!");
 		} else {
-			setUser(null);
 			redirect("/login");
 		}
 	}

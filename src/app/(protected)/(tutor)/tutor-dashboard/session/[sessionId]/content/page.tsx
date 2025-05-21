@@ -1,7 +1,8 @@
 import SessionForm from "@/components/custom/shared/session-form";
 import React from "react";
 
-const page = () => {
+const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
+	const { sessionId } = await params;
 	const data = {
 		school: "Applied Digital Technology",
 		major: "Computer Engineering",
@@ -18,7 +19,7 @@ const page = () => {
 		paid: true,
 		amount: 150,
 		category: "Engineering",
-		image: "/React.png",
+		image: "https://jwvartwshnsxrrtpgtlc.supabase.co/storage/v1/object/public/session-images//1747818925993.png",
 		sessionName: "React JS",
 	};
 	return (
@@ -36,9 +37,10 @@ const page = () => {
 			maxStudents={data.maxStudents}
 			paid={data.paid}
 			amount={data.amount}
-			image={data.image}
+			imageString={data.image}
 			isEdit={true}
 			category={data.category}
+			sessionId= {sessionId}
 		/>
 	);
 };
