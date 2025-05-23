@@ -1,6 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { SessionSchemaT } from "@/schema/sessionSchema";
 import { createClient } from "@/utils/supabase/server";
+import { getUserSession } from "@/utils/getUserSession";
+import { UserSession } from "@/types/userSession";
 
 export const insertSession = async (
   values: SessionSchemaT,
@@ -121,3 +123,23 @@ export const deleteImage = async (imageUrl: string): Promise<boolean> => {
     return false;
   }
 };
+
+export const selectSessionCardData = async (status: string[]) => {
+  const supabase = await createClient();
+  const user: UserSession | null= await getUserSession();
+  console.log(status);
+  return await supabase
+    .from('student_session_view')
+    .select(`
+      session_id,
+      image,
+      session_name,
+      course_code,
+      course_name,
+      start_time,
+      end_time,
+      tutor_name,
+      tutor_rating,
+      student_session_status
+    `).eq('student_id', user?.user_id).in('student_session_status', status);
+}

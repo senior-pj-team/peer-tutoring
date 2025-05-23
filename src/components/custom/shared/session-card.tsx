@@ -21,7 +21,7 @@ import {
 import { useRouter } from "next/navigation";
 
 type SessionCardProp = {
-	id: number;
+	id: string;
 	image?: string;
 	sessionName: string;
 	courseCode: string;
