@@ -4,7 +4,7 @@ import { Session } from "@/types/session";
 import { getRemainingTime } from "@/utils/sessionsUtils";
 
 const Page = async () => {
-	const response = await getSessions(['paid']);
+	const response = await getSessions(['enrolled']);
  	const sessions = response.data;
 
 	return (

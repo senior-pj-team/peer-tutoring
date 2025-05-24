@@ -3,7 +3,7 @@ import { getSessions } from "@/actions/sessionActions";
 import { Session } from "@/types/session";
 
 const Page = async () => {
-	const response = await getSessions(['paid']);
+	const response = await getSessions(['completed']);
   	const sessions = response.data;
 
 	return (

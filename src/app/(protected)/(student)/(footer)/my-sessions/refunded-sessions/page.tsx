@@ -3,7 +3,7 @@ import { getSessions } from "@/actions/sessionActions";
 import { Session } from "@/types/session";
 
 const Page = async () => {
-	const response = await getSessions(['paid']);
+	const response = await getSessions(['refunded', 'pending_refund']);
 	const sessions = response.data;
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
