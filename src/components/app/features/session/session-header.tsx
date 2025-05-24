@@ -1,10 +1,9 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Rating from "@/components/app/features/rating-review/rating";
 import clsx from "clsx";
 
-const SessionHeader = ({ isTutor = false }: { isTutor?: boolean }) => {
+const SessionHeader = () => {
 	const status = "OPEN";
 	return (
 		<div className="bg-white ps-6">
@@ -21,18 +20,16 @@ const SessionHeader = ({ isTutor = false }: { isTutor?: boolean }) => {
 								<span>Computer Engineering</span>
 							</div>
 						</div>
-						{!isTutor && (
-							<div className="flex items-center">
-								<div className="relative w-6 h-6 rounded-full overflow-hidden me-3">
-									<Image src="/profile.jpg" alt="Tutor avatar" fill />
-								</div>
-								<div className="text-xs underline me-3">
-									<Link href={""}>John Doe</Link>
-								</div>
-								|
-								<Rating className="ms-3" rating={4} />
+						<div className="flex items-center">
+							<div className="relative w-6 h-6 rounded-full overflow-hidden me-3">
+								<Image src="/profile.jpg" alt="Tutor avatar" fill />
 							</div>
-						)}
+							<div className="text-xs underline me-3">
+								<Link href={""}>John Doe</Link>
+							</div>
+							|
+							<Rating className="ms-3" rating={4} />
+						</div>
 					</div>
 					<div className="mt-5">
 						<span

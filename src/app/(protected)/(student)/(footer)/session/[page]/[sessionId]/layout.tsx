@@ -31,10 +31,15 @@ const layout = async ({
 			path: `/session/${page}/${sessionId}/payment-info`,
 		});
 	}
+	
+	// let session: any = null;
+	// const { response } = await getSessionDetail();
+	// session= response.data;
+	// const {headerData, tutorData, paymentData, ContentData}= session;
 
 	return (
 		<div>
-			<SessionHeader />
+			<SessionHeader/>
 			<hr />
 			<div className="px-15 pb-10 mt-5">
 				<Tabs tabs={tabs} />

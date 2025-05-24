@@ -37,6 +37,15 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogDescription,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { createSession, editSession } from "@/actions/sessionActions";
 
 type SessionFormProps = {
 	school?: string;
@@ -51,11 +60,12 @@ type SessionFormProps = {
 	maxStudents?: number;
 	paid?: boolean;
 	amount?: number;
-	image?: File | undefined;
+	imageString?: string;
 	isEdit?: boolean;
 	sessionName?: string;
 	location?: string;
 	category?: string;
+	sessionId?: string;
 };
 
 export default function SessionForm({
@@ -71,12 +81,15 @@ export default function SessionForm({
 	maxStudents = 1,
 	paid = true,
 	amount = 0,
-	image = undefined,
+	imageString = "",
 	sessionName = "",
 	location = "",
 	category = "",
 	isEdit = false,
+	sessionId = "",
 }: SessionFormProps) {
+	let image: File | null = null;
+
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
 		defaultValues: {
@@ -100,96 +113,76 @@ export default function SessionForm({
 	});
 
 	const isPaid = form.watch("paid");
-	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(imageString);
 	const [isDisable, setDisable] = useState(isEdit);
+	const [isDialogOpen, setisDialogOpen] = useState(false);
+	const [formValues, setFormValues] = useState<SessionSchemaT>();
 
 	const handleDisableToggle = () => setDisable((prev) => !prev);
-
-	const getDateWithTime = (date: Date, time: string): Date => {
-		const [hours, minutes] = time.split(":").map(Number);
-		const dateTime = new Date(date);
-		dateTime.setHours(hours, minutes, 0, 0);
-		return dateTime;
-	};
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
 			const objectUrl = URL.createObjectURL(file);
 			setPreviewUrl(objectUrl);
-			form.setValue("image", file);
 		}
 	};
 
-	const uploadImage = async (image: File): Promise<string | null> => {
-		const fileExt = image.name.split(".").pop();
-		const filePath = `${Date.now()}.${fileExt}`;
-
-		const { error } = await supabase.storage
-			.from("session-images")
-			.upload(filePath, image);
-
-		if (error) {
-			console.error("Upload error:", error.message);
-			return null;
-		}
-
-		const { data } = supabase.storage
-			.from("session-images")
-			.getPublicUrl(filePath);
-
-		return data?.publicUrl ?? null;
+	const handleSubmit = (values: SessionSchemaT) => {
+		setFormValues(values);
+		setisDialogOpen(true);
 	};
 
-	const createSession = async (values: SessionSchemaT) => {
-		const validated = sessionSchema.safeParse(values);
-		const start = getDateWithTime(values.date, values.startTime);
-		const end = getDateWithTime(values.date, values.endTime);
+	const handleConfirm = async () => {
+		if (!formValues) return;
+		try {
+			console.log("Handle confirm", isEdit);
 
-		let uploadedUrl = previewUrl;
-		if (values.image) {
-			uploadedUrl = await uploadImage(values.image);
-			if (!uploadedUrl) {
-				alert("Failed to upload image");
-				return;
+			let response;
+
+			if (isEdit) {
+				console.log("Calling editSession");
+				response = await editSession(
+					sessionId,
+					formValues,
+					imageString,
+					previewUrl,
+				);
+			} else {
+				console.log("Calling createSession");
+				response = await createSession(formValues);
 			}
+
+			const actionType = isEdit ? "updated" : "created";
+
+			response.success
+				? toast.success(`Session ${actionType} successfully`, {
+						description: (
+							<div className="text-muted-foreground text-sm">
+								{`Session was ${actionType}. Session will start on ${formValues.date}`}
+							</div>
+						),
+						// action: {
+						// 	label: "Undo",
+						// 	onClick: () => {
+						// 		console.log("Undo action clicked");
+						// 	},
+						// },
+				  })
+				: toast.error("Something went wrong", {
+						description: `We couldn't complete your request. ${response.error.message}`,
+				  });
+			setisDialogOpen(false);
+			console.log("sessionId", sessionId);
+			console.log("Response", response);
+		} catch (error) {
+			console.error(error);
+			toast.error("Something went wrong", {
+				description: "We couldn't complete your request. Please try again.",
+			});
 		}
-
-		const { data, error } = await supabase.from("sessions").insert({
-			session_name: values.sessionName,
-			course_code: values.courseCode,
-			course_name: values.courseName,
-			school: values.school,
-			major: values.major,
-			image: uploadedUrl,
-			description: values.description,
-			requirement: values.requirements,
-			start_time: start.toISOString(),
-			end_time: end.toISOString(),
-			max_students: values.maxStudents,
-			location: values.location,
-			category: values.category,
-			isPaid: values.paid,
-			price: values.paid ? values.amount : 0,
-			status: "open",
-			tutor_id: 0,
-		});
-
-		if (error) {
-			console.error("Error creating session:", error.message);
-		} else {
-			console.log("Session created:", data);
-		}
 	};
 
-	const editSession = async (values: SessionSchemaT) => {
-		console.log("Edit session not yet implemented", values);
-	};
-
-	const onSubmit = (values: SessionSchemaT) => {
-		console.log("sumitted");
-		isEdit ? editSession(values) : createSession(values);
-	};
 	return (
 		<div className="px-4 lg:px-6">
 			{isEdit && (
@@ -208,7 +201,7 @@ export default function SessionForm({
 			)}
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(onSubmit)}
+					onSubmit={form.handleSubmit(handleSubmit)}
 					className="flex flex-col gap-y-8">
 					<div className="flex flex-col gap-y-6">
 						<div className="font-bold xl:text-xl text-lg ">
@@ -270,29 +263,42 @@ export default function SessionForm({
 						<div>
 							<div className="grid w-full items-center gap-y-8">
 								<div>
-									<Label className="mb-1 block text-[1rem] ">Image</Label>
-									<div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50">
+									<Label className="mb-1 block text-[1rem]">Image</Label>
+									<div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 relative">
 										{previewUrl ? (
-											<Image
-												src={previewUrl}
-												alt="Profile Preview"
-												width={120}
-												height={120}
-												priority
-												className="object-cover w-full h-full"
-											/>
+											<>
+												<Image
+													src={previewUrl}
+													alt="Profile Preview"
+													width={120}
+													height={120}
+													priority
+													className="object-cover w-full h-full"
+												/>
+												<button
+													type="button"
+													onClick={() => {
+														setPreviewUrl(null);
+														form.setValue("image", image);
+													}}
+													disabled={isDisable}
+													className="absolute top-2 right-2 text-white bg-red-500 hover:bg-red-600 rounded px-2 py-1 text-xs">
+													Remove
+												</button>
+											</>
 										) : (
 											<span className="text-sm text-gray-400">
 												No image selected
 											</span>
 										)}
 									</div>
+
 									<FormField
 										control={form.control}
 										name="image"
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel className=""></FormLabel>
+												<FormLabel></FormLabel>
 												<FormControl>
 													<Input
 														id="picture"
@@ -300,7 +306,7 @@ export default function SessionForm({
 														className="text-[0.6rem] md:text-sm lg:w-[30%]"
 														onChange={(e) => {
 															handleImageChange(e);
-															field.onChange(e.target.files?.[0]);
+															field.onChange(e.target.files?.[0] || null);
 														}}
 														disabled={isDisable}
 													/>
@@ -351,20 +357,15 @@ export default function SessionForm({
 											<SelectContent>
 												<SelectGroup>
 													<SelectLabel>Categories</SelectLabel>
-													<SelectItem value="Science">Science</SelectItem>
-													<SelectItem value="Technology">Technology</SelectItem>
-													<SelectItem value="Libral Arts">
-														Libral Arts
-													</SelectItem>
-													<SelectItem value="Business">Business</SelectItem>
-													<SelectItem value="Engineering">
-														Engineering
-													</SelectItem>
-													<SelectItem value="Elective Courses">
-														Elective Courses
-													</SelectItem>
+													<SelectItem value="2">Technology</SelectItem>
+													<SelectItem value="3">Libral Arts</SelectItem>
+													<SelectItem value="4">Business</SelectItem>
+													<SelectItem value="5">Engineering</SelectItem>
+													<SelectItem value="7">Health Science</SelectItem>
+													<SelectItem value="6">Elective Courses</SelectItem>
 												</SelectGroup>
-											</SelectContent>{" "}
+											</SelectContent>
+											{}
 										</Select>
 									</FormControl>
 									<FormMessage />
@@ -531,12 +532,40 @@ export default function SessionForm({
 							)}
 						/>
 					</div>
-
 					<Button type="submit" size="lg" className="md:w-[30%] mx-auto">
 						{isEdit ? <span>Save Changes</span> : <span>Submit</span>}
 					</Button>
 				</form>
 			</Form>
+			<Dialog open={isDialogOpen} onOpenChange={setisDialogOpen}>
+				<DialogContent className="sm:max-w-md">
+					<DialogHeader>
+						<DialogTitle className="text-xl font-semibold text-gray-800">
+							{isEdit ? "Save Changes?" : "Create New Session?"}
+						</DialogTitle>
+						<DialogDescription className="text-gray-600 mt-2">
+							{isEdit
+								? "You are about to save changes to this session. Please confirm to proceed."
+								: "You are about to create a new session. Are you sure everything is correct?"}
+						</DialogDescription>
+					</DialogHeader>
+
+					<div className="mt-6 flex justify-end gap-4">
+						<Button
+							variant="outline"
+							onClick={() => setisDialogOpen(false)}
+							className="w-24">
+							Cancel
+						</Button>
+						<Button
+							type="button"
+							onClick={handleConfirm}
+							className="w-24 bg-orange-500 hover:bg-orange-600 text-white">
+							{isEdit ? "Save" : "Create"}
+						</Button>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

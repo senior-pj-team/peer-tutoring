@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { useSupabase } from "@/hooks/use-supabase";
 import { jwtDecode } from "jwt-decode";
@@ -12,32 +13,33 @@ import {
 } from "react";
 
 type AuthContextType = {
-	user: User | null;
+	user: UserSession | null;
 	loading: boolean;
-};
-
-type MyJwtPayload = {
-	user_role: string;
-	profile_image: string | null;
-	[key: string]: any;
-};
-
-type User = {
-	user_id: string;
-	email: string;
-	full_name: string;
-	profile_url: string | null;
-	user_role: string;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const supabase = useSupabase();
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<UserSession | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		(() => {
+			supabase.auth.onAuthStateChange(async (event, session) => {
+				if (session) {
+					const jwt = jwtDecode<MyJwtPayload>(session.access_token);
+					setUser({
+						user_id: jwt.app_user_id,
+						email: jwt.email,
+						full_name: jwt.user_metadata.full_name,
+						profile_url: jwt.profile_image,
+						user_role: jwt.user_role,
+					});
+				}
+				setLoading(false);
+			});
+		})();
 		const {
 			data: { subscription: authListener },
 		} = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -55,7 +57,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		});
 		return () => authListener.unsubscribe();
 	}, []);
-
 	return (
 		<AuthContext.Provider value={{ user, loading }}>
 			{children}

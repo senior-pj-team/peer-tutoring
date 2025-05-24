@@ -21,7 +21,7 @@ import {
 import { useRouter } from "next/navigation";
 
 type SessionCardProp = {
-	id: number;
+	id: number | null;
 	image?: string;
 	sessionName: string;
 	courseCode: string;
@@ -32,7 +32,7 @@ type SessionCardProp = {
 	start_time?: string;
 	end_time?: string;
 	tutor_name?: string;
-	tutor_rating?: number;
+	tutor_rating?: number | null;
 
 	status?: string;
 	enrollments?: number;

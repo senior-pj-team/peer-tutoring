@@ -7,7 +7,7 @@ export const sessionSchema = z
     courseCode: z.string(),
     courseName: z.string(),
     sessionName: z.string().min(1, "Session name is required"),
-    category: z.string().min(1, "Category is required"),
+    category: z.string().min(1, "Session category is required"),
     description: z.string().min(1, "Description is required"),
     location: z.string().min(1, "Location is required"),
     requirements: z.string().refine(
@@ -33,7 +33,7 @@ export const sessionSchema = z
     amount: z.coerce.number().min(1, "Amount must be non-negative"),
     image: z.instanceof(File).refine((file) => file.size > 0, {
       message: "Image file is required",
-    }),
+    }).nullable(),
   })
   .superRefine(({ startTime, endTime }, ctx) => {
     const [sh, sm] = startTime.split(":").map(Number);
