@@ -143,3 +143,44 @@ export const selectSessionCardData = async (
 		.eq("student_id", user.user_id)
 		.in("student_session_status", status);
 };
+
+export async function getSessionDetail(sessionId: string, supabase: SupabaseClient) {
+  const { data, count, error } = await supabase
+    .from("student_session_view")
+    .select(
+      `
+      session_name,
+      image,
+      course_code,
+      course_name,
+      school,
+      major,
+      description,
+      requirement,
+      location,
+      max_students,
+      start_time,
+      end_time,
+      tutor_name,
+      tutor_rating,
+      price,
+      refunded_amount,
+      session_status,
+      student_session_status
+    `,
+      { count: "exact" }
+    )
+    .eq("session_id", sessionId).single();
+
+  if (error) {
+    console.error("Supabase error:", error);
+    return null;
+  }
+
+  const session = data;
+
+  return {
+    ...session,
+    enrolled_students: count || 0,
+  };
+}

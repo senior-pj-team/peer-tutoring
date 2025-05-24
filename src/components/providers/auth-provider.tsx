@@ -19,8 +19,14 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+<<<<<<< HEAD
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const supabase = useSupabase();
+=======
+export function AuthProvider({ children }: { children: ReactNode }) {
+	
+	const supabase = useMemo(() => createClient(), []);
+>>>>>>> 79cf7b8 (select student session details)
 	const [user, setUser] = useState<UserSession | null>(null);
 	const [loading, setLoading] = useState(true);
 
