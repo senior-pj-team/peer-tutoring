@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import GeneralSessionCard from "@/components/custom/shared/general-session-card";
+import GeneralSessionCard from "@/components/app/shared/general-session-card";
 
 // const getRemainingTime = (date: string, startTime: string) => {
 //   const now = new Date();

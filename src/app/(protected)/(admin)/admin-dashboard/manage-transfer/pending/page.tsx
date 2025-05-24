@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link"; // Import the Link component from next/link
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import AdminTransfer from "@/components/custom/features/admin/admin-transfer";
+import AdminTransfer from "@/components/app/features/admin/admin-transfer";
 
 // Example session-based transfers
 const mockSessionTransfers = [

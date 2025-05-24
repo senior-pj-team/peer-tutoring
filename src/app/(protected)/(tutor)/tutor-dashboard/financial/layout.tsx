@@ -1,4 +1,4 @@
-import Tabs from "@/components/custom/shared/tabs";
+import Tabs from "@/components/app/shared/tabs";
 
 export default function layout({
 	children,

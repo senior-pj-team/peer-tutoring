@@ -1,20 +1,20 @@
 import {
-    Card,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+	Card,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 import { Percent } from "lucide-react";
 import { cn } from "@/lib/utils";
 type SessionStatsCardProps = {
-    title: string;
-    stats: number;
-    period: string;
-    statsPercent?: number;
-    enrollments?: number;
-    dispute_students?: number;
-    refunded_students?: number;
+	title: string;
+	stats: number;
+	period: string;
+	statsPercent?: number;
+	enrollments?: number;
+	dispute_students?: number;
+	refunded_students?: number;
 };
 
 export default function FinancialStatsCard({
@@ -64,7 +64,8 @@ export default function FinancialStatsCard({
 					className={cn(
 						"@[250px]/card:text-3xl text-2xl font-semibold tabular-nums flex items-center gap-x-2",
 						title === "Gross Revenue" && "text-green-500",
-						title === "Held Funds" || title ===  "Holding Funds" && "text-orange-500",
+						title === "Held Funds" ||
+							(title === "Holding Funds" && "text-orange-500"),
 						title === "Refuned Amount" && "text-red-500",
 						title === "Platform Earnings" && "text-violet-500",
 						title === "Refunds" && "text-red-500",

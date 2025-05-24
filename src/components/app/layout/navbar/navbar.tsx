@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getAvatarFallback } from "@/lib/getAvatarFallback";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 export default function Navbar() {
 	const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
@@ -128,7 +128,7 @@ export default function Navbar() {
 									<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
 										<Avatar>
 											<AvatarImage
-												src={user.profile_url}
+												src={user.profile_url ?? ""}
 												width={56}
 												height={56}
 												alt="User Avatar"

@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import SessionCard from "@/components/custom/shared/session-card";
-import SessionSearchBar from "@/components/custom/features/tutor-dashboard/tutor-search-bar";
+import SessionCard from "@/components/app/shared/session-card";
+import { DebounceSearchBar } from "@/components/app/shared/debounce-search-bar";
 
 export default function ArchivedSessions() {
 	// Sample data for sessions (same as before, you can replace this with actual dynamic data)
-	const [sessionName, setSessionName] = useState("")
+	const [sessionName, setSessionName] = useState("");
 	const sessions = [
 		{
 			id: 1,
@@ -44,16 +44,21 @@ export default function ArchivedSessions() {
 			paid_students: 0,
 			action: "archive",
 		},
-	]
-	const filteredSessions = sessions.filter((session) => session.sessionName.toLowerCase().includes(sessionName.toLowerCase()))
+	];
+	const filteredSessions = sessions.filter((session) =>
+		session.sessionName.toLowerCase().includes(sessionName.toLowerCase()),
+	);
 
 	return (
 		<div className="py-5">
-			<SessionSearchBar
+			<DebounceSearchBar
 				query={sessionName}
 				setQuery={setSessionName}
-				type="sessions"
+				placeholder="Search with session name..."
+				className="p-4 pr-10 border border-gray-300 rounded-lg focus:outline-primary focus:ring-primary overflow-clip mr-auto"
 			/>
+			<div className="mb-5"></div>
+
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:grid-cols-3">
 				{filteredSessions.map((session) => (
 					<SessionCard

@@ -1,5 +1,5 @@
 import React from "react";
-import Expandable from "@/components/custom/shared/expandable-text";
+import Expandable from "@/components/app/shared/expandable-text";
 
 const page = () => {
 	const sessionData = {

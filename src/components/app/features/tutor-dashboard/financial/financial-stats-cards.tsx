@@ -10,8 +10,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import FinancialStatsCard from "@/components/custom/shared/financial-card";	
-
+import FinancialStatsCard from "@/components/app/shared/financial-card";
 
 export default function FinancialStatsCards() {
 	const [period, setPeriod] = useState<string>("all time");

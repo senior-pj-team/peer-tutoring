@@ -1,4 +1,4 @@
-import { Footer } from "@/components/custom/layout/footer";
+import { Footer } from "@/components/app/layout/footer";
 import React from "react";
 
 export default function Layout({

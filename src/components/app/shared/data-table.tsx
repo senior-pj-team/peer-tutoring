@@ -18,14 +18,15 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { Search } from "lucide-react";
 import { DataTablePagination } from "./data-table-pagination";
 import { useMemo, useState } from "react";
 
-import TutorDashboardSearchBar from "../features/tutor-dashboard/tutor-search-bar";
+import { DebounceSearchBar } from "./debounce-search-bar";
 import { DatePickerWithRange } from "./date-range-picker";
 import { DateRange } from "react-day-picker";
 import { isAfter, isBefore, isSameDay, isToday } from "date-fns";
-import { fuzzyFilter } from "@/lib/fuzzyFilter";
+import { fuzzyFilter } from "@/utils/app/fuzzy-filter";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -82,15 +83,25 @@ export function DataTable<TData, TValue>({
 			<div className="rounded-md border">
 				<div className="flex flex-wrap gap-3  py-4 px-2 w-full ">
 					{(type == "students" || type === "payouts") && (
-						<TutorDashboardSearchBar
-							query={
-								(table.getColumn("search")?.getFilterValue() as string) ?? ""
-							}
-							setQuery={(query) =>
-								table.getColumn("search")?.setFilterValue(query)
-							}
-							type="data-table"
-						/>
+						<div className="mb-5 lg:w-[40%] md:w-[60%] w-full lg:flex-2">
+							<div className="relative">
+								<DebounceSearchBar
+									query={
+										(table.getColumn("search")?.getFilterValue() as string) ??
+										""
+									}
+									setQuery={(query) =>
+										table.getColumn("search")?.setFilterValue(query)
+									}
+									placeholder="Search with student or session..."
+									className="p-4 pr-10 border border-gray-300 rounded-lg focus:outline-primary focus:ring-primary overflow-clip mr-auto"
+								/>
+							</div>
+							<Search
+								className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
+								size={18}
+							/>
+						</div>
 					)}
 					{type === "payouts" && (
 						<DatePickerWithRange date={date} setDate={setDate} />

@@ -1,11 +1,11 @@
 import React from "react";
 import { Mail, Phone, MessageCircle } from "lucide-react";
-import Rating from "@/components/custom/features/rating-review/rating";
-import Expandable from "@/components/custom/shared/expandable-text";
-import GeneralSessionCard from "@/components/custom/shared/general-session-card";
-import Reviews from "@/components/custom/features/rating-review/reviews";
-import { PaginationWithLinks } from "@/components/custom/shared/pagination-with-links";
-import MoreReviewBtn from "@/components/custom/features/rating-review/review-dialog";
+import Rating from "@/components/app/features/rating-review/rating";
+import Expandable from "@/components/app/shared/expandable-text";
+import GeneralSessionCard from "@/components/app/shared/general-session-card";
+import Reviews from "@/components/app/features/rating-review/reviews";
+import { PaginationWithLinks } from "@/components/app/shared/pagination-with-links";
+import MoreReviewBtn from "@/components/app/features/rating-review/review-dialog";
 import Image from "next/image";
 
 const page = async ({

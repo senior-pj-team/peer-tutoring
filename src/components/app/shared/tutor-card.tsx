@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import Rating from "@/components/custom/features/rating-review/rating";
+import Rating from "@/components/app/features/rating-review/rating";
 import Image from "next/image";
 import { MessageCircleCode, Mail, Phone } from "lucide-react";
 import {

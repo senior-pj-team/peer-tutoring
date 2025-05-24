@@ -1,4 +1,4 @@
-import SessionForm from "@/components/custom/shared/session-form";
+import SessionForm from "@/components/app/shared/session-form";
 
 export default function CreateSession() {
 	console.log("a");

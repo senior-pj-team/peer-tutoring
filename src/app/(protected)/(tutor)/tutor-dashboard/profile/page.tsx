@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import TutorBioBox from "@/components/custom/features/profile-settings/tutor-bio-box";
-import TutorHighLightBox from "@/components/custom/features/profile-settings/tutor-highlight-box";
-import TutorBankBox from "@/components/custom/features/profile-settings/tutor-bank-box";
-import StudentInfo from "@/components/custom/shared/student-info";
+import TutorBioBox from "@/components/app/features/profile-settings/tutor-bio-box";
+import TutorHighLightBox from "@/components/app/features/profile-settings/tutor-highlight-box";
+import TutorBankBox from "@/components/app/features/profile-settings/tutor-bank-box";
+import StudentInfo from "@/components/app/shared/student-info";
 
 export default function TutorProfilePage() {
 	const tutorInfo = {

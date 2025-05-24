@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SessionCard from "@/components/custom/shared/session-card";
+import SessionCard from "@/components/app/shared/session-card";
 
 const getRemainingTime = (date: string, startTime: string) => {
 	const now = new Date();

@@ -1,6 +1,6 @@
-import Filter from "@/components/custom/shared/filter";
-import { PaginationWithLinks } from "@/components/custom/shared/pagination-with-links";
-import GeneralSessionCard from "@/components/custom/shared/general-session-card";
+import Filter from "@/components/app/shared/filter";
+import { PaginationWithLinks } from "@/components/app/shared/pagination-with-links";
+import GeneralSessionCard from "@/components/app/shared/general-session-card";
 import {
 	Sheet,
 	SheetContent,

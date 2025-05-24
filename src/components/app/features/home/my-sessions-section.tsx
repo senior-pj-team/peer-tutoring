@@ -1,11 +1,11 @@
-import CustomCarousel from "@/components/custom/features/home/custom-carousel";
+import CustomCarousel from "@/components/app/features/home/custom-carousel";
 import Link from "next/link";
 
 export default function MySessionsSection() {
 	const sessions = [
 		{
 			id: 1,
-			image: '/React.png',
+			image: "/React.png",
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",
@@ -13,7 +13,7 @@ export default function MySessionsSection() {
 		},
 		{
 			id: 2,
-			image: '/Chinese.jpg',
+			image: "/Chinese.jpg",
 			sessionName: "Example session name",
 			courseCode: "10125",
 			courseName: "Web development",

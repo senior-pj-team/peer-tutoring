@@ -8,7 +8,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getAvatarFallback } from "@/lib/getAvatarFallback";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 export default function CustomSheet() {
 	const { user, setUser, loading } = useAuth();

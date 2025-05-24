@@ -11,8 +11,8 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
-import TutorCard from "@/components/custom/shared/tutor-card";
-import GeneralSessionCard from "@/components/custom/shared/general-session-card";
+import TutorCard from "@/components/app/shared/tutor-card";
+import GeneralSessionCard from "@/components/app/shared/general-session-card";
 
 type MySession = {
 	id: number;

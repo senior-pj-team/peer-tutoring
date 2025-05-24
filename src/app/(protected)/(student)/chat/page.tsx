@@ -1,9 +1,9 @@
-import ChatLayout from "@/components/custom/features/chat/chat-layout";
+import ChatLayout from "@/components/app/features/chat/chat-layout";
 
-type Params = Promise<{ userId: string }>
+type Params = Promise<{ userId: string }>;
 
 export default async function ChatPage({ params }: { params: Params }) {
-  const { userId } = await params
+	const { userId } = await params;
 
-  return <ChatLayout userId={userId} />;
+	return <ChatLayout userId={userId} />;
 }

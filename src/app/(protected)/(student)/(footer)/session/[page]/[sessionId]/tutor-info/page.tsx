@@ -1,10 +1,10 @@
-import TutorOverallStats from "@/components/custom/shared/tutor-overall-stats";
+import TutorOverallStats from "@/components/app/shared/tutor-overall-stats";
 import React from "react";
-import Expandable from "@/components/custom/shared/expandable-text";
+import Expandable from "@/components/app/shared/expandable-text";
 import { Star, Mail, Phone } from "lucide-react";
-import ReviewCard from "@/components/custom/features/rating-review/review-card";
-import GeneralSessionCard from "@/components/custom/shared/general-session-card";
-import MoreReviewBtn from "@/components/custom/features/rating-review/review-dialog";
+import ReviewCard from "@/components/app/features/rating-review/review-card";
+import GeneralSessionCard from "@/components/app/shared/general-session-card";
+import MoreReviewBtn from "@/components/app/features/rating-review/review-dialog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 const page = () => {

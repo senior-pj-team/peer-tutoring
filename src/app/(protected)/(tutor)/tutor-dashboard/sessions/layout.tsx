@@ -1,5 +1,5 @@
-import Tabs from "@/components/custom/shared/tabs";
-import SessionStatsCards from "@/components/custom/features/tutor-dashboard/sessions/session-stats-cards";
+import Tabs from "@/components/app/shared/tabs";
+import SessionStatsCards from "@/components/app/features/tutor-dashboard/sessions/session-stats-cards";
 
 import { Separator } from "@/components/ui/separator";
 

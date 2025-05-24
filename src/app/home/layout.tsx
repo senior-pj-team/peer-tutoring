@@ -1,5 +1,5 @@
-import { Footer } from "@/components/custom/layout/footer";
-import Navbar from "@/components/custom/layout/navbar/navbar";
+import { Footer } from "@/components/app/layout/footer";
+import Navbar from "@/components/app/layout/navbar/navbar";
 import { createClient } from "../../utils/supabase/server";
 import React from "react";
 

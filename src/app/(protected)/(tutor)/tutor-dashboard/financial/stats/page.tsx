@@ -1,5 +1,5 @@
-import FinancialStatsCards from "@/components/custom/features/tutor-dashboard/financial/financial-stats-cards";
-import { FinancialChart } from "@/components/custom/features/tutor-dashboard/financial/financial-stats-chart";
+import FinancialStatsCards from "@/components/app/features/tutor-dashboard/financial/financial-stats-cards";
+import { FinancialChart } from "@/components/app/features/tutor-dashboard/financial/financial-stats-chart";
 
 export default function FinancialStats() {
 	return (

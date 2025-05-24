@@ -3,22 +3,18 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HoverCardContent } from "@/components/ui/hover-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getAvatarFallback } from "@/lib/getAvatarFallback";
-import { createClient } from "@/utils/supabase/client";
-
-import Image from "next/image";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
 export default function ProfileHoverContent() {
-	const { user, setUser, loading } = useAuth();
+	const { user, loading } = useAuth();
 	async function handleSignOut() {
 		const { error } = await signOut();
 		if (error) {
 			toast("Log out Error!");
 		} else {
-			setUser(null);
 			redirect("/login");
 		}
 	}
@@ -42,7 +38,7 @@ export default function ProfileHoverContent() {
 						<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
 							<Avatar>
 								<AvatarImage
-									src={user.profile_url}
+									src={user.profile_url ?? ""}
 									width={56}
 									height={56}
 									alt="User Avatar"

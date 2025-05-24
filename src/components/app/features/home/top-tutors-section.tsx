@@ -1,4 +1,4 @@
-import CustomCarousel from "@/components/custom/features/home/custom-carousel";
+import CustomCarousel from "@/components/app/features/home/custom-carousel";
 
 export default function TopTutorsSection() {
 	const tutors = [

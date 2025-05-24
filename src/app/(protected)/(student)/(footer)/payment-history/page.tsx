@@ -1,5 +1,5 @@
 import React from "react";
-import PaymentTable from "@/components/custom/features/payment/payment-table";
+import PaymentTable from "@/components/app/features/payment/payment-table";
 import { Roboto_Mono } from "next/font/google";
 import clsx from "clsx";
 const roboto_mono = Roboto_Mono({
