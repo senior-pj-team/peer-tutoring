@@ -1,11 +1,11 @@
-import SessionHeader from "@/components/custom/features/session/session-header";
+import SessionHeader from "@/components/app/features/session/session-header";
 import React from "react";
-import Tabs from "@/components/custom/shared/tabs";
-import CompletedAction from "@/components/custom/features/session/completed-action";
-import UpcomingAction from "@/components/custom/features/session/upcoming-action";
-import EnrollAction from "@/components/custom/features/session/enroll-action";
-import ArchivedAction from "@/components/custom/features/session/archived-action";
-import RefundStatus from "@/components/custom/features/session/refund-status";
+import Tabs from "@/components/app/shared/tabs";
+import CompletedAction from "@/components/app/features/session/completed-action";
+import UpcomingAction from "@/components/app/features/session/upcoming-action";
+import EnrollAction from "@/components/app/features/session/enroll-action";
+import ArchivedAction from "@/components/app/features/session/archived-action";
+import RefundStatus from "@/components/app/features/session/refund-status";
 import { Separator } from "@/components/ui/separator";
 
 const layout = async ({

@@ -1,5 +1,5 @@
-import SettingNavbar from "@/components/custom/features/profile-settings/setting-navbar";
-import Tabs from "@/components/custom/shared/tabs";
+import SettingNavbar from "@/components/app/features/profile-settings/setting-navbar";
+import Tabs from "@/components/app/shared/tabs";
 
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";

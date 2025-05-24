@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "@/components/custom/layout/navbar/navbar";
+import Navbar from "@/components/app/layout/navbar/navbar";
 import { useAuth } from "@/components/providers/auth-provider";
 import React from "react";
 

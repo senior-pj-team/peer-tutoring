@@ -1,7 +1,7 @@
 "use client";
 
-import AdminSideBar from "@/components/custom/layout/sidebar/admin-sidebar";
-import { SiteHeader } from "@/components/custom/layout/sidebar/site-header";
+import AdminSideBar from "@/components/app/layout/sidebar/admin-sidebar";
+import { SiteHeader } from "@/components/app/layout/sidebar/site-header";
 import { useAuth } from "@/components/providers/auth-provider";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";

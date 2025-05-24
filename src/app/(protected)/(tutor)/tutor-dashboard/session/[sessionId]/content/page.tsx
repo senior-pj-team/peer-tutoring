@@ -1,4 +1,4 @@
-import SessionForm from "@/components/custom/shared/session-form";
+import SessionForm from "@/components/app/shared/session-form";
 import React from "react";
 
 const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import Expandable from "@/components/custom/shared/expandable-text";
+import Expandable from "@/components/app/shared/expandable-text";
 import Image from "next/image";
 import { FiStar } from "react-icons/fi";
-import AdminTransfer from "@/components/custom/features/admin/admin-transfer";
+import AdminTransfer from "@/components/app/features/admin/admin-transfer";
 
 const SessionDetailPage = () => {
 	const sessionData = {
