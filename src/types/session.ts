@@ -1,4 +1,4 @@
-export type Sessions = {
+export type Session = {
   session_id: string,
   image: string;
   session_name: string;
@@ -10,4 +10,4 @@ export type Sessions = {
   tutor_name: string;
   tutor_rating: number;
   status: string;
-}[];
+};
