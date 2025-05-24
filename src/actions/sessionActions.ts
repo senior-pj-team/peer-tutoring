@@ -14,7 +14,7 @@ import { UserSession } from "@/types/userSession";
 import { getUserSession } from "@/utils/getUserSession";
 
 import { ResponseType } from "@/types/responseType";
-import { Sessions } from "@/types/sessions";
+import { Session } from "@/types/session";
 
 export const createSession = async (
   values: SessionSchemaT
@@ -150,7 +150,7 @@ export const getSessions = async (status: string[]) => {
   console.log(rawData);
   
 
-  const sessions: Sessions = rawData.map((session) => {
+  const sessions: Session[] = rawData.map((session) => {
     const {date, start_time, end_time}= parseTimeRange(session.start_time, session.end_time)
     return {
       session_id: session.session_id as string,
@@ -172,3 +172,7 @@ export const getSessions = async (status: string[]) => {
     data: sessions,
   };
 };
+
+const getSessionDetail= ()=>{
+  
+}

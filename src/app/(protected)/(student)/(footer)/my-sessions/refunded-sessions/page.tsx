@@ -1,24 +1,13 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import SessionCard from "@/components/custom/shared/session-card";
 import { getSessions } from "@/actions/sessionActions";
-import { Sessions } from "@/types/sessions";
+import { Session } from "@/types/session";
 
-const Page = () => {
-	const [sessions, setSessions] = useState<Sessions | undefined>([])
-		useEffect(()=>{
-			const fetchData= async ()=>{
-				const response = await getSessions(['refunded', 'pending_refund']);
-				console.log("Session Data");
-				console.log(response);
-				setSessions(response.data);
-			}
-			fetchData();
-		},[])
+const Page = async () => {
+	const response = await getSessions(['refunded', 'pending_refund']);
+	const sessions = response.data;
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-			{sessions && sessions.map((session) => (
+			{sessions && sessions.map((session: Session) => (
 				<SessionCard
 					key={session.session_id}
 					id={session.session_id}
