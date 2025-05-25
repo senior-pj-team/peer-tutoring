@@ -151,8 +151,7 @@ export const getSessions = async (status: TStudentSessionStatus[]) => {
 			error: { message: error.message },
 		};
 	}
-	console.log(rawData);
-
+  
 	const sessions = rawData.map((session) => {
 		const { date, start_time, end_time } = parseTimeRange(
 			session.start_time,
@@ -179,4 +178,6 @@ export const getSessions = async (status: TStudentSessionStatus[]) => {
 	};
 };
 
-const getSessionDetail = () => {};
+const getSessionDetail = () => {
+  
+};
