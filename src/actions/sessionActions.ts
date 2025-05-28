@@ -2,15 +2,13 @@
 
 import { getDateWithTime, parseTimeRange } from "@/utils/sessionsUtils";
 import { SessionSchemaT } from "@/schema/sessionSchema";
-import {
-	deleteImage,
-	insertSession,
-	selectSessionCardData,
-	updateSession,
-	uploadImage,
-} from "@/data/sessions";
+import { insertSession } from "@/data/mutations/sessions/insert-session";
+import { updateSession } from "@/data/mutations/sessions/update-sessions";
+import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
+import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
 
 import { getUserSession } from "@/utils/getUserSession";
+import { createClient } from "@/utils/supabase/server";
 
 export const createSession = async (
 	values: SessionSchemaT,
@@ -35,9 +33,12 @@ export const createSession = async (
 
 	const tutor_id = user.user_id;
 
+	// data
+	const supabase: TSupabaseClient=await createClient();
+	
 	let uploadedUrl: string | null = null;
 	if (values.image) {
-		uploadedUrl = await uploadImage(values.image);
+		uploadedUrl = await uploadImage(values.image, supabase);
 		if (!uploadedUrl) {
 			return {
 				success: false,
@@ -52,6 +53,7 @@ export const createSession = async (
 		start,
 		end,
 		tutor_id,
+		supabase
 	);
 
 	if (error) {
@@ -68,10 +70,9 @@ export const createSession = async (
 };
 
 export const editSession = async (
-	sessionId: string,
+	sessionId: number,
 	values: SessionSchemaT,
 	imageString: string,
-	previewUrl: string | null,
 ): Promise<ActionResponseType<any>> => {
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
@@ -93,24 +94,21 @@ export const editSession = async (
 	}
 
 	const tutor_id = user.user_id;
-	let isDelete;
+	const supabase: TSupabaseClient=await createClient();
 
+	let isDelete;
 	let uploadedUrl: string | null = null;
 	if (values.image) {
-		uploadedUrl = await uploadImage(values.image);
+		uploadedUrl = await uploadImage(values.image, supabase);
 		if (!uploadedUrl) {
 			return {
 				success: false,
 				error: { message: "Failed to upload image" },
 			};
 		}
-		isDelete = await deleteImage(imageString);
-	} else {
-		if (!previewUrl) {
-			isDelete = await deleteImage(imageString);
-		}
+		isDelete = await deleteImage(imageString, supabase);
 	}
-
+	
 	const { data, error } = await updateSession(
 		sessionId,
 		values,
@@ -118,6 +116,7 @@ export const editSession = async (
 		start,
 		end,
 		tutor_id,
+		supabase
 	);
 
 	if (error) {
@@ -133,51 +132,4 @@ export const editSession = async (
 	};
 };
 
-export const getSessions = async (status: TStudentSessionStatus[]) => {
-	const user: UserSession | null = await getUserSession();
-	if (!user) {
-		return {
-			success: false,
-			error: { message: "Something went wrong!" },
-		};
-	}
 
-	const { data: rawData, error } = await selectSessionCardData(status, user);
-
-	if (error) {
-		console.log(error.message);
-		return {
-			success: false,
-			error: { message: error.message },
-		};
-	}
-  
-	const sessions = rawData.map((session) => {
-		const { date, start_time, end_time } = parseTimeRange(
-			session.start_time,
-			session.end_time,
-		);
-		return {
-			session_id: session.session_id,
-			image: session.image as string,
-			session_name: session.session_name as string,
-			course_code: session.course_code as string,
-			course_name: session.course_name as string,
-			date: date as Date,
-			start_time: start_time as string,
-			end_time: end_time as string,
-			tutor_name: session.tutor_name as string,
-			tutor_rating: session.tutor_rating,
-			status: session.student_session_status as string,
-		};
-	});
-
-	return {
-		success: true,
-		data: sessions,
-	};
-};
-
-const getSessionDetail = () => {
-  
-};

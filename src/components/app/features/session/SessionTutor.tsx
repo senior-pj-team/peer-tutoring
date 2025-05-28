@@ -7,7 +7,7 @@ import GeneralSessionCard from "@/components/app/shared/general-session-card";
 import MoreReviewBtn from "@/components/app/features/rating-review/review-dialog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-const page = () => {
+const SessionTutor = ({tutor_id}: {tutor_id: number}) => {
 	const sessions = [
 		{
 			sessionName: "React Redux Nodejs and Kafka basic",
@@ -145,4 +145,4 @@ const page = () => {
 	);
 };
 
-export default page;
+export default SessionTutor;
