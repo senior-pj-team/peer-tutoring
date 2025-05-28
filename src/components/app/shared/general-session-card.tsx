@@ -52,7 +52,7 @@ export default function GeneralSessionCard({
 					className,
 				)}
 				onClick={() => {
-					router.push(`/session/${page}/${content.id}/content`);
+					router.push(`/session/${page}/${content.id}`);
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>

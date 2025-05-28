@@ -1,7 +1,6 @@
 "use server";
 import { createClient } from "./supabase/server";
 import { jwtDecode } from "jwt-decode";
-import { UserSession, MyJwtPayload } from "@/types/userSession";
 
 export const getUserSession = async (): Promise<UserSession | null> => {
   const supabase = await createClient();

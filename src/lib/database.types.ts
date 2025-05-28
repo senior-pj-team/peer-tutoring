@@ -255,6 +255,7 @@ export type Database = {
           registered_tutor_at: string | null
           role: Database["public"]["Enums"]["app_role"]
           school: string | null
+          tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
           year: string | null
@@ -272,6 +273,7 @@ export type Database = {
           registered_tutor_at?: string | null
           role?: Database["public"]["Enums"]["app_role"]
           school?: string | null
+          tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
           year?: string | null
@@ -289,6 +291,7 @@ export type Database = {
           registered_tutor_at?: string | null
           role?: Database["public"]["Enums"]["app_role"]
           school?: string | null
+          tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
           year?: string | null
@@ -322,18 +325,23 @@ export type Database = {
         Row: {
           course_code: string | null
           course_name: string | null
+          description: string | null
           end_time: string | null
           image: string | null
+          location: string | null
+          major: string | null
+          max_students: number | null
+          price: number | null
+          refunded_amount: number | null
+          requirement: string | null
+          school: string | null
           session_id: number | null
           session_name: string | null
           session_status: Database["public"]["Enums"]["session_status"] | null
+          ss: Json | null
           start_time: string | null
           student_id: string | null
-          student_session_status:
-            | Database["public"]["Enums"]["student_session_status"]
-            | null
-          tutor_name: string | null
-          tutor_rating: number | null
+          tutor: Json | null
         }
         Relationships: [
           {
@@ -363,6 +371,20 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      select_session_tutor_mat_view: {
+        Args: {
+          search_text: string
+          min_price?: number
+          max_price?: number
+          tutor_rating?: number
+          category?: string[]
+          free_only?: boolean
+          paid_only?: boolean
+          limit_count?: number
+          offset_count?: number
+        }
+        Returns: unknown[]
+      }
       update_session_status: {
         Args: { session_id: number; new_status: string }
         Returns: undefined
@@ -380,7 +402,10 @@ export type Database = {
       tutor_status: "pending" | "verified" | "rejected"
     }
     CompositeTypes: {
-      [_ in never]: never
+      session_tutor_mat_view_result: {
+        rows: unknown[] | null
+        total: number | null
+      }
     }
   }
 }

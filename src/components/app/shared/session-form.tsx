@@ -25,9 +25,6 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 
-import { createClient } from "../../../utils/supabase/client";
-const supabase = createClient();
-
 import {
 	Select,
 	SelectContent,
@@ -65,7 +62,7 @@ type SessionFormProps = {
 	sessionName?: string;
 	location?: string;
 	category?: string;
-	sessionId?: string;
+	sessionId?: number;
 };
 
 export default function SessionForm({
@@ -86,10 +83,9 @@ export default function SessionForm({
 	location = "",
 	category = "",
 	isEdit = false,
-	sessionId = "",
+	sessionId= 0,
 }: SessionFormProps) {
 	let image: File | null = null;
-
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
 		defaultValues: {
@@ -136,17 +132,13 @@ export default function SessionForm({
 	const handleConfirm = async () => {
 		if (!formValues) return;
 		try {
-			console.log("Handle confirm", isEdit);
-
 			let response;
 
 			if (isEdit) {
-				console.log("Calling editSession");
 				response = await editSession(
 					sessionId,
 					formValues,
 					imageString,
-					previewUrl,
 				);
 			} else {
 				console.log("Calling createSession");
@@ -173,8 +165,6 @@ export default function SessionForm({
 						description: `We couldn't complete your request. ${response.error.message}`,
 				  });
 			setisDialogOpen(false);
-			console.log("sessionId", sessionId);
-			console.log("Response", response);
 		} catch (error) {
 			console.error(error);
 			toast.error("Something went wrong", {
@@ -182,7 +172,6 @@ export default function SessionForm({
 			});
 		}
 	};
-
 	return (
 		<div className="px-4 lg:px-6">
 			{isEdit && (
@@ -266,7 +255,6 @@ export default function SessionForm({
 									<Label className="mb-1 block text-[1rem]">Image</Label>
 									<div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 relative">
 										{previewUrl ? (
-											<>
 												<Image
 													src={previewUrl}
 													alt="Profile Preview"
@@ -275,17 +263,6 @@ export default function SessionForm({
 													priority
 													className="object-cover w-full h-full"
 												/>
-												<button
-													type="button"
-													onClick={() => {
-														setPreviewUrl(null);
-														form.setValue("image", image);
-													}}
-													disabled={isDisable}
-													className="absolute top-2 right-2 text-white bg-red-500 hover:bg-red-600 rounded px-2 py-1 text-xs">
-													Remove
-												</button>
-											</>
 										) : (
 											<span className="text-sm text-gray-400">
 												No image selected

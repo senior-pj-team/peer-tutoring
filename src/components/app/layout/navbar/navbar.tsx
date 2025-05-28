@@ -36,7 +36,6 @@ export default function Navbar() {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [lastScrollY]);
-	console.log(user);
 	return (
 		<div
 			className={clsx(

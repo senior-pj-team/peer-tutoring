@@ -3,21 +3,22 @@ import Link from "next/link";
 import Rating from "@/components/app/features/rating-review/rating";
 import clsx from "clsx";
 
-const SessionHeader = () => {
+const SessionHeader = ({data}: {data: TSessionHeaderData}) => {
+	const {session_name, course_code, course_name, major, school, tutor_name, tutor_rating, session_status, image}= data;
 	const status = "OPEN";
 	return (
 		<div className="bg-white ps-6">
 			<div className="flex flex-col relative">
 				<div className="px-6 py-15 z-1">
-					<h1 className="text-6xl">Example Session Name</h1>
+					<h1 className="text-6xl">{session_name}</h1>
 					<div className="mt-5 text-gray-500">
 						<div className="space-y-1 my-3">
 							<div className="text-sm">
-								<span>110125 </span>|<span> Web Application Development</span>
+								<span>{course_code} </span>|<span> {course_name}</span>
 							</div>
 							<div className="text-xs font-extrabold">
-								<span> Applied Digital Technology ● </span>{" "}
-								<span>Computer Engineering</span>
+								<span> {school} ● </span>{" "}
+								<span>{major}</span>
 							</div>
 						</div>
 						<div className="flex items-center">
@@ -25,10 +26,10 @@ const SessionHeader = () => {
 								<Image src="/profile.jpg" alt="Tutor avatar" fill />
 							</div>
 							<div className="text-xs underline me-3">
-								<Link href={""}>John Doe</Link>
+								<Link href={""}>{tutor_name}</Link>
 							</div>
 							|
-							<Rating className="ms-3" rating={4} />
+							<Rating className="ms-3" rating={tutor_rating?? 0} />
 						</div>
 					</div>
 					<div className="mt-5">
@@ -40,14 +41,14 @@ const SessionHeader = () => {
 									// "bg-red-100 text-red-800": status === "CLOSED",
 								},
 							)}>
-							Status: {status}
+							Status: {session_status}
 						</span>
 					</div>
 				</div>
 
 				<div className="absolute right-0 top-0 bottom-0 lg:w-[70%] w-[50%] z-0">
 					<Image
-						src="/React.png"
+						src={image?? '/React.png'}
 						alt="Session Banner"
 						fill
 						className="object-cover"

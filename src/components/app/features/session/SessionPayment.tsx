@@ -1,7 +1,7 @@
 import React from "react";
 import PaymentTable from "@/components/app/features/payment/payment-table";
 
-const page = () => {
+const SessionPayment = () => {
 	const payments = [
 		{
 			sessionName: "React Basics",
@@ -36,4 +36,4 @@ const page = () => {
 	);
 };
 
-export default page;
+export default SessionPayment;
