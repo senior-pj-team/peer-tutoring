@@ -31,14 +31,17 @@ declare global {
     "course_name",
     "start_time",
     "end_time",
-    "tutor_name",
-    "tutor_rating",
+    "tutor",
     "ss"
   >;
 
   type TStudentSessionViewDetailResult = TStudentSessionViewResult & {
     enrolled_students: number;
   };
+
+  type TTutorStatsViewResult = DB["public"]["Views"]["tutor_stats_view"]["Row"];
+
+  type TRatingReviewUserViewResult = DB["public"]["Views"]["rating_review_view"]["Row"];
 
   // other global types
   type TBrowseSessionFilters = {
@@ -98,7 +101,10 @@ declare global {
     enrolled_students: number;
   };
   type TSessionPaymentData = {
-    price: number | null;
+    amount_from_student: number | null;
+    enrolled_at: string | null;
     refunded_amount: number | null;
+    refunded_at: string | null;
+    session_name: string | null;
   };
 }

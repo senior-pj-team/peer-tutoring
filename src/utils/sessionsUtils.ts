@@ -11,26 +11,10 @@ export const parseTimeRange = (
 	start_time: string | null,
 	end_time: string | null,
 ) => {
-	if (!start_time || !end_time) {
-		return {
-			start_time: "Unknown",
-			end_time: "Unknown",
-			date: "Unknown"
-		};
-	}
-	const start = new Date(start_time);
-	const end = new Date(end_time);
-
-	const formatTime = (date: Date) => {
-		const hours = String(date.getHours()).padStart(2, "0");
-		const minutes = String(date.getMinutes()).padStart(2, "0");
-		return `${hours}:${minutes}`;
-	};
-
 	return {
-		date: new Date(start.getFullYear(), start.getMonth(), start.getDate()).toDateString()?? "Unknown",
-		start_time: formatTime(start),
-		end_time: formatTime(end),
+		date: formatTime(start_time),
+		start_time: formatTime(start_time),
+		end_time: formatTime(end_time),
 	};
 };
 
@@ -64,3 +48,17 @@ export const getRemainingTime = (date: string | undefined, startTime: string | u
 		return "Soon";
 	}
 };
+
+export const formatTime = (timestampzString: string | null) => {
+		if(!timestampzString) return "NA"
+		const date = new Date(timestampzString)
+		const hours = String(date.getHours()).padStart(2, "0");
+		const minutes = String(date.getMinutes()).padStart(2, "0");
+		return `${hours}:${minutes}`;
+};
+
+export const formatDate= (timestampzString: string | null)=>{
+	if(!timestampzString) return "NA"
+	const date = new Date(timestampzString);
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate()).toDateString()?? "NA"
+}

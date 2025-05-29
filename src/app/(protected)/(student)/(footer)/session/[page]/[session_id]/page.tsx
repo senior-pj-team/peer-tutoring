@@ -16,7 +16,7 @@ import SessionTutor from '@/components/app/features/session/SessionTutor';
 import { createClient } from '@/utils/supabase/server';
 import { selectStudentSessionDetail } from '@/data/queries/sessions/select-student-session-view-detail';
 import { getUserSession } from '@/utils/getUserSession';
-import { parseTimeRange } from '@/utils/sessionsUtils';
+import { formatDate, parseTimeRange } from '@/utils/sessionsUtils';
 
 interface PageProps {
   params: {
@@ -26,7 +26,7 @@ interface PageProps {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const { session_id, page } = params;
+  const { session_id, page } = await params;
 
   const user = await getUserSession();
   if (!user) redirect('/login');
@@ -45,7 +45,8 @@ const Page = async ({ params }: PageProps) => {
     return <div className="text-center text-red-500">Failed to load session data.</div>;
   }
 
-  const tutor = sessionData.tutor as { name: string; rating: number; id: number };
+  const tutor = sessionData.tutor as { name: string; rating: number; id: string };//tutor json
+  const ss= sessionData.ss as {id: number, status: "string", amount_from_student: number, refunded_amount: number}
 
   const headerData: TSessionHeaderData = {
     image: sessionData.image,
@@ -78,11 +79,13 @@ const Page = async ({ params }: PageProps) => {
   const paymentData: TSessionPaymentData | null =
     page !== 'browse'
       ? {
-          price: sessionData.price,
-          refunded_amount: sessionData.refunded_amount,
+          amount_from_student: ss.amount_from_student,
+          enrolled_at: formatDate(sessionData.start_time),
+          refunded_amount: ss.refunded_amount,
+          refunded_at: formatDate(sessionData.end_time),
+          session_name: sessionData.session_name,
         }
       : null;
-
   const tutorId = page === 'browse' ? tutor.id : null;
 
   return (
@@ -116,14 +119,14 @@ const Page = async ({ params }: PageProps) => {
             )}
           </TabsList>
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 relative min-h-[30rem]">
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 relative min-h-[40rem]">
             <div className="w-full">
               <TabsContent value="content">
                 <SessionContent data={contentData} />
               </TabsContent>
               {paymentData && (
                 <TabsContent value="payment">
-                  <SessionPayment />
+                  <SessionPayment data={paymentData} />
                 </TabsContent>
               )}
               {tutorId && (
@@ -133,7 +136,7 @@ const Page = async ({ params }: PageProps) => {
               )}
             </div>
 
-            <aside className="static xl:block xl:sticky xl:top-20 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[20rem]">
+            <aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
               {page === 'complete' && <CompletedAction />}
               {page === 'upcoming' && <UpcomingAction />}
               {page === 'browse' && <EnrollAction />}
