@@ -1,7 +1,7 @@
-import SessionCard from "@/components/app/shared/session-card";
+import SessionCard from "@/components/app/shared/sessions/session-card";
 import { getSessions } from "@/actions/sessionActions";
 
-import { getRemainingTime } from "@/utils/sessionsUtils";
+import { getRemainingTime } from "@/utils/app/sessionsUtils";
 
 const Page = async () => {
 	const response = await getSessions(["enrolled"]);

@@ -1,6 +1,6 @@
-import Filter from "@/components/app/shared/filter";
-import { PaginationWithLinks } from "@/components/app/shared/pagination-with-links";
-import GeneralSessionCard from "@/components/app/shared/general-session-card";
+import Filter from "@/components/app/shared/filter/filter";
+import { GeneralSessionCardList } from "@/components/app/shared/sessions/general-session-card-list";
+import { SessionSkeletonList } from "@/components/app/shared/sessions/session-skeleton-list";
 import {
 	Sheet,
 	SheetContent,
@@ -8,285 +8,43 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import { AlignJustify } from "lucide-react";
+import { Suspense } from "react";
 
+export type Params = Promise<{
+	search: string;
+	page: string;
+	rating: string;
+	maxPrice: string;
+	minPrice: string;
+	free: string;
+	paid: string;
+	category: string[];
+}>;
 export default async function Sessions({
 	searchParams,
 }: {
-	searchParams: Promise<{ page: string }>;
+	searchParams: Params;
 }) {
-	const { page = "1" } = await searchParams;
+	const params = await searchParams;
 
-	const sessions = [
-		{
-			sessionName: "React Redux Nodejs and Kafka basic",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "React with NodeJS",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Next JS",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Machine Learing with SkitLearn",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-		{
-			sessionName: "Database Management Miderm Course",
-			courseCode: "10125",
-			courseName: "Web development",
-			school: "Applied Digital Science",
-			major: "Computer Engineering",
-			price: "400",
-			remaining: "2hr",
-			description:
-				"This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-			tutor: "Eric",
-			rating: "5",
-			type: "free",
-			from: "11:00 AM",
-			to: "2:00 PM",
-			date: "23 April 2025",
-		},
-	];
 	return (
 		<div className="lg:px-[6rem] lg:pt-[4rem] md:px-[4rem] md:pt-[3rem] px-[3rem] pt-[2rem] w-full">
-			<span className="lg:text-4xl md:text-2xl text-xl font-bold">
-				Result for &quot;database management&quot;
-			</span>
+			{params.search && (
+				<span className="lg:text-4xl md:text-2xl text-xl font-bold">
+					Result for &quot;{params.search}&quot;
+				</span>
+			)}
 			<FilterSheet />
-			<div className="flex gap-x-5 mt-10">
+			<div className={cn("flex gap-x-5 ", params.search ? "mt-10" : "mt-2")}>
 				<div className="xl:w-[25%] lg:w-[38%]  hidden lg:block">
 					<Filter />
 				</div>
 				<div className="w-full p-3">
-					<div className="grid lg:grid-cols-3 md:grid-cols-2  gap-4">
-						{sessions.map((session, index) => {
-							return (
-								<GeneralSessionCard
-									content={session}
-									type="a"
-									key={index}
-									page="browse"
-								/>
-							);
-						})}
-					</div>
-					<div className="my-3">
-						<PaginationWithLinks
-							page={parseInt(page)}
-							pageSize={20}
-							totalCount={500}
-						/>
-					</div>
+					<Suspense fallback={<SessionSkeletonList />}>
+						<GeneralSessionCardList params={params} />
+					</Suspense>
 				</div>
 			</div>
 		</div>

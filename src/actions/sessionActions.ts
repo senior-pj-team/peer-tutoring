@@ -1,6 +1,6 @@
 "use server";
 
-import { getDateWithTime, parseTimeRange } from "@/utils/sessionsUtils";
+import { getDateWithTime, parseTimeRange } from "@/utils/app/sessionsUtils";
 import { SessionSchemaT } from "@/schema/sessionSchema";
 import {
 	deleteImage,

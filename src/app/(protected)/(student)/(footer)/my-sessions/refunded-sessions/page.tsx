@@ -1,4 +1,4 @@
-import SessionCard from "@/components/app/shared/session-card";
+import SessionCard from "@/components/app/shared/sessions/session-card";
 import { getSessions } from "@/actions/sessionActions";
 
 const Page = async () => {

@@ -1,5 +1,5 @@
 "use client";
-import SessionCard from "@/components/app/shared/session-card";
+import SessionCard from "@/components/app/shared/sessions/session-card";
 import { FiSearch, FiFilter, FiCalendar } from "react-icons/fi";
 import { useState } from "react";
 

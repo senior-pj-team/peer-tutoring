@@ -1,6 +1,6 @@
 import Link from "next/link";
 import CustomCarousel from "@/components/app/features/home/custom-carousel";
-import GeneralSessionCard from "@/components/app/shared/general-session-card";
+import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
 
 export default function SessionsSection({ type }: { type: string }) {
 	const freeSessions = [

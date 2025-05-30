@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import TipTap from "./tip-tap";
+import TipTap from "../tip-tap";
 import { Button } from "@/components/ui/button";
-import DatePicker from "./date-picker";
+import DatePicker from "../date-picker";
 import { addDays, set } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -25,7 +25,7 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 
-import { createClient } from "../../../utils/supabase/client";
+import { createClient } from "../../../../utils/supabase/client";
 const supabase = createClient();
 
 import {

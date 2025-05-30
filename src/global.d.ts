@@ -5,6 +5,10 @@ declare global {
 	// Db and Supabase Client Type
 	type Database = DB;
 	type TSupabaseClient = SupabaseClient<DB>;
+	type TSessionsMatViewResultRow =
+		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
+				tutor: TTutor | null;
+		  };
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -12,12 +16,8 @@ declare global {
 	};
 
 	// query result types
-	type TSessionsMatViewResult = Omit<
-		DB["public"]["Views"]["session_tutor_mat_view"]["Row"],
-		"tutor"
-	> & {
-		tutor: TTutor | null;
-	};
+	type TSessionsMatViewResult =
+		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 
 	type TStudentSessionViewResult =
 		DB["public"]["Views"]["student_session_view"]["Row"];
@@ -26,13 +26,14 @@ declare global {
 	type TBrowseSessionFilters = {
 		search?: string;
 		tutorRating?: number;
-		sessionCategory?: string;
+		sessionCategory?: string[];
 		maxPrice?: number;
 		minPrice?: number;
 		free?: boolean;
 		paid?: boolean;
 		limit?: number;
 		offset?: number;
+		status?: DB["public"]["Enums"]["session_status"][];
 	};
 
 	type MyJwtPayload = {
@@ -58,11 +59,5 @@ declare global {
 		| { success: true; data: T }
 		| { success: false; error: { message: string } };
 
-	type TStudentSessionStatus =
-		| "completed"
-		| "enrolled"
-		| "pending_refund"
-		| "refunded"
-		| "paid"
-		| null;
+	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 }

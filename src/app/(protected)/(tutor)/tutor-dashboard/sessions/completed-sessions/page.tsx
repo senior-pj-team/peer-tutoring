@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import SessionCard from "@/components/app/shared/session-card";
+import SessionCard from "@/components/app/shared/sessions/session-card";
 import { DebounceSearchBar } from "@/components/app/shared/debounce-search-bar";
 
 export default function ArchivedSessions() {

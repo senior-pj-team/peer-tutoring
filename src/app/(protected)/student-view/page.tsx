@@ -1,4 +1,4 @@
-import SessionCard from "@/components/app/shared/session-card";
+import SessionCard from "@/components/app/shared/sessions/session-card";
 import StudentInfo from "@/components/app/shared/student-info";
 import React from "react";
 import { Roboto_Mono } from "next/font/google";
