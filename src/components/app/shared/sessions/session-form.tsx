@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import TipTap from "./tip-tap";
+import TipTap from "../tip-tap";
 import { Button } from "@/components/ui/button";
-import DatePicker from "./date-picker";
+import DatePicker from "../date-picker";
 import { addDays, set } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -83,7 +83,7 @@ export default function SessionForm({
 	location = "",
 	category = "",
 	isEdit = false,
-	sessionId= 0,
+	sessionId = 0,
 }: SessionFormProps) {
 	let image: File | null = null;
 	const form = useForm<SessionSchemaT>({
@@ -135,11 +135,7 @@ export default function SessionForm({
 			let response;
 
 			if (isEdit) {
-				response = await editSession(
-					sessionId,
-					formValues,
-					imageString,
-				);
+				response = await editSession(sessionId, formValues, imageString);
 			} else {
 				console.log("Calling createSession");
 				response = await createSession(formValues);
@@ -255,14 +251,14 @@ export default function SessionForm({
 									<Label className="mb-1 block text-[1rem]">Image</Label>
 									<div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 relative">
 										{previewUrl ? (
-												<Image
-													src={previewUrl}
-													alt="Profile Preview"
-													width={120}
-													height={120}
-													priority
-													className="object-cover w-full h-full"
-												/>
+											<Image
+												src={previewUrl}
+												alt="Profile Preview"
+												width={120}
+												height={120}
+												priority
+												className="object-cover w-full h-full"
+											/>
 										) : (
 											<span className="text-sm text-gray-400">
 												No image selected

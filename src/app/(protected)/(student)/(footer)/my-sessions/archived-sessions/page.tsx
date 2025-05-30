@@ -1,8 +1,13 @@
+<<<<<<< HEAD
+import SessionCard from "@/components/app/shared/sessions/session-card";
+import { getSessions } from "@/actions/sessionActions";
+=======
 import SessionCard from "@/components/app/shared/session-card";
 import { selectStudentSession } from "@/data/queries/sessions/select-student-session-view";
 import { getUserSession } from "@/utils/getUserSession";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+>>>>>>> main
 
 const Page = async () => {
 	const user = await getUserSession();

@@ -1,12 +1,17 @@
 "use client";
 import Navbar from "@/components/app/layout/navbar/navbar";
 import { useAuth } from "@/components/providers/auth-provider";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function Layout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	const { loading, user } = useAuth();
+
+	if (!user) {
+		redirect("/login");
+	}
 	if (
 		!loading &&
 		user?.user_role !== "student" &&

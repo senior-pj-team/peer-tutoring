@@ -9,41 +9,27 @@ import { Heart } from "lucide-react";
 
 import * as RadixHoverCard from "@radix-ui/react-hover-card";
 import Image from "next/image";
-import Rating from "../features/rating-review/rating";
+import Rating from "../../features/rating-review/rating";
 import { ClockAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useMemo } from "react";
+import { parseTimeRange } from "@/utils/app/parse-time-range";
 
-type Session = {
-	id?: number;
-	sessionName: string;
-	courseCode: string;
-	courseName: string;
-	school: string;
-	major: string;
-	price: string;
-	remaining?: string;
-	description: string;
-	tutor: string;
-	rating: string;
-	type?: string;
-	from: string;
-	to: string;
-	date: string;
-};
 export default function GeneralSessionCard({
 	content,
 	type,
 	className,
 	page,
 }: {
-	content: Session;
+	content: TSessionsMatViewResultRow;
 	type?: string;
 	className?: string;
 	page: string;
 }) {
 	const router = useRouter();
+
 	return (
 		<div>
 			<Card
@@ -52,7 +38,7 @@ export default function GeneralSessionCard({
 					className,
 				)}
 				onClick={() => {
-					router.push(`/session/${page}/${content.id}`);
+					router.push(`/session/${page}/${content.session_id}/content`);
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>
@@ -60,11 +46,12 @@ export default function GeneralSessionCard({
 						<CardHeader className="px-0 m-0 gap-0">
 							<div
 								className={clsx(
-									"relative w-full h-38  mb-2 group rounded-md ",
+									"relative w-full h-38 mb-2 group rounded-md bg-blue-50",
 									className,
 								)}>
 								<Image
-									src={"/React.png"}
+									src={content.image ?? "/no-image.png"}
+									sizes="38"
 									alt="Card image"
 									fill
 									className={clsx("object-cover rounded-md", className)}
@@ -73,7 +60,7 @@ export default function GeneralSessionCard({
 							</div>
 
 							<p className="line-clamp-2 font-extrabold leading-tight text-[1.15rem] mb-1 ">
-								{content.sessionName}
+								{content.session_name}
 							</p>
 							<span
 								className="line-clamp-1 font-extrabold text-[0.75rem] text-gray-500 underline mb-1"
@@ -82,18 +69,25 @@ export default function GeneralSessionCard({
 									e.stopPropagation();
 									router.push(`/tutor-view`);
 								}}>
-								Tutor {content.tutor}
+								Tutor {content.tutor?.name}
 							</span>
 
-							<Rating className="ms-0 mb-1" rating={4.4} />
+							<Rating
+								className="ms-0 mb-1"
+								rating={
+									content.tutor?.tutor_rating?.toFixed(1) as unknown as number
+								}
+							/>
 							<div className="flex justify-between items-center">
 								<span className="font-extrabold text-black text-[0.98rem]">
-									{content.type === "free" ? "Free" : `฿${content.price}`}
+									{content.price! <= 0 || content.price == null
+										? "Free"
+										: `฿${content.price}`}
 								</span>
 								{type === "closing" && (
 									<div className="flex items-center gap-1 ">
 										<span className="text-[0.75rem] text-red-800 font-bold">
-											remaining {content.remaining}
+											remaining 1hr
 										</span>
 										<ClockAlert
 											size={15}
@@ -111,22 +105,26 @@ export default function GeneralSessionCard({
 	);
 }
 
-function CustomHoverCard({ content }: { content: Session }) {
+function CustomHoverCard({ content }: { content: TSessionsMatViewResultRow }) {
+	const dateData = useMemo(() => {
+		return parseTimeRange(content.start_time, content.end_time);
+	}, [content.start_time, content.end_time]);
+
 	return (
 		<HoverCardContent
 			className="w-80 drop-shadow-md py-4 px-5 bg-white hidden md:block"
 			side="right"
 			sideOffset={-30}>
 			<div className="flex flex-col mb-1">
-				<span className="max-w-[full] font-bold text-2xl line-clamp-2">
-					{content.sessionName}
+				<span className="max-w-[full] font-bold text-lg line-clamp-2">
+					{content.session_name}
 				</span>
 				<div className="text-[0.65rem] font-bold text-gray-500 ml-[0.2rem] flex items-center space-x-1.5">
 					<span className="text-gray-700 font-extrabold">
-						{content.courseName} |
+						{content.course_name} |
 					</span>
 					<span className="text-gray-700 font-extrabold">
-						{content.courseCode}
+						{content.course_code}
 					</span>
 				</div>
 			</div>
@@ -135,15 +133,21 @@ function CustomHoverCard({ content }: { content: Session }) {
 				<span> {content.school} ● </span> <span>{content.major}</span>
 			</div>
 			<div className="text-[0.75rem] font-extrabold text-gray-900 mb-1 ml-[0.2rem]">
-				Date: <span className="font-medium">{content.date}</span>
+				Date:{" "}
+				<span className="font-medium">{dateData.date?.toString() ?? "NA"}</span>
 			</div>
 			<div className="text-[0.75rem] font-extrabold text-gray-800 mb-2 ml-[0.2rem]">
 				<span>
 					From{" "}
-					<span className="text-green-700 text-[0.8rem]">{content.from}</span>
+					<span className="text-green-700 text-[0.8rem]">
+						{dateData.start_time ?? "NA"}
+					</span>
 				</span>{" "}
 				<span>
-					To <span className="text-green-700 text-[0.8rem]">{content.to}</span>
+					To{" "}
+					<span className="text-green-700 text-[0.8rem]">
+						{dateData.end_time ?? "NA"}
+					</span>
 				</span>
 			</div>
 			<div className=" text-[0.75rem] font-extrabold text-gray-800 mb-1 ml-[0.2rem]">

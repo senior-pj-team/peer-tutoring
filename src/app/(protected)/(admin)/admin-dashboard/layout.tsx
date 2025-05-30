@@ -11,8 +11,9 @@ export default function AdminLayout({
 }: {
 	children: Readonly<React.ReactNode>;
 }) {
-	const { user } = useAuth();
-	if (user?.user_role !== "admin") {
+	const { user, loading } = useAuth();
+
+	if (!loading && user?.user_role !== "admin") {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 	return (

@@ -103,8 +103,6 @@ export function PaginationWithLinks({
 
 			const start = Math.max(4, page - 3);
 			const end = Math.min(totalPageCount - 1, page + 3);
-			console.log(start);
-			console.log(end);
 			for (let i = start; i <= end; i++) {
 				items.push(
 					<PaginationItem key={i}>

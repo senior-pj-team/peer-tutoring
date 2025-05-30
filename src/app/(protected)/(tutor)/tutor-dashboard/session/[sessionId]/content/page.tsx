@@ -1,7 +1,7 @@
-import SessionForm from "@/components/app/shared/session-form";
+import SessionForm from "@/components/app/shared/sessions/session-form";
 import React from "react";
 
-const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
+const page = async ({ params }: { params: Promise<{ sessionId: string }> }) => {
 	const { sessionId } = await params;
 	const data = {
 		school: "Applied Digital Technology",
@@ -19,7 +19,8 @@ const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
 		paid: true,
 		amount: 150,
 		category: "Engineering",
-		image: "https://jwvartwshnsxrrtpgtlc.supabase.co/storage/v1/object/public/session-images//1747818925993.png",
+		image:
+			"https://jwvartwshnsxrrtpgtlc.supabase.co/storage/v1/object/public/session-images//1747818925993.png",
 		sessionName: "React JS",
 	};
 	return (
@@ -40,7 +41,7 @@ const page = async ({params}: {params: Promise<{ sessionId: string }>}) => {
 			imageString={data.image}
 			isEdit={true}
 			category={data.category}
-			sessionId= {sessionId}
+			sessionId={sessionId}
 		/>
 	);
 };

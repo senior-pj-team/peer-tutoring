@@ -3,7 +3,6 @@
 import { Heart, Bell, Search, AlignJustify } from "lucide-react";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
-import Image from "next/image";
 import HoverCustomCard from "./hover-custom-card";
 import SearchBar from "./search-bar";
 import { useState, useEffect, useLayoutEffect } from "react";
@@ -153,8 +152,9 @@ export default function Navbar() {
 			</div>
 			<div
 				className={clsx(
-					"transition-all duration-300 ease-in-out overflow-hidden md:hidden",
+					"transition-all duration-200 ease-in-out md:hidden z-0",
 					showMobileSearch ? "max-h-[5rem] py-2" : "max-h-0 py-0",
+					!showMobileSearch ? "overflow-hidden" : "",
 				)}>
 				<SearchBar />
 			</div>

@@ -5,42 +5,9 @@ export const getDateWithTime = (date: Date, time: string): Date => {
 	return dateTime;
 };
 
-
-//from timestampz string to date string and start time + end time string
-export const parseTimeRange = (
-	start_time: string | null,
-	end_time: string | null,
-) => {
-	if (!start_time || !end_time) {
-		return {
-			start_time: "Unknown",
-			end_time: "Unknown",
-			date: "Unknown"
-		};
-	}
-	const start = new Date(start_time);
-	const end = new Date(end_time);
-
-	const formatTime = (date: Date) => {
-		const hours = String(date.getHours()).padStart(2, "0");
-		const minutes = String(date.getMinutes()).padStart(2, "0");
-		return `${hours}:${minutes}`;
-	};
-
-	return {
-		date: new Date(start.getFullYear(), start.getMonth(), start.getDate()).toDateString()?? "Unknown",
-		start_time: formatTime(start),
-		end_time: formatTime(end),
-	};
-};
-
-export const getRemainingTime = (date: string | undefined, startTime: string | undefined) => {
+export const getRemainingTime = (date: string, startTime: string) => {
 	const now = new Date();
 	const startDateTime = new Date(`${date} ${startTime}`);
-
-	if(!date || ! startTime){
-		return " - "
-	}
 
 	console.log("start date time: ", startDateTime);
 
