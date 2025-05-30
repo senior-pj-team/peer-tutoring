@@ -1,30 +1,37 @@
+<<<<<<< HEAD
 import SessionCard from "@/components/app/shared/sessions/session-card";
 import { getSessions } from "@/actions/sessionActions";
+=======
+import SessionCard from "@/components/app/shared/session-card";
+import { selectStudentSession } from "@/data/queries/sessions/select-student-session-view";
+import { getUserSession } from "@/utils/getUserSession";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+>>>>>>> main
 
 const Page = async () => {
-	const response = await getSessions(["paid"]);
-	const sessions = response.data;
+	const user = await getUserSession();
+	if (!user) {
+		redirect("/login");
+	}
+	const supabase = await createClient();
+	const sessions: TStudentSessionViewCardResult[] = await selectStudentSession(['paid'], user, supabase);
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-			{sessions &&
+			{sessions.length > 0 ? (
 				sessions.map((session) => (
 					<SessionCard
 						key={session.session_id}
-						id={session.session_id}
-						image={session.image}
-						sessionName={session.session_name}
-						courseCode={session.course_code}
-						courseName={session.course_name}
-						date={new Date(session.date).toDateString()}
-						start_time={session.start_time}
-						end_time={session.end_time}
-						tutor_name={session.tutor_name}
-						tutor_rating={session.tutor_rating}
-						enroll_status={session.status}
+						studentSession={session}
 						page="archived"
 					/>
-				))}
+				))
+			) : (
+				<div className="col-span-full text-center text-gray-500">
+					No archived sessions found.
+				</div>
+			)}
 		</div>
 	);
 };

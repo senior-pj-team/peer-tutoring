@@ -19,20 +19,10 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { getRemainingTime, parseTimeRange } from "@/utils/sessionsUtils";
 
 type SessionCardProp = {
-	id: number | null;
-	image?: string;
-	sessionName: string;
-	courseCode: string;
-	courseName: string;
-	enroll_status?: string;
-	remainingTime?: string;
-	date?: string;
-	start_time?: string;
-	end_time?: string;
-	tutor_name?: string;
-	tutor_rating?: number | null;
+	studentSession?: TStudentSessionViewCardResult
 
 	status?: string;
 	enrollments?: number;
@@ -45,18 +35,7 @@ type SessionCardProp = {
 };
 
 const SessionCard = ({
-	id,
-	image = "",
-	sessionName,
-	courseCode,
-	courseName,
-	enroll_status,
-	remainingTime,
-	date,
-	start_time,
-	end_time,
-	tutor_name,
-	tutor_rating,
+	studentSession,
 
 	status,
 	enrollments,
@@ -67,20 +46,38 @@ const SessionCard = ({
 
 	page,
 }: SessionCardProp) => {
-	const router = useRouter();
+	let date, start_time, end_time;
+	let session_id: number | null, image, session_name, course_code, course_name, tutor_name, tutor_rating, student_session_status;
+	if (studentSession) {
+		({ date, start_time, end_time } = parseTimeRange(
+			studentSession.start_time,
+			studentSession.end_time
+		));
 
+		({
+			session_id,
+			image,
+			session_name,
+			course_code,
+			course_name,
+			tutor_name,
+			tutor_rating,
+			student_session_status,
+		} = studentSession);
+	}
+	const remaining_time = student_session_status == "enrolled"? getRemainingTime(date, start_time) : null
+	const router = useRouter();
 	const handleCardClick = () => {
 		// Check if it's the admin page, then route accordingly
 		const nextPage =
 			page === "admin"
-				? `/admin-dashboard/session/${id}/content` // Route for admin sessions
+				? `/admin-dashboard/session/${1}/content` // Route for admin sessions
 				: page === "tutor"
-				? `/tutor-dashboard/session/${id}/content`
-				: `/session/${page}/${id}/content`; // Default route for other pages
+					? `/tutor-dashboard/session/${1}/content`
+					: `/session/${page}/${session_id}`; // Default route for other pages
 
 		router.push(nextPage);
 	};
-
 	return (
 		<Card
 			className="cursor-pointer rounded-none pt-0 pb-2"
@@ -88,7 +85,7 @@ const SessionCard = ({
 			<CardHeader className="px-0 m-0">
 				<div className="relative w-full h-38">
 					<Image
-						src={image}
+						src={image ?? '/React.png'}
 						alt="Card image"
 						sizes="12"
 						fill
@@ -117,22 +114,22 @@ const SessionCard = ({
 				<CardTitle className="flex justify-between items-start gap-5 px-3 mt-1 w-full min-w-0">
 					<div className="flex-1 min-w-0">
 						<h3 className="xl:text-lg md:text-sm font-semibold overflow-hidden text-ellipsis line-clamp-2 leading-tight break-words">
-							{sessionName}
+							{session_name}
 						</h3>
 					</div>
 
-					{remainingTime && (
+					{remaining_time && (
 						<div className="flex items-center gap-1 xl:text-xs md:text-[0.6rem] text-red-700 shrink-0 mt-1">
 							<Clock className="w-4 h-4" />
-							<span>{remainingTime}</span>
+							<span>{remaining_time}</span>
 						</div>
 					)}
-					{enroll_status == "refunded" && (
+					{student_session_status == "refunded" && (
 						<div className="flex items-center gap-1 text-xs shrink-0 mt-1">
-							<span className="text-green-500">{enroll_status}</span>
+							<span className="text-green-500">{student_session_status}</span>
 						</div>
 					)}
-					{enroll_status == "pending_refund" && (
+					{student_session_status == "pending_refund" && (
 						<div className="flex items-center gap-1 text-xs shrink-0 mt-1">
 							<span className="text-yellow-500">pending</span>
 						</div>
@@ -140,9 +137,9 @@ const SessionCard = ({
 				</CardTitle>
 
 				<CardDescription className="px-3 w-full min-w-0 flex lg:text-xs md:text-[0.65rem]">
-					<span className="me-1">{courseCode}</span>|
+					<span className="me-1">{course_code}</span>|
 					<span className="ms-1 font-medium truncate overflow-hidden text-ellipsis flex-1">
-						{courseName}
+						{course_name}
 					</span>
 				</CardDescription>
 
@@ -198,7 +195,7 @@ const SessionCard = ({
 							|
 							<Rating
 								className="ms-3"
-								rating={tutor_rating ? tutor_rating : 0}
+								rating={tutor_rating ? Math.round(tutor_rating * 10) / 10 : 0}
 							/>
 						</div>
 					)}
