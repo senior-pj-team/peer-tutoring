@@ -10,11 +10,17 @@ export async function getSessionsMatView(
 		paid,
 		limit = 5,
 		offset = 0,
+		tutor_id
 	}: TBrowseSessionFilters,
 ): Promise<TSessionsMatViewResult[] | []> {
 	const hasSearch = search.trim().length > 0;
 
 	let query = client.from("session_tutor_mat_view").select("*");
+
+	//filter with tutor_id added by NWYT
+	if(tutor_id){
+		query= query.eq('tutor->>tutor_id', tutor_id)
+	}
 
 	if (hasSearch) {
 		query = query.textSearch("document", search, {

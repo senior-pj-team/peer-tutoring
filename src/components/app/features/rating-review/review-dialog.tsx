@@ -10,7 +10,7 @@ import {
 import { Star } from "lucide-react";
 import ReviewDialogContent from "./review-dialog-content";
 
-const MoreReviewBtn = () => {
+const MoreReviewBtn = ({tutor_id}: {tutor_id: string}) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -33,7 +33,7 @@ const MoreReviewBtn = () => {
 						</div>
 					</DialogTitle>
 				</DialogHeader>
-				<ReviewDialogContent />
+				<ReviewDialogContent data={}/>
 			</DialogContent>
 		</Dialog>
 	);

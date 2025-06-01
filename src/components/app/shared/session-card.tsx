@@ -19,7 +19,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { getRemainingTime, parseTimeRange } from "@/utils/sessionsUtils";
+import { getRemainingTime } from "@/utils/app/getRemainingTime";
+import { formatDate } from "@/utils/app/formatDate";
+import { formatTime } from "@/utils/app/formatTime";
 
 type SessionCardProp = {
   studentSession?: TStudentSessionViewCardResult;
@@ -47,11 +49,10 @@ const SessionCard = ({
   page,
 }: SessionCardProp) => {
   if (!studentSession) return <></>;
-  const { date, start_time, end_time } = parseTimeRange(
-    studentSession.start_time,
-    studentSession.end_time
-  );
 
+  const date= formatDate(studentSession.start_time);
+  const start_time= formatTime(studentSession.start_time);
+  const end_time= formatTime(studentSession.end_time);
   const {
     session_id,
     image,

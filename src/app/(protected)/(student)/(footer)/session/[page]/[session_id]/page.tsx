@@ -16,7 +16,8 @@ import SessionTutor from '@/components/app/features/session/SessionTutor';
 import { createClient } from '@/utils/supabase/server';
 import { selectStudentSessionDetail } from '@/data/queries/sessions/select-student-session-view-detail';
 import { getUserSession } from '@/utils/getUserSession';
-import { formatDate, parseTimeRange } from '@/utils/sessionsUtils';
+import { formatDate } from '@/utils/app/formatDate';
+import { formatTime } from '@/utils/app/formatTime';
 
 interface PageProps {
   params: {
@@ -60,10 +61,9 @@ const Page = async ({ params }: PageProps) => {
     session_status: sessionData.session_status,
   };
 
-  const { date, start_time, end_time } = parseTimeRange(
-    sessionData.start_time,
-    sessionData.end_time
-  );
+  const date= formatDate(sessionData.start_time);
+  const start_time= formatTime(sessionData.start_time);
+  const end_time= formatTime(sessionData.end_time);
 
   const contentData: TSessionContentData = {
     description: sessionData.description,

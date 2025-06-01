@@ -25,14 +25,14 @@ const ReviewCard = ({ cutAt = 200, data }: { cutAt?: number, data: TRatingReview
 					</Link>
 					<div className="flex items-center justify-between">
 						<div className="flex items-center mt-[2px]">
-							<Rating rating={rating} size={10} />
+							<Rating rating={rating?? 0} size={10} />
 						</div>
-						<div className="text-xs text-gray-700 ms-1">{created_ago}</div>
+						<div className="text-xs text-gray-700 ms-5">{created_ago} days ago</div>
 					</div>
 				</div>
 			</div>
 			<div className="text-sm mt-5">
-				<Expandable max={cutAt} text={review} />
+				<Expandable max={cutAt} text={review?? 'NA'} />
 			</div>
 		</div>
 	);

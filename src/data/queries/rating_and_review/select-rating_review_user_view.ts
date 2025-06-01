@@ -1,19 +1,21 @@
 export const selectRatingReview = async (
   supabase: TSupabaseClient,
-  start: number,
-    end: number,
-  options?: {
-    tutor_id?: string;
+  {
+    offset,
+    limit,
+    tutor_id
+  }: {
+    tutor_id?: string, 
+    offset?: number,
+    limit?: number,
   }
 ): Promise<TRatingReviewUserViewResult[]> => {
   let query = supabase
     .from("rating_review_user_view")
     .select("*")
     .order("created_ago", { ascending: false });
-  if (options?.tutor_id) {
-    query = query.eq("tutor_id", options.tutor_id);
-  }
-  query = query.range(start, end);
+  if (tutor_id) query = query.eq("tutor_id", tutor_id);
+  if(offset != undefined && limit != undefined) query = query.range(offset, offset + limit - 1);
   const { data, error } = await query;
 
   if (error) {

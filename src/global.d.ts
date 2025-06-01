@@ -41,7 +41,8 @@ declare global {
 
   type TTutorStatsViewResult = DB["public"]["Views"]["tutor_stats_view"]["Row"];
 
-  type TRatingReviewUserViewResult = DB["public"]["Views"]["rating_review_view"]["Row"];
+  type TRatingReviewUserViewResult =
+    DB["public"]["Views"]["rating_review_user_view"]["Row"];
 
   // other global types
   type TBrowseSessionFilters = {
@@ -54,6 +55,7 @@ declare global {
     paid?: boolean;
     limit?: number;
     offset?: number;
+    tutor_id?: string;
   };
 
   type MyJwtPayload = {
@@ -79,8 +81,13 @@ declare global {
     | { success: true; data: T }
     | { success: false; error: { message: string } };
 
+  type TRatingStat = {
+    rating: number;
+    count: number;
+  };
+
   type TSessionHeaderData = {
-    image: string | null
+    image: string | null;
     session_name: string | null;
     course_code: string | null;
     course_name: string | null;
