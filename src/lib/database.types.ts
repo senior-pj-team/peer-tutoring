@@ -524,11 +524,11 @@ export type Database = {
       tutor_status: "pending" | "verified" | "rejected"
     }
     CompositeTypes: {
-      session_tutor_mat_view_result: {
-        rows: unknown[] | null
-        total: number | null
-      }
-    }
+			session_tutor_mat_view_result: {
+				rows: TSessionsMatViewResultRow[] | null;
+				total: number | null;
+			};
+		};
   }
 }
 
