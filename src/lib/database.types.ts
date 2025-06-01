@@ -347,7 +347,7 @@ export type Database = {
     Views: {
       rating_review_user_view: {
         Row: {
-          create_ag: number | null
+          created_ago: number | null
           rar_id: number | null
           rating: number | null
           review: string | null
@@ -473,6 +473,13 @@ export type Database = {
         Args: { event: Json }
         Returns: Json
       }
+      get_rating_stats: {
+        Args: { tid: string }
+        Returns: {
+          rating: number
+          count: number
+        }[]
+      }
       pgmq_dequeue: {
         Args: { queue_name: string }
         Returns: Json
@@ -496,6 +503,7 @@ export type Database = {
           paid_only?: boolean
           limit_count?: number
           offset_count?: number
+          s_status?: Database["public"]["Enums"]["session_status"][]
         }
         Returns: Database["public"]["CompositeTypes"]["session_tutor_mat_view_result"]
       }

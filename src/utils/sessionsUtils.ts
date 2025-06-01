@@ -5,8 +5,6 @@ export const getDateWithTime = (date: Date, time: string): Date => {
 	return dateTime;
 };
 
-
-//from timestampz string to date string and start time + end time string
 export const parseTimeRange = (
 	start_time: string | null,
 	end_time: string | null,
