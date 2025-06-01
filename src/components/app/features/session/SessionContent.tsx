@@ -2,6 +2,7 @@ import React from "react";
 import Expandable from "@/components/app/shared/expandable-text";
 
 const SessionContent = ({ data }: { data: TSessionContentData }) => {
+
 	const {
 		description,
 		requirement,
@@ -12,7 +13,7 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 		max_students,
 		enrolled_students,
 	} = data;
-
+	
 	const remaining_slots = (max_students ?? 0) - (enrolled_students ?? 0);
 	return (
 		<div>
