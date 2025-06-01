@@ -31,7 +31,7 @@ export async function GeneralSessionCardList({
 	const categoryArray = typeof category === "string" ? [category] : category;
 
 	const supabase = await createClient();
-	const data = await getSessionsMatView(supabase, {
+	const data: TSessionsMatViewResult | null = await getSessionsMatView(supabase, {
 		search: search,
 		tutorRating: parseFloat(rating),
 		sessionCategory: categoryArray,
