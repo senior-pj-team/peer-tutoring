@@ -11,13 +11,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 export default function CustomSheet() {
-	const { user, setUser, loading } = useAuth();
+	const { user, loading } = useAuth();
 	async function handleSignOut() {
 		const { error } = await signOut();
 		if (error) {
 			toast("Log out Error!");
 		} else {
-			setUser(null);
 			redirect("/login");
 		}
 	}

@@ -11,8 +11,11 @@ const nextConfig: NextConfig = {
 				pathname: "/public/**",
 				search: "",
 			},
+			{
+				protocol: "https",
+				hostname: "jwvartwshnsxrrtpgtlc.supabase.co",
+			},
 		],
-		domains: ["jwvartwshnsxrrtpgtlc.supabase.co"],
 	},
 	logging: {
 		fetches: {

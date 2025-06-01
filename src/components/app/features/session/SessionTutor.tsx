@@ -1,5 +1,13 @@
 import React from "react";
+<<<<<<< HEAD
 import { Star } from "lucide-react";
+=======
+import Expandable from "@/components/app/shared/expandable-text";
+import { Star, Mail, Phone } from "lucide-react";
+import ReviewCard from "@/components/app/features/rating-review/review-card";
+import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
+import MoreReviewBtn from "@/components/app/features/rating-review/review-dialog";
+>>>>>>> main
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
