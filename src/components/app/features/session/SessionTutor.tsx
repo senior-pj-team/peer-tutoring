@@ -1,9 +1,5 @@
 import React from "react";
-import Expandable from "@/components/app/shared/expandable-text";
 import { Star, Mail, Phone } from "lucide-react";
-import ReviewCard from "@/components/app/features/rating-review/review-card";
-import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
-import MoreReviewBtn from "@/components/app/features/rating-review/review-dialog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
