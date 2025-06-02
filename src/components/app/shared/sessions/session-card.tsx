@@ -188,7 +188,7 @@ const SessionCard = ({
                 />
               </div>
               <div className="text-xs underline me-3">
-                <Link href="/tutor-view" onClick={(e) => e.stopPropagation()}>
+                <Link href="/tutor-view/bb069698-5b2f-48e7-a44d-3bda6df88407" onClick={(e) => e.stopPropagation()}>
                   {tutor.name ? tutor.name : "Unknown Tutor"}
                 </Link>
               </div>

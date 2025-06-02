@@ -38,6 +38,7 @@ declare global {
 	type TBrowseSessionFilters = {
 		search?: string;
 		tutorRating?: number;
+		tutorId?: string;
 		sessionCategory?: string[];
 		maxPrice?: number;
 		minPrice?: number;

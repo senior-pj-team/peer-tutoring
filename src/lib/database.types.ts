@@ -493,18 +493,32 @@ export type Database = {
         Returns: undefined
       }
       select_session_tutor_mat_view: {
-        Args: {
-          search_text: string
-          min_price?: number
-          max_price?: number
-          tutor_rating?: number
-          categories?: string[]
-          free_only?: boolean
-          paid_only?: boolean
-          limit_count?: number
-          offset_count?: number
-          s_status?: Database["public"]["Enums"]["session_status"][]
-        }
+        Args:
+          | {
+              search_text: string
+              min_price?: number
+              max_price?: number
+              tutor_rating?: number
+              categories?: string[]
+              free_only?: boolean
+              paid_only?: boolean
+              limit_count?: number
+              offset_count?: number
+              s_status?: Database["public"]["Enums"]["session_status"][]
+            }
+          | {
+              search_text: string
+              tutor_id: string
+              tutor_rating: number
+              categories: string[]
+              free_only: boolean
+              paid_only: boolean
+              min_price: number
+              max_price: number
+              s_status: string[]
+              limit_count: number
+              offset_count: number
+            }
         Returns: Database["public"]["CompositeTypes"]["session_tutor_mat_view_result"]
       }
       update_session_status: {
@@ -524,11 +538,12 @@ export type Database = {
       tutor_status: "pending" | "verified" | "rejected"
     }
     CompositeTypes: {
-			session_tutor_mat_view_result: {
+      session_tutor_mat_view_result: {
 				rows: TSessionsMatViewResultRow[] | null;
 				total: number | null;
 			};
-		};
+
+    }
   }
 }
 

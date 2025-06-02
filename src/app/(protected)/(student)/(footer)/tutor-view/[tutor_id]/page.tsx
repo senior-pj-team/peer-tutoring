@@ -2,12 +2,11 @@ import React from "react";
 import { Mail, Phone, MessageCircle, Star } from "lucide-react";
 import Rating from "@/components/app/features/rating-review/rating";
 import Expandable from "@/components/app/shared/expandable-text";
-import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
-import { PaginationWithLinks } from "@/components/app/shared/filter/pagination-with-links";
 import Image from "next/image";
 import TutorRARSection from "@/components/app/features/tutor/TutorRARSection";
 import { createClient } from "@/utils/supabase/server";
 import { selectTutorStats } from "@/data/queries/tutors/select-tutor-stats-view";
+import TutorSessionsSection from "@/components/app/features/tutor/TutorSessionsSection";
 
 const Page = async ({ params }: { params: { tutor_id: string } }) => {
   const { tutor_id } = await params;
@@ -21,77 +20,7 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
   } catch (e) {
     console.log("error", e);
   }
-  if (!tutorStats || !supabase) return <></>; //handle loading or error here
-  const sessions = [
-    {
-      sessionName: "React Redux Nodejs and Kafka basic",
-      courseCode: "10125",
-      courseName: "Web development",
-      school: "Applied Digital Science",
-      major: "Computer Engineering",
-      price: "400",
-      remaining: "2hr",
-      description:
-        "This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-      tutor: "Eric",
-      rating: "5",
-      type: "free",
-      from: "11:00 AM",
-      to: "2:00 PM",
-      date: "23 April 2025",
-    },
-    {
-      sessionName: "React with NodeJS",
-      courseCode: "10125",
-      courseName: "Web development",
-      school: "Applied Digital Science",
-      major: "Computer Engineering",
-      price: "400",
-      remaining: "2hr",
-      description:
-        "This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-      tutor: "Eric",
-      rating: "5",
-      type: "paid",
-      from: "11:00 AM",
-      to: "2:00 PM",
-      date: "23 April 2025",
-    },
-    {
-      sessionName: "Next JS",
-      courseCode: "10125",
-      courseName: "Web development",
-      school: "Applied Digital Science",
-      major: "Computer Engineering",
-      price: "400",
-      remaining: "2hr",
-      description:
-        "This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-      tutor: "Eric",
-      rating: "5",
-      type: "paid",
-      from: "11:00 AM",
-      to: "2:00 PM",
-      date: "23 April 2025",
-    },
-    {
-      sessionName: "Machine Learing with SkitLearn",
-      courseCode: "10125",
-      courseName: "Web development",
-      school: "Applied Digital Science",
-      major: "Computer Engineering",
-      price: "400",
-      remaining: "2hr",
-      description:
-        "This session will deep dive into advanced React concepts like hooks, context, and performance optimization.",
-      tutor: "Eric",
-      rating: "5",
-      type: "free",
-      from: "11:00 AM",
-      to: "2:00 PM",
-      date: "23 April 2025",
-    },
-  ];
+  if (!tutorStats || !supabase) return <></>;
   return (
     <>
       <div className="max-w-full mx-auto py-8 xl:px-30 px-5 flex flex-col md:flex-row gap-10">
@@ -186,8 +115,8 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
           </div>
         </div>
       </div>
-      <div className="xl:px-30 px-5 my-6">
 
+      <div className="xl:px-30 px-5 my-6">
 		{/* Rating Review section */}
         <h1 className="flex gap-5 items-center text-lg font-bold">
           <div className="flex gap-2 items-center">
@@ -208,7 +137,8 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
         <h1 className="text-lg font-bold mt-7">
           Sessions offered by {tutorStats.tutor_name}
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+        <TutorSessionsSection supabase={supabase} tutor_id={tutor_id}/>
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {sessions.map((session) => (
             <GeneralSessionCard
               page="browse"
@@ -218,13 +148,7 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
               type={""}
             />
           ))}
-        </div>
-        <PaginationWithLinks
-          page={parseInt("1")}
-          pageSize={6}
-          totalCount={17}
-          scroll={false}
-        />
+        </div> */}
       </div>
     </>
   );

@@ -36,8 +36,6 @@ const RatingReviewList = ({ tutor_id }: { tutor_id: string }) => {
 
   if (status === "pending") return <div>Loading reviews...</div>;
   if (status === "error") return <div>Error loading reviews.</div>;
-  
-  console.log("fetch in dialog");
     
   return (
     <div>
