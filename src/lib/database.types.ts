@@ -116,6 +116,7 @@ export type Database = {
           refunded_amount: number | null
           requirement: string | null
           school: string | null
+          service_fee: number | null
           session_name: string
           start_time: string
           status: Database["public"]["Enums"]["session_status"]
@@ -140,6 +141,7 @@ export type Database = {
           refunded_amount?: number | null
           requirement?: string | null
           school?: string | null
+          service_fee?: number | null
           session_name: string
           start_time: string
           status?: Database["public"]["Enums"]["session_status"]
@@ -164,6 +166,7 @@ export type Database = {
           refunded_amount?: number | null
           requirement?: string | null
           school?: string | null
+          service_fee?: number | null
           session_name?: string
           start_time?: string
           status?: Database["public"]["Enums"]["session_status"]
@@ -367,10 +370,13 @@ export type Database = {
           document: unknown | null
           end_time: string | null
           image: string | null
+          location: string | null
           major: string | null
-          paid_session: boolean | null
+          max_students: number | null
           price: number | null
+          requirement: string | null
           school: string | null
+          service_fee: number | null
           session_category: string | null
           session_id: number | null
           session_name: string | null
@@ -430,40 +436,52 @@ export type Database = {
           bio_highlight: string | null
           biography: string | null
           email: string | null
+          major: string | null
           phone_number: string | null
+          registered_tutor_at: string | null
           reviews_count: number | null
+          school: string | null
           session_count: number | null
           students_count: number | null
           tutor_id: string | null
           tutor_name: string | null
           tutor_profile_url: string | null
           tutor_rating: number | null
+          year: string | null
         }
         Insert: {
           bio_highlight?: string | null
           biography?: string | null
           email?: string | null
+          major?: string | null
           phone_number?: string | null
+          registered_tutor_at?: string | null
           reviews_count?: never
+          school?: string | null
           session_count?: never
           students_count?: never
           tutor_id?: string | null
           tutor_name?: string | null
           tutor_profile_url?: string | null
           tutor_rating?: number | null
+          year?: string | null
         }
         Update: {
           bio_highlight?: string | null
           biography?: string | null
           email?: string | null
+          major?: string | null
           phone_number?: string | null
+          registered_tutor_at?: string | null
           reviews_count?: never
+          school?: string | null
           session_count?: never
           students_count?: never
           tutor_id?: string | null
           tutor_name?: string | null
           tutor_profile_url?: string | null
           tutor_rating?: number | null
+          year?: string | null
         }
         Relationships: []
       }
@@ -493,32 +511,19 @@ export type Database = {
         Returns: undefined
       }
       select_session_tutor_mat_view: {
-        Args:
-          | {
-              search_text: string
-              min_price?: number
-              max_price?: number
-              tutor_rating?: number
-              categories?: string[]
-              free_only?: boolean
-              paid_only?: boolean
-              limit_count?: number
-              offset_count?: number
-              s_status?: Database["public"]["Enums"]["session_status"][]
-            }
-          | {
-              search_text: string
-              tutor_id: string
-              tutor_rating: number
-              categories: string[]
-              free_only: boolean
-              paid_only: boolean
-              min_price: number
-              max_price: number
-              s_status: string[]
-              limit_count: number
-              offset_count: number
-            }
+        Args: {
+          search_text?: string
+          tutor_id?: string
+          tutor_rating?: number
+          categories?: string[]
+          free_only?: boolean
+          paid_only?: boolean
+          min_price?: number
+          max_price?: number
+          s_status?: string[]
+          limit_count?: number
+          offset_count?: number
+        }
         Returns: Database["public"]["CompositeTypes"]["session_tutor_mat_view_result"]
       }
       update_session_status: {
@@ -530,6 +535,7 @@ export type Database = {
       app_role: "student" | "tutor" | "admin"
       session_status: "open" | "closed" | "completed" | "archived"
       student_session_status:
+        | "pending_enroll"
         | "enrolled"
         | "pending_refund"
         | "refunded"
@@ -542,7 +548,6 @@ export type Database = {
 				rows: TSessionsMatViewResultRow[] | null;
 				total: number | null;
 			};
-
     }
   }
 }
@@ -658,6 +663,7 @@ export const Constants = {
       app_role: ["student", "tutor", "admin"],
       session_status: ["open", "closed", "completed", "archived"],
       student_session_status: [
+        "pending_enroll",
         "enrolled",
         "pending_refund",
         "refunded",

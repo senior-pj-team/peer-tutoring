@@ -14,19 +14,7 @@ export async function getSessionsMatView(
 		status = ["open"],
 	}: TBrowseSessionFilters,
 ): Promise<TSessionsMatViewResult | null> {
-	console.log(
-		search,
-		tutorRating,
-		tutorId,
-		sessionCategory,
-		maxPrice,
-		minPrice,
-		free,
-		paid,
-		limit,
-		offset,
-		status,
-	);
+	console.log("data from server")
 	const { data, error } = await client.rpc("select_session_tutor_mat_view", {
 		search_text: search,
 		tutor_rating: tutorRating,

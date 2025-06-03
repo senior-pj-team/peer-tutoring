@@ -26,7 +26,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
       {tutorStats && <TutorStats data={tutorStats} />}
 
       <div>
-
+        
         {/* Rating Review Section */}
         <h1 className="flex gap-5 items-center text-lg font-bold">
           <div className="flex gap-2 items-center">

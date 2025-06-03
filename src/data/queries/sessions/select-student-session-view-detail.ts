@@ -7,6 +7,7 @@ export async function selectStudentSessionDetail(
     .from("student_session_view")
     .select("*")
     .eq("session_id", session_id)
+    .eq("student_id", user_id)
     .single();
 
   if (error || !data) {

@@ -7,6 +7,7 @@ import TutorRARSection from "@/components/app/features/tutor/TutorRARSection";
 import { createClient } from "@/utils/supabase/server";
 import { selectTutorStats } from "@/data/queries/tutors/select-tutor-stats-view";
 import TutorSessionsSection from "@/components/app/features/tutor/TutorSessionsSection";
+import { parseISO, format } from "date-fns";
 
 const Page = async ({ params }: { params: { tutor_id: string } }) => {
   const { tutor_id } = await params;
@@ -27,7 +28,7 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
         {/* Left Column - Avatar & Sidebar Info */}
         <div className="w-full md:w-1/3 text-center md:text-left">
           <Image
-            src={tutorStats.tutor_profile_url ?? "/profile.jpg"}
+            src={tutorStats.tutor_profile_url ?? "/no-image.png"}
             alt="Tutor avatar"
             width={200}
             height={200}
@@ -38,12 +39,12 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
           </h2>
           <p className="text-sm text-gray-500">
             {" "}
-            Applied Digital Technology | Computer Engineering !!
+            {tutorStats.school} | {tutorStats.major}
           </p>
-          <p className="text-xs text-gray-400 mt-1">Third yea !!r</p>
+          <p className="text-xs text-gray-400 mt-1">Year- {tutorStats.year?? "Year-NA"}</p>
 
           <div className="text-sm text-green-800 my-3">
-            Joined at <span className="font-extrabold">{"2025"} !!</span>
+            Joined at   <span className="font-extrabold">{format(parseISO(tutorStats.registered_tutor_at?? "NA" ), "yyyy MMMM dd HH:mm")?? "NA"}</span>
           </div>
 
           <div className="mt-6">
@@ -137,18 +138,7 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
         <h1 className="text-lg font-bold mt-7">
           Sessions offered by {tutorStats.tutor_name}
         </h1>
-        <TutorSessionsSection supabase={supabase} tutor_id={tutor_id}/>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {sessions.map((session) => (
-            <GeneralSessionCard
-              page="browse"
-              className="rounded-none"
-              key={session.sessionName}
-              content={session}
-              type={""}
-            />
-          ))}
-        </div> */}
+        <TutorSessionsSection tutor_id={tutor_id}/>
       </div>
     </>
   );

@@ -1,22 +1,17 @@
-"use client";
 import Navbar from "@/components/app/layout/navbar/navbar";
-import { useAuth } from "@/components/providers/auth-provider";
+import { getUserSession } from "@/utils/getUserSession";
 import { redirect } from "next/navigation";
 import React from "react";
 
-export default function Layout({
+export default async function Layout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
-	const { loading, user } = useAuth();
+	const user = await getUserSession();
 
 	if (!user) {
 		redirect("/login");
 	}
-	if (
-		!loading &&
-		user?.user_role !== "student" &&
-		user?.user_role !== "tutor"
-	) {
+	if (user?.user_role !== "student" && user?.user_role !== "tutor") {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 	return (
