@@ -9,24 +9,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import ReviewDialogContent from "../rating-review/review-dialog-content";
-import { selectRatingReview } from "@/data/queries/rating_and_review/select-rating_review_user_view";
+import { getRatingReview } from "@/data/queries/rating_and_review/get-rating_review_user_view";
 import ReviewCard from "../rating-review/review-card";
+import { createClient } from "@/utils/supabase/server";
 
 const TutorRARSection = async ({
-  supabase,
   tutor_id,
   overallRating,
   rarCount,
   initialSize
 }: {
-  supabase: TSupabaseClient;
   tutor_id: string;
   overallRating: number;
   rarCount: number;
   initialSize: number;
 }) => {
-  let rating_reviews: TRatingReviewUserViewResult[] | null = null;
-  rating_reviews = await selectRatingReview(supabase, {
+  const supabase= await createClient()
+  const rating_reviews = await getRatingReview(supabase, {
     tutor_id: tutor_id,
     offset: 0,
     limit: initialSize,

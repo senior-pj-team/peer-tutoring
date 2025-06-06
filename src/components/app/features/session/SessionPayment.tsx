@@ -1,7 +1,22 @@
 import React from "react";
 import PaymentTable from "@/components/app/features/payment/payment-table";
+import { createClient } from "@/utils/supabase/server";
+import { getUserSession } from "@/utils/getUserSession";
+import { getStudentSession } from "@/data/queries/student-session/get-student-session";
 
-const SessionPayment = ({data}: {data: TSessionPaymentData}) => {
+const SessionPayment = async ({session_id}: {session_id: number}) => {
+	const supabase= await createClient();
+	const user= await getUserSession()
+	if(!user)return <></>
+	const student_session= await getStudentSession(supabase, user.user_id, session_id)
+	console.log("Student_session", student_session);
+	if(!student_session) return<></>
+	const data = {
+		paidAmount: student_session.amount_from_student,
+		paidAt: student_session.created_at,
+		refundAmount: student_session.refunded_amount,
+		refundedAt: student_session.held_untill
+	}
 	return (
 		<div className="p-6 ">
 			<div>
@@ -13,7 +28,7 @@ const SessionPayment = ({data}: {data: TSessionPaymentData}) => {
 				</div>
 			</div>
 			<div className="mt-10">
-				<h3 className="text-xl font-semibold mt-2">Enrollment</h3>
+				<h3 className="text-xl font-semibold mt-2">Payment</h3>
 				<PaymentTable data={data} />
 			</div>
 		</div>

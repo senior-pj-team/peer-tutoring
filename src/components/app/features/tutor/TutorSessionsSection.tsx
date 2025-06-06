@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getSessionsMatView } from "@/data/queries/sessions/get-sessions-mat-view";
-import GeneralSessionCard from "../../shared/sessions/general-session-card";
 import { createClient } from "@/utils/supabase/client";
+import GeneralSessionCard from "../../shared/sessions/general-session-card";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 const LIMIT = 4;
 
-const fetchReviews = async ({
+const fetchSessions = async ({
   pageParam = 0,
   tutor_id,
 }: {
@@ -20,83 +21,93 @@ const fetchReviews = async ({
     tutorId: tutor_id,
     offset: pageParam,
     limit: LIMIT,
-  });
+  })
+  if (!data) throw new Error("Server error");
   return data;
-};
+}
 
 type PaginationProps = {
   currentPage: number;
-  totalPages: number;
   onPageChange: (page: number) => void;
-  isNextDisabled: boolean;
+  disableBack: boolean;
+  disableForward: boolean;
 };
 
 const PaginationControls = ({
   currentPage,
-  totalPages,
   onPageChange,
-  isNextDisabled,
-}: PaginationProps) => {
-  return (
-    <div className="flex items-center justify-center gap-6 mt-6">
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 0}
-        className="px-5 py-2 rounded bg-gray-100 text-gray-700 font-semibold transition hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Previous
-      </button>
+  disableBack,
+  disableForward,
+}: PaginationProps) => (
+  <div className="flex items-center justify-center gap-6 mt-6">
+    <button
+      onClick={() => onPageChange(currentPage - 1)}
+      disabled={disableBack}
+      className="flex items-center gap-1 px-4 py-2 rounded-sm bg-gray-100 text-gray-700 text-sm font-medium transition hover:bg-gray-200"
+      aria-label="Previous Page"
+    >
+      <ChevronLeftIcon />
+      <span className="hidden sm:block">Previous</span>
+    </button>
 
-      <span className="text-gray-800 font-medium">
-        Page {currentPage + 1} of {totalPages}
-      </span>
+    <span className="text-gray-800 font-medium">Page {currentPage + 1}</span>
 
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={isNextDisabled}
-        className="px-5 py-2 rounded bg-gray-100 text-gray-700 font-semibold transition hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Next
-      </button>
-    </div>
-  );
-};
+    <button
+      onClick={() => onPageChange(currentPage + 1)}
+      disabled={disableForward}
+      className="flex items-center gap-1 px-4 py-2 rounded-sm bg-gray-100 text-gray-700 text-sm font-medium transition hover:bg-gray-200"
+      aria-label="Next Page"
+    >
+      <ChevronRightIcon className="w-4 h-4" />
+      <span className="hidden sm:block">Next</span>
+    </button>
+  </div>
+);
 
 const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
+  
   const [currentPage, setCurrentPage] = useState(0);
+  const [totalPagesFetched, setTotalPagesFetched] = useState(1);
 
   const {
     data: sessions,
     fetchNextPage,
     hasNextPage,
+    isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["reviews-and-ratings", tutor_id],
-    queryFn: ({ pageParam }) => fetchReviews({ pageParam, tutor_id }),
+    queryKey: ["sessions", tutor_id],
+    queryFn: ({ pageParam }) => fetchSessions({ pageParam, tutor_id }),
     getNextPageParam: (lastPage, pages) =>
-      lastPage?.rows?.length === LIMIT ? pages.length * LIMIT : undefined,
+      lastPage && lastPage.rows && lastPage.rows.length === LIMIT
+        ? pages.length * LIMIT
+        : undefined,
     initialPageParam: 0,
   });
 
-  useEffect(() => {
-    if (
-      currentPage > 0 &&
-      sessions &&
-      currentPage >= sessions.pages.length &&
-      hasNextPage
-    ) {
-      fetchNextPage();
+  const handlePageChange = async (page: number) => {
+      if (page < 0) return;
+      if (page >= totalPagesFetched) {
+        await fetchNextPage();
+        setTotalPagesFetched((prev) => prev + 1);
+      }
+      setCurrentPage(page);
     }
-  }, [currentPage, sessions, hasNextPage, fetchNextPage]);
 
-  const currentSessions = sessions?.pages?.[currentPage]?.rows ?? [];
-  const totalPages = sessions ? sessions.pages.length + (hasNextPage ? 1 : 0) : 1;
+  const currentSessions= sessions?.pages?.[currentPage]?.rows ?? [];
+  const disableBack = currentPage === 0;
+  const disableForward = !hasNextPage && currentPage >= totalPagesFetched - 1;
 
   return (
     <section>
       {currentSessions.length > 0 ? (
-        <div className="grid gap-6 my-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+        <div className="flex flex-wrap gap-6 my-4 justify-start">
           {currentSessions.map((session: any, index: number) => (
-            <GeneralSessionCard key={index} content={session} page="browse" />
+            <div
+              key={index}
+              className="w-full sm:w-[48%] lg:w-[23%] max-w-[300px] flex-shrink-0"
+            >
+              <GeneralSessionCard content={session} page="browse" />
+            </div>
           ))}
         </div>
       ) : (
@@ -107,11 +118,9 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
 
       <PaginationControls
         currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={(page) => {
-          if (page >= 0 && page < totalPages) setCurrentPage(page);
-        }}
-        isNextDisabled={!hasNextPage && currentPage >= totalPages - 1}
+        onPageChange={handlePageChange}
+        disableBack={disableBack}
+        disableForward={disableForward || isFetchingNextPage}
       />
     </section>
   );

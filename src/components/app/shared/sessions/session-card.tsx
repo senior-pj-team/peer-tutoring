@@ -20,11 +20,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { getRemainingTime } from "@/utils/app/getRemainingTime";
-import { formatDate } from "@/utils/app/formatDate";
-import { formatTime } from "@/utils/app/formatTime";
+import { formatDate, parseISO } from "date-fns";
 
 type SessionCardProp = {
-  studentSession?: TStudentSessionViewCardResult;
+  student_session?: TStudentSessionJoinResult;
 
   status?: string;
   enrollments?: number;
@@ -37,8 +36,8 @@ type SessionCardProp = {
 };
 
 const SessionCard = ({
-  studentSession,
-
+  student_session,
+  
   status,
   enrollments,
   pending_refund_students,
@@ -48,23 +47,16 @@ const SessionCard = ({
 
   page,
 }: SessionCardProp) => {
-  if (!studentSession) return <></>;
-
-  const date= formatDate(studentSession.start_time);
-  const start_time= formatTime(studentSession.start_time);
-  const end_time= formatTime(studentSession.end_time);
-  const {
-    session_id,
-    image,
-    session_name,
-    course_code,
-    course_name,
-    tutor,
-    ss,
-  } = studentSession;
-
-  const remaining_time =
-    ss.status === "enrolled" ? getRemainingTime(date, start_time) : null;
+  if (!student_session) return <></>;
+  const {session_id, ss_status, sessions} = student_session;
+  if(!sessions) return <></>
+  const {image, session_name, course_code, course_name, start_time, end_time, tutor} = sessions;
+  if(!tutor) return <></>
+  const {profile_url: tutor_profile, username: tutor_name, tutor_rating, tutor_id} = tutor;
+  const start = formatDate(parseISO(start_time??"NA"), "HH:mm")
+  const end = formatDate(parseISO(end_time??"NA"), "HH:mm")
+  const date = formatDate(parseISO(start_time??"NA"), "yy MMMM dd")
+  const remaining_time = ss_status=="enrolled"? getRemainingTime(start_time) : undefined;
   const router = useRouter();
   const handleCardClick = () => {
     const nextPage =
@@ -76,6 +68,7 @@ const SessionCard = ({
 
     router.push(nextPage);
   };
+
   return (
     <Card
       className="cursor-pointer rounded-none pt-0 pb-2"
@@ -123,12 +116,12 @@ const SessionCard = ({
               <span>{remaining_time}</span>
             </div>
           )}
-          {ss.status == "refunded" && (
+          {ss_status === "refunded" && (
             <div className="flex items-center gap-1 text-xs shrink-0 mt-1">
-              <span className="text-green-500">{ss.status}</span>
+              <span className="text-green-500">{ss_status}</span>
             </div>
           )}
-          {ss.status == "pending_refund" && (
+          {ss_status == "pending_refund" && (
             <div className="flex items-center gap-1 text-xs shrink-0 mt-1">
               <span className="text-yellow-500">pending</span>
             </div>
@@ -150,11 +143,11 @@ const SessionCard = ({
           <div className="flex items-center gap-4 text-[0.75rem] text-gray-700">
             <div className="flex items-center gap-1">
               <span className="font-semibold">Start:</span>
-              <span>{start_time ? start_time : "-"}</span>
+              <span>{start ? start : "-"}</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="font-semibold">End:</span>
-              <span>{end_time ? end_time : "-"}</span>
+              <span>{end ? end : "-"}</span>
             </div>
           </div>
         </div>
@@ -181,21 +174,21 @@ const SessionCard = ({
             <div className="flex items-center flex-wrap">
               <div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
                 <Image
-                  src="/profile.jpg"
+                  src={tutor_profile?? "/profile.jpg"}
                   alt="Tutor avatar"
                   fill
                   className="object-fill"
                 />
               </div>
               <div className="text-xs underline me-3">
-                <Link href="/tutor-view/bb069698-5b2f-48e7-a44d-3bda6df88407" onClick={(e) => e.stopPropagation()}>
-                  {tutor.name ? tutor.name : "Unknown Tutor"}
+                <Link href={`/tutor-view/${tutor_id}`} onClick={(e) => e.stopPropagation()}>
+                  {tutor_name?? "Unknown tutor"}
                 </Link>
               </div>
               |
               <Rating
                 className="ms-3"
-                rating={tutor.rating ? Math.round(tutor.rating * 10) / 10 : 0}
+                rating={tutor_rating?? 0}
               />
             </div>
           )}

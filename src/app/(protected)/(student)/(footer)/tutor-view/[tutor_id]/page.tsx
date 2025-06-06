@@ -5,34 +5,27 @@ import Expandable from "@/components/app/shared/expandable-text";
 import Image from "next/image";
 import TutorRARSection from "@/components/app/features/tutor/TutorRARSection";
 import { createClient } from "@/utils/supabase/server";
-import { selectTutorStats } from "@/data/queries/tutors/select-tutor-stats-view";
-import TutorSessionsSection from "@/components/app/features/tutor/TutorSessionsSection";
+import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
 import { parseISO, format } from "date-fns";
+import TutorSessionsSectionServer from "@/components/app/features/tutor/TutorSessionsSectionServer";
 
 const Page = async ({ params }: { params: { tutor_id: string } }) => {
   const { tutor_id } = await params;
-  let supabase: TSupabaseClient | null = null;
-  let tutorStats: TTutorStatsViewResult | null = null;
-  try {
-    supabase = await createClient();
-    if (supabase) {
-      tutorStats = await selectTutorStats(tutor_id, supabase);
-    }
-  } catch (e) {
-    console.log("error", e);
-  }
-  if (!tutorStats || !supabase) return <></>;
+  const supabase = await createClient();
+  let data = await getTutorStats(tutor_id, supabase);
+  if (!data) return <></>; //error fetching data
+  const tutorStats= data[0]
+  
   return (
     <>
       <div className="max-w-full mx-auto py-8 xl:px-30 px-5 flex flex-col md:flex-row gap-10">
-        {/* Left Column - Avatar & Sidebar Info */}
         <div className="w-full md:w-1/3 text-center md:text-left">
           <Image
-            src={tutorStats.tutor_profile_url ?? "/no-image.png"}
+            src={tutorStats.tutor_profile_url ?? "/profile.jpg"}
             alt="Tutor avatar"
             width={200}
             height={200}
-            className="w-[20rem] h-[20rem] mx-auto md:mx-0 object-cover"
+            className="w-[20rem] h-[20rem] mx-auto md:mx-0 object-cover border border"
           />
           <h2 className="mt-4 text-xl font-semibold mb-3">
             {tutorStats.tutor_name}
@@ -44,9 +37,8 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
           <p className="text-xs text-gray-400 mt-1">Year- {tutorStats.year?? "Year-NA"}</p>
 
           <div className="text-sm text-green-800 my-3">
-            Joined at   <span className="font-extrabold">{format(parseISO(tutorStats.registered_tutor_at?? "NA" ), "yyyy MMMM dd HH:mm")?? "NA"}</span>
+            Joined at   <span className="font-extrabold">{format(parseISO(tutorStats.registered_tutor_at?? "NA" ), "yyyy MMMM dd")?? "NA"}</span>
           </div>
-
           <div className="mt-6">
             <h4 className="text-sm  font-bold mb-3">Contact Information</h4>
             <div className="text-sm flex items-center gap-5">
@@ -116,9 +108,7 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
           </div>
         </div>
       </div>
-
       <div className="xl:px-30 px-5 my-6">
-		{/* Rating Review section */}
         <h1 className="flex gap-5 items-center text-lg font-bold">
           <div className="flex gap-2 items-center">
             <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
@@ -127,18 +117,15 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
           |<span>{tutorStats.reviews_count} Reviews</span>
         </h1>
         <TutorRARSection
-          supabase={supabase}
-          tutor_id="bb069698-5b2f-48e7-a44d-3bda6df88407"
+          tutor_id={tutor_id}
           initialSize={6}
           overallRating={tutorStats.tutor_rating ?? 0}
           rarCount={tutorStats.reviews_count ?? 0}
         />
-
-		{/* Sessions Section */}
         <h1 className="text-lg font-bold mt-7">
           Sessions offered by {tutorStats.tutor_name}
         </h1>
-        <TutorSessionsSection tutor_id={tutor_id}/>
+        <TutorSessionsSectionServer tutor_id={tutor_id}/>
       </div>
     </>
   );

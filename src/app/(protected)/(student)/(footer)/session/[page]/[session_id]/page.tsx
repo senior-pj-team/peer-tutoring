@@ -13,12 +13,6 @@ import SessionContent from '@/components/app/features/session/SessionContent';
 import SessionPayment from '@/components/app/features/session/SessionPayment';
 import SessionTutor from '@/components/app/features/session/SessionTutor';
 
-import { createClient } from '@/utils/supabase/server';
-import { selectStudentSessionDetail } from '@/data/queries/sessions/select-student-session-view-detail';
-import { getUserSession } from '@/utils/getUserSession';
-import { formatDate } from '@/utils/app/formatDate';
-import { formatTime } from '@/utils/app/formatTime';
-
 interface PageProps {
   params: {
     session_id: string;
@@ -28,69 +22,14 @@ interface PageProps {
 
 const Page = async ({ params }: PageProps) => {
   const { session_id, page } = await params;
+  const tutorId= "bb069698-5b2f-48e7-a44d-3bda6df88407";
 
-  const user = await getUserSession();
-  if (!user) redirect('/login');
-
-  let sessionData: TStudentSessionViewDetailResult | null = null;
-
-  try {
-    const supabase = await createClient();
-    sessionData = await selectStudentSessionDetail(Number(session_id), user.user_id, supabase);
-  } catch (error) {
-    console.error('Failed to fetch session details:', error);
-    // handle error here
-  }
-
-  if (!sessionData) {
-    return <div className="text-center text-red-500">Failed to load session data.</div>;
-  }
-
-  const tutor = sessionData.tutor as { name: string; rating: number; id: string };//tutor json
-  const ss= sessionData.ss as {id: number, status: "string", amount_from_student: number, refunded_amount: number}
-
-  const headerData: TSessionHeaderData = {
-    image: sessionData.image,
-    session_name: sessionData.session_name,
-    school: sessionData.school,
-    major: sessionData.major,
-    course_code: sessionData.course_code,
-    course_name: sessionData.course_name,
-    tutor_name: tutor.name,
-    tutor_rating: tutor.rating,
-    session_status: sessionData.session_status,
-  };
-
-  const date= formatDate(sessionData.start_time);
-  const start_time= formatTime(sessionData.start_time);
-  const end_time= formatTime(sessionData.end_time);
-
-  const contentData: TSessionContentData = {
-    description: sessionData.description,
-    requirement: sessionData.requirement,
-    location: sessionData.location,
-    date,
-    start_time,
-    end_time,
-    max_students: sessionData.max_students,
-    enrolled_students: sessionData.enrolled_students,
-  };
-
-  const paymentData: TSessionPaymentData | null =
-    page !== 'browse'
-      ? {
-          amount_from_student: ss.amount_from_student,
-          enrolled_at: formatDate(sessionData.start_time),
-          refunded_amount: ss.refunded_amount,
-          refunded_at: formatDate(sessionData.end_time),
-          session_name: sessionData.session_name,
-        }
-      : null;
-  const tutorId = page === 'browse' ? tutor.id : null;
 
   return (
     <div>
-      <SessionHeader data={headerData} />
+      <>
+        {/* SessionHeader */}
+      </>
       <hr />
       <div className="relative px-4 pb-10 mt-5 xl:px-15">
         <Tabs defaultValue="content">
@@ -101,7 +40,7 @@ const Page = async ({ params }: PageProps) => {
             >
               Content
             </TabsTrigger>
-            {paymentData && (
+            {page!="browse" && (
               <TabsTrigger
                 value="payment"
                 className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700"
@@ -109,7 +48,7 @@ const Page = async ({ params }: PageProps) => {
                 Payment
               </TabsTrigger>
             )}
-            {tutorId && (
+            {page=="browse" && (
               <TabsTrigger
                 value="tutor"
                 className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700"
@@ -118,18 +57,17 @@ const Page = async ({ params }: PageProps) => {
               </TabsTrigger>
             )}
           </TabsList>
-
+          
           <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 relative min-h-[40rem]">
             <div className="w-full">
               <TabsContent value="content">
-                <SessionContent data={contentData} />
               </TabsContent>
-              {paymentData && (
+              {page !="browse" && (
                 <TabsContent value="payment">
-                  <SessionPayment data={paymentData} />
+                  <SessionPayment session_id={Number(session_id)} />
                 </TabsContent>
               )}
-              {tutorId && (
+              {page=="browse" && (
                 <TabsContent value="tutor">
                   <SessionTutor tutor_id= {tutorId} />
                 </TabsContent>
@@ -137,11 +75,11 @@ const Page = async ({ params }: PageProps) => {
             </div>
 
             <aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-              {page === 'complete' && <CompletedAction />}
-              {page === 'upcoming' && <UpcomingAction />}
+              {page === 'complete' && <CompletedAction sessionId={Number(session_id)}/>}
+              {page === 'upcoming' && <UpcomingAction start={"2025-05-25 04:00:00+00"}/>}
               {page === 'browse' && <EnrollAction />}
-              {page === 'archived' && <ArchivedAction />}
-              {page === 'refund' && <RefundStatus status="rejected" />}
+              {page === 'archived' && <ArchivedAction sessionId={Number(session_id)}/>}
+              {page === 'refund' && <RefundStatus sessionId={Number(session_id)} />}
             </aside>
           </div>
         </Tabs>

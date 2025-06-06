@@ -1,5 +1,3 @@
-//input date and time from form
-//output timestamp
 export const getDateWithTime = (date: Date, time: string): Date => {
 	const [hours, minutes] = time.split(":").map(Number);
 	const dateTime = new Date(date);

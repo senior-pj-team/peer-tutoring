@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { useMemo } from "react";
-import { parseTimeRange } from "@/utils/app/parse-time-range";
+import { formatDate, parseISO } from "date-fns";
 
 export default function GeneralSessionCard({
 	content,
@@ -67,7 +67,7 @@ export default function GeneralSessionCard({
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
-									router.push(`/tutor-view`);
+									router.push(`/tutor-view/${content.tutor?.tutor_id}`);
 								}}>
 								Tutor {content.tutor?.name}
 							</span>
@@ -106,9 +106,9 @@ export default function GeneralSessionCard({
 }
 
 function CustomHoverCard({ content }: { content: TSessionsMatViewResultRow }) {
-	const dateData = useMemo(() => {
-		return parseTimeRange(content.start_time, content.end_time);
-	}, [content.start_time, content.end_time]);
+	const start_time= useMemo(()=> formatDate(parseISO(content.start_time??"NA"), "HH:MM"), [content.start_time, content.end_time])
+	const end_time= useMemo(()=> formatDate(parseISO(content.end_time??"NA"), "HH:MM"), [content.start_time, content.end_time])
+	const date= useMemo(()=> formatDate(parseISO(content.start_time??"NA"), "yy MMMM dd"), [content.start_time, content.end_time])
 
 	return (
 		<HoverCardContent
@@ -134,19 +134,19 @@ function CustomHoverCard({ content }: { content: TSessionsMatViewResultRow }) {
 			</div>
 			<div className="text-[0.75rem] font-extrabold text-gray-900 mb-1 ml-[0.2rem]">
 				Date:{" "}
-				<span className="font-medium">{dateData.date?.toString() ?? "NA"}</span>
+				<span className="font-medium">{date?.toString() ?? "NA"}</span>
 			</div>
 			<div className="text-[0.75rem] font-extrabold text-gray-800 mb-2 ml-[0.2rem]">
 				<span>
 					From{" "}
 					<span className="text-green-700 text-[0.8rem]">
-						{dateData.start_time ?? "NA"}
+						{start_time ?? "NA"}
 					</span>
 				</span>{" "}
 				<span>
 					To{" "}
 					<span className="text-green-700 text-[0.8rem]">
-						{dateData.end_time ?? "NA"}
+						{end_time ?? "NA"}
 					</span>
 				</span>
 			</div>

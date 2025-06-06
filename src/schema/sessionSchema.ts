@@ -30,7 +30,7 @@ export const sessionSchema = z
     endTime: z.string().regex(timeRegex, "Invalid input"),
     maxStudents: z.coerce.number().min(1, "At least one student is required"),
     paid: z.boolean(),
-    amount: z.coerce.number().min(1, "Amount must be non-negative"),
+    amount: z.coerce.number().min(0, "Amount must be non-negative"),
     image: z.instanceof(File).refine((file) => file.size > 0, {
       message: "Image file is required",
     }).nullable(),
