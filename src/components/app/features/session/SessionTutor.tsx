@@ -1,17 +1,9 @@
 import React from "react";
-<<<<<<< HEAD
-import { Star } from "lucide-react";
-=======
-import Expandable from "@/components/app/shared/expandable-text";
 import { Star, Mail, Phone } from "lucide-react";
-import ReviewCard from "@/components/app/features/rating-review/review-card";
-import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
-import MoreReviewBtn from "@/components/app/features/rating-review/review-dialog";
->>>>>>> main
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { selectTutorStats } from "@/data/queries/tutors/select-tutor-stats-view";
+import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
 import TutorStats from "./TutorStats";
 import SessionList from "./SessionList";
 import TutorRARSection from "../tutor/TutorRARSection";
@@ -22,7 +14,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
   try {
     supabase = await createClient();
     if (supabase) {
-      tutorStats = await selectTutorStats(tutor_id, supabase);
+      tutorStats = await getTutorStats(tutor_id, supabase);
     }
   } catch (e) {
     console.log("error", e);
@@ -34,7 +26,6 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
       {tutorStats && <TutorStats data={tutorStats} />}
 
       <div>
-
         {/* Rating Review Section */}
         <h1 className="flex gap-5 items-center text-lg font-bold">
           <div className="flex gap-2 items-center">
@@ -43,8 +34,12 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
           </div>
           |<span>{tutorStats.reviews_count} Reviews</span>
         </h1>
-        <TutorRARSection supabase={supabase} tutor_id={tutor_id} initialSize={4} overallRating={tutorStats.tutor_rating?? 0} rarCount={tutorStats.reviews_count?? 0}/>
-
+        <TutorRARSection
+          tutor_id={tutor_id}
+          initialSize={4}
+          overallRating={tutorStats.tutor_rating ?? 0}
+          rarCount={tutorStats.reviews_count ?? 0}
+        />
         {/* Sessions Section */}
         <div>
           <h1 className="text-lg font-bold mt-5">
@@ -63,6 +58,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
           </Link>
         </div>
       </div>
+
     </div>
   );
 };

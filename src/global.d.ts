@@ -7,8 +7,8 @@ declare global {
 	type TSupabaseClient = SupabaseClient<DB>;
 	type TSessionsMatViewResultRow =
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-				tutor: TTutor | null;
-		  };
+			tutor: TTutor | null;
+		};
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -19,25 +19,27 @@ declare global {
 	type TSessionsMatViewResult =
 		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 
-	type TStudentSessionViewResult =
-		DB["public"]["Views"]["student_session_view"]["Row"];
+	type TStudentSessionResult =
+		DB["public"]["Tables"]["student_session"]["Row"];
 
-  type TStudentSessionViewCardResult = Pick<
-    TStudentSessionViewResult,
-    "session_id",
-    "image",
-    "session_name",
-    "course_code",
-    "course_name",
-    "start_time",
-    "end_time",
-    "tutor",
-    "ss"
-  >;
+	type TRefundReportResult =
+		DB["public"]["Tables"]["refund_report"]["Row"]
+	
+	type TTutorStatsViewResult = 
+		DB["public"]["Views"]["tutor_stats_view"]["Row"];
+
+	type TRatingReviewUserViewResult =
+		DB["public"]["Views"]["rating_review_user_view"]["Row"];
+	type TStudentSessionStatus = 
+		DB["public"]["Enums"]["student_session_status"];
+	type TTutorStats = 
+		DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
+
 	// other global types
 	type TBrowseSessionFilters = {
 		search?: string;
 		tutorRating?: number;
+		tutorId?: string;
 		sessionCategory?: string[];
 		maxPrice?: number;
 		minPrice?: number;
@@ -46,54 +48,6 @@ declare global {
 		limit?: number;
 		offset?: number;
 		status?: DB["public"]["Enums"]["session_status"][];
-	};
-	type TStudentSessionViewCardResult = Pick<
-		TStudentSessionViewResult,
-		"session_id",
-		"image",
-		"session_name",
-		"course_code",
-		"course_name",
-		"start_time",
-		"end_time",
-		"tutor_name",
-		"tutor_rating",
-		"ss"
-	>;
-
-	type TStudentSessionViewDetailResult = TStudentSessionViewResult & {
-		enrolled_students: number;
-	};
-
-  type TTutorStatsViewResult = DB["public"]["Views"]["tutor_stats_view"]["Row"];
-
-  type TRatingReviewUserViewResult =
-    DB["public"]["Views"]["rating_review_user_view"]["Row"];
-
-  // other global types
-  type TBrowseSessionFilters = {
-    search?: string;
-    tutorRating?: number;
-    sessionCategory?: string;
-    maxPrice?: number;
-    minPrice?: number;
-    free?: boolean;
-    paid?: boolean;
-    limit?: number;
-    offset?: number;
-    tutor_id?: string;
-  };
-	// other global types
-	type TBrowseSessionFilters = {
-		search?: string;
-		tutorRating?: number;
-		sessionCategory?: string;
-		maxPrice?: number;
-		minPrice?: number;
-		free?: boolean;
-		paid?: boolean;
-		limit?: number;
-		offset?: number;
 	};
 
 	type MyJwtPayload = {
@@ -107,7 +61,6 @@ declare global {
 		[key: string]: any;
 	};
 
-	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type UserSession = {
 		email: string;
 		full_name: string;
@@ -120,39 +73,11 @@ declare global {
 		| { success: true; data: T }
 		| { success: false; error: { message: string } };
 
-  type TRatingStat = {
-    rating: number;
-    count: number;
-  };
+	type TRatingStat = {
+		rating: number;
+		count: number;
+	};
 
-  type TSessionHeaderData = {
-    image: string | null;
-    session_name: string | null;
-    course_code: string | null;
-    course_name: string | null;
-    school: string | null;
-    major: string | null;
-    tutor_name: string | null;
-    tutor_rating: number | null;
-    session_status: string | null;
-  };
-  type TSessionContentData = {
-    description: string | null;
-    requirement: stringt | null;
-    location: string | null;
-    date: string | null;
-    start_time: string | null;
-    end_time: string | null;
-    max_students: number | null;
-    enrolled_students: number;
-  };
-  type TSessionPaymentData = {
-    amount_from_student: number | null;
-    enrolled_at: string | null;
-    refunded_amount: number | null;
-    refunded_at: string | null;
-    session_name: string | null;
-  };
 	type TSessionHeaderData = {
 		image: string | null;
 		session_name: string | null;
@@ -164,18 +89,25 @@ declare global {
 		tutor_rating: number | null;
 		session_status: string | null;
 	};
-	type TSessionContentData = {
-		description: string | null;
-		requirement: stringt | null;
-		location: string | null;
-		date: string | null;
-		start_time: string | null;
-		end_time: string | null;
-		max_students: number | null;
-		enrolled_students: number;
+	
+	type TStudentSessionJoinResult = {
+		session_id: number;
+		student_id: string
+		ss_status: TStudentSessionStatus;
+		sessions: {
+			image: string | null;
+			session_name: string | null;
+			course_code: string | null;
+			course_name: string | null;
+			start_time: string | null;
+			end_time: string | null;
+			tutor: {
+				tutor_id: string | null;
+				profile_url: string | null;
+				username: string | null;
+				tutor_rating: number | null;
+			} | null;
+		} | null;
 	};
-	type TSessionPaymentData = {
-		price: number | null;
-		refunded_amount: number | null;
-	};
+
 }
