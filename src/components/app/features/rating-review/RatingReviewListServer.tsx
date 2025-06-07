@@ -27,7 +27,7 @@ export default async function RatingReviewListServer({tutor_id}: {tutor_id: stri
   const queryClient = new QueryClient();
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ['reviews and ratings', tutor_id],
+    queryKey: ['reviews and ratings', tutor_id, ""],
     queryFn: ({ pageParam }) => fetchReviews({ pageParam, tutor_id }),
     getNextPageParam: (lastPage: TRatingReviewUserViewResult[], allPages: TRatingReviewUserViewResult[][]) =>
       lastPage?.length === LIMIT ? allPages.length * LIMIT : undefined,

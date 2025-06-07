@@ -72,7 +72,7 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
 
       <ScrollArea className="h-[60vh] md:h-[70vh] p-4 bg-white space-y-4">
         {data.pages.flat().map((rar, index) => (
-          <ReviewCard key={index} data={rar} />
+          <ReviewCard key={index} data={rar} showTutor={true}/>
         ))}
         {hasNextPage && (
           <div className="text-center mt-4">

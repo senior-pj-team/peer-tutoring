@@ -441,8 +441,10 @@ export type Database = {
           session_id: number | null
           session_name: string | null
           student_id: string | null
+          student_image: string | null
           student_name: string | null
           tutor_id: string | null
+          tutor_image: string | null
           tutor_name: string | null
         }
         Relationships: [
@@ -627,7 +629,7 @@ export type Database = {
       tutor_status: "pending" | "verified" | "rejected"
     }
     CompositeTypes: {
-      session_tutor_mat_view_result: {
+     session_tutor_mat_view_result: {
 				rows: TSessionsMatViewResultRow[] | null;
 				total: number | null;
 			}
