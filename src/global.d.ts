@@ -34,6 +34,10 @@ declare global {
 		DB["public"]["Enums"]["student_session_status"];
 	type TTutorStats = 
 		DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
+	type TChatList = 
+		DB["public"]["Functions"]["get_chat_list"]["Returns"];
+	type TMessage = 
+		DB["public"]["Tables"]["message"]["Row"];
 
 	// other global types
 	type TBrowseSessionFilters = {

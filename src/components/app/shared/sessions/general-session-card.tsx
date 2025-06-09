@@ -106,9 +106,15 @@ export default function GeneralSessionCard({
 }
 
 function CustomHoverCard({ content }: { content: TSessionsMatViewResultRow }) {
-	const start_time= useMemo(()=> formatDate(parseISO(content.start_time??"NA"), "HH:MM"), [content.start_time, content.end_time])
-	const end_time= useMemo(()=> formatDate(parseISO(content.end_time??"NA"), "HH:MM"), [content.start_time, content.end_time])
-	const date= useMemo(()=> formatDate(parseISO(content.start_time??"NA"), "yy MMMM dd"), [content.start_time, content.end_time])
+	let start_time, end_time, date;
+	try{
+		start_time= useMemo(()=> formatDate(parseISO(content.start_time??"NA"), "HH:MM"), [content.start_time, content.end_time])
+		end_time= useMemo(()=> formatDate(parseISO(content.end_time??"NA"), "HH:MM"), [content.start_time, content.end_time])
+		date= useMemo(()=> formatDate(parseISO(content.start_time??"NA"), "yy MMMM dd"), [content.start_time, content.end_time])
+	}catch(e){
+		
+		console.log("General session card error: ",e);
+	}
 
 	return (
 		<HoverCardContent

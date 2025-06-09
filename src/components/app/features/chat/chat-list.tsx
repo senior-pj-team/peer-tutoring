@@ -1,91 +1,80 @@
-"use client";
-
-import { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import ChatCard from "./chat-card";
-import { Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getChatList } from "@/data/queries/chat/get-chat-list";
+import { createClient } from "@/utils/supabase/server";
+import { getUserSession } from "@/utils/getUserSession";
+import { formatDate, parseISO } from "date-fns";
 
-type Chat = {
-  id: string;
-  chatName: string;
-};
+const ChatList = async ({ selectedChatId }: { selectedChatId: string | null }) => {
+  const user = await getUserSession();
+  let chats: TChatList = [];
 
-interface ChatListProps {
-  userId: string | null;
-  chats: Chat[];
-}
-
-const ChatList = ({ userId, chats }: ChatListProps) => {
-  const [search, setSearch] = useState("");
-  const [activeChatId, setActiveChatId] = useState<string | null>(userId);
-
-  const filteredChats = chats.filter((chat) =>
-    chat.chatName.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const handleChatClick = (id: string) => {
-    setActiveChatId(id);
-    setSearch("");
-  };
+  if (user) {
+    try {
+      const supabase = await createClient(); 
+      const data = await getChatList(user.user_id, supabase);
+      if (data) chats = data;
+    } catch (error) {
+      console.error("Failed to load chats", error);
+    }
+  }
 
   return (
-    <aside className="w-full lg:w-[360px] h-full lg:border-r bg-white px-4 py-6">
-      <div className="space-y-5">
-        {/* Header */}
-        <h2 className="text-2xl font-semibold text-orange-700 px-1">Chats</h2>
-
-        {/* Search Input */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-orange-400 h-4 w-4" />
-          <input
-            type="text"
-            placeholder="Search chats..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-orange-50 text-gray-800 placeholder:text-orange-300 transition shadow-sm"
-          />
-        </div>
-
-        {/* Scrollable Chat List */}
-        <ScrollArea className="h-[70vh] pr-3">
-          <div className="space-y-2">
-            {filteredChats.length > 0 ? (
-              filteredChats.map((chat) => (
-                <Link
-                  key={chat.id}
-                  href={`/chat/${chat.id}`}
-                  onClick={() => handleChatClick(chat.id)}
-                  className={` block transition px-4 py-3 text-sm font-medium ${
-                    activeChatId === chat.id
-                      ? "bg-orange-300 text-orange-900"
-                      : "bg-white hover:bg-orange-100 text-gray-700"
-                  }`}
-                >
-                  <ChatCard name={chat.chatName} />
-                </Link>
-              ))
-            ) : (
-              <div className="mt-20 flex flex-col items-center justify-center text-center text-gray-400">
-                <svg
-                  className="h-16 w-16 text-orange-200 mb-3"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.833L3 20l.994-4.438A7.963 7.963 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  />
-                </svg>
-                <p className="text-sm">No chats found</p>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
+    <aside className="w-full h-full border-r bg-white flex flex-col shadow-sm">
+      {/* Header */}
+      <div className="px-5 pb-5 pt-8 border-b">
+        <h2 className="text-xl font-bold text-orange-700">Chats</h2>
       </div>
+
+      {/* Chat List */}
+      <ScrollArea className="flex-1 px-2 py-3">
+        {chats.length > 0 ? (
+          chats.map((chat) => {
+            const lastSentAt = chat.last_sent_at
+              ? formatDate(parseISO(chat.last_sent_at), "MMMM dd hh:mm a")
+              : "";
+
+            return (
+              <Link
+                key={chat.chat_uuid}
+                href={`/chat/${chat.chat_uuid}`}
+                className={`block px-2 py-2 rounded-lg transition-colors ${
+                  selectedChatId === chat.chat_uuid
+                    ? "bg-orange-100 border border-orange-300"
+                    : "hover:bg-orange-50"
+                }`}
+              >
+                <ChatCard
+                  name={chat.chat_name}
+                  chatProfileUrl={chat.chat_profile_url ?? undefined}
+                  lastMessage={chat.last_message ?? undefined}
+                  lastSentAt={lastSentAt}
+                />
+              </Link>
+            );
+          })
+        ) : (
+          <div className="mt-20 flex flex-col items-center text-center text-gray-400 px-6">
+            <svg
+              className="h-16 w-16 mb-3 text-orange-200"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.833L3 20l.994-4.438A7.963 7.963 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+            <p className="text-sm">No chats found</p>
+          </div>
+        )}
+      </ScrollArea>
     </aside>
   );
 };
