@@ -1,6 +1,6 @@
 
-import RatingReviewListServer from "./RatingReviewListServer";
-import RatingStats from "./RatingStats";
+import RatingReviewListServer from "./rating-review-list-server";
+import RatingStats from "./rating-stats";
 
 const ReviewDialogContent = ({ tutor_id }: { tutor_id: string }) => {
 	return (
