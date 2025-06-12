@@ -3,15 +3,21 @@ export async function insertMessage(
   sender_id: string,
   chat_id: string,
   supabase: TSupabaseClient
-): Promise<boolean | null> {
-  const { data, error } = await supabase.from("message").insert({
-    message,
-    sender_id,
-    chat_id,
-  });
-  if (error) {
+): Promise<TMessage> {
+  const { data, error } = await supabase
+    .from("message")
+    .insert({
+      message,
+      sender_id,
+      chat_id,
+    })
+    .select()
+    .single();
+
+  if (error || !data) {
     console.log("Insert error: ", error.message);
-    return null;
+    throw new Error(error?.message || "Failed to insert message");
   }
-  return true;
+
+  return data as TMessage;
 }

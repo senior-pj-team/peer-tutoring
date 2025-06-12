@@ -51,60 +51,6 @@ export type Database = {
           },
         ]
       }
-      chat_participant: {
-        Row: {
-          chat_id: string | null
-          id: string
-          participant_id: string | null
-        }
-        Insert: {
-          chat_id?: string | null
-          id?: string
-          participant_id?: string | null
-        }
-        Update: {
-          chat_id?: string | null
-          id?: string
-          participant_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_participant_chat_id_fkey"
-            columns: ["chat_id"]
-            isOneToOne: false
-            referencedRelation: "chat"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "chat_participant_participant_id_fkey"
-            columns: ["participant_id"]
-            isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["student_id"]
-          },
-          {
-            foreignKeyName: "chat_participant_participant_id_fkey"
-            columns: ["participant_id"]
-            isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "chat_participant_participant_id_fkey"
-            columns: ["participant_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "chat_participant_participant_id_fkey"
-            columns: ["participant_id"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       fcm_token: {
         Row: {
           created_at: string
@@ -159,7 +105,7 @@ export type Database = {
         Row: {
           chat_id: string | null
           id: string
-          is_deleted: boolean | null
+          isRead: boolean | null
           message: string
           sender_id: string | null
           sent_at: string | null
@@ -167,7 +113,7 @@ export type Database = {
         Insert: {
           chat_id?: string | null
           id?: string
-          is_deleted?: boolean | null
+          isRead?: boolean | null
           message: string
           sender_id?: string | null
           sent_at?: string | null
@@ -175,7 +121,7 @@ export type Database = {
         Update: {
           chat_id?: string | null
           id?: string
-          is_deleted?: boolean | null
+          isRead?: boolean | null
           message?: string
           sender_id?: string | null
           sent_at?: string | null
@@ -223,7 +169,7 @@ export type Database = {
           body: string | null
           created_at: string
           id: number
-          link: string | null
+          session_id: number | null
           status: Database["public"]["Enums"]["notification_status"]
           title: string | null
           type: Database["public"]["Enums"]["notification_type"] | null
@@ -233,7 +179,7 @@ export type Database = {
           body?: string | null
           created_at?: string
           id?: number
-          link?: string | null
+          session_id?: number | null
           status?: Database["public"]["Enums"]["notification_status"]
           title?: string | null
           type?: Database["public"]["Enums"]["notification_type"] | null
@@ -243,7 +189,7 @@ export type Database = {
           body?: string | null
           created_at?: string
           id?: number
-          link?: string | null
+          session_id?: number | null
           status?: Database["public"]["Enums"]["notification_status"]
           title?: string | null
           type?: Database["public"]["Enums"]["notification_type"] | null
@@ -568,6 +514,7 @@ export type Database = {
           session_id: number
           status: Database["public"]["Enums"]["student_session_status"]
           stripe_client_secrete: string | null
+          stripe_payment_intent_id: string | null
           student_id: string
         }
         Insert: {
@@ -582,6 +529,7 @@ export type Database = {
           session_id: number
           status: Database["public"]["Enums"]["student_session_status"]
           stripe_client_secrete?: string | null
+          stripe_payment_intent_id?: string | null
           student_id: string
         }
         Update: {
@@ -596,6 +544,7 @@ export type Database = {
           session_id?: number
           status?: Database["public"]["Enums"]["student_session_status"]
           stripe_client_secrete?: string | null
+          stripe_payment_intent_id?: string | null
           student_id?: string
         }
         Relationships: [
@@ -900,7 +849,12 @@ export type Database = {
     Enums: {
       app_role: "student" | "tutor" | "admin"
       notification_status: "new" | "read"
-      notification_type: "student" | "tutor"
+      notification_type:
+        | "student"
+        | "tutor"
+        | "tutor_reminder"
+        | "tutor_warning"
+        | "chat"
       refund_status: "pending" | "approved" | "rejected"
       refund_type: "refund" | "report"
       session_status: "open" | "closed" | "completed" | "archived"
@@ -909,6 +863,7 @@ export type Database = {
         | "enrolled"
         | "pending_payment"
         | "expired_payment"
+        | "failed_payment"
         | "pending_refund"
         | "refunded"
         | "completed"
@@ -1034,7 +989,13 @@ export const Constants = {
     Enums: {
       app_role: ["student", "tutor", "admin"],
       notification_status: ["new", "read"],
-      notification_type: ["student", "tutor"],
+      notification_type: [
+        "student",
+        "tutor",
+        "tutor_reminder",
+        "tutor_warning",
+        "chat",
+      ],
       refund_status: ["pending", "approved", "rejected"],
       refund_type: ["refund", "report"],
       session_status: ["open", "closed", "completed", "archived"],
@@ -1043,6 +1004,7 @@ export const Constants = {
         "enrolled",
         "pending_payment",
         "expired_payment",
+        "failed_payment",
         "pending_refund",
         "refunded",
         "completed",
