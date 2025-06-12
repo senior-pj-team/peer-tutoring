@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { HydrationBoundary, dehydrate, QueryClient } from '@tanstack/react-query';
 import { getRatingReview } from '@/data/queries/rating_and_review/get-rating_review_user_view';
-import RatingReviewList from './RatingReviewList';
+import RatingReviewList from './rating-review-list';
 
 const LIMIT = 5;
 const fetchReviews = async ({

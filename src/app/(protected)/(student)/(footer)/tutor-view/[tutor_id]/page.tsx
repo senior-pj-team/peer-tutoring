@@ -3,13 +3,13 @@ import { Mail, Phone, Star } from "lucide-react";
 import Rating from "@/components/app/features/rating-review/rating";
 import Expandable from "@/components/app/shared/expandable-text";
 import Image from "next/image";
-import TutorRARSection from "@/components/app/features/tutor/TutorRARSection";
+import TutorRARSection from "@/components/app/features/tutor/tutor-RAR-section";
 import { createClient } from "@/utils/supabase/server";
 import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
 import { parseISO, format } from "date-fns";
-import TutorSessionsSectionServer from "@/components/app/features/tutor/TutorSessionsSectionServer";
+import TutorSessionsSectionServer from "@/components/app/features/tutor/tutor-sessions-section-server";
 import { GoToChatButton } from "@/components/app/shared/go-to-chat-button";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 
 const Page = async ({ params }: { params: { tutor_id: string } }) => {
   const { tutor_id } = await params;

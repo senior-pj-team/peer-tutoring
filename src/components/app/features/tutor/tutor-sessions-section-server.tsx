@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { QueryClient } from '@tanstack/react-query';
 import { getSessionsMatView } from '@/data/queries/sessions/get-sessions-mat-view';
-import TutorSessionsSection from './TutorSessionsSection';
+import TutorSessionsSection from './tutor-sessions-section';
 
 const LIMIT = 4;
 

@@ -153,7 +153,7 @@ useMessageRealtime(supabase, chatId, handleInsertMessage, handleUpdateMessage);
       )
     );
   }, [chatId, userId]);
-  console.log("last seen msg: ", lastSeenMessageId);
+  
   return (
     <div className="flex flex-col h-[46.5rem] bg-gray-50 border-l shadow-sm">
       <div className="flex items-center gap-4 px-6 pb-4 pt-6 border-b bg-white">

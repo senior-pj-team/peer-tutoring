@@ -1,5 +1,5 @@
 "use client";
-import { sessionSchema, SessionSchemaT } from "@/schema/sessionSchema";
+import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";

@@ -3,9 +3,9 @@
 import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
 import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
 import { updateSession } from "@/data/mutations/sessions/update-sessions";
-import { SessionSchemaT } from "@/schema/sessionSchema";
-import { getDateWithTime } from "@/utils/app/getDateWithTime";
-import { getUserSession } from "@/utils/getUserSession";
+import { SessionSchemaT } from "@/schema/session-schema";
+import { getDateWithTime } from "@/utils/app/get-date-with-time";
+import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
 
 export const editSession = async (

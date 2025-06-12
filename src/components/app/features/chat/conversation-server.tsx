@@ -2,7 +2,7 @@ import { getMessagesByChatId } from "@/data/queries/message/get-messages-by-chat
 import { HydrationBoundary, dehydrate, QueryClient } from "@tanstack/react-query";
 import Conversation from "./conversation";
 import { createClient } from "@/utils/supabase/server";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 
 const fetchMessage= async(pageParam: number, chatId: string)=>{
   const supabase= await createClient();

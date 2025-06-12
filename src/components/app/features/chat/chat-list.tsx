@@ -4,7 +4,7 @@ import ChatCard from "./chat-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getChatList } from "@/data/queries/chat/get-chat-list";
 import { createClient } from "@/utils/supabase/server";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 import { formatDate, parseISO } from "date-fns";
 
 const ChatList = async ({ selectedChatId }: { selectedChatId: string | null }) => {
