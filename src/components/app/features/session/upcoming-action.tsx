@@ -1,7 +1,7 @@
 import React from "react";
 import { Hourglass } from "lucide-react";
 import RefundReportBtn from "../refund-report/refund-report-btn";
-import { getRemainingTime } from "@/utils/app/getRemainingTime";
+import { getRemainingTime } from "@/utils/app/get-remaining-time";
 
 const UpcomingAction = ({start}: {start: string | null}) => {
 	const remainingTime= getRemainingTime(start)

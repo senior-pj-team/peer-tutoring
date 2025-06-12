@@ -1,7 +1,7 @@
 import React from "react";
 import PaymentTable from "@/components/app/features/payment/payment-table";
 import { createClient } from "@/utils/supabase/server";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 import { getStudentSession } from "@/data/queries/student-session/get-student-session";
 
 const SessionPayment = async ({session_id}: {session_id: number}) => {

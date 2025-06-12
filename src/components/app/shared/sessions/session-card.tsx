@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { getRemainingTime } from "@/utils/app/getRemainingTime";
+import { getRemainingTime } from "@/utils/app/get-remaining-time";
 import { formatDate, parseISO } from "date-fns";
 
 type SessionCardProp = {

@@ -9,9 +9,9 @@ import ArchivedAction from '@/components/app/features/session/archived-action';
 import RefundStatus from '@/components/app/features/session/refund-status';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import SessionContent from '@/components/app/features/session/SessionContent';
-import SessionPayment from '@/components/app/features/session/SessionPayment';
-import SessionTutor from '@/components/app/features/session/SessionTutor';
+import SessionContent from '@/components/app/features/session/session-centent';
+import SessionPayment from '@/components/app/features/session/session-payment';
+import SessionTutor from '@/components/app/features/session/session-tutor';
 
 interface PageProps {
   params: {

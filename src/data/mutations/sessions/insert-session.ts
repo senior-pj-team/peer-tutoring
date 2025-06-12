@@ -1,4 +1,4 @@
-import { SessionSchemaT } from "@/schema/sessionSchema";
+import { SessionSchemaT } from "@/schema/session-schema";
 
 export const insertSession = async (
   values: SessionSchemaT,

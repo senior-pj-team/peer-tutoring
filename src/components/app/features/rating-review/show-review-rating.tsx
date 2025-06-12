@@ -3,7 +3,7 @@ import Rating from './rating'
 import Expandable from '../../shared/expandable-text'
 import { getRatingReview } from '@/data/queries/rating_and_review/get-rating_review_user_view'
 import { createClient } from '@/utils/supabase/server'
-import { getUserSession } from '@/utils/getUserSession'
+import { getUserSession } from '@/utils/get-user-session'
 
 const ShowReviewRating = async ({ sessionId }: { sessionId: number | null }) => {
   const user = await getUserSession()

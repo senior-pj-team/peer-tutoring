@@ -1,6 +1,6 @@
 import React from 'react';
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
-import { getUserSession } from '@/utils/getUserSession';
+import { getUserSession } from '@/utils/get-user-session';
 import { createClient } from '@/utils/supabase/server';
 import { getRefundReport } from '@/data/queries/refund_and_report/get-refund-report';
 import { format, parseISO } from 'date-fns';

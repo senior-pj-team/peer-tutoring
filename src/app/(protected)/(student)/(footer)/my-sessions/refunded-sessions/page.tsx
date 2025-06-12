@@ -1,5 +1,5 @@
 import SessionCard from "@/components/app/shared/sessions/session-card";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server"
 import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";

@@ -9,6 +9,223 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      chat: {
+        Row: {
+          created_at: string | null
+          id: string
+          one_to_one_key: string | null
+          session_id: number | null
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          one_to_one_key?: string | null
+          session_id?: number | null
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          one_to_one_key?: string | null
+          session_id?: number | null
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "session_tutor_mat_view"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "chat_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fcm_token: {
+        Row: {
+          created_at: string
+          fcm_token: string | null
+          id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          fcm_token?: string | null
+          id?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          fcm_token?: string | null
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fcm_token_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["student_id"]
+          },
+          {
+            foreignKeyName: "fcm_token_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "fcm_token_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "tutor_stats_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "fcm_token_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message: {
+        Row: {
+          chat_id: string | null
+          id: string
+          isRead: boolean | null
+          message: string
+          sender_id: string | null
+          sent_at: string | null
+        }
+        Insert: {
+          chat_id?: string | null
+          id?: string
+          isRead?: boolean | null
+          message: string
+          sender_id?: string | null
+          sent_at?: string | null
+        }
+        Update: {
+          chat_id?: string | null
+          id?: string
+          isRead?: boolean | null
+          message?: string
+          sender_id?: string | null
+          sent_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "chat"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["student_id"]
+          },
+          {
+            foreignKeyName: "message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_stats_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: number
+          session_id: number | null
+          status: Database["public"]["Enums"]["notification_status"]
+          title: string | null
+          type: Database["public"]["Enums"]["notification_type"] | null
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: number
+          session_id?: number | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          title?: string | null
+          type?: Database["public"]["Enums"]["notification_type"] | null
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: number
+          session_id?: number | null
+          status?: Database["public"]["Enums"]["notification_status"]
+          title?: string | null
+          type?: Database["public"]["Enums"]["notification_type"] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["student_id"]
+          },
+          {
+            foreignKeyName: "notification_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "notification_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_stats_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "notification_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rating_and_review: {
         Row: {
           created_at: string
@@ -297,6 +514,7 @@ export type Database = {
           session_id: number
           status: Database["public"]["Enums"]["student_session_status"]
           stripe_client_secrete: string | null
+          stripe_payment_intent_id: string | null
           student_id: string
         }
         Insert: {
@@ -311,6 +529,7 @@ export type Database = {
           session_id: number
           status: Database["public"]["Enums"]["student_session_status"]
           stripe_client_secrete?: string | null
+          stripe_payment_intent_id?: string | null
           student_id: string
         }
         Update: {
@@ -325,6 +544,7 @@ export type Database = {
           session_id?: number
           status?: Database["public"]["Enums"]["student_session_status"]
           stripe_client_secrete?: string | null
+          stripe_payment_intent_id?: string | null
           student_id?: string
         }
         Relationships: [
@@ -548,6 +768,20 @@ export type Database = {
         Args: { event: Json }
         Returns: Json
       }
+      get_chat_list: {
+        Args: { user_id: string }
+        Returns: {
+          chat_uuid: string
+          chat_name: string
+          chat_profile_url: string
+          last_message: string
+          last_sent_at: string
+        }[]
+      }
+      get_or_create_chat: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: string
+      }
       get_rating_stats: {
         Args: { tid: string }
         Returns: {
@@ -614,6 +848,13 @@ export type Database = {
     }
     Enums: {
       app_role: "student" | "tutor" | "admin"
+      notification_status: "new" | "read"
+      notification_type:
+        | "student"
+        | "tutor"
+        | "tutor_reminder"
+        | "tutor_warning"
+        | "chat"
       refund_status: "pending" | "approved" | "rejected"
       refund_type: "refund" | "report"
       session_status: "open" | "closed" | "completed" | "archived"
@@ -622,6 +863,7 @@ export type Database = {
         | "enrolled"
         | "pending_payment"
         | "expired_payment"
+        | "failed_payment"
         | "pending_refund"
         | "refunded"
         | "completed"
@@ -629,7 +871,7 @@ export type Database = {
       tutor_status: "pending" | "verified" | "rejected"
     }
     CompositeTypes: {
-     session_tutor_mat_view_result: {
+      session_tutor_mat_view_result: {
 				rows: TSessionsMatViewResultRow[] | null;
 				total: number | null;
 			}
@@ -746,6 +988,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "tutor", "admin"],
+      notification_status: ["new", "read"],
+      notification_type: [
+        "student",
+        "tutor",
+        "tutor_reminder",
+        "tutor_warning",
+        "chat",
+      ],
       refund_status: ["pending", "approved", "rejected"],
       refund_type: ["refund", "report"],
       session_status: ["open", "closed", "completed", "archived"],
@@ -754,6 +1004,7 @@ export const Constants = {
         "enrolled",
         "pending_payment",
         "expired_payment",
+        "failed_payment",
         "pending_refund",
         "refunded",
         "completed",

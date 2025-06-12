@@ -24,16 +24,16 @@ declare global {
 
 	type TRefundReportResult =
 		DB["public"]["Tables"]["refund_report"]["Row"]
-	
-	type TTutorStatsViewResult = 
-		DB["public"]["Views"]["tutor_stats_view"]["Row"];
-
 	type TRatingReviewUserViewResult =
 		DB["public"]["Views"]["rating_review_user_view"]["Row"];
 	type TStudentSessionStatus = 
 		DB["public"]["Enums"]["student_session_status"];
 	type TTutorStats = 
 		DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
+	type TChatList = 
+		DB["public"]["Functions"]["get_chat_list"]["Returns"];
+	type TMessage = 
+		DB["public"]["Tables"]["message"]["Row"];
 
 	// other global types
 	type TBrowseSessionFilters = {

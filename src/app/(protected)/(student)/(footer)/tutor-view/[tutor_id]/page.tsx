@@ -1,21 +1,23 @@
 import React from "react";
-import { Mail, Phone, MessageCircle, Star } from "lucide-react";
+import { Mail, Phone, Star } from "lucide-react";
 import Rating from "@/components/app/features/rating-review/rating";
 import Expandable from "@/components/app/shared/expandable-text";
 import Image from "next/image";
-import TutorRARSection from "@/components/app/features/tutor/TutorRARSection";
+import TutorRARSection from "@/components/app/features/tutor/tutor-RAR-section";
 import { createClient } from "@/utils/supabase/server";
 import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
 import { parseISO, format } from "date-fns";
-import TutorSessionsSectionServer from "@/components/app/features/tutor/TutorSessionsSectionServer";
+import TutorSessionsSectionServer from "@/components/app/features/tutor/tutor-sessions-section-server";
+import { GoToChatButton } from "@/components/app/shared/go-to-chat-button";
+import { getUserSession } from "@/utils/get-user-session";
 
 const Page = async ({ params }: { params: { tutor_id: string } }) => {
   const { tutor_id } = await params;
   const supabase = await createClient();
   let data = await getTutorStats(tutor_id, supabase);
   if (!data) return <></>; //error fetching data
-  const tutorStats= data[0]
-  
+  const tutorStats= data[0];
+  const user= await getUserSession();
   return (
     <>
       <div className="max-w-full mx-auto py-8 xl:px-30 px-5 flex flex-col md:flex-row gap-10">
@@ -62,10 +64,7 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
                 <Rating rating={tutorStats.tutor_rating ?? 0} />
               </div>
             </div>
-            <MessageCircle
-              size={30}
-              className="text-orange-500 cursor-pointer hover:text-orange-600"
-            />
+            <GoToChatButton user1_id={tutor_id} user2_id={user ? user.user_id : null}/>
           </div>
           <hr className="my-6" />
           <div>

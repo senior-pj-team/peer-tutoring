@@ -1,11 +1,11 @@
 "use server";
 
-import { getDateWithTime } from "@/utils/app/getDateWithTime";
-import { SessionSchemaT, sessionSchema } from "@/schema/sessionSchema";
+import { getDateWithTime } from "@/utils/app/get-date-with-time";
+import { SessionSchemaT, sessionSchema } from "@/schema/session-schema";
 import { insertSession } from "@/data/mutations/sessions/insert-session";
 import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
 import { createClient } from "@/utils/supabase/server";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 
 export const createSession = async (
 	rawValues: SessionSchemaT,

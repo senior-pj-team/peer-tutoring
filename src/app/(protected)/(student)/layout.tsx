@@ -1,5 +1,5 @@
 import Navbar from "@/components/app/layout/navbar/navbar";
-import { getUserSession } from "@/utils/getUserSession";
+import { getUserSession } from "@/utils/get-user-session";
 import { redirect } from "next/navigation";
 import React from "react";
 
