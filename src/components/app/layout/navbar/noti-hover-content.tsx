@@ -1,6 +1,7 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
 import { BookOpen, MessageSquare } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const notifications = [
 	{
@@ -19,6 +20,27 @@ const notifications = [
 ];
 
 export default function NotiHoverContent() {
+	const [enableAudio, setEnableAudio] = useState<boolean>();
+	const enableAudioRef = useRef<boolean | null>(false);
+	useEffect(() => {
+		const handleNotification = (e: Event) => {
+			console.log("noti sound");
+			const audio = new Audio("/notification-sound.wav");
+			audio.volume = 0.5;
+			audio.play().catch((err) => console.log("Audio Error: ", err));
+		};
+		const addAudioListener = (e: Event) => {
+			if (enableAudioRef.current === null) enableAudioRef.current = true;
+		};
+		window.addEventListener("click", addAudioListener);
+		if (enableAudioRef.current) {
+			window.addEventListener("notification-received", handleNotification);
+			enableAudioRef.current = false;
+		}
+		return () => {
+			window.removeEventListener("click", addAudioListener);
+		};
+	}, [enableAudio]);
 	return (
 		<HoverCardContent className="w-80 py-2 absolute -right-15">
 			<div className="font-bold text-lg px-2 mb-4 text-gray-800">

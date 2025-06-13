@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function PicturePage() {
+export default function Page() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

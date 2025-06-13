@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
-export default function PaymentPage() {
+export default function Page() {
 	return (
 		<div className="xl:p-2 xl:w-[75%]">
 			<div className="flex flex-col space-y-1.5">

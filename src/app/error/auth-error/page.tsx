@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
-export default function AuthError() {
+export default function page() {
 	const [errorInfo, setErrorInfo] = useState({
 		error: "",
 		errorCode: "",

@@ -7,48 +7,60 @@ declare global {
 	type TSupabaseClient = SupabaseClient<DB>;
 	type TSessionsMatViewResultRow =
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-			tutor: TTutor | null;
-		};
+				tutor: TTutor | null;
+		  };
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
+		email: string;
 		tutor_rating: number | null;
 	};
 
+	type TSessionsMatViewResultRow =
+		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
+				tutor: TTutor | null;
+		  };
+
 	// query result types
-	type TSessionsMatViewResult =
+	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
+	type TSelectSessionsMatViewResult =
 		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 
-	type TStudentSessionResult =
-		DB["public"]["Tables"]["student_session"]["Row"];
+	type TStudentSessionResult = DB["public"]["Tables"]["student_session"]["Row"];
 
-	type TRefundReportResult =
-		DB["public"]["Tables"]["refund_report"]["Row"]
+	type TRefundReportResult = DB["public"]["Tables"]["refund_report"]["Row"];
 	type TRatingReviewUserViewResult =
 		DB["public"]["Views"]["rating_review_user_view"]["Row"];
-	type TStudentSessionStatus = 
-		DB["public"]["Enums"]["student_session_status"];
-	type TTutorStats = 
-		DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
-	type TChatList = 
-		DB["public"]["Functions"]["get_chat_list"]["Returns"];
-	type TMessage = 
-		DB["public"]["Tables"]["message"]["Row"];
+	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
+	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
+	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
+	type TMessage = DB["public"]["Tables"]["message"]["Row"];
+
+	type TStudentSessionJoinResult = {
+		id: number;
+		session_id: number;
+		student_id: string;
+		amount_from_student?: number | null;
+		stripe_client_secrete: string;
+		ss_status: TStudentSessionStatus;
+		sessions: {
+			image: string | null;
+			session_name: string | null;
+			course_code: string | null;
+			course_name: string | null;
+			max_students: number | null;
+			start_time: string | null;
+			end_time: string | null;
+			tutor: {
+				id: string | null;
+				profile_url: string | null;
+				username: string | null;
+				tutor_rating: number | null;
+			} | null;
+		} | null;
+	};
 
 	// other global types
-	type TBrowseSessionFilters = {
-		search?: string;
-		tutorRating?: number;
-		tutorId?: string;
-		sessionCategory?: string[];
-		maxPrice?: number;
-		minPrice?: number;
-		free?: boolean;
-		paid?: boolean;
-		limit?: number;
-		offset?: number;
-		status?: DB["public"]["Enums"]["session_status"][];
-	};
 
 	type MyJwtPayload = {
 		email: string;
@@ -77,37 +89,12 @@ declare global {
 		rating: number;
 		count: number;
 	};
-
-	type TSessionHeaderData = {
-		image: string | null;
-		session_name: string | null;
-		course_code: string | null;
-		course_name: string | null;
-		school: string | null;
-		major: string | null;
-		tutor_name: string | null;
-		tutor_rating: number | null;
-		session_status: string | null;
-	};
-	
-	type TStudentSessionJoinResult = {
-		session_id: number;
-		student_id: string
-		ss_status: TStudentSessionStatus;
-		sessions: {
-			image: string | null;
-			session_name: string | null;
-			course_code: string | null;
-			course_name: string | null;
-			start_time: string | null;
-			end_time: string | null;
-			tutor: {
-				tutor_id: string | null;
-				profile_url: string | null;
-				username: string | null;
-				tutor_rating: number | null;
-			} | null;
-		} | null;
+	type TRatingStat = {
+		rating: number;
+		count: number;
 	};
 
+	//Enums
+	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
+	type TSessionStatus = DB["public"]["Enums"]["session_status"];
 }

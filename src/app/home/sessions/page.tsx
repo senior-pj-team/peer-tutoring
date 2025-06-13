@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { AlignJustify } from "lucide-react";
 import { Suspense } from "react";
 
-export type Params = Promise<{
+type Params = Promise<{
 	search: string;
 	page: string;
 	rating: string;
@@ -30,7 +30,7 @@ export default async function Sessions({
 	const params = await searchParams;
 
 	return (
-		<div className="lg:px-[6rem] lg:pt-[4rem] md:px-[4rem] md:pt-[3rem] px-[3rem] pt-[2rem] w-full">
+		<div className="lg:px-[6rem] lg:pt-[4rem] md:px-[4rem] md:pt-[3rem] px-[3rem] pt-[2rem] w-full pb-[2rem]">
 			{params.search && (
 				<span className="lg:text-4xl md:text-2xl text-xl font-bold">
 					Result for &quot;{params.search}&quot;

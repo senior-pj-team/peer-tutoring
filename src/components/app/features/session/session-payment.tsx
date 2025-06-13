@@ -4,19 +4,24 @@ import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { getStudentSession } from "@/data/queries/student-session/get-student-session";
 
-const SessionPayment = async ({session_id}: {session_id: number}) => {
-	const supabase= await createClient();
-	const user= await getUserSession()
-	if(!user)return <></>
-	const student_session= await getStudentSession(supabase, user.user_id, session_id)
-	console.log("Student_session", student_session);
-	if(!student_session) return<></>
+const SessionPayment = async ({ session_id }: { session_id: number }) => {
+	const supabase = await createClient();
+	const user = await getUserSession();
+	if (!user) return <></>;
+	const student_session_result = await getStudentSession(
+		supabase,
+		user.user_id,
+		session_id,
+	);
+
+	if (!student_session_result) return <></>;
+	const student_session = student_session_result[0];
 	const data = {
 		paidAmount: student_session.amount_from_student,
 		paidAt: student_session.created_at,
 		refundAmount: student_session.refunded_amount,
-		refundedAt: student_session.held_untill
-	}
+		refundedAt: student_session.held_until,
+	};
 	return (
 		<div className="p-6 ">
 			<div>

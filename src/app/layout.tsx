@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ClientQueryProvider } from "@/components/providers/query-client-provider";
+import { NotificationWrapper } from "@/components/app/layout/notification-wrapper";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -24,7 +25,9 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${poppins.className} antialiased`}>
 				<ClientQueryProvider>
-					<AuthProvider>{children}</AuthProvider>
+					<AuthProvider>
+						<NotificationWrapper>{children}</NotificationWrapper>
+					</AuthProvider>
 				</ClientQueryProvider>
 				<Toaster />
 			</body>

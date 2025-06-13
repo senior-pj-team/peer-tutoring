@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 
-export default function ProfilePage() {
+export default function Page() {
 	const [links, setLinks] = useState([""]);
 	const [open, setOpen] = useState(false);
 	const [position, setPosition] = useState("Select your year");
