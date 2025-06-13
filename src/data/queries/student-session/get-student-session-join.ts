@@ -12,7 +12,7 @@ export const getStudentSessionJoin = async (
       id,
       session_id,
       student_id,
-      amount_from_student,ß
+      amount_from_student,
       stripe_client_secrete,
       ss_status: status,
       sessions (

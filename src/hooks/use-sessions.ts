@@ -9,7 +9,7 @@ export function useSessionsMatviewQuery(
 	const client = useSupabase();
 	const queryFn = async () => {
 		if (!search) return null;
-		return getSessionsMatView(client, { search });
+		return getSessionsMatView(client, { search, status: ["open"] });
 	};
 	return useQuery({ queryKey: ["sessions", search], queryFn, enabled });
 }

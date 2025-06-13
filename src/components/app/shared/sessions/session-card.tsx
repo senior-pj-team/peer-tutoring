@@ -78,7 +78,7 @@ const SessionCard = ({
 				? `/admin-dashboard/session/${1}/content`
 				: page === "tutor"
 				? `/tutor-dashboard/session/${1}/content`
-				: `/session/${page}/${session_id}`;
+				: `/home/session/${page}/${session_id}`;
 
 		router.push(nextPage);
 	};

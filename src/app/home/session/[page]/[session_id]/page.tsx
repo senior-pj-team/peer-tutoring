@@ -11,12 +11,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SessionContent from "@/components/app/features/session/session-content";
 import SessionPayment from "@/components/app/features/session/session-payment";
 import SessionTutor from "@/components/app/features/session/session-tutor";
-
 import { createClient } from "@/utils/supabase/server";
-import { format, formatDate } from "date-fns";
-import GeneralError from "@/components/app/shared/error";
 import { getSessionMatViewbyId } from "@/data/queries/sessions/get-session-mat-view-by-Id";
+import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
+import { format, formatDate } from "date-fns";
 
 type Params = Promise<{
 	session_id: string;
@@ -122,8 +121,12 @@ const Page = async ({ params }: { params: Params }) => {
 						</div>
 
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-							{page === "complete" && <CompletedAction />}
-							{page === "upcoming" && <UpcomingAction />}
+							{page === "complete" && (
+								<CompletedAction sessionId={Number(session_id)} />
+							)}
+							{page === "upcoming" && (
+								<UpcomingAction start={"2025-05-25 04:00:00+00"} />
+							)}
 							{page === "browse" && (
 								<EnrollAction
 									session_id={sessionData.session_id!}
@@ -131,8 +134,12 @@ const Page = async ({ params }: { params: Params }) => {
 									service_fee={sessionData.service_fee}
 								/>
 							)}
-							{page === "archived" && <ArchivedAction />}
-							{page === "refund" && <RefundStatus status="rejected" />}
+							{page === "archived" && (
+								<ArchivedAction sessionId={Number(session_id)} />
+							)}
+							{page === "refund" && (
+								<RefundStatus sessionId={Number(session_id)} />
+							)}
 						</aside>
 					</div>
 				</Tabs>

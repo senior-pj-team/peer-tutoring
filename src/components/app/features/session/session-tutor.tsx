@@ -40,7 +40,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8">
 						<SessionList tutor_id={tutor_id} supabase={supabase} />
 					</div>
-					<Link href={"/tutor-view"}>
+					<Link href={`/tutor-view/${tutor_id}`}>
 						<Button
 							variant="outline"
 							className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">

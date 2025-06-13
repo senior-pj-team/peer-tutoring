@@ -20,11 +20,7 @@ const Page = async () => {
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 			{student_sessions.length > 0 ? (
 				student_sessions.map((ss) => (
-					<SessionCard
-						key={ss.session_id}
-						student_session={ss}
-						page="upcoming"
-					/>
+					<SessionCard key={ss.id} student_session={ss} page="upcoming" />
 				))
 			) : (
 				<div className="col-span-full text-center text-gray-500">
