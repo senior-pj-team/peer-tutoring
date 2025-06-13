@@ -63,7 +63,6 @@ export default function Filter() {
 		const params = new URLSearchParams();
 
 		if (search) params.set("search", search);
-		console.log(search);
 		if (categories.length > 0)
 			categories.forEach((cat) => params.append("category", cat));
 

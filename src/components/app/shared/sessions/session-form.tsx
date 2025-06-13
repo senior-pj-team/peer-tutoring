@@ -1,6 +1,6 @@
 "use client";
 
-import { sessionSchema, SessionSchemaT } from "@/schema/sessionSchema";
+import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
@@ -42,7 +42,7 @@ import {
 	DialogDescription,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { createSession, editSession } from "@/actions/sessionActions";
+import { createSession, editSession } from "@/actions/create-session";
 
 type SessionFormProps = {
 	school?: string;
@@ -157,14 +157,14 @@ export default function SessionForm({
 						// 	},
 						// },
 				  })
-				: toast.error("Something went wrong", {
+				: toast.error("Error", {
 						description: `We couldn't complete your request. ${response.error.message}`,
 				  });
 			setisDialogOpen(false);
 		} catch (error) {
 			console.error(error);
-			toast.error("Something went wrong", {
-				description: "We couldn't complete your request. Please try again.",
+			toast.error("Error", {
+				description: "Something Went Wrong. Please try again.",
 			});
 		}
 	};

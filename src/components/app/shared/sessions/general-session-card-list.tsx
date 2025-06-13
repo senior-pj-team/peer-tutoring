@@ -40,23 +40,24 @@ export async function GeneralSessionCardList({
 		free: free === "true",
 		paid: paid === "true",
 		offset: (parseInt(page) - 1) * 12,
+		status: ["open"],
 		limit: 12,
 	});
 
 	if (data == null) {
 		return (
-			<div className="text-2xl flex justify-center items-center text-red-500 font-bold h-full gap-x-2">
-				<FrownIcon size={30} />
-				Something went wrong!
+			<div className="ms-5 text-xl flex text-red-500 font-bold h-full gap-x-2">
+				<FrownIcon size={25} />
+				Oh, Something went wrong!
 			</div>
 		);
 	}
 
 	if (!data.rows || data.rows.length <= 0) {
 		return (
-			<div className="text-2xl flex justify-center items-center font-bold h-full gap-x-2">
-				<FrownIcon size={30} />
-				No sessions to show!
+			<div className="ms-5 text-xl flex font-bold h-full gap-x-2">
+				<FrownIcon size={25} />
+				No sessions found!
 			</div>
 		);
 	}

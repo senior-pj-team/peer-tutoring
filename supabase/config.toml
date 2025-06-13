@@ -1,0 +1,33 @@
+
+[functions.send-notifictaion]
+enabled = true
+verify_jwt = true
+import_map = "./functions/send-notifictaion/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/send-notifictaion/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/send-notifictaion/*.html" ]
+
+[functions.stripe-webhook]
+enabled = true
+verify_jwt = true
+import_map = "./functions/stripe-webhook/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/stripe-webhook/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/stripe-webhook/*.html" ]
+
+[functions.send-reminder-notifcations-emails]
+enabled = true
+verify_jwt = true
+import_map = "./functions/send-reminder-notifcations-emails/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/send-reminder-notifcations-emails/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/send-reminder-notifcations-emails/*.html" ]

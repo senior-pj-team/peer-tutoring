@@ -3,8 +3,30 @@ import Link from "next/link";
 import Rating from "@/components/app/features/rating-review/rating";
 import clsx from "clsx";
 
-const SessionHeader = ({data}: {data: TSessionHeaderData}) => {
-	const {session_name, course_code, course_name, major, school, tutor_name, tutor_rating, session_status, image}= data;
+type TSessionHeaderData = {
+	image: string | null;
+	session_name: string | null;
+	course_code: string | null;
+	course_name: string | null;
+	school: string | null;
+	major: string | null;
+	tutor_name: string | null;
+	tutor_rating: number | null;
+	session_status: string | null;
+};
+
+const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
+	const {
+		session_name,
+		course_code,
+		course_name,
+		major,
+		school,
+		tutor_name,
+		tutor_rating,
+		session_status,
+		image,
+	} = data;
 	const status = "OPEN";
 	return (
 		<div className="bg-white ps-6">
@@ -17,8 +39,7 @@ const SessionHeader = ({data}: {data: TSessionHeaderData}) => {
 								<span>{course_code} </span>|<span> {course_name}</span>
 							</div>
 							<div className="text-xs font-extrabold">
-								<span> {school} ● </span>{" "}
-								<span>{major}</span>
+								<span> {school} ● </span> <span>{major}</span>
 							</div>
 						</div>
 						<div className="flex items-center">
@@ -29,7 +50,10 @@ const SessionHeader = ({data}: {data: TSessionHeaderData}) => {
 								<Link href={""}>{tutor_name}</Link>
 							</div>
 							|
-							<Rating className="ms-3" rating={tutor_rating?? 0} />
+							<Rating
+								className="ms-3"
+								rating={tutor_rating?.toFixed(1) as unknown as number}
+							/>
 						</div>
 					</div>
 					<div className="mt-5">
@@ -48,7 +72,7 @@ const SessionHeader = ({data}: {data: TSessionHeaderData}) => {
 
 				<div className="absolute right-0 top-0 bottom-0 lg:w-[70%] w-[50%] z-0">
 					<Image
-						src={image?? '/React.png'}
+						src={image ?? "/React.png"}
 						alt="Session Banner"
 						fill
 						className="object-cover"

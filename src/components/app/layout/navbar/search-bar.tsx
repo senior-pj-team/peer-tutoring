@@ -27,7 +27,9 @@ export default function SearchBar() {
 			e.preventDefault();
 			setShowSuggestions(false);
 			const trimmed = search.trim();
-			router.push(`/home/sessions?search=${encodeURIComponent(trimmed)}`);
+			router.push(
+				`/home/sessions?search=${encodeURIComponent(trimmed)}&page=1`,
+			);
 		}
 	};
 

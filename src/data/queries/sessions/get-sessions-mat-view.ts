@@ -1,3 +1,17 @@
+type TBrowseSessionFilters = {
+	search?: string;
+	tutorRating?: number;
+	sessionCategory?: string[];
+	maxPrice?: number;
+	minPrice?: number;
+	free?: boolean;
+	paid?: boolean;
+	limit?: number;
+	offset?: number;
+	tutor_id?: string;
+	status?: TSessionStatus[];
+};
+
 export async function getSessionsMatView(
 	client: TSupabaseClient,
 	{
@@ -10,21 +24,9 @@ export async function getSessionsMatView(
 		paid = true,
 		limit = 5,
 		offset = 0,
-		status = ["open"],
-	}: TBrowseSessionFilters,
-): Promise<TSessionsMatViewResult | null> {
-	console.log(
-		search,
-		tutorRating,
-		sessionCategory,
-		maxPrice,
-		minPrice,
-		free,
-		paid,
-		limit,
-		offset,
 		status,
-	);
+	}: TBrowseSessionFilters,
+): Promise<TSelectSessionsMatViewResult | null> {
 	const { data, error } = await client.rpc("select_session_tutor_mat_view", {
 		search_text: search,
 		tutor_rating: tutorRating,
@@ -40,5 +42,5 @@ export async function getSessionsMatView(
 	if (error) {
 		console.log("GetSessionsMatView Error: ", error.message);
 	}
-	return (data as TSessionsMatViewResult) ?? null;
+	return (data as TSelectSessionsMatViewResult) ?? null;
 }

@@ -1,16 +1,8 @@
 "use client";
-"use client";
 
 import { useSupabase } from "@/hooks/use-supabase";
 import { jwtDecode } from "jwt-decode";
-import {
-	ReactNode,
-	createContext,
-	useContext,
-	useState,
-	useEffect,
-	useMemo,
-} from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 type AuthContextType = {
 	user: UserSession | null;

@@ -1,5 +1,5 @@
-import RatingReviewList from "./RatingReviewList";
-import RatingStats from "./RatingStats";
+import RatingReviewList from "./rating-review-list";
+import RatingStats from "./rating-stats";
 
 const ReviewDialogContent = ({ tutor_id }: { tutor_id: string }) => {
 	return (
