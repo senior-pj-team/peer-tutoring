@@ -1,12 +1,10 @@
 "use server";
 
-import { getDateWithTime } from "@/utils/app/get-date-with-time";
-import { SessionSchemaT } from "@/schema/session-schema";
-import { insertSession } from "@/data/mutations/sessions/insert-session";
-import { updateSession } from "@/data/mutations/sessions/update-sessions";
 import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
-import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
+import { SessionSchemaT } from "@/schema/session-schema";
+import { getDateWithTime } from "@/utils/app/get-date-with-time";
 import { createClient } from "@/utils/supabase/server";
+
 import { getUserSession } from "@/utils/get-user-session";
 
 export const createSession = async (
@@ -47,69 +45,6 @@ export const createSession = async (
 	}
 
 	const { data, error } = await insertSession(
-		values,
-		uploadedUrl,
-		start,
-		end,
-		tutor_id,
-		supabase,
-	);
-
-	if (error) {
-		return {
-			success: false,
-			error: { message: error.message },
-		};
-	}
-
-	return {
-		success: true,
-		data,
-	};
-};
-
-export const editSession = async (
-	sessionId: number,
-	values: SessionSchemaT,
-	imageString: string,
-): Promise<ActionResponseType<any>> => {
-	const start = getDateWithTime(values.date, values.startTime);
-	const end = getDateWithTime(values.date, values.endTime);
-
-	const user: UserSession | null = await getUserSession();
-
-	if (!user) {
-		return {
-			success: false,
-			error: { message: "You are not authorized for this action!" },
-		};
-	}
-
-	if (user.user_role !== "tutor") {
-		return {
-			success: false,
-			error: { message: "You are not authorized for this action!" },
-		};
-	}
-
-	const tutor_id = user.user_id;
-	const supabase: TSupabaseClient = await createClient();
-
-	let isDelete;
-	let uploadedUrl: string | null = null;
-	if (values.image) {
-		uploadedUrl = await uploadImage(values.image, supabase);
-		if (!uploadedUrl) {
-			return {
-				success: false,
-				error: { message: "Failed to upload image" },
-			};
-		}
-		isDelete = await deleteImage(imageString, supabase);
-	}
-
-	const { data, error } = await updateSession(
-		sessionId,
 		values,
 		uploadedUrl,
 		start,

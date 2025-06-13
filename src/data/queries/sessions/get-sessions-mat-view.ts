@@ -8,7 +8,7 @@ type TBrowseSessionFilters = {
 	paid?: boolean;
 	limit?: number;
 	offset?: number;
-	tutor_id?: string;
+	tutorId?: string;
 	status?: TSessionStatus[];
 };
 
@@ -17,6 +17,7 @@ export async function getSessionsMatView(
 	{
 		search = "",
 		tutorRating,
+		tutorId,
 		sessionCategory,
 		maxPrice,
 		minPrice,
@@ -30,6 +31,7 @@ export async function getSessionsMatView(
 	const { data, error } = await client.rpc("select_session_tutor_mat_view", {
 		search_text: search,
 		tutor_rating: tutorRating,
+		tutor_id: tutorId,
 		categories: sessionCategory,
 		max_price: maxPrice,
 		min_price: minPrice,
@@ -41,6 +43,7 @@ export async function getSessionsMatView(
 	});
 	if (error) {
 		console.log("GetSessionsMatView Error: ", error.message);
+		return null;
 	}
 	return (data as TSelectSessionsMatViewResult) ?? null;
 }

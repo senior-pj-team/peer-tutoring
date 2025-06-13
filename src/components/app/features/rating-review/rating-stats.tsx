@@ -1,13 +1,14 @@
 import React from "react";
 import Rating from "./rating";
-import { selectRatingStats } from "@/data/queries/rating-and-review/select-rating-count";
+import { getRatingStats } from "@/data/queries/rating-and-review/get-rating-count";
 import { createClient } from "@/utils/supabase/server";
 
 const RatingStats = async ({ tutor_id }: { tutor_id: string }) => {
 	const supabase: TSupabaseClient = await createClient();
-	const ratingStats: TRatingStat[] | [] = await selectRatingStats(supabase, {
+	const ratingStats = await getRatingStats(supabase, {
 		tutor_id,
 	});
+	if (!ratingStats) return <></>;
 
 	const total = ratingStats.reduce((sum, item) => sum + item.count, 0);
 	const ratings = ratingStats.map((item) => ({

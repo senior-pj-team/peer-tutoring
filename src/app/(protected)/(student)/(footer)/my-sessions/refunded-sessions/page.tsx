@@ -1,8 +1,8 @@
 import SessionCard from "@/components/app/shared/sessions/session-card";
 import { getUserSession } from "@/utils/get-user-session";
-import { selectStudentSession } from "@/data/queries/sessions/select-student-session-view";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 
 const Page = async () => {
 	const user = await getUserSession();
@@ -10,21 +10,17 @@ const Page = async () => {
 		redirect("/login");
 	}
 	const supabase = await createClient();
-	const sessions: TStudentSessionViewCardResult[] = await selectStudentSession(
-		["refunded", "pending_refund"],
-		user,
-		supabase,
-	);
+	const student_sessions = await getStudentSessionJoin(supabase, {
+		student_id: user.user_id,
+		status: ["pending_refund", "refunded"],
+	});
+	if (!student_sessions) return <></>;
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-			{sessions.length > 0 ? (
-				sessions.map((session) => (
-					<SessionCard
-						key={session.session_id}
-						studentSession={session}
-						page="refund"
-					/>
+			{student_sessions.length > 0 ? (
+				student_sessions.map((ss) => (
+					<SessionCard key={ss.session_id} student_session={ss} page="refund" />
 				))
 			) : (
 				<div className="col-span-full text-center text-gray-500">

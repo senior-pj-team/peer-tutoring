@@ -5,7 +5,10 @@ declare global {
 	// Db and Supabase Client Type
 	type Database = DB;
 	type TSupabaseClient = SupabaseClient<DB>;
-
+	type TSessionsMatViewResultRow =
+		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
+				tutor: TTutor | null;
+		  };
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -19,31 +22,19 @@ declare global {
 		  };
 
 	// query result types
+	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
 	type TSelectSessionsMatViewResult =
 		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 
-	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
-
 	type TStudentSessionResult = DB["public"]["Tables"]["student_session"]["Row"];
 
-	type TStudentSessionViewCardResult = Pick<
-		TStudentSessionViewResult,
-		"session_id",
-		"image",
-		"session_name",
-		"course_code",
-		"course_name",
-		"start_time",
-		"end_time",
-		"tutor_name",
-		"tutor_rating",
-		"ss"
-	>;
-
-	type TTutorStatsViewResult = DB["public"]["Views"]["tutor_stats_view"]["Row"];
-
+	type TRefundReportResult = DB["public"]["Tables"]["refund_report"]["Row"];
 	type TRatingReviewUserViewResult =
 		DB["public"]["Views"]["rating_review_user_view"]["Row"];
+	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
+	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
+	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
+	type TMessage = DB["public"]["Tables"]["message"]["Row"];
 
 	type TStudentSessionJoinResult = {
 		id: number;
@@ -70,6 +61,7 @@ declare global {
 	};
 
 	// other global types
+
 	type MyJwtPayload = {
 		email: string;
 		app_user_id: string;
@@ -93,6 +85,10 @@ declare global {
 		| { success: true; data: T }
 		| { success: false; error: { message: string } };
 
+	type TRatingStat = {
+		rating: number;
+		count: number;
+	};
 	type TRatingStat = {
 		rating: number;
 		count: number;

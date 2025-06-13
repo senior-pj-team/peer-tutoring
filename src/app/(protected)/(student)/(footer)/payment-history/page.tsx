@@ -91,7 +91,7 @@ const page = () => {
 					)}>
 					Purchase history
 				</h2>
-				<PaymentTable payments={payments} />
+				
 			</div>
 		</>
 	);

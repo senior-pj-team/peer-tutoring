@@ -1,15 +1,13 @@
-export const selectTutorStats = async (
-  tutor_id: string,
-  supabase: TSupabaseClient
-): Promise<TTutorStatsViewResult> => {
-  const { data, error } = await supabase
-    .from("tutor_stats_view")
-    .select("*")
-    .eq("tutor_id", tutor_id)
-    .single();
-  if (error) {
-    console.log("error", error);
-    throw error;
-  }
-  return data;
+export const getTutorStats = async (
+	tutor_id: string,
+	supabase: TSupabaseClient,
+): Promise<TTutorStats | null> => {
+	const { data, error } = await supabase.rpc("get_tutor_stats", {
+		p_tutor_id: tutor_id,
+	});
+	if (error) {
+		console.log("error", error);
+		return null;
+	}
+	return data as TTutorStats;
 };

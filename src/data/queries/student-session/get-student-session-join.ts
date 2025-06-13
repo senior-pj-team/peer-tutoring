@@ -6,13 +6,13 @@ type Params = {
 export const getStudentSessionJoin = async (
 	supabase: TSupabaseClient,
 	{ student_session_id, student_id, status }: Params,
-): Promise<TStudentSessionJoinResult | null> => {
+): Promise<TStudentSessionJoinResult[] | null> => {
 	let query = supabase.from("student_session").select(
 		`   
       id,
       session_id,
       student_id,
-      amount_from_student,
+      amount_from_student,ß
       stripe_client_secrete,
       ss_status: status,
       sessions (
@@ -37,11 +37,11 @@ export const getStudentSessionJoin = async (
 	if (student_session_id) query = query.eq("id", student_session_id);
 	if (status) query = query.in("status", status);
 
-	const { data, error } = await query.single();
+	const { data, error } = await query;
 
 	if (error) {
 		console.log("Error fetching session info:", error);
 		return null;
 	}
-	return (data as TStudentSessionJoinResult) ?? null;
+	return (data as unknown as TStudentSessionJoinResult[]) ?? null;
 };

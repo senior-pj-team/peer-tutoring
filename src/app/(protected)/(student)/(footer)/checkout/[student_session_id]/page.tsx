@@ -21,18 +21,19 @@ export default async function page({ params }: { params: Params }) {
 	const { student_session_id } = await params;
 	const supabase = await createClient();
 
-	const student_session_data = await getStudentSessionJoin(supabase, {
+	const result = await getStudentSessionJoin(supabase, {
 		student_session_id,
 		status: ["pending_enroll", "pending_payment"],
 	});
 
-	if (!student_session_data) {
+	if (!result) {
 		return (
 			<>
 				<GeneralError />
 			</>
 		);
 	}
+	const student_session_data = result[0];
 
 	return (
 		<div className="pb-20 w-full">

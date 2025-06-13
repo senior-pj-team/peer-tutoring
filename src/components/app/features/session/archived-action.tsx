@@ -1,10 +1,10 @@
 import React from 'react'
 import ShowReviewRating from '../rating-review/show-review-rating'
 
-const ArchivedAction = () => {
+const ArchivedAction = ({sessionId}: {sessionId: number | null}) => {
     return (
         <>
-            <ShowReviewRating/>
+            <ShowReviewRating sessionId={sessionId}/>
         </>
     )
 }

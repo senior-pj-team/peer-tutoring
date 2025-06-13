@@ -16,5 +16,5 @@ export const uploadImage = async (image: File, supabase: TSupabaseClient): Promi
         .from("session-images")
         .getPublicUrl(filePath);
 
-    return data?.publicUrl ?? null;
+    return data.publicUrl ?? null;
 };

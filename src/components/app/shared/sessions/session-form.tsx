@@ -1,5 +1,4 @@
 "use client";
-
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -18,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import TipTap from "../tip-tap";
 import { Button } from "@/components/ui/button";
 import DatePicker from "../date-picker";
-import { addDays, set } from "date-fns";
+import { addDays } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -42,49 +41,75 @@ import {
 	DialogDescription,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { createSession, editSession } from "@/actions/create-session";
+import { createSession } from "@/actions/create-session.";
+import { editSession } from "@/actions/edit-session";
 
 type SessionFormProps = {
-	school?: string;
-	major?: string;
-	courseCode?: string;
-	courseName?: string;
-	description?: string;
-	requirements?: string;
-	date?: Date;
-	startTime?: string;
-	endTime?: string;
-	maxStudents?: number;
-	paid?: boolean;
-	amount?: number;
-	imageString?: string;
-	isEdit?: boolean;
-	sessionName?: string;
-	location?: string;
-	category?: string;
-	sessionId?: number;
+	school: string;
+	major: string;
+	courseCode: string;
+	courseName: string;
+	description: string;
+	requirements: string;
+	date: Date;
+	startTime: string;
+	endTime: string;
+	maxStudents: number;
+	paid: boolean;
+	amount: number;
+	imageString: string;
+	isEdit: boolean;
+	sessionName: string;
+	location: string;
+	category: string;
+	sessionId: number;
 };
 
 export default function SessionForm({
-	school = "",
-	major = "",
-	courseCode = "",
-	courseName = "",
-	description = "",
-	requirements = "",
-	date = addDays(new Date(), 2),
-	startTime = "",
-	endTime = "",
-	maxStudents = 1,
-	paid = true,
-	amount = 0,
-	imageString = "",
-	sessionName = "",
-	location = "",
-	category = "",
-	isEdit = false,
-	sessionId = 0,
-}: SessionFormProps) {
+	data = {
+		school: "",
+		major: "",
+		courseCode: "",
+		courseName: "",
+		description: "",
+		requirements: "",
+		date: addDays(new Date(), 2),
+		startTime: "",
+		endTime: "",
+		maxStudents: 1,
+		paid: true,
+		amount: 0,
+		imageString: "",
+		sessionName: "",
+		location: "",
+		category: "",
+		isEdit: false,
+		sessionId: 0,
+	},
+}: {
+	data?: SessionFormProps;
+}) {
+	// destructure and get each field
+	const {
+		school,
+		major,
+		courseCode,
+		courseName,
+		description,
+		requirements,
+		date,
+		startTime,
+		endTime,
+		maxStudents,
+		paid,
+		amount,
+		imageString,
+		sessionName,
+		location,
+		category,
+		isEdit,
+		sessionId,
+	} = data;
 	let image: File | null = null;
 	const form = useForm<SessionSchemaT>({
 		resolver: zodResolver(sessionSchema),
@@ -137,10 +162,8 @@ export default function SessionForm({
 			if (isEdit) {
 				response = await editSession(sessionId, formValues, imageString);
 			} else {
-				console.log("Calling createSession");
 				response = await createSession(formValues);
 			}
-
 			const actionType = isEdit ? "updated" : "created";
 
 			response.success
@@ -150,21 +173,15 @@ export default function SessionForm({
 								{`Session was ${actionType}. Session will start on ${formValues.date}`}
 							</div>
 						),
-						// action: {
-						// 	label: "Undo",
-						// 	onClick: () => {
-						// 		console.log("Undo action clicked");
-						// 	},
-						// },
 				  })
-				: toast.error("Error", {
+				: toast.error("Something went wrong", {
 						description: `We couldn't complete your request. ${response.error.message}`,
 				  });
 			setisDialogOpen(false);
 		} catch (error) {
 			console.error(error);
-			toast.error("Error", {
-				description: "Something Went Wrong. Please try again.",
+			toast.error("Something went wrong", {
+				description: "We couldn't complete your request. Please try again.",
 			});
 		}
 	};
@@ -476,8 +493,8 @@ export default function SessionForm({
 									<FormControl>
 										<Input
 											type="number"
-											step="0.01"
-											min={1}
+											step="5"
+											min={0}
 											disabled={isDisable || !isPaid}
 											{...field}
 										/>

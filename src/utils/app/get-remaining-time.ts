@@ -1,14 +1,12 @@
-//input date and startTime in string
-//output remaining time in string
-export const getRemainingTime = (date: string | undefined, startTime: string | undefined) => {
+export const getRemainingTime = (time: string | undefined | null): string => {
+	if (!time) return " - ";
+
 	const now = new Date();
-	const startDateTime = new Date(`${date} ${startTime}`);
+	const startDateTime = new Date(time);
 
-	if(!date || ! startTime){
-		return " - "
+	if (isNaN(startDateTime.getTime())) {
+		return "Invalid time";
 	}
-
-	console.log("start date time: ", startDateTime);
 
 	const diffMs = startDateTime.getTime() - now.getTime();
 

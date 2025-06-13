@@ -1,28 +1,18 @@
 import React from "react";
-
 import { Star, Mail, Phone } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { selectTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
+import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
 import TutorStats from "./tutor-stats";
 import SessionList from "./session-list";
 import TutorRARSection from "../tutor/tutor-RAR-section";
 
 const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
-	let supabase: TSupabaseClient | null = null;
-	let tutorStats: TTutorStatsViewResult | null = null;
-	try {
-		supabase = await createClient();
-		if (supabase) {
-			tutorStats = await selectTutorStats(tutor_id, supabase);
-		}
-	} catch (e) {
-		console.log("error", e);
-	}
-	if (!tutorStats || !supabase) return <></>; //handle loading or error here
-
+	const supabase = await createClient();
+	const data = await getTutorStats(tutor_id, supabase);
+	if (!data) return <></>;
+	const tutorStats = data[0];
 	return (
 		<div className="max-w-[53rem] p-6 bg-white space-y-6">
 			{tutorStats && <TutorStats data={tutorStats} />}
@@ -37,13 +27,11 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 					|<span>{tutorStats.reviews_count} Reviews</span>
 				</h1>
 				<TutorRARSection
-					supabase={supabase}
 					tutor_id={tutor_id}
 					initialSize={4}
 					overallRating={tutorStats.tutor_rating ?? 0}
 					rarCount={tutorStats.reviews_count ?? 0}
 				/>
-
 				{/* Sessions Section */}
 				<div>
 					<h1 className="text-lg font-bold mt-5">

@@ -23,7 +23,7 @@ const Expandable = ({
     <>
       <div className={clsx('relative', className)}>
         <div
-          className='text-gray-700 text-justify'
+          className='text-gray-700 text-start'
           dangerouslySetInnerHTML={{ __html: visibleText + (isLong && !expanded ? '...' : '') }}
         />
         {isLong && !expanded && (

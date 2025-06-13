@@ -9,23 +9,24 @@ const SessionList = async ({
 	tutor_id: string;
 	supabase: TSupabaseClient;
 }) => {
-	try {
-		const sessions = await getSessionsMatView(supabase, { tutor_id: tutor_id });
-		// console.log("sessions: ", sessions);
-	} catch (e) {
-		console.log("error", e);
-	}
+	const sessions = await getSessionsMatView(supabase, {
+		tutorId: tutor_id,
+		offset: 0,
+		limit: 4,
+	});
+	if (!sessions || !sessions.rows) return <></>;
+
 	return (
 		<>
-			{/* {sessions.map((session: TSessionsMatViewResult) => (
-              <GeneralSessionCard
-                page="browse"
-                className="rounded-none"
-                key={session.session_name}
-                content={session}
-                type={""}
-              />
-            ))} */}
+			{sessions.rows.map((session) => (
+				<GeneralSessionCard
+					key={session.session_id}
+					page="browse"
+					className="rounded-none"
+					content={session}
+					type={""}
+				/>
+			))}
 		</>
 	);
 };
