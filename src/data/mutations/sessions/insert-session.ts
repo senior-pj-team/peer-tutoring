@@ -22,9 +22,9 @@ export const insertSession = async (
 		max_students: values.maxStudents,
 		location: values.location,
 		category_id: Number(values.category),
-		paid_session: values.paid,
 		price: values.paid ? values.amount : 0,
 		status: "open",
+		service_fee: values.amount * 0.15,
 		tutor_id: tutor_id,
 	});
 };

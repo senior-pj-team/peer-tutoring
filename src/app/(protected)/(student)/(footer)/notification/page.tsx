@@ -3,7 +3,7 @@ import GeneralError from "@/components/app/shared/error";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
 import { getNotificationCount } from "@/data/queries/notification/get-notification-count";
-import { getUserbyId } from "@/data/queries/user/get-user-by-id";
+import { getUserById } from "@/data/queries/user/get-user-by-id";
 import { getQueryClient } from "@/utils/app/get-query-client";
 import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
@@ -48,7 +48,7 @@ export default async function page() {
 
 	const { user_id } = user;
 
-	const user_data = await getUserbyId(supabase, user_id);
+	const user_data = await getUserById(supabase, user_id);
 	if (!user_data) {
 		return (
 			<>
