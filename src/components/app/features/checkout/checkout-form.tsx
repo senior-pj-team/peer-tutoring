@@ -36,14 +36,20 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 		}
 		setIsLoading(true);
 
-		const student_session_data = await getStudentSessionJoin(supabase, {
+		const student_session_data_result = await getStudentSessionJoin(supabase, {
 			student_session_id,
 		});
-		if (!student_session_data) {
+		if (!student_session_data_result) {
 			setMessage("Something went wrong. Please try again!");
 			setIsLoading(false);
 			return;
 		}
+		if (student_session_data_result.length <= 0) {
+			setMessage("Something went wrong. Please try again!");
+			setIsLoading(false);
+			return;
+		}
+		const student_session_data = student_session_data_result[0];
 		if (student_session_data.ss_status === "expired_payment") {
 			setMessage("The payment session is expired. Please enroll again!");
 			setIsLoading(false);

@@ -3,7 +3,7 @@
 import { insertStudentSession } from "@/data/mutations/student-session/insert-student-session";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { getSessionsbyId } from "@/data/queries/sessions/get-sessions-by-Id";
-import { getUserSession } from "@/utils/get-user-session";
+import { getUserSession } from "@/utils/app/get-user-session";
 import { createClient } from "@/utils/supabase/server";
 import { stripe } from "@/utils/stripe/stripe";
 import { redirect } from "next/navigation";

@@ -7,7 +7,7 @@ import { SessionSchemaT } from "@/schema/session-schema";
 import { getDateWithTime } from "@/utils/app/get-date-with-time";
 import { createClient } from "@/utils/supabase/server";
 
-import { getUserSession } from "@/utils/get-user-session";
+import { getUserSession } from "@/utils/app/get-user-session";
 
 export const editSession = async (
 	sessionId: number,

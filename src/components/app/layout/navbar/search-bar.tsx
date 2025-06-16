@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { DebounceSearchBar } from "../../shared/debounce-search-bar";
-import { useSessionsMatviewQuery } from "@/hooks/use-sessions";
+import { useSessionsMatviewQuery } from "@/hooks/use-sessions-mat-view";
 import { Skeleton } from "@/components/ui/skeleton";
 import Rating from "../../features/rating-review/rating";
 import Link from "next/link";

@@ -19,7 +19,7 @@ const fetchReviews = async ({
 	tutor_id: string;
 	search: string;
 }) => {
-	const supabase = await createClient();
+	const supabase = createClient();
 	const data = await getRatingReview(supabase, {
 		offset: pageParam,
 		limit: LIMIT,

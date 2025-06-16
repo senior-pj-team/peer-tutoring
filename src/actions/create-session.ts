@@ -6,7 +6,7 @@ import { getDateWithTime } from "@/utils/app/get-date-with-time";
 import { createClient } from "@/utils/supabase/server";
 import { insertSession } from "@/data/mutations/sessions/insert-session";
 
-import { getUserSession } from "@/utils/get-user-session";
+import { getUserSession } from "@/utils/app/get-user-session";
 
 export const createSession = async (
 	values: SessionSchemaT,

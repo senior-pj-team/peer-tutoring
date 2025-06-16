@@ -1,46 +1,142 @@
-import NotificationList from "@/components/app/shared/noti-list";
+import NotificationList from "@/components/app/features/notification/notification-list";
+import GeneralError from "@/components/app/shared/error";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
+import { getNotificationCount } from "@/data/queries/notification/get-notification-count";
+import { getUserbyId } from "@/data/queries/user/get-user-by-id";
+import { getQueryClient } from "@/utils/app/get-query-client";
+import { getUserSession } from "@/utils/app/get-user-session";
+import { createClient } from "@/utils/supabase/server";
+import { TabsContent } from "@radix-ui/react-tabs";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+
 import React from "react";
-const mockNotifications = [
-	{
-		id: "1",
-		message:
-			"Your tutor, Emily, has accepted your session request for Calculus.",
-		createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(), // 15 minutes ago
-	},
-	{
-		id: "2",
-		message:
-			"You have a scheduled session tomorrow at 10:00 AM with James (Physics).",
-		createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
-	},
-	{
-		id: "3",
-		message:
-			"Reminder: Please upload your assignment draft before the session with Rachel.",
-		createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
-	},
-	{
-		id: "4",
-		message:
-			"Your session summary for 'Linear Algebra - Basics' is available now.",
-		createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-	},
-	{
-		id: "5",
-		message:
-			"New tutor available: Michael (Biology, Chemistry). Book a session now!",
-		createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
-	},
-];
-const page = () => {
+
+async function fetchNotifications({
+	supabase,
+	pageParam,
+	user_id,
+	type,
+}: {
+	supabase: TSupabaseClient;
+	pageParam: number;
+	user_id: string;
+	type: TNotificationType[];
+}) {
+	const data = await getNotificationByUser(supabase, {
+		offset: pageParam,
+		limit: 5,
+		user_id,
+		type,
+	});
+	if (!data) throw new Error("Error fetching");
+	return data;
+}
+
+export default async function page() {
+	const queryClient = getQueryClient();
+	const supabase = await createClient();
+
+	const user = await getUserSession();
+	if (!user) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
+	const { user_id } = user;
+
+	const user_data = await getUserbyId(supabase, user_id);
+	if (!user_data) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
+	const student_noti_count = await getNotificationCount(supabase, {
+		user_id,
+		type: ["student"],
+	});
+	if (!student_noti_count && student_noti_count !== 0) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+	const tutor_noti_count = await getNotificationCount(supabase, {
+		user_id,
+		type: ["tutor", "tutor_reminder"],
+	});
+	if (!tutor_noti_count && tutor_noti_count !== 0) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
+	await queryClient.prefetchInfiniteQuery({
+		queryKey: ["student_notifications", user_id, ["student"]],
+		queryFn: ({ pageParam }) =>
+			fetchNotifications({ supabase, pageParam, user_id, type: ["student"] }),
+		initialPageParam: 0,
+	});
+
+	await queryClient.prefetchInfiniteQuery({
+		queryKey: ["tutor_notifications", user_id, ["tutor", "tutor_reminder"]],
+		queryFn: ({ pageParam }) =>
+			fetchNotifications({
+				supabase,
+				pageParam,
+				user_id,
+				type: ["tutor", "tutor_reminder"],
+			}),
+		initialPageParam: 0,
+	});
 	return (
-		<div className="mt-10">
-			<NotificationList
-				initialNotifications={mockNotifications}
-				className="min-h-[90vh]"
-			/>
+		<div>
+			<Tabs defaultValue="student">
+				{user_data.role === "tutor" && (
+					<TabsList className="grid w-full grid-cols-2 max-w-md mb-4 bg-orange-100 rounded-md p-1">
+						<TabsTrigger
+							value="student"
+							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
+							Student
+						</TabsTrigger>
+						<TabsTrigger
+							value="tutor"
+							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
+							Tutor
+						</TabsTrigger>
+					</TabsList>
+				)}
+
+				<TabsContent value="student">
+					<HydrationBoundary state={dehydrate(queryClient)}>
+						<NotificationList
+							user_id={user_id}
+							type={["student"]}
+							key="student_notifications"
+							count={student_noti_count}
+						/>
+					</HydrationBoundary>
+				</TabsContent>
+				<TabsContent value="tutor">
+					<HydrationBoundary state={dehydrate(queryClient)}>
+						<NotificationList
+							user_id={user_id}
+							type={["tutor", "tutor_reminder"]}
+							key="tutor_notifications"
+							count={tutor_noti_count}
+						/>
+					</HydrationBoundary>
+				</TabsContent>
+			</Tabs>
 		</div>
 	);
-};
-
-export default page;
+}
