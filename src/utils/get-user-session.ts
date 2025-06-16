@@ -1,5 +1,5 @@
 "use server";
-import { createClient } from "../supabase/server";
+import { createClient } from "./supabase/server";
 import { jwtDecode } from "jwt-decode";
 
 export const getUserSession = async (): Promise<UserSession | null> => {

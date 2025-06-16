@@ -4,24 +4,30 @@ import { Notification } from "./notification";
 import GeneralError from "../../shared/error";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import { useNotifications } from "@/hooks/use-notifications";
+import {
+	useDeleteNotification,
+	useMarkAsAllRead,
+	useNotifications,
+} from "@/hooks/use-notifications";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Button } from "@/components/ui/button";
 import { CheckCheckIcon } from "lucide-react";
+import { toast } from "sonner";
 
 const NotificationList = ({
 	user_id,
 	type,
 	count,
-	key,
+	q_key,
 }: {
 	user_id: string;
 	type: TNotificationType[];
 	count: number;
-	key: string;
+	q_key: string;
 }) => {
 	const supabase = useSupabase();
 	const { ref, inView } = useInView({});
+
 	const {
 		data,
 		status,
@@ -30,7 +36,21 @@ const NotificationList = ({
 		isFetchingNextPage,
 		isError,
 		isFetching,
-	} = useNotifications(key, user_id, type, count, supabase);
+	} = useNotifications(q_key, user_id, type, count, supabase);
+
+	const { mutate: deleteMutate } = useDeleteNotification(
+		q_key,
+		user_id,
+		type,
+		supabase,
+	);
+
+	const { mutate: updateMutate, isPending } = useMarkAsAllRead(
+		q_key,
+		user_id,
+		type,
+		supabase,
+	);
 
 	useEffect(() => {
 		if (hasNextPage && !isFetching) {
@@ -39,6 +59,7 @@ const NotificationList = ({
 			}
 		}
 	}, [fetchNextPage, inView, hasNextPage, isFetching]);
+
 	if (status === "pending")
 		return (
 			<div className="w-full flex pt-[7rem] h-screen justify-center">
@@ -58,25 +79,45 @@ const NotificationList = ({
 	return (
 		<>
 			<div className="pb-4 space-y-4">
-				<div className="">
+				<div>
 					<Button
+						disabled={isPending}
+						onClick={() => {
+							updateMutate("read", {
+								onSuccess: () => {
+									toast.success("All notifications have been read");
+								},
+								onError: () => {
+									toast.error("Something went wrong!");
+								},
+							});
+						}}
 						className="flex gap-x-1 items-center cursor-pointer "
 						variant="outline">
 						<CheckCheckIcon />
 						Mark as all read
 					</Button>
 				</div>
-				{data.pages.flat().length === 0 ? (
-					<div className="text-center text-gray-400 mt-20">
-						No notifications to show
-					</div>
-				) : (
+				{
 					<ul className="space-y-3">
 						{data.pages.flat().map((noti) => (
-							<Notification key={noti!.id} noti={noti!} />
+							<Notification
+								key={noti!.id}
+								noti={noti!}
+								deleteNoti={() => {
+									deleteMutate(noti.id, {
+										onSuccess: () => {
+											toast.success("Notification Deleted");
+										},
+										onError: () => {
+											toast.error("Something went wrong!");
+										},
+									});
+								}}
+							/>
 						))}
 					</ul>
-				)}
+				}
 
 				{isError ? (
 					<div className="text-center text-sm font-extrabold text-red-500 mt-4">
@@ -84,7 +125,7 @@ const NotificationList = ({
 					</div>
 				) : (
 					<div
-						className="flex justify-center text-center items-center mt-4"
+						className="flex justify-center text-center items-center mt-6"
 						ref={ref}>
 						{hasNextPage ? (
 							<div>
@@ -98,7 +139,7 @@ const NotificationList = ({
 							</div>
 						) : (
 							<span className="text-sm font-extrabold text-gray-400">
-								No more notifications
+								No notifications to show
 							</span>
 						)}
 					</div>

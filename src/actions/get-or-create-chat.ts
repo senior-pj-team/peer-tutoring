@@ -3,7 +3,7 @@
 import { insertChat } from "@/data/mutations/chat/insert-chat";
 import { insertChatParticipants } from "@/data/mutations/chat_participant/insert-chat-participant";
 import { getChatByOneToOneKey } from "@/data/queries/chat/get-chat-by-one-to-one-key";
-import { getUserSession } from "@/utils/app/get-user-session";
+import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
 
 export async function getOrCreateChat(

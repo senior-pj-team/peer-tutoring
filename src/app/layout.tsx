@@ -29,7 +29,7 @@ export default function RootLayout({
 						<NotificationWrapper>{children}</NotificationWrapper>
 					</AuthProvider>
 				</ClientQueryProvider>
-				<Toaster />
+				<Toaster richColors />
 			</body>
 		</html>
 	);

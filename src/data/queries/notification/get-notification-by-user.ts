@@ -8,7 +8,7 @@ type Params = {
 
 export async function getNotificationByUser(
 	supabase: TSupabaseClient,
-	{ offset, limit = 8, user_id, status, type }: Params,
+	{ offset, limit, user_id, status, type }: Params,
 ): Promise<TNotificationResult[] | null> {
 	const query = supabase.from("notification").select("*");
 

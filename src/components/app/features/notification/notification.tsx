@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getTimeAgo } from "@/utils/app/get-time-ago";
+import { InfiniteData, UseMutateFunction } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 
-export function Notification({ noti }: { noti: TNotificationResult }) {
+export function Notification({
+	noti,
+	deleteNoti,
+}: {
+	noti: TNotificationResult;
+	deleteNoti: () => void;
+}) {
 	return (
 		<li
 			className={cn(
@@ -28,6 +35,7 @@ export function Notification({ noti }: { noti: TNotificationResult }) {
 			</div>
 			{noti.type !== "tutor_warning" && (
 				<Button
+					onClick={deleteNoti}
 					variant="ghost"
 					className="ml-2 cursor-pointer transition hover:bg-red-100 "
 					title="Delete">

@@ -5,7 +5,7 @@ import { getNotificationByUser } from "@/data/queries/notification/get-notificat
 import { getNotificationCount } from "@/data/queries/notification/get-notification-count";
 import { getUserbyId } from "@/data/queries/user/get-user-by-id";
 import { getQueryClient } from "@/utils/app/get-query-client";
-import { getUserSession } from "@/utils/app/get-user-session";
+import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ async function fetchNotifications({
 }) {
 	const data = await getNotificationByUser(supabase, {
 		offset: pageParam,
-		limit: 5,
+		limit: 3,
 		user_id,
 		type,
 	});
@@ -105,12 +105,12 @@ export default async function page() {
 					<TabsList className="grid w-full grid-cols-2 max-w-md mb-4 bg-orange-100 rounded-md p-1">
 						<TabsTrigger
 							value="student"
-							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
+							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700 cursor-pointer">
 							Student
 						</TabsTrigger>
 						<TabsTrigger
 							value="tutor"
-							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
+							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700 cursor-pointer">
 							Tutor
 						</TabsTrigger>
 					</TabsList>
@@ -121,7 +121,7 @@ export default async function page() {
 						<NotificationList
 							user_id={user_id}
 							type={["student"]}
-							key="student_notifications"
+							q_key="student_notifications"
 							count={student_noti_count}
 						/>
 					</HydrationBoundary>
@@ -131,7 +131,7 @@ export default async function page() {
 						<NotificationList
 							user_id={user_id}
 							type={["tutor", "tutor_reminder"]}
-							key="tutor_notifications"
+							q_key="tutor_notifications"
 							count={tutor_noti_count}
 						/>
 					</HydrationBoundary>
