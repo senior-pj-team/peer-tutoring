@@ -15,7 +15,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 	const tutorStats = data[0];
 	return (
 		<div className="max-w-[53rem] p-6 bg-white space-y-6">
-			{tutorStats && <TutorStats data={tutorStats} />}
+			{tutorStats && <TutorStats data={[tutorStats]} />}
 
 			<div>
 				{/* Rating Review Section */}

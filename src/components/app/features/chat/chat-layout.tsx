@@ -1,5 +1,4 @@
 import ChatList from "./chat-list";
-import Conversation from "./conversation";
 import ConversationServer from "./conversation-server";
 import SelectConversation from "./select-convo";
 

@@ -3,24 +3,12 @@ import { BookOpen, Mail, Pencil, Phone, Star, Users } from "lucide-react";
 import Expandable from "../../shared/expandable-text";
 import Image from "next/image";
 
-const TutorStats = ({ data }: { data: TTutorStatsViewResult }) => {
-  const {
-    tutor_name,
-    tutor_profile_url,
-    tutor_rating,
-    reviews_count,
-    session_count,
-    students_count,
-    email,
-    phone_number,
-    bio_highlight,
-    biography,
-  } = data;
+const TutorStats = ({ data }: { data: TTutorStats }) => {
   return (
     <div>
       <div className="flex flex-col mb-2 text">
         <span className="max-w-[full] font-bold text-2xl truncate">
-          {tutor_name}
+          {data}
         </span>
       </div>
       <div className="flex items-center mt-5">

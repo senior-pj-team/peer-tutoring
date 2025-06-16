@@ -2,7 +2,7 @@
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Loader, Pencil } from "lucide-react";
 
 import {
 	Form,
@@ -21,7 +21,7 @@ import { addDays } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import clsx from "clsx";
 
 import {
@@ -89,7 +89,6 @@ export default function SessionForm({
 }: {
 	data?: SessionFormProps;
 }) {
-	// destructure and get each field
 	const {
 		school,
 		major,
@@ -132,15 +131,13 @@ export default function SessionForm({
 			image,
 		},
 	});
-
-	const isPaid = form.watch("paid");
 	const [previewUrl, setPreviewUrl] = useState<string | null>(imageString);
 	const [isDisable, setDisable] = useState(isEdit);
 	const [isDialogOpen, setisDialogOpen] = useState(false);
 	const [formValues, setFormValues] = useState<SessionSchemaT>();
+	const [isPending, startTransition] = useTransition();
 
 	const handleDisableToggle = () => setDisable((prev) => !prev);
-
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
@@ -157,26 +154,26 @@ export default function SessionForm({
 	const handleConfirm = async () => {
 		if (!formValues) return;
 		try {
-			let response;
-
-			if (isEdit) {
-				response = await editSession(sessionId, formValues, imageString);
-			} else {
-				response = await createSession(formValues);
-			}
-			const actionType = isEdit ? "updated" : "created";
-
-			response.success
-				? toast.success(`Session ${actionType} successfully`, {
+			startTransition(async () => {
+				let response;
+				if (isEdit) {
+					response = await editSession(sessionId, formValues, imageString);
+				} else {
+					response = await createSession(formValues);
+				}
+				const actionType = isEdit ? "updated" : "created";
+				response.success
+					? toast.success(`Session ${actionType} successfully`, {
 						description: (
 							<div className="text-muted-foreground text-sm">
 								{`Session was ${actionType}. Session will start on ${formValues.date}`}
 							</div>
 						),
-				  })
-				: toast.error("Something went wrong", {
+					})
+					: toast.error("Something went wrong", {
 						description: `We couldn't complete your request. ${response.error.message}`,
-				  });
+					});
+			})
 			setisDialogOpen(false);
 		} catch (error) {
 			console.error(error);
@@ -186,7 +183,7 @@ export default function SessionForm({
 		}
 	};
 	return (
-		<div className="px-4 lg:px-6">
+		<div className="relative px-4 lg:px-6">
 			{isEdit && (
 				<div className="text-end">
 					<Button
@@ -355,7 +352,7 @@ export default function SessionForm({
 													<SelectItem value="6">Elective Courses</SelectItem>
 												</SelectGroup>
 											</SelectContent>
-											{}
+											{ }
 										</Select>
 									</FormControl>
 									<FormMessage />
@@ -493,10 +490,10 @@ export default function SessionForm({
 									<FormControl>
 										<Input
 											type="number"
-											step="5"
+											step={5}
 											min={0}
-											disabled={isDisable || !isPaid}
 											{...field}
+											disabled={!form.watch("paid") || isDisable}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -513,7 +510,12 @@ export default function SessionForm({
 										<Switch
 											className="w-[2rem]"
 											checked={field.value}
-											onCheckedChange={field.onChange}
+											onCheckedChange={(checked) => {
+												field.onChange(checked);
+												if (!checked) {
+													form.setValue("amount", 0);
+												}
+											}}
 										/>
 									</FormControl>
 									<FormLabel>Paid</FormLabel>
@@ -556,6 +558,13 @@ export default function SessionForm({
 					</div>
 				</DialogContent>
 			</Dialog>
+
+			{isPending && (
+				<div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-md z-50">
+					<Loader className="w-10 h-10 text-blue-500 animate-spin" />
+				</div>
+			)}
+
 		</div>
 	);
 }

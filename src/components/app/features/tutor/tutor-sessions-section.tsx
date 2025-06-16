@@ -1,30 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getSessionsMatView } from "@/data/queries/sessions/get-sessions-mat-view";
-import { createClient } from "@/utils/supabase/client";
 import GeneralSessionCard from "../../shared/sessions/general-session-card";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useInfiniteSessions } from "@/hooks/use-infinite-sessions";
 
-const LIMIT = 4;
-
-const fetchSessions = async ({
-  pageParam = 0,
-  tutor_id,
-}: {
-  pageParam: number;
-  tutor_id: string;
-}) => {
-  const supabase = createClient();
-  const data = await getSessionsMatView(supabase, {
-    tutorId: tutor_id,
-    offset: pageParam,
-    limit: LIMIT,
-  })
-  if (!data) throw new Error("Server error");
-  return data;
-}
 
 type PaginationProps = {
   currentPage: number;
@@ -43,29 +23,29 @@ const PaginationControls = ({
     <button
       onClick={() => onPageChange(currentPage - 1)}
       disabled={disableBack}
-      className="flex items-center gap-1 px-4 py-2 rounded-sm bg-gray-100 text-gray-700 text-sm font-medium transition hover:bg-gray-200"
+      className=" text-xs flex items-center gap-1 px-4 py-2 rounded-sm text-gray-700 text-sm font-medium transition hover:bg-gray-100"
       aria-label="Previous Page"
     >
       <ChevronLeftIcon />
       <span className="hidden sm:block">Previous</span>
     </button>
 
-    <span className="text-gray-800 font-medium">Page {currentPage + 1}</span>
+    <span className="text-gray-800 font-medium">{currentPage + 1}</span>
 
     <button
       onClick={() => onPageChange(currentPage + 1)}
       disabled={disableForward}
-      className="flex items-center gap-1 px-4 py-2 rounded-sm bg-gray-100 text-gray-700 text-sm font-medium transition hover:bg-gray-200"
+      className=" text-xs flex items-center gap-1 px-4 py-2 rounded-sm text-gray-700 text-sm font-medium transition hover:bg-gray-100"
       aria-label="Next Page"
     >
-      <ChevronRightIcon className="w-4 h-4" />
       <span className="hidden sm:block">Next</span>
+      <ChevronRightIcon className="w-4 h-4" />
     </button>
   </div>
 );
 
 const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
-  
+
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPagesFetched, setTotalPagesFetched] = useState(1);
 
@@ -74,26 +54,18 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["sessions", tutor_id],
-    queryFn: ({ pageParam }) => fetchSessions({ pageParam, tutor_id }),
-    getNextPageParam: (lastPage, pages) =>
-      lastPage && lastPage.rows && lastPage.rows.length === LIMIT
-        ? pages.length * LIMIT
-        : undefined,
-    initialPageParam: 0,
-  });
+  } =useInfiniteSessions({tutor_id})
 
   const handlePageChange = async (page: number) => {
-      if (page < 0) return;
-      if (page >= totalPagesFetched) {
-        await fetchNextPage();
-        setTotalPagesFetched((prev) => prev + 1);
-      }
-      setCurrentPage(page);
+    if (page < 0) return;
+    if (page >= totalPagesFetched) {
+      await fetchNextPage();
+      setTotalPagesFetched((prev) => prev + 1);
     }
+    setCurrentPage(page);
+  }
 
-  const currentSessions= sessions?.pages?.[currentPage]?.rows ?? [];
+  const currentSessions = sessions?.pages?.[currentPage]?.rows ?? [];
   const disableBack = currentPage === 0;
   const disableForward = !hasNextPage && currentPage >= totalPagesFetched - 1;
 
@@ -111,7 +83,7 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
           ))}
         </div>
       ) : (
-        <div className="h-[20rem] flex items-center justify-center text-gray-500 text-lg">
+        <div className="h-[33vh] flex items-center justify-center text-gray-500 text-lg">
           No sessions available.
         </div>
       )}

@@ -1,7 +1,6 @@
 'use client';
 
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
-import { getMessagesByChatId } from "@/data/queries/message/get-messages-by-chatId";
+import { useMutation } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MessageInput from "./message-input";
 import EmptyChat from "./empty-chat";
@@ -12,6 +11,9 @@ import { useMessageRealtime } from "@/hooks/use-message-realtime";
 import { useSupabase } from "@/hooks/use-supabase";
 import { nanoid } from "nanoid";
 import { updateMessagesAsRead } from "@/data/mutations/message/update-message-as-read";
+import { fetchMessage } from "@/utils/app/fetch-messages";
+import { useInfiniteMessage } from "@/hooks/use-infinite-messages";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 type TMessageStatus = "sending" | "sent" | "failed";
 
@@ -20,19 +22,10 @@ type TMessageWithStatus = TMessage & {
   tempId?: string;
 };
 
-const Conversation = ({ chatId, userId }: { chatId: string; userId: string }) => {
+const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: string; userId: string, userProfile?: string, userName?: string }) => {
   const [msg, setMsg] = useState("");
   const [newMessages, setNewMessages] = useState<TMessageWithStatus[]>([]);
   const supabase = useSupabase();
-
-  const fetchMessages = async (pageParam: number) => {
-    const data = await getMessagesByChatId(chatId, supabase, {
-      offset: pageParam,
-      limit: 10,
-    });
-    if (!data) throw new Error("Error fetching messages");
-    return data;
-  };
 
   const mutation = useMutation({
     mutationFn: async ({ message, tempId }: { message: string; tempId: string }) => {
@@ -71,46 +64,38 @@ const Conversation = ({ chatId, userId }: { chatId: string; userId: string }) =>
     },
   });
 
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["chat-messages", chatId],
-    queryFn: async ({ pageParam = 0 }) => fetchMessages(pageParam),
-    getNextPageParam: (lastPage, allPages) => {
-      if (!lastPage) return undefined;
-      return allPages.length * 10;
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMessage({ chatId });
+
+  const handleInsertMessage = useCallback(
+    (newMsg: TMessage) => {
+      if (!newMsg || !newMsg.id) return;
+
+      setNewMessages((prev) => {
+        const exists = prev.find((m) => m.id === newMsg.id);
+        if (!exists) return [newMsg, ...prev];
+        return prev;
+      });
+
+      if (newMsg.sender_id !== userId) {
+        updateMessagesAsRead(chatId, userId, supabase, { message_id: newMsg.id });
+      }
     },
-    initialPageParam: 0,
-  });
+    [chatId, userId, supabase]
+  );
 
-const handleInsertMessage = useCallback(
-  (newMsg: TMessage) => {
-    if (!newMsg || !newMsg.id) return;
+  const handleUpdateMessage = useCallback(
+    (updatedMsg: TMessage) => {
+      if (!updatedMsg || !updatedMsg.id) return;
 
-    setNewMessages((prev) => {
-      const exists = prev.find((m) => m.id === newMsg.id);
-      if (!exists) return [newMsg, ...prev];
-      return prev;
-    });
-
-    if (newMsg.sender_id !== userId) {
-      updateMessagesAsRead(chatId, userId, supabase, { message_id: newMsg.id });
-    }
-  },
-  [chatId, userId, supabase]
-);
-
-const handleUpdateMessage = useCallback(
-  (updatedMsg: TMessage) => {
-    if (!updatedMsg || !updatedMsg.id) return;
-
-    setNewMessages((prev) =>
-      prev.map((msg) =>
-        msg.id === updatedMsg.id ? { ...msg, ...updatedMsg } : msg
-      )
-    );
-  },
-  []
-);
-useMessageRealtime(supabase, chatId, handleInsertMessage, handleUpdateMessage);
+      setNewMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === updatedMsg.id ? { ...msg, ...updatedMsg } : msg
+        )
+      );
+    },
+    []
+  );
+  useMessageRealtime(supabase, chatId, handleInsertMessage, handleUpdateMessage);
 
 
   const fetchedMessagesWithStatus: TMessageWithStatus[] = (data?.pages.flat() ?? []).map(msg => ({
@@ -153,15 +138,23 @@ useMessageRealtime(supabase, chatId, handleInsertMessage, handleUpdateMessage);
       )
     );
   }, [chatId, userId]);
-  
+
   return (
     <div className="flex flex-col h-[46.5rem] bg-gray-50 border-l shadow-sm">
       <div className="flex items-center gap-4 px-6 pb-4 pt-6 border-b bg-white">
-        <Avatar className="w-10 h-10">
-          <AvatarImage src="/profile.jpg" alt="Chat" />
-          <AvatarFallback>C</AvatarFallback>
-        </Avatar>
-        <h2 className="text-lg font-semibold text-orange-800">Chat</h2>
+        <Avatar>
+                <AvatarImage
+                  src={userProfile}
+                  width={56}
+                  height={56}
+                  alt="User Avatar"
+                />
+                <AvatarFallback>
+                  {getAvatarFallback("User")}
+                </AvatarFallback>
+              </Avatar>
+        
+        <h2 className="text-lg font-semibold text-orange-800">Username</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 flex flex-col-reverse gap-4">
