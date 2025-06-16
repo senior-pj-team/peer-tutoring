@@ -2,13 +2,14 @@ import React from "react";
 import Rating from "./rating";
 import { getRatingStats } from "@/data/queries/rating-and-review/get-rating-count";
 import { createClient } from "@/utils/supabase/server";
+import GeneralError from "../../shared/error";
 
 const RatingStats = async ({ tutor_id }: { tutor_id: string }) => {
 	const supabase: TSupabaseClient = await createClient();
 	const ratingStats = await getRatingStats(supabase, {
 		tutor_id,
 	});
-	if (!ratingStats) return <></>;
+	if (!ratingStats) return <GeneralError/>;
 
 	const total = ratingStats.reduce((sum, item) => sum + item.count, 0);
 	const ratings = ratingStats.map((item) => ({

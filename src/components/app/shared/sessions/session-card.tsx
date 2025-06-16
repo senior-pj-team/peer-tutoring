@@ -21,6 +21,9 @@ import {
 import { useRouter } from "next/navigation";
 import { getRemainingTime } from "@/utils/app/get-remaining-time";
 import { formatDate, parseISO } from "date-fns";
+import GeneralError from "../error";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 type SessionCardProp = {
 	student_session?: TStudentSessionJoinResult;
@@ -59,7 +62,7 @@ const SessionCard = ({
 		end_time,
 		tutor,
 	} = sessions;
-	if (!tutor) return <></>;
+	if (!tutor) return <GeneralError />;
 	const {
 		profile_url: tutor_profile,
 		username: tutor_name,
@@ -77,8 +80,8 @@ const SessionCard = ({
 			page === "admin"
 				? `/admin-dashboard/session/${1}/content`
 				: page === "tutor"
-				? `/tutor-dashboard/session/${1}/content`
-				: `/home/session/${page}/${session_id}`;
+					? `/tutor-dashboard/session/${1}/content`
+					: `/home/session/${page}/${session_id}`;
 
 		router.push(nextPage);
 	};
@@ -185,12 +188,17 @@ const SessionCard = ({
 					{!enrollments && !pending_refund_students && !refunded_students && (
 						<div className="flex items-center flex-wrap">
 							<div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
-								<Image
-									src={tutor_profile ?? "/profile.jpg"}
-									alt="Tutor avatar"
-									fill
-									className="object-fill"
-								/>
+								<Avatar>
+									<AvatarImage
+										src={tutor_profile ?? ""}
+										width={50}
+										height={50}
+										alt="User Avatar"
+									/>
+									<AvatarFallback className="flex items-center justify-center w-full h-full text-center">
+										{tutor_name && getAvatarFallback(tutor_name)}
+									</AvatarFallback>
+								</Avatar>
 							</div>
 							<div className="text-xs underline me-3">
 								<Link

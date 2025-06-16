@@ -1,45 +1,27 @@
-import { createClient } from "@/utils/supabase/server";
 import {
 	HydrationBoundary,
 	dehydrate,
 	QueryClient,
 } from "@tanstack/react-query";
-import { getRatingReview } from "@/data/queries/rating-and-review/get-rating-review-user-view";
 import RatingReviewList from "./rating-review-list";
+import { fetchReviews} from "@/utils/app/fetch-reviews";
+import { createClient } from "@/utils/supabase/server";
 
-const LIMIT = 5;
-const fetchReviews = async ({
-	pageParam = 0,
-	tutor_id,
-}: {
-	pageParam: number;
-	tutor_id: string;
-}) => {
-	const supabase = await createClient();
-	const data = await getRatingReview(supabase, {
-		offset: pageParam,
-		limit: LIMIT,
-		tutor_id,
-	});
-	if (!data) throw new Error("Error fetching");
-	return data;
-};
 
 export default async function RatingReviewListServer({
 	tutor_id,
 }: {
 	tutor_id: string;
 }) {
-	const LIMIT = 5;
 	const queryClient = new QueryClient();
-
+	const supabase= await createClient()
 	await queryClient.prefetchInfiniteQuery({
 		queryKey: ["reviews and ratings", tutor_id, ""],
-		queryFn: ({ pageParam }) => fetchReviews({ pageParam, tutor_id }),
+		queryFn: ({ pageParam }) => fetchReviews({ pageParam, tutor_id, supabase, LIMIT: 5 }),
 		getNextPageParam: (
 			lastPage: TRatingReviewUserViewResult[],
 			allPages: TRatingReviewUserViewResult[][],
-		) => (lastPage?.length === LIMIT ? allPages.length * LIMIT : undefined),
+		) => (lastPage?.length === 5 ? allPages.length * 5 : undefined),
 		initialPageParam: 0,
 	});
 	return (

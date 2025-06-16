@@ -6,23 +6,17 @@ import { getChatList } from "@/data/queries/chat/get-chat-list";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { formatDate, parseISO } from "date-fns";
+import GeneralError from "../../shared/error";
 
 const ChatList = async ({ selectedChatId }: { selectedChatId: string | null }) => {
   const user = await getUserSession();
-  let chats: TChatList = [];
-
-  if (user) {
-    try {
-      const supabase = await createClient(); 
-      const data = await getChatList(user.user_id, supabase);
-      if (data) chats = data;
-    } catch (error) {
-      console.error("Failed to load chats", error);
-    }
-  }
+  const supabase = await createClient(); 
+  if(!user?.user_id) return <GeneralError/>
+  const chats = await getChatList(user.user_id, supabase);
+  if(!chats) return <GeneralError/>
 
   return (
-    <aside className="w-full h-full border-r bg-white flex flex-col shadow-sm">
+    <aside className="w-full h-[90vh] border-r bg-white flex flex-col shadow-sm">
       {/* Header */}
       <div className="px-5 pb-5 pt-8 border-b">
         <h2 className="text-xl font-bold text-orange-700">Chats</h2>
@@ -48,7 +42,7 @@ const ChatList = async ({ selectedChatId }: { selectedChatId: string | null }) =
               >
                 <ChatCard
                   name={chat.chat_name}
-                  chatProfileUrl={chat.chat_profile_url ?? undefined}
+                  chatProfileUrl={chat.chat_profile_url ?? ""}
                   lastMessage={chat.last_message ?? undefined}
                   lastSentAt={lastSentAt}
                 />

@@ -3,6 +3,7 @@ import { getUserSession } from "@/utils/get-user-session";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
+import GeneralError from "@/components/app/shared/error";
 
 const Page = async () => {
 	const user = await getUserSession();
@@ -14,7 +15,7 @@ const Page = async () => {
 		student_id: user.user_id,
 		status: ["paid"],
 	});
-	if (!student_sessions) return <></>;
+	if (!student_sessions) return <GeneralError/>;
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

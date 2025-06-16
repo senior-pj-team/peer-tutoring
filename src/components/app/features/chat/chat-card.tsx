@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 interface ChatCardProps {
   name: string;
@@ -19,9 +20,16 @@ const ChatCard = ({
       className="flex items-center space-x-4 p-4 rounded-lg transition-colors duration-200 ease-in-out hover:bg-orange-50 cursor-pointer"
     >
       {/* Avatar */}
-      <Avatar className="w-12 h-12 flex-shrink-0">
-        <AvatarImage src={chatProfileUrl} alt={name} />
-        <AvatarFallback>👤</AvatarFallback>
+      <Avatar>
+        <AvatarImage
+          src={chatProfileUrl}
+          width={56}
+          height={56}
+          alt="User Avatar"
+        />
+        <AvatarFallback>
+          {getAvatarFallback(name)}
+        </AvatarFallback>
       </Avatar>
 
       {/* Chat Info */}

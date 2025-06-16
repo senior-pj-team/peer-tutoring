@@ -6,11 +6,13 @@ import { insertSession } from "@/data/mutations/sessions/insert-session";
 import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
+import { getUserById } from "@/data/queries/user/get-user-by-id";
 
 export const createSession = async (
 	rawValues: SessionSchemaT,
 ): Promise<ActionResponseType<any>> => {
 
+	// zod validation
 	const result = sessionSchema.safeParse(rawValues);
 	if(!result.success) return {
 			success: false,
@@ -20,25 +22,33 @@ export const createSession = async (
 	
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
-	const user: UserSession | null = await getUserSession();
+	const user = await getUserSession();
 
-	if (!user) {
+	if (!user?.user_id) {
 		return {
 			success: false,
 			error: { message: "User not found" },
 		};
 	}
-	if (user.user_role != "tutor") {
+	const supabase= await createClient();
+	const userData = await getUserById(supabase, user.user_id);
+
+	if(!userData){
 		return {
 			success: false,
-			error: { message: "User access denied" },
-		};
+			error: { message: "User not found" },
+		}
 	}
+	const {role, tutor_status} = userData;
 
-	const tutor_id = user.user_id;
-
-	// data
-	const supabase: TSupabaseClient=await createClient();
+	if(role != "tutor" || tutor_status == "suspended"){
+		return {
+			success: false,
+			error: { message: "User not authorized" },
+		}
+	}
+	const tutor_id = userData.id;
+	
 	
 	let uploadedUrl: string | null = null;
 	if (values.image) {
