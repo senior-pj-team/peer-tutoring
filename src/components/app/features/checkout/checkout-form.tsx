@@ -44,76 +44,83 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			setIsLoading(false);
 			return;
 		}
-		const student_session_data= student_session_data_result[0];
-		if (student_session_data.ss_status === "expired_payment") {
-			setMessage("The payment session is expired. Please enroll again!");
-			setIsLoading(false);
-			return;
-		}
+		if (student_session_data_result.length <= 0) {
+			if (!student_session_data_result) {
+				setMessage("Something went wrong. Please try again!");
+				setIsLoading(false);
+				return;
+			}
 
-		const enrollment_count = await getEnrollmentCount(supabase, {
-			student_session_id,
-			ss_status: [
-				"completed",
-				"enrolled",
-				"paid",
-				"pending_payment",
-				"pending_refund",
-			],
-		});
+			const student_session_data = student_session_data_result[0];
+			if (student_session_data.ss_status === "expired_payment") {
+				setMessage("The payment session is expired. Please enroll again!");
+				setIsLoading(false);
+				return;
+			}
 
-		if (!enrollment_count && enrollment_count !== 0) {
-			setMessage("Something went wrong. Please try again!");
-			return;
-		}
+			const enrollment_count = await getEnrollmentCount(supabase, {
+				student_session_id,
+				ss_status: [
+					"completed",
+					"enrolled",
+					"paid",
+					"pending_payment",
+					"pending_refund",
+				],
+			});
 
-		if (enrollment_count >= student_session_data.sessions!.max_students!) {
-			setMessage("Sry, no avalible seats left for this session!");
-			return;
-		}
+			if (!enrollment_count && enrollment_count !== 0) {
+				setMessage("Something went wrong. Please try again!");
+				return;
+			}
 
-		const updateResult = await updateStudentSessionStatus(supabase, {
-			student_session_id,
-			ss_status: "pending_payment",
-		});
-		if (!updateResult) {
-			setMessage("Something went wrong. Please try again!");
-			return;
-		}
+			if (enrollment_count >= student_session_data.sessions!.max_students!) {
+				setMessage("Sry, no avalible seats left for this session!");
+				return;
+			}
 
-		const res = await stripe.confirmPayment({
-			elements,
-			confirmParams: {
-				return_url: "https://localhost:3000/checkout/status",
-			},
-			redirect: "if_required",
-		});
-		console.log(res);
+			const updateResult = await updateStudentSessionStatus(supabase, {
+				student_session_id,
+				ss_status: "pending_payment",
+			});
+			if (!updateResult) {
+				setMessage("Something went wrong. Please try again!");
+				return;
+			}
 
-		if (res.error) {
-			if (
-				res.error.type === "card_error" ||
-				res.error.type === "validation_error"
-			) {
-				setMessage(res.error.message!);
+			const res = await stripe.confirmPayment({
+				elements,
+				confirmParams: {
+					return_url: "https://localhost:3000/checkout/status",
+				},
+				redirect: "if_required",
+			});
+			console.log(res);
+
+			if (res.error) {
+				if (
+					res.error.type === "card_error" ||
+					res.error.type === "validation_error"
+				) {
+					setMessage(res.error.message!);
+				} else {
+					setMessage("An unexpected error occurred.");
+				}
 			} else {
-				setMessage("An unexpected error occurred.");
+				if (res.paymentIntent.status === "succeeded") {
+					router.push("/checkout/success");
+				} else if (res.paymentIntent.status === "requires_payment_method") {
+					router.push("/checkout/fail");
+				}
 			}
-		} else {
-			if (res.paymentIntent.status === "succeeded") {
-				router.push("/checkout/success");
-			} else if (res.paymentIntent.status === "requires_payment_method") {
-				router.push("/checkout/fail");
-			}
-		}
 
-		setIsLoading(false);
+			setIsLoading(false);
+		}
 	};
 
 	const paymentElementOptions = {
 		layout: "accordion" as const,
 	};
-
 	return (
 		<form id="payment-form" onSubmit={handleSubmit} className="mt-5">
 			<PaymentElement id="payment-element" options={paymentElementOptions} />

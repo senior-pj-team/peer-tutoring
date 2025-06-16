@@ -60,6 +60,8 @@ declare global {
 			} | null;
 		} | null;
 	};
+	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
+	type TUserResult = DB["public"]["Tables"]["user"]["Row"];
 
 	// other global types
 
@@ -98,4 +100,6 @@ declare global {
 	//Enums
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type TSessionStatus = DB["public"]["Enums"]["session_status"];
+	type TNotificationStatus = DB["public"]["Enums"]["notification_status"];
+	type TNotificationType = DB["public"]["Enums"]["notification_type"];
 }
