@@ -11,7 +11,6 @@ import { useMessageRealtime } from "@/hooks/use-message-realtime";
 import { useSupabase } from "@/hooks/use-supabase";
 import { nanoid } from "nanoid";
 import { updateMessagesAsRead } from "@/data/mutations/message/update-message-as-read";
-import { fetchMessage } from "@/utils/app/fetch-messages";
 import { useInfiniteMessage } from "@/hooks/use-infinite-messages";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
