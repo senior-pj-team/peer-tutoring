@@ -7,14 +7,9 @@ export const updateSession = async (
 	end: Date,
 	tutor_id: string,
 	supabase: TSupabaseClient,
-) => {
-	if (!sessionId) {
-		return {
-			data: null,
-			error: { message: "Missing session ID" },
-		};
-	}
-	return await supabase
+):Promise<Boolean> => {
+	if (!sessionId) return false
+	const {data, error} = await supabase
 		.from("sessions")
 		.update({
 			session_name: values.sessionName,
@@ -35,4 +30,6 @@ export const updateSession = async (
 			tutor_id: tutor_id,
 		})
 		.eq("id", sessionId);
+	if (error) return false
+	return true
 };

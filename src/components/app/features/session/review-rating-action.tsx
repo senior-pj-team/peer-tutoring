@@ -3,7 +3,7 @@ import RatingReviewBtn from "../rating-review/rating-review-btn";
 import RefundReportBtn from "../refund-report/refund-report-btn";
 import ShowReviewRating from "../rating-review/show-review-rating";
 
-const CompletedAction = ({sessionId}: {sessionId: number | null}) => {
+const ReviewRatingAction = ({sessionId}: {sessionId: number | null}) => {
 
 	return (
 		<>
@@ -14,4 +14,4 @@ const CompletedAction = ({sessionId}: {sessionId: number | null}) => {
 	);
 };
 
-export default CompletedAction;
+export default ReviewRatingAction;

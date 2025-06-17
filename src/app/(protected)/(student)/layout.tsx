@@ -7,7 +7,6 @@ export default async function Layout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	const user = await getUserSession();
-
 	if (!user) {
 		redirect("/login");
 	}

@@ -1,38 +1,52 @@
 "use server";
 
 import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
-import { SessionSchemaT } from "@/schema/session-schema";
+import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { getDateWithTime } from "@/utils/app/get-date-with-time";
 import { createClient } from "@/utils/supabase/server";
 import { insertSession } from "@/data/mutations/sessions/insert-session";
 
 import { getUserSession } from "@/utils/get-user-session";
+import { getUserById } from "@/data/queries/user/get-user-by-id";
 
 export const createSession = async (
-	values: SessionSchemaT,
+	rawValues: SessionSchemaT,
 ): Promise<ActionResponseType<any>> => {
+
+	const result = sessionSchema.safeParse(rawValues);
+	if (!result.success) return {
+		success: false,
+		error: { message: "Validation error" },
+	}
+	const values = result.data;
+
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
+	const user = await getUserSession();
 
-	const user: UserSession | null = await getUserSession();
-
-	if (!user) {
+	if (!user?.user_id) {
 		return {
 			success: false,
-			error: { message: "You are not authorized for this action!" },
+			error: { message: "User not found" },
 		};
 	}
-	if (user.user_role != "tutor") {
+	const supabase = await createClient();
+	const userData = await getUserById(supabase, user.user_id);
+
+	if (!userData) {
 		return {
 			success: false,
-			error: { message: "You are not authorized for this action!" },
-		};
+			error: { message: "User not found" },
+		}
 	}
-
-	const tutor_id = user.user_id;
-
-	// data
-	const supabase: TSupabaseClient = await createClient();
+	const { role, tutor_status } = userData;
+	if (role != "tutor" || tutor_status == "suspended") {
+		return {
+			success: false,
+			error: { message: "User not authorized" },
+		}
+	}
+	const tutor_id = userData.id;
 
 	let uploadedUrl: string | null = null;
 	if (values.image) {
@@ -45,7 +59,7 @@ export const createSession = async (
 		}
 	}
 
-	const { data, error } = await insertSession(
+	const insertResult = await insertSession(
 		values,
 		uploadedUrl,
 		start,
@@ -54,15 +68,14 @@ export const createSession = async (
 		supabase,
 	);
 
-	if (error) {
+	if (!insertResult) {
 		return {
 			success: false,
-			error: { message: error.message },
+			error: { message: "Something went wrong" },
 		};
+	}else{
+		return {
+			success: true
+		}
 	}
-
-	return {
-		success: true,
-		data,
-	};
 };

@@ -12,6 +12,5 @@ export async function getUserById(
 		console.error("Error fetching user:", error.message);
 		return null;
 	}
-
 	return data;
 }

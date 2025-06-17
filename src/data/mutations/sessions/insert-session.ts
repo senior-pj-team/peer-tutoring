@@ -7,8 +7,8 @@ export const insertSession = async (
 	end: Date,
 	tutor_id: string,
 	supabase: TSupabaseClient,
-) => {
-	return await supabase.from("sessions").insert({
+): Promise<Boolean> => {
+	const {data, error}= await supabase.from("sessions").insert({
 		session_name: values.sessionName,
 		course_code: values.courseCode,
 		course_name: values.courseName,
@@ -27,4 +27,6 @@ export const insertSession = async (
 		service_fee: values.amount * 0.15,
 		tutor_id: tutor_id,
 	});
+	if(error) return false
+	return  true
 };

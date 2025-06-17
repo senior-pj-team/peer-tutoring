@@ -886,7 +886,7 @@ export type Database = {
         | "refunded"
         | "completed"
         | "paid"
-      tutor_status: "pending" | "verified" | "rejected"
+      tutor_status: "pending" | "verified" | "rejected" | "suspended"
     }
     CompositeTypes: {
       session_tutor_mat_view_result: {
@@ -1028,7 +1028,7 @@ export const Constants = {
         "completed",
         "paid",
       ],
-      tutor_status: ["pending", "verified", "rejected"],
+      tutor_status: ["pending", "verified", "rejected", "suspended"],
     },
   },
 } as const

@@ -71,7 +71,7 @@ export function useDeleteNotification(
 			const previousData = queryClient.getQueryData<
 				InfiniteData<TNotificationResult>
 			>([q_key, user_id, type]);
-
+			
 			queryClient.setQueryData<InfiniteData<TNotificationResult[]>>(
 				[q_key, user_id, type],
 				(old) => {
@@ -87,10 +87,8 @@ export function useDeleteNotification(
 					};
 				},
 			);
-
 			return { previousData };
 		},
-
 		onError: (_, __, context) => {
 			if (context?.previousData) {
 				queryClient.setQueryData([q_key, user_id, type], context.previousData);

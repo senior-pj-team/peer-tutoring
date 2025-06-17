@@ -86,7 +86,7 @@ declare global {
 	};
 
 	type ActionResponseType<T> =
-		| { success: true; data: T }
+		| { success: true; data?: T }
 		| { success: false; error: { message: string } };
 
 	type TRatingStat = {
@@ -104,6 +104,11 @@ declare global {
 		last_message: string;
 		last_sent_at: string;
 	}
+	type TStudentSessionWithSessionName = TStudentSessionResult & {
+  	session: {
+    	session_name: string;
+  		};
+	};
 
 	//Enums
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];

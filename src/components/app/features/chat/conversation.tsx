@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MessageInput from "./message-input";
 import EmptyChat from "./empty-chat";
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { format, parseISO } from "date-fns";
 import { insertMessage } from "@/data/mutations/message/insert-message";
 import { useMessageRealtime } from "@/hooks/use-message-realtime";
@@ -25,6 +25,8 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
   const [msg, setMsg] = useState("");
   const [newMessages, setNewMessages] = useState<TMessageWithStatus[]>([]);
   const supabase = useSupabase();
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const mutation = useMutation({
     mutationFn: async ({ message, tempId }: { message: string; tempId: string }) => {
@@ -49,7 +51,7 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
     onSuccess: ({ result, tempId }) => {
       setNewMessages((prev) =>
         prev.map((msg) =>
-          msg.tempId === tempId ? { ...result, status: "sent", tempId } : msg
+          msg.tempId === tempId ? { ...msg, ...result, status: "sent", tempId } : msg
         )
       );
     },
@@ -74,7 +76,7 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
         if (!exists) return [newMsg, ...prev];
         return prev;
       });
-
+      
       if (newMsg.sender_id !== userId) {
         updateMessagesAsRead(chatId, userId, supabase, { message_id: newMsg.id });
       }
@@ -94,6 +96,7 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
     },
     []
   );
+
   useMessageRealtime(supabase, chatId, handleInsertMessage, handleUpdateMessage);
 
 
@@ -138,6 +141,12 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
     );
   }, [chatId, userId]);
 
+  useEffect(()=>{
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  },[newMessages])
+
   return (
     <div className="flex flex-col h-[46.5rem] bg-gray-50 border-l shadow-sm">
       <div className="flex items-center gap-4 px-6 pb-4 pt-6 border-b bg-white">
@@ -156,7 +165,7 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
         <h2 className="text-lg font-semibold text-orange-800">{userName}</h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 flex flex-col-reverse gap-4">
+      <div className="flex-1 overflow-y-auto p-6 flex flex-col-reverse gap-4" ref={scrollRef}>
         {combinedMessages.length === 0 && <EmptyChat />}
 
         {combinedMessages.map((msg, index) => {

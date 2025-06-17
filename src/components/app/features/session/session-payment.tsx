@@ -3,6 +3,7 @@ import PaymentTable from "@/components/app/features/payment/payment-table";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { getStudentSession } from "@/data/queries/student-session/get-student-session";
+import GeneralError from "../../shared/error";
 
 const SessionPayment = async ({ session_id }: { session_id: number }) => {
 	const supabase = await createClient();
@@ -10,18 +11,13 @@ const SessionPayment = async ({ session_id }: { session_id: number }) => {
 	if (!user) return <></>;
 	const student_session_result = await getStudentSession(
 		supabase,
-		user.user_id,
-		session_id,
+		{
+			student_id: user.user_id,
+			session_id,
+		}
 	);
 
-	if (!student_session_result) return <></>;
-	const student_session = student_session_result[0];
-	const data = {
-		paidAmount: student_session.amount_from_student,
-		paidAt: student_session.created_at,
-		refundAmount: student_session.refunded_amount,
-		refundedAt: student_session.held_until,
-	};
+	if (!student_session_result) return <GeneralError/>;
 	return (
 		<div className="p-6 ">
 			<div>
@@ -34,7 +30,7 @@ const SessionPayment = async ({ session_id }: { session_id: number }) => {
 			</div>
 			<div className="mt-10">
 				<h3 className="text-xl font-semibold mt-2">Payment</h3>
-				<PaymentTable data={data} />
+				<PaymentTable data={student_session_result} />
 			</div>
 		</div>
 	);
