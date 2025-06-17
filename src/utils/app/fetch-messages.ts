@@ -1,5 +1,4 @@
 import { getMessagesByChatId } from "@/data/queries/message/get-messages-by-chatId";
-import { createClient } from "../supabase/client";
 
 export const LIMIT = 10;
 export const fetchMessage= async({
