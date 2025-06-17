@@ -41,7 +41,7 @@ import {
 	DialogDescription,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { createSession } from "@/actions/create-session.";
+import { createSession } from "@/actions/create-session";
 import { editSession } from "@/actions/edit-session";
 
 type SessionFormProps = {
