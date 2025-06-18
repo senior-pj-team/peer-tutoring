@@ -9,11 +9,12 @@ export const fetchMessage= async({
 	pageParam: number;
 	chatId: string;
 	supabase: TSupabaseClient; 
-})=>{
+}): Promise<TMessageWithStatus[]>=>{
       const data = await getMessagesByChatId(chatId, supabase, {
           offset: pageParam,
           limit: LIMIT,
         })
-      if(!data) throw new Error("Error fetching messages");
-      return data
+	  if(!data) throw new Error("Error fetching messages");
+    const result= data.map((msg: TMessage) => ({ ...msg, status: "sent" }))
+	  return result;
 }

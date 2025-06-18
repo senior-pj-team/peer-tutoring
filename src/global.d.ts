@@ -35,6 +35,7 @@ declare global {
 	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
 	type TMessage = DB["public"]["Tables"]["message"]["Row"];
+	type TMessageWithStatus= TMessage & {status: string};
 	type TUser = DB["public"]["Tables"]["user"]["Row"];
 	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
 

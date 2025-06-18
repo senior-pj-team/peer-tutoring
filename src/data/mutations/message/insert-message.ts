@@ -13,7 +13,7 @@ export async function insertMessage(
     })
     .single();
 
-  if (error || !data) {
+  if (error) {
     console.log("Error: ", error.message);
     return false
   }
