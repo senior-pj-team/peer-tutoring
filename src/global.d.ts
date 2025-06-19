@@ -62,6 +62,7 @@ declare global {
 	};
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
 	type TUserResult = DB["public"]["Tables"]["user"]["Row"];
+	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
 
 	// other global types
 
@@ -85,7 +86,7 @@ declare global {
 	};
 
 	type ActionResponseType<T> =
-		| { success: true; data: T }
+		| { success: true; data?: T }
 		| { success: false; error: { message: string } };
 
 	type TRatingStat = {
@@ -102,4 +103,5 @@ declare global {
 	type TSessionStatus = DB["public"]["Enums"]["session_status"];
 	type TNotificationStatus = DB["public"]["Enums"]["notification_status"];
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
+	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
 }

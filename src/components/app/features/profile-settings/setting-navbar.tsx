@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 export default function SettingNavbar() {
 	const links = [
 		{ label: "Profile", value: "profile" },
-		{ label: "Picture", value: "picture" },
 		{ label: "Payment setup", value: "payment" },
 	];
 	const pathname = usePathname();
@@ -16,8 +15,10 @@ export default function SettingNavbar() {
 					<Link
 						key={value}
 						href={`/profile-setting/${value}`}
-						className={`w-full text-[0.85rem] p-2 rounded-md font-medium cursor-pointer hover:underline transition-colors duration-200 ${
-							isActive ? "bg-primary-foreground" : ""
+						className={`w-full text-[0.85rem] p-2 rounded-md font-medium cursor-pointer transition-colors duration-200 ${
+							isActive
+								? "bg-orange-400 text-white font-extrabold"
+								: " hover:bg-orange-100 "
 						}`}>
 						{label}
 					</Link>

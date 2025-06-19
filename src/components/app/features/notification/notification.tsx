@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getTimeAgo } from "@/utils/app/get-time-ago";
-import { InfiniteData, UseMutateFunction } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 
 export function Notification({

@@ -15,39 +15,39 @@ export const editSession = async (
 	rawValues: SessionSchemaT,
 	imageString: string,
 ): Promise<ActionResponseType<any>> => {
-
 	const result = sessionSchema.safeParse(rawValues);
-		if(!result.success) return {
-				success: false,
-				error: { message: "Validation error" },
-		}
-	const values = result.data;	
+	if (!result.success)
+		return {
+			success: false,
+			error: { message: "Validation error" },
+		};
+	const values = result.data;
 
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
 	const user = await getUserSession();
-	
+
 	if (!user?.user_id) {
 		return {
 			success: false,
 			error: { message: "User not found" },
 		};
 	}
-	const supabase= await createClient();
+	const supabase = await createClient();
 	const userData = await getUserById(supabase, user.user_id);
-	
-	if(!userData){
+
+	if (!userData) {
 		return {
 			success: false,
 			error: { message: "User not found" },
-		}
+		};
 	}
-	const {role, tutor_status} = userData;
-	if(role != "tutor" || tutor_status == "suspended"){
+	const { role, tutor_status } = userData;
+	if (role != "tutor" || tutor_status == "suspended") {
 		return {
 			success: false,
 			error: { message: "User not authorized" },
-		}
+		};
 	}
 	const tutor_id = userData.id;
 
