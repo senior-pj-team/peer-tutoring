@@ -2,7 +2,7 @@ type Params = {
 	session_id?: number;
 	student_id?: string;
 	student_session_id?: number;
-	ss_status?: Database["public"]["Enums"]["student_session_status"][];
+	ss_status?: TStudentSessionStatus[];
 };
 
 export async function getEnrollmentCount(

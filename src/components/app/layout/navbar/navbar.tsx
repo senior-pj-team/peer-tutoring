@@ -5,7 +5,7 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 import HoverCustomCard from "./hover-custom-card";
 import SearchBar from "./search-bar";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import clsx from "clsx";
 import CustomSheet from "./custom-sheet";
 import Link from "next/link";
@@ -18,23 +18,24 @@ import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 export default function Navbar() {
 	const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
 	const [showNavbar, setShowNavbar] = useState<boolean>(true);
-	const [lastScrollY, setLastScrollY] = useState<number>(0);
+	const lastScrollY = useRef(0);
 	const { user, loading } = useAuth();
 
 	useEffect(() => {
 		const handleScroll = () => {
 			const currentScrollY = window.scrollY;
-			if (currentScrollY > lastScrollY && currentScrollY > 100) {
+			if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
 				setShowNavbar(false);
-			} else {
+			} else if (currentScrollY < lastScrollY.current) {
 				setShowNavbar(true);
 			}
-			setLastScrollY(currentScrollY);
+			lastScrollY.current = currentScrollY;
 		};
 
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [lastScrollY]);
+
 	return (
 		<div
 			className={clsx(

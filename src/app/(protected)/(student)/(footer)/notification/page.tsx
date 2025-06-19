@@ -25,7 +25,7 @@ async function fetchNotifications({
 }) {
 	const data = await getNotificationByUser(supabase, {
 		offset: pageParam,
-		limit: 3,
+		limit: 15,
 		user_id,
 		type,
 	});

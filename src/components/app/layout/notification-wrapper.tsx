@@ -99,6 +99,7 @@ export function NotificationWrapper({
 	}, [user, supabase]);
 
 	useEffect(() => {
+		console.log(token);
 		const setupListener = async () => {
 			if (!token) return;
 			console.log("Foreground message registered with token: ", token);

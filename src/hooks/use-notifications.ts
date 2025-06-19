@@ -8,7 +8,7 @@ import {
 	useQueryClient,
 } from "@tanstack/react-query";
 
-const LIMIT = 3;
+const LIMIT = 15;
 
 async function fetchNotifications({
 	pageParam,
@@ -69,7 +69,7 @@ export function useDeleteNotification(
 		onMutate: async (id: number) => {
 			await queryClient.cancelQueries({ queryKey: [q_key, user_id, type] });
 			const previousData = queryClient.getQueryData<
-				InfiniteData<TNotificationResult>
+				InfiniteData<TNotificationResult[]>
 			>([q_key, user_id, type]);
 
 			queryClient.setQueryData<InfiniteData<TNotificationResult[]>>(
