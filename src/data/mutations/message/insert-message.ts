@@ -3,7 +3,7 @@ export async function insertMessage(
   sender_id: string,
   chat_id: string,
   supabase: TSupabaseClient
-): Promise<TMessage> {
+): Promise<Boolean> {
   const { data, error } = await supabase
     .from("message")
     .insert({
@@ -11,13 +11,12 @@ export async function insertMessage(
       sender_id,
       chat_id,
     })
-    .select()
     .single();
 
-  if (error || !data) {
-    console.log("Insert error: ", error.message);
-    throw new Error(error?.message || "Failed to insert message");
+  if (error) {
+    console.log("Error: ", error.message);
+    return false
   }
 
-  return data as TMessage;
+  return true;
 }

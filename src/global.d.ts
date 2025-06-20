@@ -7,8 +7,10 @@ declare global {
 	type TSupabaseClient = SupabaseClient<DB>;
 	type TSessionsMatViewResultRow =
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-				tutor: TTutor | null;
-		  };
+			tutor: TTutor | null;
+		};
+			tutor: TTutor | null;
+		};
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -18,8 +20,8 @@ declare global {
 
 	type TSessionsMatViewResultRow =
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-				tutor: TTutor | null;
-		  };
+			tutor: TTutor | null;
+		};
 
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
@@ -35,7 +37,10 @@ declare global {
 	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
 	type TMessage = DB["public"]["Tables"]["message"]["Row"];
+	type TMessageWithStatus= TMessage & {status: string};
 	type TUser = DB["public"]["Tables"]["user"]["Row"];
+	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
+	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
 
 	type TStudentSessionJoinResult = {
 		id: number;
@@ -87,6 +92,7 @@ declare global {
 
 	type ActionResponseType<T> =
 		| { success: true; data?: T }
+		| { success: true; data?: T }
 		| { success: false; error: { message: string } };
 
 	type TRatingStat = {
@@ -97,11 +103,23 @@ declare global {
 		rating: number;
 		count: number;
 	};
+	type TChat = {
+		chat_uuid: string;
+		chat_name: string;
+		chat_profile_url: string;
+		last_message: string;
+		last_sent_at: string;
+	}
+	type TStudentSessionWithSessionName = TStudentSessionResult & {
+  	session: {
+    	session_name: string;
+  		};
+	};
 
 	//Enums
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type TSessionStatus = DB["public"]["Enums"]["session_status"];
 	type TNotificationStatus = DB["public"]["Enums"]["notification_status"];
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
+	type TRefund = DB["public"]["Enums"]["refund_type"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
-}

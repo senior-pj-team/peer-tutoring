@@ -1,5 +1,9 @@
 import React from "react";
 import PaymentTable from "@/components/app/features/payment/payment-table";
+import { createClient } from "@/utils/supabase/server";
+import { getUserSession } from "@/utils/get-user-session";
+import { getStudentSession } from "@/data/queries/student-session/get-student-session";
+import GeneralError from "@/components/app/shared/error";
 import { Roboto_Mono } from "next/font/google";
 import clsx from "clsx";
 const roboto_mono = Roboto_Mono({
@@ -7,79 +11,18 @@ const roboto_mono = Roboto_Mono({
 	subsets: ["latin"],
 });
 
-const page = () => {
-	const payments = [
+const page = async () => {
+	const supabase = await createClient();
+	const user = await getUserSession();
+	if (!user) return <></>;
+	const student_session_result = await getStudentSession(
+		supabase,
 		{
-			sessionName: "React Basics",
-			enrolledDate: "April 10, 2025",
-			price: "฿ 500",
-			invoiceNumber: "INV-20250410-001",
-			status: "refunded",
-		},
-		{
-			sessionName: "React Basics",
-			enrolledDate: "April 9, 2025",
-			price: "฿ 500",
-			invoiceNumber: "INV-20250410-001",
-			status: "purchase",
-		},
-		{
-			sessionName: "JavaScript Fundamentals",
-			enrolledDate: "April 12, 2025",
-			price: "฿ 700",
-			invoiceNumber: "INV-20250412-002",
-			status: "purchase",
-		},
-		{
-			sessionName: "CSS Advanced",
-			enrolledDate: "April 13, 2025",
-			price: "฿ 400",
-			invoiceNumber: "INV-20250413-003",
-			status: "purchase",
-		},
-		{
-			sessionName: "Node.js for Beginners",
-			enrolledDate: "April 14, 2025",
-			price: "฿ 600",
-			invoiceNumber: "INV-20250414-004",
-			status: "refunded",
-		},
-		{
-			sessionName: "Vue.js Essentials",
-			enrolledDate: "April 16, 2025",
-			price: "฿ 550",
-			invoiceNumber: "INV-20250416-005",
-			status: "purchase",
-		},
-		{
-			sessionName: "React Native Basics",
-			enrolledDate: "April 18, 2025",
-			price: "฿ 650",
-			invoiceNumber: "INV-20250418-006",
-			status: "purchase",
-		},
-		{
-			sessionName: "TypeScript for Beginners",
-			enrolledDate: "April 19, 2025",
-			price: "฿ 750",
-			invoiceNumber: "INV-20250419-007",
-			status: "refunded",
-		},
-		{
-			sessionName: "Advanced JavaScript",
-			enrolledDate: "April 21, 2025",
-			price: "฿ 800",
-			invoiceNumber: "INV-20250421-008",
-			status: "purchase",
-		},
-		{
-			sessionName: "PHP and MySQL Mastery",
-			enrolledDate: "April 23, 2025",
-			price: "฿ 700",
-			invoiceNumber: "INV-20250423-009",
-			status: "purchase",
-		},
-	];
+			student_id: user.user_id,
+		}
+	);
+
+	if (!student_session_result) return <GeneralError />;
 
 	return (
 		<>
@@ -91,7 +34,9 @@ const page = () => {
 					)}>
 					Purchase history
 				</h2>
-				
+				<div className="mt-10">
+					<PaymentTable data={student_session_result} />
+				</div>
 			</div>
 		</>
 	);

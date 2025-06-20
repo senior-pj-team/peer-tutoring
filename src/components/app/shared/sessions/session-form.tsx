@@ -171,10 +171,10 @@ export default function SessionForm({
 							),
 					  })
 					: toast.error("Something went wrong", {
-							description: `We couldn't complete your request. ${response.error.message}`,
-					  });
-			});
-			setisDialogOpen(false);
+						description: `We couldn't complete your request. ${response.error.message}`,
+					});
+				setisDialogOpen(false);
+			})
 		} catch (error) {
 			console.error(error);
 			toast.error("Something went wrong", {
@@ -551,18 +551,23 @@ export default function SessionForm({
 						<Button
 							type="button"
 							onClick={handleConfirm}
+							disabled={isPending}
 							className="w-24 bg-orange-500 hover:bg-orange-600 text-white">
-							{isEdit ? "Save" : "Create"}
+							{isPending ? (
+								<div className="flex items-center gap-1">
+									<span>Loading</span>
+									<div className="flex items-center gap-0.5">
+										<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+										<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+										<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
+									</div>
+								</div>
+							) :
+								isEdit ? "Save" : "Create"}
 						</Button>
 					</div>
 				</DialogContent>
 			</Dialog>
-
-			{isPending && (
-				<div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-md z-50">
-					<Loader className="w-10 h-10 text-blue-500 animate-spin" />
-				</div>
-			)}
 		</div>
 	);
 }

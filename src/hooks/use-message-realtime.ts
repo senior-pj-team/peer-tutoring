@@ -21,7 +21,6 @@ export function useMessageRealtime(
         },
         (payload) => {
           const newMsg = payload.new as TMessage;
-          console.log("Realtime INSERT:", newMsg);
           onInsert(newMsg);
         }
       )
@@ -35,7 +34,6 @@ export function useMessageRealtime(
         },
         (payload) => {
           const updatedMsg = payload.new as TMessage;
-          console.log("Realtime UPDATE:", updatedMsg);
           onUpdate(updatedMsg);
         }
       )

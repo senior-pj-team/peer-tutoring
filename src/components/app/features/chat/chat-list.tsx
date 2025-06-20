@@ -1,28 +1,40 @@
-import React from "react";
+"use client";
+
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import ChatCard from "./chat-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getChatList } from "@/data/queries/chat/get-chat-list";
-import { createClient } from "@/utils/supabase/server";
-import { getUserSession } from "@/utils/get-user-session";
 import { formatDate, parseISO } from "date-fns";
-import GeneralError from "../../shared/error";
+import { useChatListRealtime } from "@/hooks/use-chatlist-realtime";
+import { useSupabase } from "@/hooks/use-supabase";
+import { getChatList } from "@/data/queries/chat/get-chat-list";
 
-const ChatList = async ({ selectedChatId }: { selectedChatId: string | null }) => {
-  const user = await getUserSession();
-  const supabase = await createClient(); 
-  if(!user?.user_id) return <GeneralError/>
-  const chats = await getChatList(user.user_id, supabase);
-  if(!chats) return <GeneralError/>
+export function ChatList({
+  initialChats,
+  selectedChatId,
+  userId,
+}: {
+  initialChats: TChatList;
+  selectedChatId: string | null;
+  userId: string;
+}) {
+  const [chats, setChats] = useState<TChatList>(initialChats);
+  const supabase = useSupabase();
+
+  const handleReload = useCallback(async () => {
+      const refreshedChats = await getChatList(userId, supabase);
+      if(!refreshedChats) return null
+      setChats(refreshedChats)
+  }, []);
+
+  useChatListRealtime(supabase, userId, handleReload);
 
   return (
     <aside className="w-full h-[90vh] border-r bg-white flex flex-col shadow-sm">
-      {/* Header */}
       <div className="px-5 pb-5 pt-8 border-b">
         <h2 className="text-xl font-bold text-orange-700">Chats</h2>
       </div>
 
-      {/* Chat List */}
       <ScrollArea className="flex-1 px-2 py-3">
         {chats.length > 0 ? (
           chats.map((chat) => {
@@ -71,6 +83,4 @@ const ChatList = async ({ selectedChatId }: { selectedChatId: string | null }) =
       </ScrollArea>
     </aside>
   );
-};
-
-export default ChatList;
+}

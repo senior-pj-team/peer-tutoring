@@ -16,16 +16,16 @@ export const editSession = async (
 	imageString: string,
 ): Promise<ActionResponseType<any>> => {
 	const result = sessionSchema.safeParse(rawValues);
-	if (!result.success)
-		return {
-			success: false,
-			error: { message: "Validation error" },
-		};
+	if (!result.success) return {
+		success: false,
+		error: { message: "Validation error" },
+	}
 	const values = result.data;
 
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
 	const user = await getUserSession();
+
 
 	if (!user?.user_id) {
 		return {
@@ -64,7 +64,7 @@ export const editSession = async (
 		isDelete = await deleteImage(imageString, supabase);
 	}
 
-	const { data, error } = await updateSession(
+	const updateResult = await updateSession(
 		sessionId,
 		values,
 		uploadedUrl,
@@ -74,15 +74,15 @@ export const editSession = async (
 		supabase,
 	);
 
-	if (error) {
+	if (!updateResult) {
 		return {
 			success: false,
-			error: { message: error.message },
+			error: { message: "Something went wrong" },
 		};
 	}
 
 	return {
 		success: true,
-		data,
 	};
 };
+

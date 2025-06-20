@@ -3,7 +3,7 @@ import { Star, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
+import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats";
 import TutorStats from "./tutor-stats";
 import SessionList from "./session-list";
 import TutorRARSection from "../tutor/tutor-RAR-section";

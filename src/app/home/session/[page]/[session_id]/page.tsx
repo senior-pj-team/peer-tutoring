@@ -1,10 +1,9 @@
 import React from "react";
 
 import SessionHeader from "@/components/app/features/session/session-header";
-import CompletedAction from "@/components/app/features/session/completed-action";
+import ReviewRatingAction from "@/components/app/features/session/review-rating-action";
 import UpcomingAction from "@/components/app/features/session/upcoming-action";
 import EnrollAction from "@/components/app/features/session/enroll-action";
-import ArchivedAction from "@/components/app/features/session/archived-action";
 import RefundStatus from "@/components/app/features/session/refund-status";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -102,7 +101,7 @@ const Page = async ({ params }: { params: Params }) => {
 							</TabsTrigger>
 						)}
 					</TabsList>
-
+					
 					<div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 relative ">
 						<div className="w-full">
 							<TabsContent value="content">
@@ -121,11 +120,11 @@ const Page = async ({ params }: { params: Params }) => {
 						</div>
 
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-							{page === "complete" && (
-								<CompletedAction sessionId={Number(session_id)} />
-							)}
+							{page === "complete" || page == "archived" ? (
+								<ReviewRatingAction ssId={16} sessionId={6} toReport={page=="complete"}/>
+							):<></>}
 							{page === "upcoming" && (
-								<UpcomingAction start={"2025-05-25 04:00:00+00"} />
+								<UpcomingAction start={sessionData.start_time} sessionId={6} ssId={16} />
 							)}
 							{page === "browse" && (
 								<EnrollAction
@@ -133,9 +132,6 @@ const Page = async ({ params }: { params: Params }) => {
 									price={sessionData.price}
 									service_fee={sessionData.service_fee}
 								/>
-							)}
-							{page === "archived" && (
-								<ArchivedAction sessionId={Number(session_id)} />
 							)}
 							{page === "refund" && (
 								<RefundStatus sessionId={Number(session_id)} />

@@ -9,8 +9,12 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import RatingReviewForm from './rating-review-form'
+import { useSupabase } from '@/hooks/use-supabase'
+import GeneralError from '../../shared/error'
 
-const RatingReviewBtn = () => {
+const RatingReviewBtn = ({ssId, sessionId}: {ssId: number | null, sessionId: number | null }) => {
+  const supabase = useSupabase();
+  if (!supabase || !ssId) return <GeneralError />;
   const [open, setOpen]= useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -26,7 +30,7 @@ const RatingReviewBtn = () => {
                             Tap on the stars and share your thoughts below.
                         </DialogDescription>
                     </DialogHeader>
-                    <RatingReviewForm/>
+                    <RatingReviewForm ssId={ssId} sessionId= {sessionId}/>
                 </DialogContent>
             </Dialog>
   )

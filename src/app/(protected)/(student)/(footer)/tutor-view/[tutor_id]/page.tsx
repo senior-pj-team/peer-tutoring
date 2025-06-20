@@ -5,7 +5,7 @@ import Expandable from "@/components/app/shared/expandable-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TutorRARSection from "@/components/app/features/tutor/tutor-RAR-section";
 import { createClient } from "@/utils/supabase/server";
-import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats-view";
+import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats";
 import { parseISO, format } from "date-fns";
 import TutorSessionsSectionServer from "@/components/app/features/tutor/tutor-sessions-section-server";
 import { GoToChatButton } from "@/components/app/shared/go-to-chat-button";
@@ -29,11 +29,11 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
 				<div className="w-full md:w-1/3 text-center md:text-left">
 					<Avatar className="w-48 h-48 my-5">
 						<AvatarImage
-							src={user.profile_url ?? ""}
+							src={tutorStats.tutor_profile_url ?? ""}
 							alt="User Avatar"
 						/>
 						<AvatarFallback className="text-3xl">
-							{getAvatarFallback(user.full_name)}
+							{getAvatarFallback(tutorStats.tutor_name)}
 						</AvatarFallback>
 					</Avatar>
 					<h2 className="mt-4 text-xl font-semibold mb-3">

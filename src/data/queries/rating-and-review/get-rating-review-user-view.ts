@@ -1,6 +1,7 @@
 export const getRatingReview = async (
 	supabase: TSupabaseClient,
 	{
+		ss_id,
 		offset,
 		limit,
 		tutor_id,
@@ -8,6 +9,7 @@ export const getRatingReview = async (
 		student_id,
 		search = "",
 	}: {
+		ss_id?: number;
 		tutor_id?: string;
 		offset?: number;
 		limit?: number;
@@ -24,6 +26,7 @@ export const getRatingReview = async (
 	if (tutor_id) query = query.eq("tutor_id", tutor_id);
 	if (session_id) query = query.eq("session_id", session_id);
 	if (student_id) query = query.eq("student_id", student_id);
+	if (ss_id) query = query.eq('ss_id', ss_id);
 
 	if (search && search.trim() !== "") {
 		query = query.textSearch("search_vector", search, { type: "plain" });
