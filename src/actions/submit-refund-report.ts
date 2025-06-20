@@ -4,7 +4,6 @@ import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { insertRefundReport } from "@/data/mutations/refund-report/insert-refund-report";
-import { sendRefundEmail } from "./send-refund-email";
 
 const schema = z.object({
     reason: z.string().min(1),

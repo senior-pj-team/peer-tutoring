@@ -9,8 +9,6 @@ declare global {
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
 			tutor: TTutor | null;
 		};
-			tutor: TTutor | null;
-		};
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -25,14 +23,10 @@ declare global {
 
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
-	type TSelectSessionsMatViewResult =
-		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
-
+	type TSelectSessionsMatViewResult =DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 	type TStudentSessionResult = DB["public"]["Tables"]["student_session"]["Row"];
-
-	type TRefundReportResult = DB["public"]["Tables"]["refund_report"]["Row"];
-	type TRatingReviewUserViewResult =
-		DB["public"]["Views"]["rating_review_user_view"]["Row"];
+	type TRefundReportResult= DB["public"]["Tables"]["refund_report"]["Row"];
+	type TRatingReviewUserViewResult= DB["public"]["Views"]["rating_review_user_view"]["Row"];
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
@@ -92,7 +86,6 @@ declare global {
 
 	type ActionResponseType<T> =
 		| { success: true; data?: T }
-		| { success: true; data?: T }
 		| { success: false; error: { message: string } };
 
 	type TRatingStat = {
@@ -123,3 +116,4 @@ declare global {
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
+};
