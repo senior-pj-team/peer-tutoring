@@ -47,8 +47,7 @@ Deno.serve(async (req) => {
 				[key: string]: any;
 			}
 		).metadata;
-		const payment_intent_id = (event.data.object as { payment_intent: string })
-			.payment_intent;
+		const payment_intent_id = (event.data.object as { id: string }).id;
 
 		const { error, data: raw } = await supabase
 			.from("student_session")
@@ -236,32 +235,6 @@ Deno.serve(async (req) => {
 			if (insert_noti_error) {
 				throw insert_noti_error;
 			}
-
-			// add job queue to insert reminder notification and send reminder email
-
-			const targetTime = new Date(
-				new Date(ss_data.sessions?.start_time).getTime() - 24 * 60 * 60 * 1000,
-			);
-			const delaySeconds = Math.max(
-				0,
-				Math.floor((targetTime.getTime() - Date.now()) / 1000),
-			);
-
-			await supabase.rpc("pgmq_enqueue", {
-				queue_name: "session_reminder_jobs",
-				message: {
-					topic: "send reminders",
-					ss_id: ss_data.id,
-					session_start: ss_data.sessions.start_time,
-					session_id: ss_data.sessions.id,
-					session_name: ss_data.sessions.session_name,
-					student_email: ss_data.student.email,
-					student_id: ss_data.student.id,
-					tutor_email: ss_data.sessions.tutor.email,
-					tutor_id: ss_data.sessions.tutor.id,
-				},
-				delay_seconds: delaySeconds,
-			});
 
 			// send successful email to student
 
