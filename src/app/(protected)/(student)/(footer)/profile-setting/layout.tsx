@@ -2,13 +2,12 @@ import SettingNavbar from "@/components/app/features/profile-settings/setting-na
 import Tabs from "@/components/app/shared/tabs";
 
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export default function layout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<div className="py-[3rem] px-[3rem]">
+		<div className="py-[3rem] px-[3rem] overflow-y-auto">
 			<div className="flex flex-col">
 				<span className="xl:text-2xl md:text-xl text-lg font-extrabold mb-2">
 					Settings
@@ -23,7 +22,6 @@ export default function layout({
 					<Tabs
 						tabs={[
 							{ name: "Profile", path: "/profile-setting/profile" },
-							{ name: "Picture", path: "/profile-setting/picture" },
 							{ name: "Payment", path: "/profile-setting/payment" },
 						]}
 					/>

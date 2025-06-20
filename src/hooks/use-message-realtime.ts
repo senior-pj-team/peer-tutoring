@@ -21,7 +21,6 @@ export function useMessageRealtime(
         },
         (payload) => {
           const newMsg = payload.new as TMessage;
-          console.log("Insert listener");
           onInsert(newMsg);
         }
       )

@@ -9,6 +9,8 @@ declare global {
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
 			tutor: TTutor | null;
 		};
+			tutor: TTutor | null;
+		};
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -38,6 +40,7 @@ declare global {
 	type TMessageWithStatus= TMessage & {status: string};
 	type TUser = DB["public"]["Tables"]["user"]["Row"];
 	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
+	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
 
 	type TStudentSessionJoinResult = {
 		id: number;
@@ -64,6 +67,7 @@ declare global {
 	};
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
 	type TUserResult = DB["public"]["Tables"]["user"]["Row"];
+	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
 
 	// other global types
 
@@ -87,6 +91,7 @@ declare global {
 	};
 
 	type ActionResponseType<T> =
+		| { success: true; data?: T }
 		| { success: true; data?: T }
 		| { success: false; error: { message: string } };
 
@@ -117,4 +122,4 @@ declare global {
 	type TNotificationStatus = DB["public"]["Enums"]["notification_status"];
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
-}
+	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];

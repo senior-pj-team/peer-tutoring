@@ -164,12 +164,12 @@ export default function SessionForm({
 				const actionType = isEdit ? "updated" : "created";
 				response.success
 					? toast.success(`Session ${actionType} successfully`, {
-						description: (
-							<div className="text-muted-foreground text-sm">
-								{`Session was ${actionType}. Session will start on ${formValues.date}`}
-							</div>
-						),
-					})
+							description: (
+								<div className="text-muted-foreground text-sm">
+									{`Session was ${actionType}. Session will start on ${formValues.date}`}
+								</div>
+							),
+					  })
 					: toast.error("Something went wrong", {
 						description: `We couldn't complete your request. ${response.error.message}`,
 					});
@@ -248,7 +248,7 @@ export default function SessionForm({
 													disabled={isDisable}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className="text-sm" />
 										</FormItem>
 									)}
 								/>
@@ -298,7 +298,7 @@ export default function SessionForm({
 														disabled={isDisable}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className="text-sm" />
 											</FormItem>
 										)}
 									/>
@@ -319,7 +319,7 @@ export default function SessionForm({
 											disabled={isDisable}
 										/>
 									</FormControl>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>
@@ -352,10 +352,9 @@ export default function SessionForm({
 													<SelectItem value="6">Elective Courses</SelectItem>
 												</SelectGroup>
 											</SelectContent>
-											{ }
 										</Select>
 									</FormControl>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>
@@ -373,7 +372,7 @@ export default function SessionForm({
 											disabled={isDisable}
 										/>
 									</FormControl>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>{" "}
@@ -413,7 +412,7 @@ export default function SessionForm({
 															disabled={isDisable}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className="text-sm" />
 												</FormItem>
 											</div>
 										)}
@@ -438,7 +437,7 @@ export default function SessionForm({
 															disabled={isDisable}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className="text-sm" />
 												</FormItem>
 											</div>
 										)}
@@ -463,7 +462,7 @@ export default function SessionForm({
 											disabled={isDisable}
 										/>
 									</FormControl>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>
@@ -476,7 +475,7 @@ export default function SessionForm({
 									<FormControl>
 										<Input type="string" {...field} disabled={isDisable} />
 									</FormControl>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>
@@ -496,7 +495,7 @@ export default function SessionForm({
 											disabled={!form.watch("paid") || isDisable}
 										/>
 									</FormControl>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>
@@ -519,7 +518,7 @@ export default function SessionForm({
 										/>
 									</FormControl>
 									<FormLabel>Paid</FormLabel>
-									<FormMessage />
+									<FormMessage className="text-sm" />
 								</FormItem>
 							)}
 						/>

@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           account_name: string | null
           account_number: string | null
+          account_type: Database["public"]["Enums"]["bank_account_type"]
           bank_name: string | null
           created_at: string
           id: number
@@ -21,6 +22,7 @@ export type Database = {
         Insert: {
           account_name?: string | null
           account_number?: string | null
+          account_type?: Database["public"]["Enums"]["bank_account_type"]
           bank_name?: string | null
           created_at?: string
           id?: number
@@ -29,6 +31,7 @@ export type Database = {
         Update: {
           account_name?: string | null
           account_number?: string | null
+          account_type?: Database["public"]["Enums"]["bank_account_type"]
           bank_name?: string | null
           created_at?: string
           id?: number
@@ -38,28 +41,28 @@ export type Database = {
           {
             foreignKeyName: "bank_info_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "rating_review_user_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "bank_info_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "rating_review_user_view"
             referencedColumns: ["tutor_id"]
           },
           {
             foreignKeyName: "bank_info_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "tutor_stats_view"
             referencedColumns: ["tutor_id"]
           },
           {
             foreignKeyName: "bank_info_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
           },
@@ -957,6 +960,7 @@ export type Database = {
     }
     Enums: {
       app_role: "student" | "tutor" | "admin"
+      bank_account_type: "student_refund" | "tutor_transfer" | "refund_transfer"
       notification_status: "new" | "read"
       notification_type:
         | "student"
@@ -1097,6 +1101,11 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "tutor", "admin"],
+      bank_account_type: [
+        "student_refund",
+        "tutor_transfer",
+        "refund_transfer",
+      ],
       notification_status: ["new", "read"],
       notification_type: [
         "student",

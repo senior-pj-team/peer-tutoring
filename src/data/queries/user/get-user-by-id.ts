@@ -1,6 +1,6 @@
 export async function getUserById(
 	supabase: TSupabaseClient,
-	userId: string
+	userId: string,
 ): Promise<TUser | null> {
 	const { data, error } = await supabase
 		.from("user")

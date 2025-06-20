@@ -15,7 +15,6 @@ export const editSession = async (
 	rawValues: SessionSchemaT,
 	imageString: string,
 ): Promise<ActionResponseType<any>> => {
-
 	const result = sessionSchema.safeParse(rawValues);
 	if (!result.success) return {
 		success: false,
@@ -26,6 +25,7 @@ export const editSession = async (
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
 	const user = await getUserSession();
+
 
 	if (!user?.user_id) {
 		return {
@@ -40,14 +40,14 @@ export const editSession = async (
 		return {
 			success: false,
 			error: { message: "User not found" },
-		}
+		};
 	}
 	const { role, tutor_status } = userData;
 	if (role != "tutor" || tutor_status == "suspended") {
 		return {
 			success: false,
 			error: { message: "User not authorized" },
-		}
+		};
 	}
 	const tutor_id = userData.id;
 
@@ -85,3 +85,4 @@ export const editSession = async (
 		success: true,
 	};
 };
+
