@@ -46,7 +46,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			setMessage("Something went wrong. Please try again!");
 			return;
 		}
-		console.log(student_session_data_result);
+
 		if (student_session_data_result.length >= 0) {
 			const student_session_data = student_session_data_result[0];
 
@@ -80,8 +80,8 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				return;
 			}
 			const has_pay_now = await getEnrollmentCount(supabase, {
-				session_id: student_session_data_result[0].session_id,
-				student_id: student_session_data_result[0].student_id,
+				session_id: student_session_data.session_id,
+				student_id: student_session_data.student_id,
 				ss_status: ["pending_payment"],
 			});
 
@@ -96,7 +96,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			}
 
 			const enrollment_count = await getEnrollmentCount(supabase, {
-				session_id: student_session_data_result[0].session_id,
+				session_id: student_session_data.session_id,
 				ss_status: [
 					"completed",
 					"enrolled",
@@ -111,8 +111,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				setMessage("Something went wrong. Please try again!");
 				return;
 			}
-			console.log(enrollment_count);
-			console.log(enrollment_count + paid_count);
+
 			if (
 				enrollment_count + paid_count >=
 				student_session_data.sessions!.max_students!
@@ -131,7 +130,6 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				setMessage("Something went wrong. Please try again!");
 				return;
 			}
-			console.log(updateResult);
 
 			const res = await stripe.confirmPayment({
 				elements,
@@ -140,7 +138,6 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				},
 				redirect: "if_required",
 			});
-			console.log(res);
 
 			if (res.error) {
 				if (
