@@ -5,10 +5,12 @@ declare global {
 	// Db and Supabase Client Type
 	type Database = DB;
 	type TSupabaseClient = SupabaseClient<DB>;
-	type TSessionsMatViewResultRow =
-		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-			tutor: TTutor | null;
-		};
+	type TSessionsMatViewResultRow = Omit<
+		DB["public"]["Views"]["session_tutor_mat_view"]["Row"],
+		"tutor"
+	> & {
+		tutor: TTutor | null;
+	};
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -16,25 +18,31 @@ declare global {
 		tutor_rating: number | null;
 	};
 
-	type TSessionsMatViewResultRow =
-		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-			tutor: TTutor | null;
-		};
+	type TSessionsMatViewResultRow = Omit<
+		DB["public"]["Views"]["session_tutor_mat_view"]["Row"],
+		"tutor"
+	> & {
+		tutor: TTutor | null;
+	};
 
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
-	type TSelectSessionsMatViewResult =DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
+	type TSelectSessionsMatViewResult =
+		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 	type TStudentSessionResult = DB["public"]["Tables"]["student_session"]["Row"];
-	type TRefundReportResult= DB["public"]["Tables"]["refund_report"]["Row"];
-	type TRatingReviewUserViewResult= DB["public"]["Views"]["rating_review_user_view"]["Row"];
+	type TRefundReportResult = DB["public"]["Tables"]["refund_report"]["Row"];
+	type TRatingReviewUserViewResult =
+		DB["public"]["Views"]["rating_review_user_view"]["Row"];
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
 	type TMessage = DB["public"]["Tables"]["message"]["Row"];
-	type TMessageWithStatus= TMessage & {status: string};
+	type TMessageWithStatus = TMessage & { status: string };
 	type TUser = DB["public"]["Tables"]["user"]["Row"];
-	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
-	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
+	type TOtherUser =
+		DB["public"]["Functions"]["get_other_participant"]["Returns"];
+	type TOtherUser =
+		DB["public"]["Functions"]["get_other_participant"]["Returns"];
 
 	type TStudentSessionJoinResult = {
 		id: number;
@@ -79,7 +87,7 @@ declare global {
 	type UserSession = {
 		email: string;
 		full_name: string;
-		profile_url: string;
+		profile_url: string | null;
 		user_role: string;
 		user_id: string;
 	};
@@ -102,11 +110,11 @@ declare global {
 		chat_profile_url: string;
 		last_message: string;
 		last_sent_at: string;
-	}
+	};
 	type TStudentSessionWithSessionName = TStudentSessionResult & {
-  	session: {
-    	session_name: string;
-  		};
+		session: {
+			session_name: string;
+		};
 	};
 
 	//Enums
@@ -116,4 +124,4 @@ declare global {
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
-};
+}

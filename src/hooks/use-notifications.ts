@@ -5,6 +5,7 @@ import {
 	InfiniteData,
 	useInfiniteQuery,
 	useMutation,
+	useQuery,
 	useQueryClient,
 } from "@tanstack/react-query";
 
@@ -12,18 +13,23 @@ const LIMIT = 15;
 
 async function fetchNotifications({
 	pageParam,
+	limit,
 	user_id,
+	status,
 	type,
 	supabase,
 }: {
-	pageParam: number;
+	pageParam?: number;
+	limit?: number;
 	user_id: string;
+	status?: TNotificationStatus[];
 	type: TNotificationType[];
 	supabase: TSupabaseClient;
 }) {
 	const data = await getNotificationByUser(supabase, {
 		offset: pageParam,
-		limit: LIMIT,
+		status,
+		limit,
 		user_id,
 		type,
 	});
@@ -42,7 +48,7 @@ export function useNotifications(
 	return useInfiniteQuery({
 		queryKey: [q_key, user_id, type],
 		queryFn: ({ pageParam = 0 }) =>
-			fetchNotifications({ pageParam, user_id, type, supabase }),
+			fetchNotifications({ pageParam, limit: LIMIT, user_id, type, supabase }),
 		initialPageParam: 0,
 		getNextPageParam: (_, allPages) => {
 			return count - allPages.length * LIMIT > 0
@@ -71,7 +77,7 @@ export function useDeleteNotification(
 			const previousData = queryClient.getQueryData<
 				InfiniteData<TNotificationResult[]>
 			>([q_key, user_id, type]);
-			
+
 			queryClient.setQueryData<InfiniteData<TNotificationResult[]>>(
 				[q_key, user_id, type],
 				(old) => {
@@ -96,6 +102,7 @@ export function useDeleteNotification(
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: [q_key, user_id, type] });
+			queryClient.invalidateQueries({ queryKey: ["nav_bar_noti", user_id] });
 		},
 	});
 }
@@ -109,7 +116,10 @@ export function useMarkAsAllRead(
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async () => {
-			const update_noti_result = await updateNotification(supabase, user_id);
+			const update_noti_result = await updateNotification(supabase, {
+				user_id,
+				type,
+			});
 			if (!update_noti_result) {
 				throw Error("delete notification error");
 			}
@@ -149,6 +159,29 @@ export function useMarkAsAllRead(
 
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: [q_key, user_id, type] });
+			queryClient.invalidateQueries({ queryKey: ["nav_bar_noti", user_id] });
 		},
+	});
+}
+
+export function useNotificationsNavBar(
+	user_id: string,
+	type: TNotificationType[],
+	enabled: boolean,
+	supabase: TSupabaseClient,
+) {
+	return useQuery({
+		queryKey: ["nav_bar_noti", user_id],
+		queryFn: () =>
+			fetchNotifications({
+				user_id,
+				status: ["new"],
+				type,
+				supabase,
+			}),
+		staleTime: 1000 * 60 * 60,
+		enabled,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
 	});
 }

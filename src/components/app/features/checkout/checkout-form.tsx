@@ -27,6 +27,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 	const [message, setMessage] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const supabase = useSupabase();
+	let paid_count = 0;
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -34,32 +35,68 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 		if (!stripe || !elements) {
 			return;
 		}
+		setMessage("");
 		setIsLoading(true);
 
 		const student_session_data_result = await getStudentSessionJoin(supabase, {
 			student_session_id,
 		});
 		if (!student_session_data_result) {
-			setMessage("Something went wrong. Please try again!");
 			setIsLoading(false);
+			setMessage("Something went wrong. Please try again!");
 			return;
 		}
-		if (student_session_data_result.length <= 0) {
-			if (!student_session_data_result) {
-				setMessage("Something went wrong. Please try again!");
+
+		if (student_session_data_result.length >= 0) {
+			const student_session_data = student_session_data_result[0];
+
+			if (student_session_data.ss_status === "expired_payment") {
 				setIsLoading(false);
+				setMessage("The payment session is expired. Please enroll again!");
 				return;
 			}
 
-			const student_session_data = student_session_data_result[0];
-			if (student_session_data.ss_status === "expired_payment") {
-				setMessage("The payment session is expired. Please enroll again!");
+			const has_enrolled_ss = await getEnrollmentCount(supabase, {
+				student_session_id: student_session_data.id,
+				ss_status: [
+					"enrolled",
+					"expired_payment",
+					"completed",
+					"refunded",
+					"failed_payment",
+					"paid",
+					"pending_refund",
+				],
+			});
+
+			if (!has_enrolled_ss && has_enrolled_ss !== 0) {
 				setIsLoading(false);
+				setMessage("Something went wrong. Please try again!");
 				return;
+			}
+			if (has_enrolled_ss > 0) {
+				setIsLoading(false);
+				setMessage("You have already checked out");
+				return;
+			}
+			const has_pay_now = await getEnrollmentCount(supabase, {
+				session_id: student_session_data.session_id,
+				student_id: student_session_data.student_id,
+				ss_status: ["pending_payment"],
+			});
+
+			if (!has_pay_now && has_pay_now !== 0) {
+				setIsLoading(false);
+				setMessage("Something went wrong. Please try again!");
+				return;
+			}
+
+			if (has_pay_now > 0) {
+				paid_count = -1;
 			}
 
 			const enrollment_count = await getEnrollmentCount(supabase, {
-				student_session_id,
+				session_id: student_session_data.session_id,
 				ss_status: [
 					"completed",
 					"enrolled",
@@ -70,11 +107,16 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			});
 
 			if (!enrollment_count && enrollment_count !== 0) {
+				setIsLoading(false);
 				setMessage("Something went wrong. Please try again!");
 				return;
 			}
 
-			if (enrollment_count >= student_session_data.sessions!.max_students!) {
+			if (
+				enrollment_count + paid_count >=
+				student_session_data.sessions!.max_students!
+			) {
+				setIsLoading(false);
 				setMessage("Sry, no avalible seats left for this session!");
 				return;
 			}
@@ -84,6 +126,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				ss_status: "pending_payment",
 			});
 			if (!updateResult) {
+				setIsLoading(false);
 				setMessage("Something went wrong. Please try again!");
 				return;
 			}
@@ -95,7 +138,6 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				},
 				redirect: "if_required",
 			});
-			console.log(res);
 
 			if (res.error) {
 				if (
@@ -115,6 +157,9 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			}
 
 			setIsLoading(false);
+		} else {
+			setIsLoading(false);
+			setMessage("The payment session is expired. Please enroll again!");
 		}
 	};
 

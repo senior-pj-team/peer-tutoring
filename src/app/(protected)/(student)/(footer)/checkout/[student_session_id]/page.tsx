@@ -26,7 +26,7 @@ export default async function page({ params }: { params: Params }) {
 		status: ["pending_enroll", "pending_payment"],
 	});
 
-	if (!result) {
+	if (!result || result.length < 1) {
 		return (
 			<>
 				<GeneralError />
