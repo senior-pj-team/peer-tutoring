@@ -9,6 +9,62 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      bank_info: {
+        Row: {
+          account_name: string | null
+          account_number: string | null
+          bank_name: string | null
+          created_at: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          account_name?: string | null
+          account_number?: string | null
+          bank_name?: string | null
+          created_at?: string
+          id?: number
+          user_id?: string
+        }
+        Update: {
+          account_name?: string | null
+          account_number?: string | null
+          bank_name?: string | null
+          created_at?: string
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bank_info_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["student_id"]
+          },
+          {
+            foreignKeyName: "bank_info_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "rating_review_user_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "bank_info_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "tutor_stats_view"
+            referencedColumns: ["tutor_id"]
+          },
+          {
+            foreignKeyName: "bank_info_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat: {
         Row: {
           created_at: string | null
@@ -233,6 +289,7 @@ export type Database = {
           rating: number | null
           review: string | null
           session_id: number | null
+          ss_id: number | null
           student_id: string | null
         }
         Insert: {
@@ -241,6 +298,7 @@ export type Database = {
           rating?: number | null
           review?: string | null
           session_id?: number | null
+          ss_id?: number | null
           student_id?: string | null
         }
         Update: {
@@ -249,6 +307,7 @@ export type Database = {
           rating?: number | null
           review?: string | null
           session_id?: number | null
+          ss_id?: number | null
           student_id?: string | null
         }
         Relationships: [
@@ -264,6 +323,13 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rating_and_review_ss_id_fkey"
+            columns: ["ss_id"]
+            isOneToOne: false
+            referencedRelation: "student_session"
             referencedColumns: ["id"]
           },
           {
@@ -299,27 +365,33 @@ export type Database = {
       refund_report: {
         Row: {
           created_at: string
+          description: string | null
           id: number
           reason: string | null
           session_id: number | null
+          ss_id: number
           status: Database["public"]["Enums"]["refund_status"] | null
           student_id: string | null
           type: Database["public"]["Enums"]["refund_type"] | null
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: number
           reason?: string | null
           session_id?: number | null
+          ss_id: number
           status?: Database["public"]["Enums"]["refund_status"] | null
           student_id?: string | null
           type?: Database["public"]["Enums"]["refund_type"] | null
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: number
           reason?: string | null
           session_id?: number | null
+          ss_id?: number
           status?: Database["public"]["Enums"]["refund_status"] | null
           student_id?: string | null
           type?: Database["public"]["Enums"]["refund_type"] | null
@@ -337,6 +409,13 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "refund_report_ss_id_fkey"
+            columns: ["ss_id"]
+            isOneToOne: false
+            referencedRelation: "student_session"
             referencedColumns: ["id"]
           },
           {
@@ -603,6 +682,7 @@ export type Database = {
           registered_tutor_at: string | null
           role: Database["public"]["Enums"]["app_role"]
           school: string | null
+          social_links: Json | null
           tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
@@ -621,6 +701,7 @@ export type Database = {
           registered_tutor_at?: string | null
           role?: Database["public"]["Enums"]["app_role"]
           school?: string | null
+          social_links?: Json | null
           tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
@@ -639,6 +720,7 @@ export type Database = {
           registered_tutor_at?: string | null
           role?: Database["public"]["Enums"]["app_role"]
           school?: string | null
+          social_links?: Json | null
           tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
@@ -657,6 +739,7 @@ export type Database = {
           search_vector: unknown | null
           session_id: number | null
           session_name: string | null
+          ss_id: number | null
           student_id: string | null
           student_image: string | null
           student_name: string | null
@@ -677,6 +760,13 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rating_and_review_ss_id_fkey"
+            columns: ["ss_id"]
+            isOneToOne: false
+            referencedRelation: "student_session"
             referencedColumns: ["id"]
           },
         ]
@@ -794,6 +884,7 @@ export type Database = {
           registered_tutor_at: string | null
           role: Database["public"]["Enums"]["app_role"]
           school: string | null
+          social_links: Json | null
           tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
@@ -874,7 +965,7 @@ export type Database = {
         | "tutor_warning"
         | "chat"
       refund_status: "pending" | "approved" | "rejected"
-      refund_type: "refund" | "report"
+      refund_type: "refund" | "report" | "refund and report"
       session_status: "open" | "closed" | "completed" | "archived"
       student_session_status:
         | "pending_enroll"
@@ -892,7 +983,7 @@ export type Database = {
       session_tutor_mat_view_result: {
 				rows: TSessionsMatViewResultRow[] | null;
 				total: number | null;
-			};
+			}
     }
   }
 }
@@ -1015,7 +1106,7 @@ export const Constants = {
         "chat",
       ],
       refund_status: ["pending", "approved", "rejected"],
-      refund_type: ["refund", "report"],
+      refund_type: ["refund", "report", "refund and report"],
       session_status: ["open", "closed", "completed", "archived"],
       student_session_status: [
         "pending_enroll",

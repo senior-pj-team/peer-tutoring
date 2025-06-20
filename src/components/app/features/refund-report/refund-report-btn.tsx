@@ -11,7 +11,7 @@ import {
 import RefundReportForm from "./refund-report-form";
 import { AlertTriangle } from "lucide-react";
 
-const RefundReportBtn = ({ isReport }: { isReport: boolean }) => {
+const RefundReportBtn = ({ isReport, ssId, sessionId }: { isReport: boolean, ssId: number | null, sessionId: number | null }) => {
 	const [open, setOpen] = useState(false);
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -35,7 +35,7 @@ const RefundReportBtn = ({ isReport }: { isReport: boolean }) => {
 						{isReport ? (
 							<span>Submit your report</span>
 						) : (
-							<span>Submit your refund</span>
+							<span>Submit your refund request</span>
 						)}
 					</DialogTitle>
 					<DialogDescription>
@@ -52,7 +52,7 @@ const RefundReportBtn = ({ isReport }: { isReport: boolean }) => {
 						)}
 					</DialogDescription>
 				</DialogHeader>
-				<RefundReportForm isReport={isReport} />
+				<RefundReportForm isReport={isReport}  ssId={ssId} sessionId={sessionId}/>
 			</DialogContent>
 		</Dialog>
 	);
