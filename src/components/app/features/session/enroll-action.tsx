@@ -1,13 +1,6 @@
 "use client";
 import React, { useActionState, useEffect, useState } from "react";
-import {
-	Hourglass,
-	Heart,
-	FrownIcon,
-	TriangleIcon,
-	CircleCheck,
-	TriangleAlertIcon,
-} from "lucide-react";
+import { Hourglass, Heart, CircleCheck, TriangleAlertIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -22,6 +15,7 @@ import {
 import { checkoutEnrollment } from "@/actions/checkout-enrollment";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getRemainingTime } from "@/utils/app/get-remaining-time";
 
 const initialState: ActionResponseType<TStudentSessionResult> = {
 	success: false,
@@ -31,10 +25,12 @@ const initialState: ActionResponseType<TStudentSessionResult> = {
 };
 const EnrollAction = ({
 	session_id,
+	start_time,
 	price,
 	service_fee,
 }: {
 	session_id: number;
+	start_time: string;
 	price: number | null;
 	service_fee: number | null;
 }) => {
@@ -57,13 +53,23 @@ const EnrollAction = ({
 			setresponseDialogOpen(true);
 		}
 	}, [state, router]);
+	const remainingTime = getRemainingTime(start_time);
 
 	return (
 		<>
 			<p className="text-sm font-medium">
 				<Hourglass className="w-4 h-4 text-orange-500 font-bold inline me-1" />
-				Only <span className="font-bold">2 days</span> left until session
-				starts!
+
+				{remainingTime === "Started" ? (
+					"Session has already started"
+				) : remainingTime === "Soon" ? (
+					"Session starting soon"
+				) : (
+					<span>
+						Only <span className="font-bold">{remainingTime}</span> left until
+						session starts!
+					</span>
+				)}
 			</p>
 
 			<p className="text-lg font-bold text-gray-800">

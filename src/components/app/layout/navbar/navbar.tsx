@@ -14,12 +14,25 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
+import { useNotificationsNavBar } from "@/hooks/use-notifications";
+import { useSupabase } from "@/hooks/use-supabase";
+import { cn } from "@/lib/utils";
 
-export default function Navbar() {
+export default function Navbar({ user }: { user: UserSession | null }) {
 	const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
 	const [showNavbar, setShowNavbar] = useState<boolean>(true);
 	const lastScrollY = useRef(0);
-	const { user, loading } = useAuth();
+	const supabase = useSupabase();
+	const {
+		data: notifications,
+		isLoading: notifLoading,
+		isError: notifError,
+	} = useNotificationsNavBar(
+		user?.user_id ?? "",
+		["student", "tutor", "tutor_reminder"],
+		!!user,
+		supabase,
+	);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -57,17 +70,13 @@ export default function Navbar() {
 					<Link href="/home">
 						<div className="font-bold text-3xl cursor-pointer">Orion</div>
 					</Link>
-					{!user && loading ? (
-						<div className=" lg:hidden  items-center justify-around gap-x-2 ">
-							<Skeleton className="h-6 w-[80px] md:w-[40px]" />
-						</div>
-					) : user ? (
+					{user ? (
 						<div className="pt-2">
 							<Sheet>
 								<SheetTrigger>
 									<AlignJustify size={22} className="lg:hidden" />
 								</SheetTrigger>
-								<CustomSheet />
+								<CustomSheet user={user} noti_count={notifications?.length} />
 							</Sheet>
 						</div>
 					) : (
@@ -89,14 +98,7 @@ export default function Navbar() {
 					<SearchBar />
 				</div>
 
-				{!user && loading ? (
-					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
-						<Skeleton className="h-6 w-[80px]" />
-						<Skeleton className="h-6 w-[50px]" />
-						<Skeleton className="h-6 w-[50px]" />
-						<Skeleton className="h-6 w-[50px]" />
-					</div>
-				) : user ? (
+				{user ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 						<Link href="/become-tutor">
 							<HoverCustomCard content="Become a tutor" />
@@ -112,17 +114,34 @@ export default function Navbar() {
 								content="Notification"
 								icon={
 									<div className=" hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-sm">
-										<Bell size="20 " className="relative" />
-										<span className="absolute p-3 top-0 right-0 bg-red-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center">
-											3
-										</span>
+										<Bell
+											size="20"
+											className={cn(
+												"relative",
+												notifLoading ? "opacity-50" : "",
+											)}
+										/>
+										{!notifError &&
+											notifications &&
+											notifications.length > 0 && (
+												<span
+													className={cn(
+														"absolute p-3 top-0 right-0 bg-red-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center",
+														notifLoading ? "opacity-50" : "",
+													)}>
+													{notifications.length}
+												</span>
+											)}
 									</div>
 								}
+								notifications={notifications!}
 							/>
 						</Link>
 						<Link href="/profile-setting/profile">
 							<HoverCustomCard
 								content="Profile"
+								notifications={notifications}
+								user={user}
 								icon={
 									<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
 										<Avatar>

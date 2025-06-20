@@ -9,6 +9,7 @@ import { onMessage, Unsubscribe } from "firebase/messaging";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { EyeIcon } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function getNotificationPermissionAndToken() {
 	if (!("Notification" in window)) {
@@ -42,6 +43,7 @@ export function NotificationWrapper({
 	const [token, setToken] = useState<string | null>(null);
 	const supabase = useSupabase();
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const loadToken = async () => {
 		if (isLoading.current) return;
@@ -99,7 +101,6 @@ export function NotificationWrapper({
 	}, [user, supabase]);
 
 	useEffect(() => {
-		console.log(token);
 		const setupListener = async () => {
 			if (!token) return;
 			console.log("Foreground message registered with token: ", token);
@@ -109,11 +110,13 @@ export function NotificationWrapper({
 
 			const unsubscribe = onMessage(message, (payload) => {
 				console.log("Foreground message received: ", payload);
-
-				window.dispatchEvent(
-					new CustomEvent("notification-received", { detail: payload }),
-				);
-
+				const audio = new Audio("/notification-sound.wav");
+				audio.play().catch(() => {
+					console.log("audio error");
+				});
+				queryClient.invalidateQueries({
+					queryKey: ["nav_bar_noti", user!.user_id],
+				});
 				toast.info(`New notification ${payload.notification?.title}`, {
 					action: {
 						label: (

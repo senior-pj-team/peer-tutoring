@@ -1,6 +1,6 @@
 type Params = {
-	offset: number;
-	limit: number;
+	offset?: number;
+	limit?: number;
 	user_id: string;
 	status?: TNotificationStatus[];
 	type?: TNotificationType[];
@@ -22,10 +22,10 @@ export async function getNotificationByUser(
 		query.in("type", type);
 	}
 
-	const { data, error } = await query
-		.range(offset, offset + limit - 1)
-		.order("created_at", { ascending: false });
+	if (offset && limit) query.range(offset, offset + limit - 1);
 
+	const { data, error } = await query.order("created_at", { ascending: false });
+	console.log(data);
 	if (error) {
 		return null;
 	}

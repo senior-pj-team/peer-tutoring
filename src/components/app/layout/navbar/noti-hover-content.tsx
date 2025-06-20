@@ -19,28 +19,11 @@ const notifications = [
 	// Add more if needed
 ];
 
-export default function NotiHoverContent() {
-	const [enableAudio, setEnableAudio] = useState<boolean>();
-	const enableAudioRef = useRef<boolean | null>(false);
-	useEffect(() => {
-		const handleNotification = (e: Event) => {
-			console.log("noti sound");
-			const audio = new Audio("/notification-sound.wav");
-			audio.volume = 0.5;
-			audio.play().catch((err) => console.log("Audio Error: ", err));
-		};
-		const addAudioListener = (e: Event) => {
-			if (enableAudioRef.current === null) enableAudioRef.current = true;
-		};
-		window.addEventListener("click", addAudioListener);
-		if (enableAudioRef.current) {
-			window.addEventListener("notification-received", handleNotification);
-			enableAudioRef.current = false;
-		}
-		return () => {
-			window.removeEventListener("click", addAudioListener);
-		};
-	}, [enableAudio]);
+export default function NotiHoverContent({
+	notifications,
+}: {
+	notifications: TNotificationResult[];
+}) {
 	return (
 		<HoverCardContent className="w-80 py-2 absolute -right-15">
 			<div className="font-bold text-lg px-2 mb-4 text-gray-800">
@@ -53,19 +36,25 @@ export default function NotiHoverContent() {
 			) : (
 				<div className="flex flex-col divide-y divide-gray-100">
 					<Link href={"/notification"}>
-						{notifications.map((note) => (
-							<div
-								key={note.id}
-								className="flex items-start gap-3 px-4 py-2 hover:bg-orange-50 transition-colors duration-150 cursor-pointer">
-								<div className="mt-0.5">{note.icon}</div>
-								<div className="flex-1 text-sm text-gray-700 truncate">
-									{note.text}
+						{notifications.map((noti, index) => {
+							if (index > 6) return null;
+							return (
+								<div
+									key={noti.id}
+									className="flex items-start gap-3 px-4 py-3 hover:bg-orange-50 transition-colors duration-150 cursor-pointer">
+									<div className="mt-0.5">
+										{" "}
+										<MessageSquare className="w-4 h-4 text-orange-400" />
+									</div>
+									<div className="flex-1 text-sm text-gray-700 truncate">
+										{noti.title}
+									</div>
+									{noti.status !== "read" && (
+										<span className="mt-1 h-2 w-2 rounded-full bg-orange-400" />
+									)}
 								</div>
-								{!note.read && (
-									<span className="mt-1 h-2 w-2 rounded-full bg-orange-400" />
-								)}
-							</div>
-						))}
+							);
+						})}
 					</Link>
 				</div>
 			)}
