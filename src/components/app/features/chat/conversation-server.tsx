@@ -7,8 +7,8 @@ import Conversation from "./conversation";
 import { getUserSession } from "@/utils/get-user-session";
 import { fetchMessage } from "@/utils/app/fetch-messages";
 import { createClient } from "@/utils/supabase/server";
-import { getUserById } from "@/data/queries/user/get-user-by-id";
 import GeneralError from "../../shared/error";
+import { getOtherChatParticipant } from "@/data/queries/chat/get-other-chat-participant";
 
 export default async function ConversationServer({
 	chatId,
@@ -27,9 +27,14 @@ export default async function ConversationServer({
 	const user = await getUserSession();
 	if (!user) return <GeneralError />;
 	const userId = user.user_id;
+
+	const otherUser= await getOtherChatParticipant(chatId, userId, supabase)
+
+	if(!otherUser || !otherUser.username) return <GeneralError/>
+
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Conversation chatId={chatId} userId={userId} />
+			<Conversation chatId={chatId} userId={userId} userProfile={otherUser.profile_url} userName={otherUser.username}/>
 		</HydrationBoundary>
 	);
 }

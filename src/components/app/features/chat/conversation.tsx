@@ -22,7 +22,7 @@ type TMessageWithStatus = TMessage & {
   tempId?: string;
 };
 
-const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: string; userId: string, userProfile?: string, userName?: string }) => {
+const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: string; userId: string, userProfile: string | null, userName: string}) => {
   const [msg, setMsg] = useState("");
   const [newMessages, setNewMessages] = useState<TMessageWithStatus[]>([]);
   const supabase = useSupabase();
@@ -62,7 +62,7 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
         )
       );
     },
-  });
+  })
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMessage({ chatId });
 
@@ -144,17 +144,17 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
       <div className="flex items-center gap-4 px-6 pb-4 pt-6 border-b bg-white">
         <Avatar>
                 <AvatarImage
-                  src={userProfile}
+                  src={userProfile?? ""}
                   width={56}
                   height={56}
                   alt="User Avatar"
                 />
                 <AvatarFallback>
-                  {getAvatarFallback("User")}
+                  {getAvatarFallback(userName)}
                 </AvatarFallback>
               </Avatar>
         
-        <h2 className="text-lg font-semibold text-orange-800">Username</h2>
+        <h2 className="text-lg font-semibold text-orange-800">{userName}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 flex flex-col-reverse gap-4">
@@ -204,7 +204,7 @@ const Conversation = ({ chatId, userId, userProfile, userName }: { chatId: strin
             </div>
           );
         })}
-
+        
         {hasNextPage && (
           <div className="flex justify-center mt-2">
             <button

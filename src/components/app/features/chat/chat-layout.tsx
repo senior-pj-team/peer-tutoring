@@ -1,4 +1,4 @@
-import ChatList from "./chat-list";
+import { ChatListServer } from "./chat-list-server";
 import ConversationServer from "./conversation-server";
 import SelectConversation from "./select-convo";
 
@@ -10,13 +10,13 @@ export default function ChatLayout({ chatId }: { chatId: string | null }) {
                 {chatId ? (
                     <ConversationServer chatId={chatId}/>
                 ) : (
-                    <ChatList selectedChatId={chatId}/>
+                    <ChatListServer selectedChatId={chatId}/>
                 )}
             </div>
 
             {/* Desktop */}
             <div className="hidden lg:grid grid-cols-4 mt-20">
-                <ChatList selectedChatId={chatId}/>
+                <ChatListServer selectedChatId={chatId}/>
                 <div className="col-span-3">
                     {chatId ? (
                         <ConversationServer chatId={chatId}/>

@@ -7,8 +7,8 @@ declare global {
 	type TSupabaseClient = SupabaseClient<DB>;
 	type TSessionsMatViewResultRow =
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-				tutor: TTutor | null;
-		  };
+			tutor: TTutor | null;
+		};
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
@@ -18,8 +18,8 @@ declare global {
 
 	type TSessionsMatViewResultRow =
 		| Omit<DB["public"]["Views"]["session_tutor_mat_view"]["Row"], "tutor"> & {
-				tutor: TTutor | null;
-		  };
+			tutor: TTutor | null;
+		};
 
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
@@ -36,6 +36,7 @@ declare global {
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
 	type TMessage = DB["public"]["Tables"]["message"]["Row"];
 	type TUser = DB["public"]["Tables"]["user"]["Row"];
+	type TOtherUser = DB["public"]["Functions"]["get_other_participant"]["Returns"];
 
 	type TStudentSessionJoinResult = {
 		id: number;
@@ -97,6 +98,13 @@ declare global {
 		rating: number;
 		count: number;
 	};
+	type TChat = {
+		chat_uuid: string;
+		chat_name: string;
+		chat_profile_url: string;
+		last_message: string;
+		last_sent_at: string;
+	}
 
 	//Enums
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
