@@ -4,7 +4,7 @@ import { EmailTemplate } from '@/components/app/shared/email-templates';
 import { render, pretty } from '@react-email/render';
 import { Resend } from 'resend';
 
-export async function sendRefundEmail({
+export async function sendEmail({
     preview,
     title,
     detail,

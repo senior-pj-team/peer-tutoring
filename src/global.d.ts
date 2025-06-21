@@ -116,4 +116,5 @@ declare global {
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
+	type TNotification = DB["public"]["Enums"]["notification_type"];
 };

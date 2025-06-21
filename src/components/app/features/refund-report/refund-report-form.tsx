@@ -24,7 +24,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { sendRefundEmail } from "@/actions/send-refund-email";
+import { sendEmail } from "@/actions/send-email";
+import { insertNotification } from "@/data/mutations/notification/insert-notification";
+import { useSupabase } from "@/hooks/use-supabase";
+import { getUserSession } from "@/utils/get-user-session";
 
 const initialState: ActionResponseType<string> = {
   success: false,
@@ -64,6 +67,7 @@ const RefundReportForm = ({
   const [check, setCheck] = useState(false);
   const [open, setOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const supabase = useSupabase()
 
   const [state, formAction, isPending] = useActionState(
     submitRefundOrReport,
@@ -123,19 +127,41 @@ const RefundReportForm = ({
         break;
     }
 
-    await sendRefundEmail({
+    await sendEmail({
       preview,
       title,
       detail,
       to: "nwai39771@gmail.com", // Replace with dynamic user email in production
     });
   }, [state.success, type]);
-
+  const sendNotification =async ()=>{
+    if (!state.success) return;
+    let title="";
+    let body="";
+    switch(type){
+      case "report":
+        title= "Report submitted";
+        body= "Your report is being processed."
+        break;
+      case "refund":
+        title= "Refund request submitted";
+        body= "Your refund request is being processed."
+        break;
+      case "refund and report":
+        title= "Report and refund request submitted";
+        body= "Your report and refund request is being processed."
+        break;
+    }
+    const user= await getUserSession();
+    if(!user?.user_id) return;
+    await insertNotification(supabase, title, body, user.user_id, "student" );
+  }
   useEffect(() => {
     if (state.success || state.error.message) {
       setDialogOpen(true);
       if (state.success) {
         sendResponseEmail();
+        sendNotification();
       }
     }
   }, [state, sendResponseEmail]);
