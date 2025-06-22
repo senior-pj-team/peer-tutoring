@@ -124,9 +124,5 @@ declare global {
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
-<<<<<<< HEAD
-}
-=======
 	type TNotification = DB["public"]["Enums"]["notification_type"];
 };
->>>>>>> 5a12f3a (finish become-tutor backend)
