@@ -1,177 +1,149 @@
 "use client";
+
 import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
-	Box,
-	Typography,
-	TextField,
-	Stack,
-	MenuItem,
-	FormControl,
-	FormHelperText,
-	InputAdornment,
-} from "@mui/material";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-// Import your custom Button component
-import { Button } from "@/components/ui/button"; // Adjust the path based on your project structure
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { useFormContext } from "react-hook-form";
 
-export default function Step2BankAccountSetup() {
-	const [bankName, setBankName] = useState("");
-	const [accountNumber, setAccountNumber] = useState("");
-	const [accountType, setAccountType] = useState("");
-	const [branch, setBranch] = useState("");
-	const [isFormValid] = useState(true);
+type Step2Props = {
+  bankData: TBankInfoResult | null;
+};
 
-	const handleBankChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setBankName(event.target.value);
-	};
+export default function Step2({ bankData }: Step2Props) {
+  const form = useFormContext();
+  const [useExisting, setUseExisting] = useState(false);
 
-	const handleAccountNumberChange = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		let formattedAccountNumber = event.target.value.replace(/[^\d]/g, "");
-		if (formattedAccountNumber.length > 10) {
-			formattedAccountNumber = formattedAccountNumber.substring(0, 10);
-		}
-		setAccountNumber(formattedAccountNumber);
-	};
+  const useExistingBankInfo = () => {
+    if (bankData) {
+      form.setValue("bankName", bankData.bank_name ?? "");
+      form.setValue("accountNumber", bankData.account_number ?? "");
+      form.setValue("accountName", bankData.account_name ?? "");
+    }
+  };
 
-	const handleAccountTypeChange = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		setAccountType(event.target.value);
-	};
+  const handleSwitchChange = (checked: boolean) => {
+    setUseExisting(checked);
+    if (checked) {
+      useExistingBankInfo();
+    } else {
+      form.resetField("bankName");
+      form.resetField("accountNumber");
+      form.resetField("accountName");
+    }
+  };
 
-	const handleBranchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setBranch(event.target.value);
-	};
+  return (
+    <div className="space-y-6">
+      {/* Toggle */}
+      {bankData && (
+        <div className="flex items-center justify-between">
+          <Label htmlFor="use-existing">Use existing student bank info?</Label>
+          <Switch
+            id="use-existing"
+            checked={useExisting}
+            onCheckedChange={handleSwitchChange}
+          />
+        </div>
+      )}
 
-	// const handleSubmit = () => {
-	//   if (!bankName || !accountNumber || !accountType) {
-	//     setIsFormValid(false);
-	//     return;
-	//   }
-	//   console.log("Form Submitted!");
-	// };
+      {/* Form Fields */}
+      <div className="grid gap-4">
+        {/* Bank Name */}
+        <FormField
+          control={form.control}
+          name="bankName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bank Name</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={useExisting}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select your bank" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Bangkok Bank">Bangkok Bank</SelectItem>
+                    <SelectItem value="Siam Commercial Bank">
+                      Siam Commercial Bank
+                    </SelectItem>
+                    <SelectItem value="Kasikorn Bank">Kasikorn Bank</SelectItem>
+                    <SelectItem value="Krungthai Bank">
+                      Krungthai Bank
+                    </SelectItem>
+                    <SelectItem value="Thai Military Bank">
+                      Thai Military Bank
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-	return (
-		<Box display="flex" flexDirection="column" gap={3}>
-			<Typography variant="h6">Bank Account Information</Typography>
-			<Typography variant="body2" color="text.secondary">
-				Connect your bank account to receive payments
-			</Typography>
+        {/* Account Name */}
+        <FormField
+          control={form.control}
+          name="accountName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bank Account Name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Account Name"
+                  {...field}
+                  disabled={useExisting}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-			<Stack spacing={2}>
-				{/* Bank Name Dropdown */}
-				<FormControl fullWidth error={!isFormValid && !bankName}>
-					<TextField
-						label="Bank Name"
-						value={bankName}
-						onChange={handleBankChange}
-						variant="outlined"
-						select
-						size="small"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<AccountBalanceIcon
-										color={bankName ? "primary" : "inherit"}
-									/>
-								</InputAdornment>
-							),
-						}}
-						sx={{
-							"& .MuiOutlinedInput-root": {
-								borderRadius: 2,
-							},
-						}}>
-						<MenuItem value="Bangkok Bank">Bangkok Bank</MenuItem>
-						<MenuItem value="Siam Commercial Bank">
-							Siam Commercial Bank
-						</MenuItem>
-						<MenuItem value="Kasikorn Bank">Kasikorn Bank</MenuItem>
-						<MenuItem value="Krungthai Bank">Krungthai Bank</MenuItem>
-						<MenuItem value="Thai Military Bank">Thai Military Bank</MenuItem>
-					</TextField>
-					{!isFormValid && !bankName && (
-						<FormHelperText sx={{ ml: 1.5 }}>
-							Please select your bank
-						</FormHelperText>
-					)}
-				</FormControl>
-
-				{/* Account Number */}
-				<FormControl fullWidth error={!isFormValid && !accountNumber}>
-					<TextField
-						label="Bank Account Name"
-						value={accountNumber}
-						onChange={handleAccountNumberChange}
-						variant="outlined"
-						size="small"
-						placeholder="Account Name"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<AccountCircleIcon
-										color={accountNumber ? "primary" : "inherit"}
-									/>
-								</InputAdornment>
-							),
-						}}
-						inputProps={{
-							maxLength: 10,
-						}}
-						sx={{
-							"& .MuiOutlinedInput-root": {
-								borderRadius: 2,
-							},
-						}}
-					/>
-					{!isFormValid && !accountNumber && (
-						<FormHelperText sx={{ ml: 1.5 }}>
-							Please enter your account number
-						</FormHelperText>
-					)}
-				</FormControl>
-
-				{/* Account Number */}
-				<FormControl fullWidth error={!isFormValid && !accountNumber}>
-					<TextField
-						label="Account Number"
-						value={accountNumber}
-						onChange={handleAccountNumberChange}
-						variant="outlined"
-						size="small"
-						placeholder="1234567890"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<AccountCircleIcon
-										color={accountNumber ? "primary" : "inherit"}
-									/>
-								</InputAdornment>
-							),
-						}}
-						inputProps={{
-							maxLength: 10,
-						}}
-						sx={{
-							"& .MuiOutlinedInput-root": {
-								borderRadius: 2,
-							},
-						}}
-					/>
-					{!isFormValid && !accountNumber && (
-						<FormHelperText sx={{ ml: 1.5 }}>
-							Please enter your account number
-						</FormHelperText>
-					)}
-				</FormControl>
-
-				{/* Custom Submit Button */}
-				<Button>Save Bank Details</Button>
-			</Stack>
-		</Box>
-	);
+        {/* Account Number */}
+        <FormField
+          control={form.control}
+          name="accountNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Account Number</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="1234567890"
+                  {...field}
+                  onChange={(e) => {
+                    let formatted = e.target.value.replace(/[^\d]/g, "");
+                    if (formatted.length > 10)
+                      formatted = formatted.slice(0, 10);
+                    field.onChange(formatted);
+                  }}
+                  maxLength={10}
+                  disabled={useExisting}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+    </div>
+  );
 }

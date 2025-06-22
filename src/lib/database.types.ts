@@ -686,6 +686,7 @@ export type Database = {
           role: Database["public"]["Enums"]["app_role"]
           school: string | null
           social_links: Json | null
+          studentId_photo: string | null
           tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
@@ -705,6 +706,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["app_role"]
           school?: string | null
           social_links?: Json | null
+          studentId_photo?: string | null
           tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
@@ -724,6 +726,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["app_role"]
           school?: string | null
           social_links?: Json | null
+          studentId_photo?: string | null
           tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
@@ -888,6 +891,7 @@ export type Database = {
           role: Database["public"]["Enums"]["app_role"]
           school: string | null
           social_links: Json | null
+          studentId_photo: string | null
           tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
@@ -948,6 +952,7 @@ export type Database = {
           min_price?: number
           max_price?: number
           s_status?: string[]
+          p_start_today?: boolean
           limit_count?: number
           offset_count?: number
         }
@@ -970,7 +975,7 @@ export type Database = {
         | "chat"
       refund_status: "pending" | "approved" | "rejected"
       refund_type: "refund" | "report" | "refund and report"
-      session_status: "open" | "closed" | "completed" | "archived"
+      session_status: "open" | "closed" | "completed" | "archived" | "cancelled"
       student_session_status:
         | "pending_enroll"
         | "enrolled"
@@ -1116,7 +1121,7 @@ export const Constants = {
       ],
       refund_status: ["pending", "approved", "rejected"],
       refund_type: ["refund", "report", "refund and report"],
-      session_status: ["open", "closed", "completed", "archived"],
+      session_status: ["open", "closed", "completed", "archived", "cancelled"],
       student_session_status: [
         "pending_enroll",
         "enrolled",
