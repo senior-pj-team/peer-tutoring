@@ -8,32 +8,26 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
-export default function ProfileHoverContent() {
-	const { user, loading } = useAuth();
+export default function ProfileHoverContent({
+	user,
+	noti_count,
+}: {
+	user: UserSession | null;
+	noti_count?: number;
+}) {
 	async function handleSignOut() {
 		const { error } = await signOut();
 		if (error) {
 			toast("Log out Error!");
 		} else {
-			redirect("/login");
+			redirect("/home");
 		}
 	}
 
 	return (
 		<HoverCardContent className="w-70 absolute -right-5">
 			<div className="py-4 px-3 flex gap-x-5">
-				{!user && loading && (
-					<div>
-						<div className="flex items-center space-x-4">
-							<Skeleton className="h-12 w-12 rounded-full" />
-							<div className="space-y-2">
-								<Skeleton className="h-4 w-[250px]" />
-								<Skeleton className="h-4 w-[200px]" />
-							</div>
-						</div>
-					</div>
-				)}
-				{user && !loading && (
+				{user && (
 					<>
 						<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
 							<Avatar>
@@ -74,7 +68,7 @@ export default function ProfileHoverContent() {
 				</Link>
 				<hr />
 				<Link href="/notification">
-					<ContentItem content="Notification" />
+					<ContentItem content="Notification" content_count={noti_count} />
 				</Link>
 				<Link href="/chat">
 					<ContentItem content="Chat" />
@@ -100,16 +94,23 @@ export default function ProfileHoverContent() {
 	);
 }
 
-function ContentItem({ content }: { content: string }) {
+function ContentItem({
+	content,
+	content_count,
+}: {
+	content: string;
+	content_count?: number;
+}) {
 	return (
 		<div className="flex justify-between items-center hover:bg-orange-50 hover:text-orange-400 text-sm py-3 cursor-pointer w-full px-3">
 			<div>{content}</div>
 
-			{content === "WishList" && (
-				<span className="p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
-					1
-				</span>
-			)}
+			{(content_count ?? 0) > 0 &&
+				(content === "WishList" || content === "Notification") && (
+					<span className=" p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
+						{content_count}
+					</span>
+				)}
 		</div>
 	);
 }

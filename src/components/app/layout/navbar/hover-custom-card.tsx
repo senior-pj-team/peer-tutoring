@@ -7,9 +7,13 @@ import ProfileHoverContent from "./profile-hover-content";
 export default function HoverCustomCard({
 	content,
 	icon,
+	user,
+	notifications,
 }: {
 	content: string;
 	icon?: React.ReactNode;
+	user?: UserSession | null;
+	notifications?: TNotificationResult[];
 }) {
 	return (
 		<HoverCard openDelay={0} closeDelay={0}>
@@ -21,8 +25,15 @@ export default function HoverCustomCard({
 			{content === "Explore" && <ExploreHoverContent />}
 			{content === "MySessions" && <SessionHoverContent content="MySessions" />}
 			{content === "WishList" && <SessionHoverContent content="WishList" />}
-			{content === "Notification" && <NotiHoverContent />}
-			{content === "Profile" && <ProfileHoverContent />}
+			{content === "Notification" && (
+				<NotiHoverContent notifications={notifications ?? []} />
+			)}
+			{content === "Profile" && (
+				<ProfileHoverContent
+					user={user ?? null}
+					noti_count={notifications?.length}
+				/>
+			)}
 		</HoverCard>
 	);
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function page() {
 	return (
-		<div className=" flex flex-col items-center px-4 py-40">
+		<div className=" flex flex-col items-center px-4 md:py-40 sm:py-30">
 			<div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center space-y-6">
 				{/* Success Icon */}
 				<CheckCircle className="h-20 w-20 text-green-500 mx-auto" />
