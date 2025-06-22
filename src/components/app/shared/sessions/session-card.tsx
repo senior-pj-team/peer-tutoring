@@ -27,31 +27,29 @@ import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 type SessionCardProp = {
 	student_session?: TStudentSessionJoinResult;
-
+	// refund_report?: TRefundReportJoinResult;
 	status?: string;
 	enrollments?: number;
 	pending_refund_students?: number;
 	refunded_students?: number;
 	paid_students?: number;
 	action?: string;
-
 	page?: string;
 };
 
 const SessionCard = ({
 	student_session,
-
+	// refund_report,
 	status,
 	enrollments,
 	pending_refund_students,
 	refunded_students,
 	paid_students,
 	action,
-
 	page,
 }: SessionCardProp) => {
 	if (!student_session) return <></>;
-	const { session_id, ss_status, sessions } = student_session;
+	const { id: ss_id, ss_status, sessions } = student_session;
 	if (!sessions) return <></>;
 	const {
 		image,
@@ -81,7 +79,7 @@ const SessionCard = ({
 				? `/admin-dashboard/session/${1}/content`
 				: page === "tutor"
 					? `/tutor-dashboard/session/${1}/content`
-					: `/home/session/${page}/${session_id}`;
+					: `/my-session/${page}/${ss_id}`;
 
 		router.push(nextPage);
 	};
@@ -195,7 +193,7 @@ const SessionCard = ({
 										height={50}
 										alt="User Avatar"
 									/>
-									<AvatarFallback className="flex items-center justify-center w-full h-full text-center">
+									<AvatarFallback className="flex items-center justify-center w-full h-full text-center bg-gray-200">
 										{tutor_name && getAvatarFallback(tutor_name)}
 									</AvatarFallback>
 								</Avatar>

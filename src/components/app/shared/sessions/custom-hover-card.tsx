@@ -7,10 +7,8 @@ import { format, formatDate } from "date-fns";
 
 export function CustomHoverCard({
 	content,
-	page,
 }: {
 	content: TSessionsMatViewResultRow;
-	page: string;
 }) {
 	const router = useRouter();
 
@@ -68,7 +66,7 @@ export function CustomHoverCard({
 			<div className="flex w-full justify-end gap-5 items-center">
 				<Button
 					onClick={() => {
-						router.push(`/session/${page}/${content.session_id}`);
+						router.push(`/home/session/${content.session_id}}`);
 					}}
 					variant="outline"
 					className="border-orange-500 text-orange-600 font-semibold hover:bg-orange-50 hover:text-orange-700 hover:border-orange-400 hover:ring-2 hover:ring-orange-500  transition-all duration-200 cursor-pointer">

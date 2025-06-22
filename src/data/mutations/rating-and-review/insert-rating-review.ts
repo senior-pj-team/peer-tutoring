@@ -1,22 +1,19 @@
 export async function insertRatingReview(
-  ss_id: number,
-  student_id: string,
-  session_id: number,
-  rating: number,
-  review: string,
-  supabase: TSupabaseClient
-): Promise<Boolean> {
-  const { data, error } = await supabase.from("rating_and_review").insert({
-    session_id,
-    ss_id,
-    rating,
-    review,
-    student_id,
-  });
+	ss_id: number,
 
-  if (error) {
-    console.log("Error updated: ", error.message);
-    return false;
-  }
-  return true;
+	rating: number,
+	review: string,
+	supabase: TSupabaseClient,
+): Promise<Boolean> {
+	const { error } = await supabase.from("rating_and_review").insert({
+		ss_id,
+		rating,
+		review,
+	});
+
+	if (error) {
+		console.log("Error updated: ", error.message);
+		return false;
+	}
+	return true;
 }

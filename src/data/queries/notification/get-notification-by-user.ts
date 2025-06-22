@@ -25,7 +25,7 @@ export async function getNotificationByUser(
 	if (offset && limit) query.range(offset, offset + limit - 1);
 
 	const { data, error } = await query.order("created_at", { ascending: false });
-	console.log(data);
+
 	if (error) {
 		return null;
 	}

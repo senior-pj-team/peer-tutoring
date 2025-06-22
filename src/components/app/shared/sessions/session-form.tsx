@@ -2,7 +2,7 @@
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { Loader, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 import {
 	Form,
@@ -169,12 +169,12 @@ export default function SessionForm({
 									{`Session was ${actionType}. Session will start on ${formValues.date}`}
 								</div>
 							),
-					  })
+						})
 					: toast.error("Something went wrong", {
-						description: `We couldn't complete your request. ${response.error.message}`,
-					});
+							description: `We couldn't complete your request. ${response.error.message}`,
+						});
 				setisDialogOpen(false);
-			})
+			});
 		} catch (error) {
 			console.error(error);
 			toast.error("Something went wrong", {
@@ -406,8 +406,9 @@ export default function SessionForm({
 													<FormControl>
 														<Input
 															type="time"
-															step={60}
-															className="w-[8rem] "
+															id="time-picker"
+															step="60"
+															className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none  w-[8rem]"
 															{...field}
 															disabled={isDisable}
 														/>
@@ -431,8 +432,9 @@ export default function SessionForm({
 													<FormControl>
 														<Input
 															type="time"
-															step={60}
-															className="w-[8rem]"
+															id="time-picker"
+															step="60"
+															className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none w-[8rem]"
 															{...field}
 															disabled={isDisable}
 														/>
@@ -562,8 +564,11 @@ export default function SessionForm({
 										<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
 									</div>
 								</div>
-							) :
-								isEdit ? "Save" : "Create"}
+							) : isEdit ? (
+								"Save"
+							) : (
+								"Create"
+							)}
 						</Button>
 					</div>
 				</DialogContent>

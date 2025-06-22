@@ -43,7 +43,7 @@ export function ProfileForm({
 		social_links,
 	},
 }: {
-	userData: TUserResult;
+	userData: TUser;
 }) {
 	const form = useForm<TProfileSchema>({
 		resolver: zodResolver(profileSchema),

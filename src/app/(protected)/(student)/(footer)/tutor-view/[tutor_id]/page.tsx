@@ -5,20 +5,20 @@ import Expandable from "@/components/app/shared/expandable-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TutorRARSection from "@/components/app/features/tutor/tutor-RAR-section";
 import { createClient } from "@/utils/supabase/server";
-import { getTutorStats } from "@/data/queries/tutors/get-tutor-stats";
 import { parseISO, format } from "date-fns";
 import TutorSessionsSectionServer from "@/components/app/features/tutor/tutor-sessions-section-server";
 import { GoToChatButton } from "@/components/app/shared/go-to-chat-button";
 import { getUserSession } from "@/utils/get-user-session";
 import GeneralError from "@/components/app/shared/error";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
-import {ReviewCardSkeleton} from "@/components/app/shared/skeletons/review-card-skeletons";
+import { ReviewCardSkeleton } from "@/components/app/shared/skeletons/review-card-skeletons";
 import { SessionSkeletonList } from "@/components/app/shared/sessions/session-skeleton-list";
+import { getTutorWithStats } from "@/data/queries/tutors/get-tutor-with-stats";
 
 const Page = async ({ params }: { params: { tutor_id: string } }) => {
 	const { tutor_id } = await params;
 	const supabase = await createClient();
-	let data = await getTutorStats(tutor_id, supabase);
+	let data = await getTutorWithStats(supabase, { p_filter_tutor_id: tutor_id });
 	if (!data) return <GeneralError />;
 	const tutorStats = data[0];
 	const user = await getUserSession();
@@ -28,16 +28,13 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
 			<div className="max-w-full mx-auto py-8 xl:px-30 px-5 flex flex-col md:flex-row gap-10">
 				<div className="w-full md:w-1/3 text-center md:text-left">
 					<Avatar className="w-48 h-48 my-5">
-						<AvatarImage
-							src={tutorStats.tutor_profile_url ?? ""}
-							alt="User Avatar"
-						/>
+						<AvatarImage src={tutorStats.profile_url ?? ""} alt="User Avatar" />
 						<AvatarFallback className="text-3xl">
-							{getAvatarFallback(tutorStats.tutor_name)}
+							{getAvatarFallback(tutorStats.username)}
 						</AvatarFallback>
 					</Avatar>
 					<h2 className="mt-4 text-xl font-semibold mb-3">
-						{tutorStats.tutor_name}
+						{tutorStats.username}
 					</h2>
 					<p className="text-sm text-gray-500">
 						{" "}
@@ -89,19 +86,19 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
 						<div className="flex items-center justify-between">
 							<div className="flex flex-col text-left">
 								<div className="text-xl font-extrabold">
-									{tutorStats.students_count}
+									{tutorStats.total_student_count}
 								</div>
 								<div className="text-sm">Students</div>
 							</div>
 							<div className="flex flex-col text-left">
 								<div className="text-xl font-extrabold">
-									{tutorStats.session_count}
+									{tutorStats.total_session_count}
 								</div>
 								<div className="text-sm">Sessions</div>
 							</div>
 							<div className="flex flex-col text-left">
 								<div className="text-xl font-extrabold">
-									{tutorStats.reviews_count}
+									{tutorStats.total_review_count}
 								</div>
 								<div className="text-sm">Reviews</div>
 							</div>
@@ -126,25 +123,25 @@ const Page = async ({ params }: { params: { tutor_id: string } }) => {
 				</div>
 			</div>
 			<div className="xl:px-30 px-5 my-6">
-				<h1 className="flex gap-5 items-center text-lg font-bold">
+				<h1 className="flex gap-5 items-center text-xl font-bold">
 					<div className="flex gap-2 items-center">
 						<Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
 						<span>{tutorStats.tutor_rating} Overall rating</span>
 					</div>
-					|<span>{tutorStats.reviews_count} Reviews</span>
+					|<span>{tutorStats.total_review_count} Reviews</span>
 				</h1>
-				<Suspense fallback={<ReviewCardSkeleton/>}>
+				<Suspense fallback={<ReviewCardSkeleton />}>
 					<TutorRARSection
 						tutor_id={tutor_id}
 						initialSize={6}
 						overallRating={tutorStats.tutor_rating ?? 0}
-						rarCount={tutorStats.reviews_count ?? 0}
+						rarCount={tutorStats.total_review_count ?? 0}
 					/>
 				</Suspense>
-				<h1 className="text-lg font-bold mt-7">
-					Sessions offered by {tutorStats.tutor_name}
+				<h1 className="text-xl font-bold mt-7">
+					Sessions offered by {tutorStats.username}
 				</h1>
-				<Suspense fallback={<SessionSkeletonList/>}>
+				<Suspense fallback={<SessionSkeletonList />}>
 					<TutorSessionsSectionServer tutor_id={tutor_id} />
 				</Suspense>
 			</div>

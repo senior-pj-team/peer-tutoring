@@ -9,15 +9,12 @@ const SessionPayment = async ({ session_id }: { session_id: number }) => {
 	const supabase = await createClient();
 	const user = await getUserSession();
 	if (!user) return <></>;
-	const student_session_result = await getStudentSession(
-		supabase,
-		{
-			student_id: user.user_id,
-			session_id,
-		}
-	);
+	const student_session_result = await getStudentSession(supabase, {
+		student_id: user.user_id,
+		session_id,
+	});
 
-	if (!student_session_result) return <GeneralError/>;
+	if (!student_session_result) return <GeneralError />;
 	return (
 		<div className="p-6 ">
 			<div>

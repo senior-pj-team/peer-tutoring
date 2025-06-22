@@ -1,8 +1,7 @@
 import { signOut } from "@/app/(auth)/actions";
-import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HoverCardContent } from "@/components/ui/hover-card";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import Link from "next/link";
 import { redirect } from "next/navigation";

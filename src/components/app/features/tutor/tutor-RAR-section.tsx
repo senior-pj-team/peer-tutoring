@@ -30,6 +30,22 @@ const TutorRARSection = async ({
 		offset: 0,
 		limit: initialSize,
 	});
+	console.log(rating_reviews);
+	if (!rating_reviews) {
+		return (
+			<div className="h-[33vh] flex items-center justify-center text-gray-500 text-lg">
+				Something went wrong 👽
+			</div>
+		);
+	}
+	if (rating_reviews.length < 1) {
+		return (
+			<div className="h-[33vh] flex items-center justify-center text-gray-500 text-lg">
+				No reviews yet 📝.
+			</div>
+		);
+	}
+
 	return (
 		<>
 			{rating_reviews && (

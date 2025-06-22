@@ -25,6 +25,7 @@ const Page = async ({ params }: { params: Params }) => {
 	const { session_id, page } = await params;
 
 	const supabase = await createClient();
+
 	const sessionData = await getSessionMatViewbyId(supabase, Number(session_id));
 
 	if (!sessionData) {
@@ -57,6 +58,8 @@ const Page = async ({ params }: { params: Params }) => {
 		tutor_name: sessionData.tutor!.name,
 		tutor_rating: sessionData.tutor!.tutor_rating,
 		session_status: sessionData.status,
+		tutor_profile_url: sessionData.tutor!.profile_url,
+		tutor_id: sessionData.tutor?.tutor_id!,
 	};
 
 	const date = formatDate(sessionData.start_time!, "dd MMMM yyyy");
@@ -86,20 +89,12 @@ const Page = async ({ params }: { params: Params }) => {
 							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
 							Content
 						</TabsTrigger>
-						{page != "browse" && (
-							<TabsTrigger
-								value="payment"
-								className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
-								Payment
-							</TabsTrigger>
-						)}
-						{page == "browse" && (
-							<TabsTrigger
-								value="tutor"
-								className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
-								Tutor
-							</TabsTrigger>
-						)}
+
+						<TabsTrigger
+							value="tutor"
+							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
+							Tutor
+						</TabsTrigger>
 					</TabsList>
 
 					<div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 relative ">
@@ -108,45 +103,18 @@ const Page = async ({ params }: { params: Params }) => {
 								<SessionContent data={contentData} />
 							</TabsContent>
 
-							<TabsContent value="payment">
-								<SessionPayment session_id={sessionData.session_id!} />
+							<TabsContent value="tutor">
+								<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
 							</TabsContent>
-
-							{page == "browse" && (
-								<TabsContent value="tutor">
-									<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
-								</TabsContent>
-							)}
 						</div>
 
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-							{page === "complete" || page == "archived" ? (
-								<ReviewRatingAction
-									ssId={16}
-									sessionId={6}
-									toReport={page == "complete"}
-								/>
-							) : (
-								<></>
-							)}
-							{page === "upcoming" && (
-								<UpcomingAction
-									start={sessionData.start_time}
-									sessionId={6}
-									ssId={16}
-								/>
-							)}
-							{page === "browse" && (
-								<EnrollAction
-									session_id={sessionData.session_id!}
-									start_time={sessionData.start_time ?? ""}
-									price={sessionData.price}
-									service_fee={sessionData.service_fee}
-								/>
-							)}
-							{page === "refund" && (
-								<RefundStatus sessionId={Number(session_id)} />
-							)}
+							<EnrollAction
+								session_id={sessionData.session_id!}
+								start_time={sessionData.start_time ?? ""}
+								price={sessionData.price}
+								service_fee={sessionData.service_fee}
+							/>
 						</aside>
 					</div>
 				</Tabs>

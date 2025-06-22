@@ -29,7 +29,15 @@ export default function RootLayout({
 						<NotificationWrapper>{children}</NotificationWrapper>
 					</AuthProvider>
 				</ClientQueryProvider>
-				<Toaster richColors />
+				<Toaster
+					position="top-right"
+					richColors
+					toastOptions={{
+						style: {
+							zIndex: 99999,
+						},
+					}}
+				/>
 			</body>
 		</html>
 	);
