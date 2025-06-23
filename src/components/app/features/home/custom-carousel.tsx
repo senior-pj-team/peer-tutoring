@@ -96,7 +96,7 @@ export default function CustomCarousel({
 							<CarouselItem
 								key={session.id}
 								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
-								<SessionCard student_session={session} />
+								<SessionCard student_session={session} page="upcoming" />
 							</CarouselItem>
 						))}
 					{tutors &&
