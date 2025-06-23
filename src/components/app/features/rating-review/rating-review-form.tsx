@@ -28,10 +28,8 @@ const initialState: ActionResponseType<string> = {
 
 const RatingReviewForm = ({
   ssId,
-  sessionId,
 }: {
   ssId: number | null;
-  sessionId: number | null;
 }) => {
   const supabase = useSupabase();
   if (!supabase) return <GeneralError />;
@@ -74,7 +72,6 @@ const RatingReviewForm = ({
               }
             }}
           >
-            <input type="hidden" name="session_id" value={sessionId ?? undefined} />
             <input type="hidden" name="ss_id" value={ssId ?? undefined} />
             <input type="hidden" name="rating" value={rating} />
             <input type="hidden" name="review" value={review} />

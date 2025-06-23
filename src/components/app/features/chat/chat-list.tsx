@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import Link from "next/link";
 import ChatCard from "./chat-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -8,24 +8,26 @@ import { formatDate, parseISO } from "date-fns";
 import { useChatListRealtime } from "@/hooks/use-chatlist-realtime";
 import { useSupabase } from "@/hooks/use-supabase";
 import { getChatList } from "@/data/queries/chat/get-chat-list";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function ChatList({
-  initialChats,
   selectedChatId,
   userId,
 }: {
-  initialChats: TChatList;
   selectedChatId: string | null;
   userId: string;
 }) {
-  const [chats, setChats] = useState<TChatList>(initialChats);
   const supabase = useSupabase();
+  const queryClient = useQueryClient();
 
-  const handleReload = useCallback(async () => {
-      const refreshedChats = await getChatList(userId, supabase);
-      if(!refreshedChats) return null
-      setChats(refreshedChats)
-  }, []);
+  const { data: chats = [], isLoading } = useQuery<TChatList>({
+    queryKey: ["chat-list", userId],
+    queryFn: async () => (await getChatList(userId, supabase)) ?? [],
+  });
+
+  const handleReload = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ["chat_list", userId] });
+  }, [queryClient, userId]);
 
   useChatListRealtime(supabase, userId, handleReload);
 
@@ -36,7 +38,9 @@ export function ChatList({
       </div>
 
       <ScrollArea className="flex-1 px-2 py-3">
-        {chats.length > 0 ? (
+        {isLoading ? (
+          <div className="text-sm text-gray-400 px-6">Loading chats...</div>
+        ) : chats.length > 0 ? (
           chats.map((chat) => {
             const lastSentAt = chat.last_sent_at
               ? formatDate(parseISO(chat.last_sent_at), "MMMM dd hh:mm a")

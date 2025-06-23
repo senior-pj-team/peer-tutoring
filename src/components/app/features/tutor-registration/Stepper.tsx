@@ -33,7 +33,7 @@ export default function HorizontalStepper({userData, bankData}: {userData: TUser
       bankName: "",
       accountName: "",
       accountNumber: "",
-	  studentIdPhoto: "",
+	    studentIdPhoto: "",
     },
   });
   

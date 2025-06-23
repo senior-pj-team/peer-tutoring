@@ -42,21 +42,14 @@ export type Database = {
             foreignKeyName: "bank_info_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "bank_info_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "bank_info_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["tutor_id"]
           },
           {
@@ -134,21 +127,14 @@ export type Database = {
             foreignKeyName: "fcm_token_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
-            referencedRelation: "rating_review_user_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "fcm_token_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "fcm_token_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "tutor_stats_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["tutor_id"]
           },
           {
@@ -197,21 +183,14 @@ export type Database = {
             foreignKeyName: "message_sender_id_fkey"
             columns: ["sender_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "message_sender_id_fkey"
             columns: ["sender_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "message_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["tutor_id"]
           },
           {
@@ -259,21 +238,14 @@ export type Database = {
             foreignKeyName: "notification_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "notification_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "notification_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["tutor_id"]
           },
           {
@@ -291,76 +263,28 @@ export type Database = {
           id: number
           rating: number | null
           review: string | null
-          session_id: number | null
           ss_id: number | null
-          student_id: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           rating?: number | null
           review?: string | null
-          session_id?: number | null
           ss_id?: number | null
-          student_id?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           rating?: number | null
           review?: string | null
-          session_id?: number | null
           ss_id?: number | null
-          student_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "rating_and_review_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "session_tutor_mat_view"
-            referencedColumns: ["session_id"]
-          },
-          {
-            foreignKeyName: "rating_and_review_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "sessions"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "rating_and_review_ss_id_fkey"
             columns: ["ss_id"]
             isOneToOne: false
             referencedRelation: "student_session"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "rating_and_review_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["student_id"]
-          },
-          {
-            foreignKeyName: "rating_and_review_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "rating_and_review_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "rating_and_review_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]
@@ -371,10 +295,8 @@ export type Database = {
           description: string | null
           id: number
           reason: string | null
-          session_id: number | null
           ss_id: number
           status: Database["public"]["Enums"]["refund_status"] | null
-          student_id: string | null
           type: Database["public"]["Enums"]["refund_type"] | null
         }
         Insert: {
@@ -382,10 +304,8 @@ export type Database = {
           description?: string | null
           id?: number
           reason?: string | null
-          session_id?: number | null
           ss_id: number
           status?: Database["public"]["Enums"]["refund_status"] | null
-          student_id?: string | null
           type?: Database["public"]["Enums"]["refund_type"] | null
         }
         Update: {
@@ -393,60 +313,16 @@ export type Database = {
           description?: string | null
           id?: number
           reason?: string | null
-          session_id?: number | null
           ss_id?: number
           status?: Database["public"]["Enums"]["refund_status"] | null
-          student_id?: string | null
           type?: Database["public"]["Enums"]["refund_type"] | null
         }
         Relationships: [
-          {
-            foreignKeyName: "refund_report_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "session_tutor_mat_view"
-            referencedColumns: ["session_id"]
-          },
-          {
-            foreignKeyName: "refund_report_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "sessions"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "refund_report_ss_id_fkey"
             columns: ["ss_id"]
             isOneToOne: false
             referencedRelation: "student_session"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "refund_report_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["student_id"]
-          },
-          {
-            foreignKeyName: "refund_report_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "refund_report_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "refund_report_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]
@@ -554,21 +430,14 @@ export type Database = {
             foreignKeyName: "sessions_tutor_id_fkey"
             columns: ["tutor_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "sessions_tutor_id_fkey"
             columns: ["tutor_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "sessions_tutor_id_fkey"
-            columns: ["tutor_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["tutor_id"]
           },
           {
@@ -645,21 +514,14 @@ export type Database = {
             foreignKeyName: "student_session_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["student_id"]
           },
           {
             foreignKeyName: "student_session_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
-            referencedRelation: "rating_review_user_view"
-            referencedColumns: ["tutor_id"]
-          },
-          {
-            foreignKeyName: "student_session_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "tutor_stats_view"
+            referencedRelation: "rating_and_review_view"
             referencedColumns: ["tutor_id"]
           },
           {
@@ -736,9 +598,10 @@ export type Database = {
       }
     }
     Views: {
-      rating_review_user_view: {
+      rating_and_review_view: {
         Row: {
           created_ago: number | null
+          created_at: string | null
           rar_id: number | null
           rating: number | null
           review: string | null
@@ -755,24 +618,24 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "rating_and_review_session_id_fkey"
+            foreignKeyName: "rating_and_review_ss_id_fkey"
+            columns: ["ss_id"]
+            isOneToOne: false
+            referencedRelation: "student_session"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_session_session_id_fkey"
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "session_tutor_mat_view"
             referencedColumns: ["session_id"]
           },
           {
-            foreignKeyName: "rating_and_review_session_id_fkey"
+            foreignKeyName: "student_session_session_id_fkey"
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "sessions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "rating_and_review_ss_id_fkey"
-            columns: ["ss_id"]
-            isOneToOne: false
-            referencedRelation: "student_session"
             referencedColumns: ["id"]
           },
         ]
@@ -798,60 +661,6 @@ export type Database = {
           start_time: string | null
           status: Database["public"]["Enums"]["session_status"] | null
           tutor: Json | null
-        }
-        Relationships: []
-      }
-      tutor_stats_view: {
-        Row: {
-          bio_highlight: string | null
-          biography: string | null
-          email: string | null
-          major: string | null
-          phone_number: string | null
-          registered_tutor_at: string | null
-          reviews_count: number | null
-          school: string | null
-          session_count: number | null
-          students_count: number | null
-          tutor_id: string | null
-          tutor_name: string | null
-          tutor_profile_url: string | null
-          tutor_rating: number | null
-          year: string | null
-        }
-        Insert: {
-          bio_highlight?: string | null
-          biography?: string | null
-          email?: string | null
-          major?: string | null
-          phone_number?: string | null
-          registered_tutor_at?: string | null
-          reviews_count?: never
-          school?: string | null
-          session_count?: never
-          students_count?: never
-          tutor_id?: string | null
-          tutor_name?: string | null
-          tutor_profile_url?: string | null
-          tutor_rating?: number | null
-          year?: string | null
-        }
-        Update: {
-          bio_highlight?: string | null
-          biography?: string | null
-          email?: string | null
-          major?: string | null
-          phone_number?: string | null
-          registered_tutor_at?: string | null
-          reviews_count?: never
-          school?: string | null
-          session_count?: never
-          students_count?: never
-          tutor_id?: string | null
-          tutor_name?: string | null
-          tutor_profile_url?: string | null
-          tutor_rating?: number | null
-          year?: string | null
         }
         Relationships: []
       }
@@ -905,24 +714,25 @@ export type Database = {
           count: number
         }[]
       }
-      get_tutor_stats: {
-        Args: { p_tutor_id: string }
+      get_tutors_with_stats: {
+        Args: { p_filter_tutor_id?: string; p_min_rating?: number }
         Returns: {
           tutor_id: string
-          tutor_name: string
-          tutor_profile_url: string
-          tutor_rating: number
+          profile_url: string
+          username: string
           email: string
-          phone_number: string
-          bio_highlight: string
-          biography: string
-          major: string
+          tutor_rating: number
           school: string
+          major: string
           year: string
           registered_tutor_at: string
-          reviews_count: number
-          session_count: number
-          students_count: number
+          bio_highlight: string
+          social_links: Json
+          biography: string
+          phone_number: string
+          total_session_count: number
+          total_student_count: number
+          total_review_count: number
         }[]
       }
       pgmq_dequeue: {

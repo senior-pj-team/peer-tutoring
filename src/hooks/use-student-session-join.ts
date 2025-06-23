@@ -31,6 +31,8 @@ async function fetchMySession({
   const student_sessions = await getStudentSessionJoin(supabase, {
         student_id:user_id,
         status: ["enrolled"],
+        offset: 0,
+        limit: 2
     });
   if (!student_sessions) throw new Error("Error fetching data");
   return student_sessions;

@@ -49,6 +49,9 @@ declare global {
 		session_id: number;
 		student_id: string;
 		amount_from_student?: number | null;
+		created_at?: string | null;
+		refunded_amount?: number | null;
+		held_until?: nstring | null;
 		stripe_client_secrete: string;
 		ss_status: TStudentSessionStatus;
 		sessions: {

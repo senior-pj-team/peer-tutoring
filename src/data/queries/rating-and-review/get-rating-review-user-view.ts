@@ -19,7 +19,7 @@ export const getRatingReview = async (
 	},
 ): Promise<TRatingReviewUserViewResult[] | null> => {
 	let query = supabase
-		.from("rating_review_user_view")
+		.from("rating_and_review_view")
 		.select("*")
 		.order("created_ago", { ascending: false });
 

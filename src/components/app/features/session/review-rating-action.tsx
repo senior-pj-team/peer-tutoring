@@ -8,8 +8,8 @@ const ReviewRatingAction = ({ssId, sessionId, toReport}: {ssId: number | null, s
 	return (
 		<>
 			<ShowReviewRating ssId={ssId}/>
-			<RatingReviewBtn ssId={ssId} sessionId={sessionId}/>
-			{toReport && <RefundReportBtn isReport={true} ssId={ssId} sessionId={sessionId}/>}
+			<RatingReviewBtn ssId={ssId}/>
+			{toReport && <RefundReportBtn isReport={true} ssId={ssId}/>}
 		</>
 	);
 };

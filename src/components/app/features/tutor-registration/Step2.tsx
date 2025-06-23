@@ -27,7 +27,6 @@ type Step2Props = {
 export default function Step2({ bankData }: Step2Props) {
   const form = useFormContext();
   const [useExisting, setUseExisting] = useState(false);
-
   const useExistingBankInfo = () => {
     if (bankData) {
       form.setValue("bankName", bankData.bank_name ?? "");

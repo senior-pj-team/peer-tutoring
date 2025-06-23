@@ -1,16 +1,31 @@
-import { createClient } from "@/utils/supabase/client";
-import { getChatList } from "@/data/queries/chat/get-chat-list";
-import { getUserSession } from "@/utils/get-user-session";
-import GeneralError from "../../shared/error";
-import { ChatList } from "./chat-list";
+// ChatListServer.tsx
+"use server";
 
-export async function ChatListServer ({ selectedChatId }: { selectedChatId: string | null }){
+import { createClient } from "@/utils/supabase/server";
+import { getUserSession } from "@/utils/get-user-session";
+import { getChatList } from "@/data/queries/chat/get-chat-list";
+import { HydrationBoundary, dehydrate, QueryClient } from "@tanstack/react-query";
+import GeneralError from "../../shared/error";import { ChatList } from "./chat-list";
+; // You must define this utility
+
+export async function ChatListServer({ selectedChatId }: { selectedChatId: string | null }) {
   const user = await getUserSession();
-  const supabase = createClient();
+  const supabase = await createClient();
+
   if (!user?.user_id) return <GeneralError />;
 
-  const initialChats = await getChatList(user.user_id, supabase);
-  if (!initialChats) return <GeneralError />;
+  const queryClient = new QueryClient();
 
-  return <ChatList initialChats={initialChats} selectedChatId={selectedChatId} userId={user.user_id} />;
-};
+  await queryClient.prefetchQuery({
+    queryKey: ["chat-list", user.user_id],
+    queryFn: () => getChatList(user.user_id, supabase),
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <ChatList selectedChatId={selectedChatId} userId={user.user_id} />
+    </HydrationBoundary>
+  );
+}

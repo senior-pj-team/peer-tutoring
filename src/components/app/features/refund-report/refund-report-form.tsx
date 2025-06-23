@@ -36,12 +36,10 @@ const initialState: ActionResponseType<string> = {
 
 const RefundReportForm = ({
   isReport,
-  ssId,
-  sessionId,
+  ssId
 }: {
   isReport: boolean;
   ssId: number | null;
-  sessionId: number | null;
 }) => {
   const options = isReport
     ? [
@@ -93,7 +91,6 @@ const RefundReportForm = ({
       setError("Please choose a reason.");
       return false;
     }
-
     setError("");
     if (textRef.current) textRef.current.style.boxShadow = "";
     return true;
@@ -177,7 +174,6 @@ const RefundReportForm = ({
       <input type="hidden" name="description" value={description} />
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="ss_id" value={ssId ?? ""} />
-      <input type="hidden" name="session_id" value={sessionId ?? ""} />
 
       <DropdownMenu onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>

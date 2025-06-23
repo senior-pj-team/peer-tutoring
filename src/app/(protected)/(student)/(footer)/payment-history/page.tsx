@@ -6,6 +6,7 @@ import { getStudentSession } from "@/data/queries/student-session/get-student-se
 import GeneralError from "@/components/app/shared/error";
 import { Roboto_Mono } from "next/font/google";
 import clsx from "clsx";
+import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 const roboto_mono = Roboto_Mono({
 	weight: ["700"],
 	subsets: ["latin"],
@@ -15,7 +16,7 @@ const page = async () => {
 	const supabase = await createClient();
 	const user = await getUserSession();
 	if (!user) return <></>;
-	const student_session_result = await getStudentSession(
+	const student_session_result = await getStudentSessionJoin(
 		supabase,
 		{
 			student_id: user.user_id,
@@ -26,7 +27,7 @@ const page = async () => {
 
 	return (
 		<>
-			<div className="my-10 px-3 mx-auto max-w-4xl ">
+			<div className="my-10 ml-[18vw] px-3 mx-auto max-w-4xl w-full">
 				<h2
 					className={clsx(
 						"text-3xl font-semibold my-15",
@@ -34,7 +35,7 @@ const page = async () => {
 					)}>
 					Purchase history
 				</h2>
-				<div className="mt-10">
+				<div className="mt-10 w-full">
 					<PaymentTable data={student_session_result} />
 				</div>
 			</div>

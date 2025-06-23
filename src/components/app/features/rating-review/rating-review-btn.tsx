@@ -12,7 +12,7 @@ import RatingReviewForm from './rating-review-form'
 import { useSupabase } from '@/hooks/use-supabase'
 import GeneralError from '../../shared/error'
 
-const RatingReviewBtn = ({ssId, sessionId}: {ssId: number | null, sessionId: number | null }) => {
+const RatingReviewBtn = ({ssId}: {ssId: number | null}) => {
   const supabase = useSupabase();
   if (!supabase || !ssId) return <GeneralError />;
   const [open, setOpen]= useState(false);
@@ -30,7 +30,7 @@ const RatingReviewBtn = ({ssId, sessionId}: {ssId: number | null, sessionId: num
                             Tap on the stars and share your thoughts below.
                         </DialogDescription>
                     </DialogHeader>
-                    <RatingReviewForm ssId={ssId} sessionId= {sessionId}/>
+                    <RatingReviewForm ssId={ssId}/>
                 </DialogContent>
             </Dialog>
   )

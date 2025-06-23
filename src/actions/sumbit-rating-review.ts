@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { insertRatingReview } from '@/data/mutations/rating-and-review/insert-rating-review';
 
 const schema = z.object({
-  session_id: z.coerce.number(),
   ss_id: z.coerce.number(),
   rating: z.coerce.number().min(1).max(5),
   review: z.string().min(1),
@@ -19,7 +18,7 @@ export async function submitRatingReview(
   const supabase = await createClient();
   const user = await getUserSession();
 
-  if (!user?.user_id) {
+  if (!user) {
     return {
       success: false,
       error: { message: 'You must be logged in to submit a review.' },
@@ -27,7 +26,6 @@ export async function submitRatingReview(
   }
 
   const parsed = schema.safeParse({
-    session_id: formData.get('session_id'),
     ss_id: formData.get('ss_id'),
     rating: formData.get('rating'),
     review: formData.get('review'),
@@ -40,12 +38,10 @@ export async function submitRatingReview(
     };
   }
 
-  const { session_id, ss_id, rating, review } = parsed.data;
+  const {ss_id, rating, review } = parsed.data;
 
   const insertResult = await insertRatingReview(
     ss_id,
-    user.user_id,
-    session_id,
     rating,
     review,
     supabase

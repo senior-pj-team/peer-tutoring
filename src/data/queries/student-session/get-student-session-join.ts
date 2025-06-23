@@ -2,10 +2,12 @@ type Params = {
 	student_session_id?: number;
 	student_id?: string;
 	status?: TStudentSessionStatus[];
+  offset?: number;
+  limit?: number;
 };
 export const getStudentSessionJoin = async (
 	supabase: TSupabaseClient,
-	{ student_session_id, student_id, status }: Params,
+	{ student_session_id, student_id, status, offset, limit }: Params,
 ): Promise<TStudentSessionJoinResult[] | null> => {
 	let query = supabase.from("student_session").select(
 		`   
@@ -13,6 +15,9 @@ export const getStudentSessionJoin = async (
       session_id,
       student_id,
       amount_from_student,
+      created_at,
+      refunded_amount,
+      held_until,
       stripe_client_secrete,
       ss_status: status,
       sessions (
@@ -36,6 +41,8 @@ export const getStudentSessionJoin = async (
 	if (student_id) query = query.eq("student_id", student_id);
 	if (student_session_id) query = query.eq("id", student_session_id);
 	if (status) query = query.in("status", status);
+
+  if(offset && limit) query= query.range(offset, limit)
 
 	const { data, error } = await query;
 
