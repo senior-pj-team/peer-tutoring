@@ -9,9 +9,8 @@ export async function insertRatingReview(
     rating,
     review,
   });
-
   if (error) {
-    console.log("Error updated: ", error.message);
+    console.log("Error updated: updated: ", error.message);
     return false;
   }
   return true;

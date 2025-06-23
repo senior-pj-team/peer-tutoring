@@ -122,8 +122,7 @@ const Page = async ({ params }: { params: Params }) => {
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
 							{page === "complete" || page == "archived" ? (
 								<ReviewRatingAction
-									ssId={16}
-									sessionId={6}
+									ssId={19}
 									toReport={page == "complete"}
 								/>
 							) : (

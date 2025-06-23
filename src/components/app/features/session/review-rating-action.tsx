@@ -3,7 +3,7 @@ import RatingReviewBtn from "../rating-review/rating-review-btn";
 import RefundReportBtn from "../refund-report/refund-report-btn";
 import ShowReviewRating from "../rating-review/show-review-rating";
 
-const ReviewRatingAction = ({ssId, sessionId, toReport}: {ssId: number | null, sessionId: number | null, toReport: boolean}) => {
+const ReviewRatingAction = ({ssId, toReport}: {ssId: number | null, toReport: boolean}) => {
 
 	return (
 		<>

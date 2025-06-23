@@ -19,6 +19,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
+import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
+
+const BANKS = [
+  "Siam Commercial Bank",
+  "Kasikorn Bank",
+  "Krung Thai Bank",
+  "Bangkok Bank",
+  "TMB Bank",
+  "Bank of Ayudhya",
+  "Government Savings Bank",
+  "BAAC",
+  "CIMB Thai",
+  "Standard Chartered",
+  "UOB (Thailand)",
+];
 
 type Step2Props = {
   bankData: TBankInfoResult | null;
@@ -46,6 +61,8 @@ export default function Step2({ bankData }: Step2Props) {
     }
   };
 
+  const bankName = form.watch("bankName");
+
   return (
     <div className="space-y-6">
       {/* Toggle */}
@@ -63,40 +80,64 @@ export default function Step2({ bankData }: Step2Props) {
       {/* Form Fields */}
       <div className="grid gap-4">
         {/* Bank Name */}
-        <FormField
-          control={form.control}
-          name="bankName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bank Name</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  disabled={useExisting}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your bank" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Bangkok Bank">Bangkok Bank</SelectItem>
-                    <SelectItem value="Siam Commercial Bank">
-                      Siam Commercial Bank
-                    </SelectItem>
-                    <SelectItem value="Kasikorn Bank">Kasikorn Bank</SelectItem>
-                    <SelectItem value="Krungthai Bank">
-                      Krungthai Bank
-                    </SelectItem>
-                    <SelectItem value="Thai Military Bank">
-                      Thai Military Bank
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+        {!useExisting && (
+          <FormField
+            control={form.control}
+            name="bankName"
+            render={({ field }) => (
+              <FormItem className="grid w-full items-center gap-y-2">
+                <FormLabel className="text-xs md:text-sm">Bank Name</FormLabel>
+                <FormControl>
+                  <Select
+                    {...field}
+                    disabled={useExisting}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger className="text-[0.6rem] md:text-sm w-full">
+                      <SelectValue placeholder="Select a bank" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Banks</SelectLabel>
+                        {BANKS.map((name) => (
+                          <SelectItem key={name} value={name} className="py-2">
+                            {name}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="Other">Other Banks</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+              </FormItem>
+            )}
+          />
+        )}
+        { (bankName === "Other" || useExisting ) && (
+            <FormField
+              control={form.control}
+              name="bankName"
+              render={({ field }) => (
+                <FormItem className="grid w-full items-center gap-y-2">
+                  <FormLabel className={useExisting? "text-xs md:text-sm" : "font-extralight text-gray-500  md:text-[0.8rem] text-[0.65rem]"}>
+                    { useExisting? "Bank Name" : "Manually Enter Bank Name"}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Enter Bank"
+                      value={field.value}
+                      className="text-[0.6rem] md:text-sm"
+                      disabled={useExisting}
+                    />
+                  </FormControl>
+                  <FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+                </FormItem>
+              )}
+            />
           )}
-        />
 
         {/* Account Name */}
         <FormField

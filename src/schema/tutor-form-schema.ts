@@ -15,7 +15,8 @@ export const tutorFormSchema = z.object({
   .regex(
     /^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/,
     "Invalid image format"
-  )
+  ),
+  isChecked: z.boolean().refine(val => val === true, { message: "Must be checked" })
 });
 
 export type tutorFormSchemaT = z.infer<typeof tutorFormSchema>;

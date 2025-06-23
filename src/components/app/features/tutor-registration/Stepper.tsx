@@ -29,7 +29,7 @@ export default function HorizontalStepper({userData, bankData}: {userData: TUser
       school: userData?.school?? "",
       major: userData?.major ?? "",
       year: userData?.year ?? "",
-      phone_number: "",
+      phone_number: userData?.phone_number?? "",
       bankName: "",
       accountName: "",
       accountNumber: "",

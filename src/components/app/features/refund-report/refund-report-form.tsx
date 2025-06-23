@@ -131,6 +131,7 @@ const RefundReportForm = ({
       to: "nwai39771@gmail.com", // Replace with dynamic user email in production
     });
   }, [state.success, type]);
+
   const sendNotification =async ()=>{
     if (!state.success) return;
     let title="";
@@ -153,6 +154,7 @@ const RefundReportForm = ({
     if(!user?.user_id) return;
     await insertNotification(supabase, title, body, user.user_id, "student" );
   }
+  
   useEffect(() => {
     if (state.success || state.error.message) {
       setDialogOpen(true);
