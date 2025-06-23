@@ -31,111 +31,93 @@ Deno.serve(async (req) => {
 		if (!data || data.length === 0) break;
 
 		const [job] = data;
-		const {
-			topic,
-			ss_id,
-			session_start,
-			session_id,
-			session_name,
-			student_id,
-			student_email,
-			tutor_id,
-			tutor_email,
-		} = job.message;
-		const { error: select_ss_error, data: ss_data } = await supabase
-			.from("student_session")
-			.select("status")
-			.eq("id", ss_id)
-			.single();
-
-		if (select_ss_error || !ss_data) {
-			throw select_ss_error;
-		}
-
-		if (ss_data.status !== "pending_refund" && ss_data.status !== "enrolled")
-			break;
+		const { topic, session_name, start_time, tutor_id, students } = job.message;
 
 		if (topic === "send reminders") {
-			const { error: insert_noti_error } = await supabase
-				.from("notification")
-				.insert({
-					title: "Reminder noti",
+			const studentSSIDs = students.map(
+				(s: { student_id: string; id: number }) => s.id,
+			);
+
+			const { data: ss_data, error: ss_data_error } = await supabase
+				.from("student_session")
+				.select("student_id")
+				.in("id", [studentSSIDs])
+				.eq("status", "enrolled");
+
+			if (ss_data_error) {
+				throw ss_data_error;
+			}
+			const studentIds = ss_data.map(
+				(s: { student_id: string }) => s.student_id,
+			);
+			const [tutorRes, studentsRes] = await Promise.all([
+				supabase.from("user").select("email").eq("id", tutor_id).single(),
+				supabase.from("user").select("id, email").in("id", studentIds),
+			]);
+			if (tutorRes.error) throw tutorRes.error;
+			if (studentsRes.error) throw studentsRes.error;
+
+			const tutorEmail = tutorRes.data.email;
+			const studentsResData = studentsRes.data;
+
+			const notifications = [
+				...studentsResData.map((s) => ({
+					title: "Reminder notification",
 					body: `Be prepared. ${session_name} session is starting tomorrow⌛`,
 					status: "new",
-					user_id: student_id,
+					user_id: s.id,
 					type: "student",
-				});
+				})),
+				{
+					title: "Reminder notification",
+					body: `Prepare for tomorrow ${session_name} session.`,
+					status: "new",
+					user_id: tutor_id,
+					type: "tutor_reminder",
+				},
+			];
+			const { error: insert_noti_error } = await supabase
+				.from("notification")
+				.insert(notifications);
 
 			if (insert_noti_error) {
 				throw insert_noti_error;
 			}
 
-			const { error: select_noti_error, data: noti_data } = await supabase
-				.from("notification")
-				.select("*")
-				.eq("session_id", session_id)
-				.eq("type", "tutor_reminder");
-			if (select_noti_error) {
-				throw insert_noti_error;
-			}
-			const sessionStartTime_date = new Date(session_start);
+			const sessionStartTime_date = new Date(start_time);
 
 			const sessionStartTime = `${sessionStartTime_date.getDate()} ${sessionStartTime_date.toLocaleString(
 				"default",
 				{ month: "short" },
 			)} ${sessionStartTime_date.getFullYear()}`;
 
-			if (noti_data.length === 0) {
-				const { error: insert_noti_error } = await supabase
-					.from("notification")
-					.insert({
-						title: "Reminder noti",
-						body: `Prepare for tomorrow ${session_name} session.`,
-						status: "new",
-						user_id: tutor_id,
-						session_id,
-						type: "tutor_reminder",
-					});
-
-				if (insert_noti_error) {
-					throw insert_noti_error;
-				}
-
-				const html = await renderAsync(
-					React.createElement(ReminderEmail, {
-						sessionName: session_name,
-						sessionStartTime: sessionStartTime,
-						receipent: "tutor",
-					}),
-				);
-				const { error } = await resend.emails.send({
-					from: "welcome <onboarding@resend.dev>",
-					to: ["williamkhant4@gmail.com"],
-					subject: "Reminder for upcoming session!",
-					html,
-				});
-				if (error) {
-					throw error;
-				}
-			}
-
-			// send reminder emails to students
-			const html = await renderAsync(
+			const tutor_email_template = await renderAsync(
+				React.createElement(ReminderEmail, {
+					sessionName: session_name,
+					sessionStartTime: sessionStartTime,
+					receipent: "tutor",
+				}),
+			);
+			const student_email_template = await renderAsync(
 				React.createElement(ReminderEmail, {
 					sessionName: session_name,
 					sessionStartTime: sessionStartTime,
 					receipent: "student",
 				}),
 			);
-			const { error } = await resend.emails.send({
-				from: "welcome <onboarding@resend.dev>",
-				to: ["williamkhant4@gmail.com"],
-				subject: "Reminder for upcoming session!",
-				html,
-			});
-			if (error) {
-				throw error;
-			}
+			await Promise.all(
+				notifications.map((n) =>
+					resend.emails.send({
+						from: "welcome <onboarding@resend.dev>",
+						to: ["williamkhant4@gmail.com"],
+						subject: "Reminder for upcoming session!",
+						html:
+							n.type === "student"
+								? student_email_template
+								: tutor_email_template,
+					}),
+				),
+			);
 		}
 	}
 
