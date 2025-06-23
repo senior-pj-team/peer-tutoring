@@ -23,17 +23,18 @@ export default function Home() {
 			<div className="xl:min-h-[24rem] lg:min-h-[20rem] min-h-[24rem] ">
 				<CustomHeroCarousel />
 			</div>
-			<Suspense fallback={<SessionsSkeleton />}>
+			<Suspense fallback={<SessionsSkeleton title="My Upcoming Sessions 📗" />}>
 				<MySessionsSection />
 			</Suspense>
 
-			<Suspense fallback={<SessionsSkeleton />}>
+			<Suspense fallback={<SessionsSkeleton title="Top Rated Tutors 👨‍🎓" />}>
 				<TopTutorsSection />
 			</Suspense>
-			<Suspense fallback={<SessionsSkeleton />}>
+			<Suspense fallback={<SessionsSkeleton title="Free Sessions 🌟" />}>
 				<FreeSessionsSection />
 			</Suspense>
-			<Suspense fallback={<SessionsSkeleton />}>
+			<Suspense
+				fallback={<SessionsSkeleton title="Closing Soon Sessions ⏰" />}>
 				<ClosingSessionsSection />
 			</Suspense>
 		</div>

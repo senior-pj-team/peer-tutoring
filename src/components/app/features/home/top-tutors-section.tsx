@@ -1,5 +1,6 @@
 import CustomCarousel from "@/components/app/features/home/custom-carousel";
 import { getTutorWithStats } from "@/data/queries/tutors/get-tutor-with-stats";
+import { getUserSession } from "@/utils/get-user-session";
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -22,12 +23,13 @@ export default async function TopTutorsSection() {
 			</div>
 		);
 	}
+	const user = await getUserSession();
 	return (
 		<div className="mt-5 px-10">
 			<div className="text-3xl font-bold tracking-wider">
 				Top Rated Tutors 👨‍🎓
 			</div>
-			<CustomCarousel tutors={tutors} />
+			<CustomCarousel tutors={tutors} user={user} />
 		</div>
 	);
 }

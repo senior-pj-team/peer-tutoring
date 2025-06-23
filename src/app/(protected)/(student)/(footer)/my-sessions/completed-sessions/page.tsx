@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 import GeneralError from "@/components/app/shared/error";
 
-const Page = async () => {
+const page = async () => {
 	const user = await getUserSession();
 	if (!user) {
 		redirect("/login");
@@ -16,7 +16,7 @@ const Page = async () => {
 		status: ["completed"],
 	});
 
-	if (!student_sessions) return <GeneralError/>;
+	if (!student_sessions) return <GeneralError />;
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -33,4 +33,4 @@ const Page = async () => {
 	);
 };
 
-export default Page;
+export default page;

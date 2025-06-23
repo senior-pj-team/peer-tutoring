@@ -75,13 +75,13 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 							className={cn(
 								"inline-block text-xs font-semibold px-3 py-1 rounded-full",
 
-								session_status === "open"
+								session_status === "open" ||
+									session_status === "completed" ||
+									session_status === "enrolled"
 									? "bg-green-100 text-green-800"
 									: session_status === "closed"
 										? "bg-red-100 text-red-800"
-										: session_status === "enrolled"
-											? "bg-orange-100 text-green-800"
-											: "",
+										: "bg-orange-100 text-orange-800",
 							)}>
 							Status: {session_status}
 						</span>

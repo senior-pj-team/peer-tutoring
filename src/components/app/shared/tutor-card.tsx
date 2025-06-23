@@ -3,7 +3,7 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import Rating from "@/components/app/features/rating-review/rating";
 import Image from "next/image";
-import { MessageCircleCode, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import {
 	HoverCard,
 	HoverCardContent,
@@ -16,27 +16,18 @@ import { cn } from "@/lib/utils";
 import { shimmer, toBase64 } from "@/utils/app/shimmer";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { formatDate } from "date-fns";
+import { getYear } from "@/utils/app/get-year";
+import { GoToChatButton } from "./go-to-chat-button";
 
 export default function TutorCard({
+	user,
 	tutor,
 }: {
+	user: UserSession | null;
 	tutor: TTutorWithStatsResult[number];
 }) {
 	const router = useRouter();
-	function getYear(year: string | null) {
-		switch (year) {
-			case "1":
-				return "First Year";
-			case "2":
-				return "Second Year";
-			case "3":
-				return "Third Year";
-			case "4":
-				return "Fourth Year";
-			default:
-				return "NA";
-		}
-	}
+
 	return (
 		<Card className="cursor-pointer  max-w-[20rem]  py-2 overflow-hidden  rounded-md shadow-md border-1 border-gray-100 hover:opacity-70">
 			<HoverCard>
@@ -114,7 +105,7 @@ export default function TutorCard({
 					side="right"
 					sideOffset={-30}>
 					<div className="flex flex-col mb-2 ">
-						<span className="max-w-[full] font-bold text-2xl truncate">
+						<span className="max-w-[full] font-bold text-2xl truncate mb-1">
 							{tutor.username ?? "NA"}
 						</span>
 						<div className="text-[0.65rem] font-bold text-gray-500 ml-[0.2rem] flex item-centers space-x-1.5">
@@ -150,7 +141,7 @@ export default function TutorCard({
 					<div className=" overflow-hidden text-[0.65rem] text-ellipsis line-clamp-6 mb-5">
 						{tutor.biography ?? "Tutor has not fill any biography"}
 					</div>
-					<div className="flex w-full justify-between items-center">
+					<div className="flex w-full gap-x-5 items-center">
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
@@ -160,14 +151,13 @@ export default function TutorCard({
 							className="border-orange-500 text-orange-600 font-semibold hover:bg-orange-50 hover:text-orange-700 hover:border-orange-400 hover:ring-2 hover:ring-orange-500  transition-all duration-200 cursor-pointer">
 							View Profile
 						</Button>
-						<MessageCircleCode
-							onClick={(e) => {
-								e.stopPropagation();
-								router.push("/chat");
-							}}
-							size={40}
-							className=" text-orange-500 hover:text-orange-600 transition-colors duration-200 cursor-pointer p-1 rounded-full hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 w-15"
-						/>
+						{user && (
+							<GoToChatButton
+								size={28}
+								user1_id={tutor.tutor_id}
+								user2_id={user.user_id}
+							/>
+						)}
 					</div>
 					<RadixHoverCard.Arrow className="fill-white w-4 h-6 drop-shadow-md" />
 				</HoverCardContent>

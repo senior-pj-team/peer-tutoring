@@ -124,7 +124,7 @@ const Page = async ({ params }: { params: Params }) => {
 								/>
 							)}
 
-							{page === "refund" && <RefundStatus sessionId={sessionData.id} />}
+							{page === "refund" && <RefundStatus ssId={sessionData.id} />}
 						</aside>
 					</div>
 				</Tabs>

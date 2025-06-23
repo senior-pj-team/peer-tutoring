@@ -18,7 +18,7 @@ const RatingReviewBtn = ({ ssId }: { ssId: number | null }) => {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button
-					className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full"
+					className="hover:text-white border border-orange-600 hover:bg-orange-500 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full"
 					variant="outline">
 					Give Rating and review
 				</Button>

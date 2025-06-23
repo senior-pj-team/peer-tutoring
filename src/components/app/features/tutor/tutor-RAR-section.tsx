@@ -30,7 +30,6 @@ const TutorRARSection = async ({
 		offset: 0,
 		limit: initialSize,
 	});
-	console.log(rating_reviews);
 	if (!rating_reviews) {
 		return (
 			<div className="h-[33vh] flex items-center justify-center text-gray-500 text-lg">

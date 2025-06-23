@@ -51,11 +51,13 @@ type Session = {
 };
 
 export default function CustomCarousel({
+	user,
 	sessions,
 	my_sessions,
 	tutors,
 	type,
 }: {
+	user?: UserSession | null;
 	sessions?: TSessionsMatViewResultRow[];
 	my_sessions?: TStudentSessionJoinResult[];
 	tutors?: TTutorWithStatsResult;
@@ -88,7 +90,6 @@ export default function CustomCarousel({
 				}}
 				className="mt-4 relative">
 				<CarouselContent className="-ml-4">
-					{/* section for my session and top rated tutor */}
 					{my_sessions &&
 						!type &&
 						my_sessions.map((session) => (
@@ -104,7 +105,7 @@ export default function CustomCarousel({
 							<CarouselItem
 								key={tutor.tutor_id}
 								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
-								<TutorCard tutor={tutor} />
+								<TutorCard tutor={tutor} user={user ?? null} />
 							</CarouselItem>
 						))}
 					{sessions &&

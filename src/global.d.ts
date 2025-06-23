@@ -33,6 +33,7 @@ declare global {
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
 	type TTutorWithStatsResult =
 		DB["public"]["Functions"]["get_tutors_with_stats"]["Returns"];
+
 	type TSelectSessionsMatViewResult =
 		DB["public"]["Functions"]["select_session_tutor_mat_view"]["Returns"];
 	type TStudentSessionResult = DB["public"]["Tables"]["student_session"]["Row"];
@@ -72,6 +73,35 @@ declare global {
 			} | null;
 		} | null;
 	};
+	type TRefundReportJoinResult = {
+		id: number;
+		reason: string | null;
+		description: string | null;
+		status: TRefundStatus | null;
+		type: TRefundType | null;
+		created_at: string;
+		ss_id: number;
+		student_session: {
+			student_id: string;
+			ss_status: TStudentSessionStatus;
+			session: {
+				image: string | null;
+				session_name: string | null;
+				course_code: string | null;
+				course_name: string | null;
+				max_students: number | null;
+				start_time: string | null;
+				end_time: string | null;
+				tutor: {
+					id: string | null;
+					profile_url: string | null;
+					username: string | null;
+					tutor_rating: number | null;
+				} | null;
+			};
+		};
+	} | null;
+
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
 	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
 
@@ -132,6 +162,7 @@ declare global {
 	type TSessionStatus = DB["public"]["Enums"]["session_status"];
 	type TNotificationStatus = DB["public"]["Enums"]["notification_status"];
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
-	type TRefund = DB["public"]["Enums"]["refund_type"];
+	type TRefundType = DB["public"]["Enums"]["refund_type"];
+	type TRefundStatus = DB["public"]["Enums"]["refund_status"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
 }

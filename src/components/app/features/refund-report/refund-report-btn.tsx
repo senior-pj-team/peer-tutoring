@@ -24,14 +24,18 @@ const RefundReportBtn = ({
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				{isReport ? (
-					<Button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm cursor-pointer rounded mt-1 w-full">
+					<Button
+						className="font-bold hover:bg-orange-500 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full hover:text-white"
+						variant="outline">
 						<div className="flex items-center gap-1">
 							<AlertTriangle className="h-5 w-5" />
 							<span>Report</span>
 						</div>
 					</Button>
 				) : (
-					<Button className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
+					<Button
+						className="font-bold hover:bg-orange-500 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full hover:text-white"
+						variant="outline">
 						Request refund
 					</Button>
 				)}
