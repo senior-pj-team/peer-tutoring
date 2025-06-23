@@ -85,7 +85,7 @@ const NotificationList = ({
 						onClick={() => {
 							updateMutate("read", {
 								onSuccess: () => {
-									toast.success("All notifications have been read");
+									toast.success("All notifications have been marked as read");
 								},
 								onError: () => {
 									toast.error("Something went wrong!");

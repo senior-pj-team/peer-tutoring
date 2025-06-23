@@ -37,27 +37,27 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 		<div>
 			<div className="max-w-[53rem] p-6 bg-white space-y-6">
 				<div>
-					<h2 className="text-lg font-semibold mb-1">Description</h2>
+					<h2 className="text-lg font-semibold mb-1">🗒️ Description</h2>
 					<Expandable
 						max={200}
 						text={description ?? "No-description"}
-						className="mt-5 text-sm"
+						className="mt-3 text-sm text-gray-600 ml-1"
 					/>
 				</div>
 				<div>
-					<h2 className="text-lg font-semibold mb-1">Requirements</h2>
+					<h2 className="text-lg font-semibold mb-1">💼 Requirements </h2>
 					<Expandable
 						max={200}
 						text={requirement ?? "No requirement"}
-						className="mt-5 text-sm"
+						className="mt-3 text-sm text-gray-600 ml-1"
 					/>
 				</div>
 				<div>
-					<h2 className="text-lg font-semibold mb-1">Location</h2>
+					<h2 className="text-lg font-semibold mb-1">📍 Location</h2>
 					<Expandable
 						max={200}
 						text={location ?? "No location specified"}
-						className="mt-5 text-sm"
+						className="mt-2 text-sm text-gray-600 ml-1"
 					/>
 				</div>
 				{/* date time */}

@@ -3,29 +3,32 @@ import React from "react";
 import SessionHeader from "@/components/app/features/session/session-header";
 import ReviewRatingAction from "@/components/app/features/session/review-rating-action";
 import UpcomingAction from "@/components/app/features/session/upcoming-action";
-import EnrollAction from "@/components/app/features/session/enroll-action";
 import RefundStatus from "@/components/app/features/session/refund-status";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SessionContent from "@/components/app/features/session/session-content";
 import SessionPayment from "@/components/app/features/session/session-payment";
-import SessionTutor from "@/components/app/features/session/session-tutor";
+
 import { createClient } from "@/utils/supabase/server";
-import { getSessionMatViewbyId } from "@/data/queries/sessions/get-session-mat-view-by-Id";
 import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
+import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
 
 type Params = Promise<{
-	session_id: string;
 	page: string;
+	student_session_id: string;
 }>;
 
 const Page = async ({ params }: { params: Params }) => {
-	const { session_id, page } = await params;
+	const { student_session_id, page } = await params;
 
 	const supabase = await createClient();
-	const sessionData = await getSessionMatViewbyId(supabase, Number(session_id));
+
+	const sessionData = await getStudentSessionJoinById(
+		supabase,
+		Number(student_session_id),
+	);
 
 	if (!sessionData) {
 		return (
@@ -48,29 +51,31 @@ const Page = async ({ params }: { params: Params }) => {
 	}
 
 	const headerData = {
-		image: sessionData.image,
-		session_name: sessionData.session_name,
-		school: sessionData.school,
-		major: sessionData.major,
-		course_code: sessionData.course_code,
-		course_name: sessionData.course_name,
-		tutor_name: sessionData.tutor!.name,
-		tutor_rating: sessionData.tutor!.tutor_rating,
+		image: sessionData.sessions?.image,
+		session_name: sessionData.sessions?.session_name,
+		school: sessionData.sessions?.tutor?.school ?? null,
+		major: sessionData.sessions?.tutor?.major ?? null,
+		course_code: sessionData.sessions?.course_code ?? null,
+		course_name: sessionData.sessions?.course_name ?? null,
+		tutor_name: sessionData.sessions?.tutor?.username ?? null,
+		tutor_rating: sessionData.sessions?.tutor?.tutor_rating ?? null,
+		tutor_profile_url: sessionData.sessions?.tutor?.profile_url ?? null,
+		tutor_id: sessionData.sessions?.tutor_id,
 		session_status: sessionData.status,
 	};
 
-	const date = formatDate(sessionData.start_time!, "dd MMMM yyyy");
-	const start_time = format(sessionData.start_time!, "hh:mm a");
-	const end_time = format(sessionData.end_time!, "hh:mm a");
+	const date = formatDate(sessionData.sessions?.start_time!, "dd MMMM yyyy");
+	const start_time = format(sessionData.sessions?.start_time!, "hh:mm a");
+	const end_time = format(sessionData.sessions?.end_time!, "hh:mm a");
 
 	const contentData = {
-		description: sessionData.description,
-		requirement: sessionData.requirement,
-		location: sessionData.location,
+		description: sessionData.sessions?.description,
+		requirement: sessionData.sessions?.requirement,
+		location: sessionData.sessions?.location,
 		date,
 		start_time,
 		end_time,
-		max_students: sessionData.max_students,
+		max_students: sessionData.sessions?.max_students,
 		enrolled_students: enrollment_count,
 	};
 
@@ -86,20 +91,12 @@ const Page = async ({ params }: { params: Params }) => {
 							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
 							Content
 						</TabsTrigger>
-						{page != "browse" && (
-							<TabsTrigger
-								value="payment"
-								className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
-								Payment
-							</TabsTrigger>
-						)}
-						{page == "browse" && (
-							<TabsTrigger
-								value="tutor"
-								className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
-								Tutor
-							</TabsTrigger>
-						)}
+
+						<TabsTrigger
+							value="payment"
+							className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-orange-700">
+							Payment
+						</TabsTrigger>
 					</TabsList>
 
 					<div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 relative ">
@@ -111,42 +108,23 @@ const Page = async ({ params }: { params: Params }) => {
 							<TabsContent value="payment">
 								<SessionPayment session_id={sessionData.session_id!} />
 							</TabsContent>
-
-							{page == "browse" && (
-								<TabsContent value="tutor">
-									<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
-								</TabsContent>
-							)}
 						</div>
 
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-							{page === "complete" || page == "archived" ? (
+							{(page === "complete" || page == "archived") && (
 								<ReviewRatingAction
-									ssId={16}
-									sessionId={6}
+									ssId={sessionData.id}
 									toReport={page == "complete"}
 								/>
-							) : (
-								<></>
 							)}
 							{page === "upcoming" && (
 								<UpcomingAction
-									start={sessionData.start_time}
-									sessionId={6}
-									ssId={16}
+									start={sessionData.sessions?.start_time}
+									ssId={sessionData.id}
 								/>
 							)}
-							{page === "browse" && (
-								<EnrollAction
-									session_id={sessionData.session_id!}
-									start_time={sessionData.start_time ?? ""}
-									price={sessionData.price}
-									service_fee={sessionData.service_fee}
-								/>
-							)}
-							{page === "refund" && (
-								<RefundStatus sessionId={Number(session_id)} />
-							)}
+
+							{page === "refund" && <RefundStatus ssId={sessionData.id} />}
 						</aside>
 					</div>
 				</Tabs>

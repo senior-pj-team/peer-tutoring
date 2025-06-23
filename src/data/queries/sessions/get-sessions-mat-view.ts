@@ -10,6 +10,7 @@ type TBrowseSessionFilters = {
 	offset?: number;
 	tutorId?: string;
 	status?: TSessionStatus[];
+	p_start_today?: boolean;
 };
 
 export async function getSessionsMatView(
@@ -26,6 +27,7 @@ export async function getSessionsMatView(
 		limit = 5,
 		offset = 0,
 		status,
+		p_start_today = false,
 	}: TBrowseSessionFilters,
 ): Promise<TSelectSessionsMatViewResult | null> {
 	const { data, error } = await client.rpc("select_session_tutor_mat_view", {
@@ -40,10 +42,12 @@ export async function getSessionsMatView(
 		limit_count: limit,
 		offset_count: offset,
 		s_status: status,
+		p_start_today,
 	});
 	if (error) {
 		console.log("GetSessionsMatView Error: ", error.message);
 		return null;
 	}
+
 	return (data as TSelectSessionsMatViewResult) ?? null;
 }

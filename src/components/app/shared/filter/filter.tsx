@@ -36,6 +36,7 @@ export default function Filter() {
 		"Elective Courses",
 	];
 	const [showAllCategories, setShowAllCategories] = useState(false);
+	const router = useRouter();
 
 	const handlePriceTypeChange = (field: "free" | "paid", checked: boolean) => {
 		setPriceType((prev) => {

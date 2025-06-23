@@ -19,14 +19,14 @@ export const getRatingReview = async (
 	},
 ): Promise<TRatingReviewUserViewResult[] | null> => {
 	let query = supabase
-		.from("rating_review_user_view")
+		.from("rating_and_review_view")
 		.select("*")
 		.order("created_ago", { ascending: false });
 
 	if (tutor_id) query = query.eq("tutor_id", tutor_id);
 	if (session_id) query = query.eq("session_id", session_id);
 	if (student_id) query = query.eq("student_id", student_id);
-	if (ss_id) query = query.eq('ss_id', ss_id);
+	if (ss_id) query = query.eq("ss_id", ss_id);
 
 	if (search && search.trim() !== "") {
 		query = query.textSearch("search_vector", search, { type: "plain" });

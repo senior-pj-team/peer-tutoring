@@ -7,7 +7,7 @@ export const getRatingStats = async (
 	});
 
 	if (error) {
-		console.error("Failed to fetch rating stats", error);
+		console.log("Failed to fetch rating stats", error);
 		return null;
 	}
 

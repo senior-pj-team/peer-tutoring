@@ -1,11 +1,12 @@
 type Params = {
 	student_session_id?: number;
 	student_id?: string;
+	session_id?: number;
 	status?: TStudentSessionStatus[];
 };
 export const getStudentSessionJoin = async (
 	supabase: TSupabaseClient,
-	{ student_session_id, student_id, status }: Params,
+	{ student_session_id, student_id, session_id, status }: Params,
 ): Promise<TStudentSessionJoinResult[] | null> => {
 	let query = supabase.from("student_session").select(
 		`   
@@ -24,7 +25,7 @@ export const getStudentSessionJoin = async (
         start_time,
         end_time,
         tutor:user (
-            id,
+          id,
           profile_url,
           username,
           tutor_rating
@@ -35,6 +36,7 @@ export const getStudentSessionJoin = async (
 
 	if (student_id) query = query.eq("student_id", student_id);
 	if (student_session_id) query = query.eq("id", student_session_id);
+	if (session_id) query = query.eq("session_id", session_id);
 	if (status) query = query.in("status", status);
 
 	const { data, error } = await query;

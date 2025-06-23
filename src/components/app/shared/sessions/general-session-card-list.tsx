@@ -15,6 +15,7 @@ export async function GeneralSessionCardList({
 		minPrice: string;
 		free: string;
 		paid: string;
+		closing_soon: string;
 		category: string[];
 	};
 }) {
@@ -27,6 +28,7 @@ export async function GeneralSessionCardList({
 		page = "1",
 		free,
 		paid,
+		closing_soon,
 	} = params;
 	const categoryArray = typeof category === "string" ? [category] : category;
 
@@ -41,6 +43,7 @@ export async function GeneralSessionCardList({
 		paid: paid === "true",
 		offset: (parseInt(page) - 1) * 12,
 		status: ["open"],
+		p_start_today: Boolean(closing_soon),
 		limit: 12,
 	});
 
@@ -65,14 +68,7 @@ export async function GeneralSessionCardList({
 		<>
 			<div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
 				{data.rows.map((session: TSessionsMatViewResultRow, index) => {
-					return (
-						<GeneralSessionCard
-							content={session}
-							type="a"
-							key={index}
-							page="browse"
-						/>
-					);
+					return <GeneralSessionCard content={session} type="a" key={index} />;
 				})}
 			</div>
 			<div className="my-3">

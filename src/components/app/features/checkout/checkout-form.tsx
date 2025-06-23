@@ -65,7 +65,6 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 					"refunded",
 					"failed_payment",
 					"paid",
-					"pending_refund",
 				],
 			});
 
@@ -97,13 +96,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 
 			const enrollment_count = await getEnrollmentCount(supabase, {
 				session_id: student_session_data.session_id,
-				ss_status: [
-					"completed",
-					"enrolled",
-					"paid",
-					"pending_payment",
-					"pending_refund",
-				],
+				ss_status: ["completed", "enrolled", "paid", "pending_payment"],
 			});
 
 			if (!enrollment_count && enrollment_count !== 0) {

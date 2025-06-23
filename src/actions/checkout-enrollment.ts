@@ -48,7 +48,6 @@ export async function checkoutEnrollment(
 				"pending_enroll",
 				"pending_payment",
 				"enrolled",
-				"pending_refund",
 				"completed",
 				"paid",
 			],

@@ -18,6 +18,7 @@ type Params = Promise<{
 	rating: string;
 	maxPrice: string;
 	minPrice: string;
+	closing_soon: string;
 	free: string;
 	paid: string;
 	category: string[];
@@ -31,11 +32,19 @@ export default async function Sessions({
 
 	return (
 		<div className="lg:px-[6rem] lg:pt-[4rem] md:px-[4rem] md:pt-[3rem] px-[3rem] pt-[2rem] w-full pb-[2rem]">
-			{params.search && (
+			{(params.search ||
+				params.category ||
+				params.free ||
+				params.closing_soon) && (
 				<span className="lg:text-4xl md:text-2xl text-xl font-bold">
-					Result for &quot;{params.search}&quot;
+					Result for &quot;
+					{params.search ??
+						params.category ??
+						(params.free ? "Free Sessions" : params.closing_soon)}
+					&quot;
 				</span>
 			)}
+
 			<FilterSheet />
 			<div className={cn("flex gap-x-5 ", params.search ? "mt-10" : "mt-2")}>
 				<div className="xl:w-[25%] lg:w-[38%]  hidden lg:block">

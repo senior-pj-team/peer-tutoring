@@ -10,23 +10,34 @@ import {
 } from "@/components/ui/dialog";
 import RefundReportForm from "./refund-report-form";
 import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const RefundReportBtn = ({ isReport, ssId, sessionId }: { isReport: boolean, ssId: number | null, sessionId: number | null }) => {
+const RefundReportBtn = ({
+	isReport,
+	ssId,
+}: {
+	isReport: boolean;
+	ssId: number | null;
+}) => {
 	const [open, setOpen] = useState(false);
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				{isReport ? (
-					<button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm cursor-pointer rounded">
+					<Button
+						className="font-bold hover:bg-orange-500 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full hover:text-white"
+						variant="outline">
 						<div className="flex items-center gap-1">
 							<AlertTriangle className="h-5 w-5" />
 							<span>Report</span>
 						</div>
-					</button>
+					</Button>
 				) : (
-					<button className="border border-orange-600 hover:bg-orange-200 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full">
+					<Button
+						className="font-bold hover:bg-orange-500 text-orange-600 px-4 py-2 text-sm cursor-pointer w-full hover:text-white"
+						variant="outline">
 						Request refund
-					</button>
+					</Button>
 				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
@@ -52,7 +63,11 @@ const RefundReportBtn = ({ isReport, ssId, sessionId }: { isReport: boolean, ssI
 						)}
 					</DialogDescription>
 				</DialogHeader>
-				<RefundReportForm isReport={isReport}  ssId={ssId} sessionId={sessionId}/>
+				<RefundReportForm
+					isReport={isReport}
+					ssId={ssId}
+					setDialogOpen={setOpen}
+				/>
 			</DialogContent>
 		</Dialog>
 	);
