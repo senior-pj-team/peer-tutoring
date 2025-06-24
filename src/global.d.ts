@@ -69,6 +69,7 @@ declare global {
 			max_students: number | null;
 			start_time: string | null;
 			end_time: string | null;
+			tutor_id: string | null;
 			tutor: {
 				id: string | null;
 				profile_url: string | null;

@@ -1,7 +1,9 @@
 import StudentInfo from "@/components/app/shared/student-info";
-import React from "react";
+import React, { Suspense } from "react";
 import { Roboto_Mono } from "next/font/google";
 import StudentSessionListServer from "@/components/app/features/session/student-session-list-server";
+import { SessionSkeletonList } from "@/components/app/shared/sessions/session-skeleton-list";
+import GeneralLoading from "@/components/app/shared/GeneralLoading";
 
 const roboto_mono = Roboto_Mono({
 	weight: ["700"],
@@ -18,12 +20,16 @@ const page = async ({ params }: { params: Params }) => {
 	return (
 		<>
 			<div className="mx-30 items-center my-20">
-				<StudentInfo student_id={student_id}/>
+				<Suspense fallback={<GeneralLoading/>}>
+					<StudentInfo student_id={student_id}/>
+				</Suspense>
 				<div className="mt-15">
 					<h1 className={roboto_mono.className}>
 						Previously completed sessions
 					</h1>
-					<StudentSessionListServer student_id={student_id}/>
+					<Suspense fallback={<SessionSkeletonList/>}>
+						<StudentSessionListServer student_id={student_id}/>
+					</Suspense>
 				</div>
 			</div>
 		</>
