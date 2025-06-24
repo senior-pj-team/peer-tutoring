@@ -3,7 +3,6 @@ import ExploreHoverContent from "./explore-hover-content";
 import SessionHoverContent from "./session-hover-content";
 import NotiHoverContent from "./noti-hover-content";
 import ProfileHoverContent from "./profile-hover-content";
-import Link from "next/link";
 
 export default function HoverCustomCard({
 	content,

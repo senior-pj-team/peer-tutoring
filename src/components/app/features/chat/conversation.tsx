@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { format, parseISO } from "date-fns";
 import { nanoid } from "nanoid";
+import { useInView } from "react-intersection-observer";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MessageInput from "./message-input";
@@ -27,13 +28,24 @@ const Conversation = ({
   userProfile: string | null;
   userName: string;
 }) => {
-  const [msg, setMsg] = useState("");
   const supabase = useSupabase();
-  const scrollRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [msg, setMsg] = useState("");
 
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteMessage({ chatId });
+
+  const { ref: loadMoreRef, inView } = useInView();
+
+  const msgArray = useMemo(() => data?.pages.flat() || [], [data]);
+
+  const lastSeenMessageId = useMemo(() => {
+    const readMessages = msgArray.filter(
+      (m) => m.sender_id === userId && m.isRead
+    );
+    return readMessages.length > 0 ? readMessages[0].id : null;
+  }, [msgArray, userId]);
 
   const mutation = useMutation({
     mutationFn: async ({ id, message }: { id: string; message: string }) => {
@@ -42,10 +54,13 @@ const Conversation = ({
     },
     onMutate: async ({ id, message }) => {
       await queryClient.cancelQueries({ queryKey: ["chat-messages", chatId] });
+
       queryClient.setQueryData<any>(["chat-messages", chatId], (old: any) => {
         if (!old) return old;
 
-        const updatedFirstPage = old.pages[0].filter((msg: any) => msg.id !== id); //optional
+        const updatedFirstPage = old.pages[0].filter(
+          (msg: any) => msg.id !== id
+        );
 
         return {
           ...old,
@@ -66,42 +81,54 @@ const Conversation = ({
           ],
         };
       });
+
       return {};
     },
     onError: (error, { id }) => {
       console.error("Send failed:", error.message);
-      queryClient.setQueryData(["chat-messages", chatId], (old: any) => {
-        return {
-          ...old,
-          pages: old.pages.map((page: any) =>
-            page.map((msg: any) =>
-              msg.id === id ? { ...msg, status: "failed" } : msg
-            )
-          ),
-        };
-      });
+      queryClient.setQueryData(["chat-messages", chatId], (old: any) => ({
+        ...old,
+        pages: old.pages.map((page: any) =>
+          page.map((msg: any) =>
+            msg.id === id ? { ...msg, status: "failed" } : msg
+          )
+        ),
+      }));
     },
   });
 
-  const handleInsertMessage = useCallback((newMsg: TMessage) => {
-    if (newMsg.sender_id != userId) updateMessagesAsRead(chatId, userId, supabase, {});
-    queryClient.invalidateQueries({ queryKey: ["chat-messages", chatId] });
-  }, [chatId, userId, supabase, queryClient]);
+  const handleInsertMessage = useCallback(
+    (newMsg: TMessage) => {
+      if (newMsg.sender_id !== userId) {
+        updateMessagesAsRead(chatId, userId, supabase, {});
+      }
+      queryClient.invalidateQueries({ queryKey: ["chat-messages", chatId] });
+    },
+    [chatId, userId, supabase, queryClient]
+  );
 
   const handleUpdateMessage = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ["chat-messages", chatId] });
   }, [chatId, queryClient]);
 
-  useMessageRealtime(supabase, chatId, handleInsertMessage, handleUpdateMessage);
+  useMessageRealtime(
+    supabase,
+    chatId,
+    handleInsertMessage,
+    handleUpdateMessage
+  );
 
-  const msgArray = useMemo(() => data?.pages.flat() || [], [data]);
+  useEffect(() => {
+    updateMessagesAsRead(chatId, userId, supabase, {});
+  }, [chatId, userId, supabase]);
 
-  const lastSeenMessageId = useMemo(() => {
-    const sentByUser = msgArray.filter((m) => m.sender_id === userId && m.isRead);
-    return sentByUser.length > 0 ? sentByUser[0].id : null;
-  }, [msgArray, userId]);
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const onSend = () => {
+  const handleSend = () => {
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     if (!msg.trim()) return;
     const id = nanoid();
@@ -109,14 +136,10 @@ const Conversation = ({
     setMsg("");
   };
 
-  const onResend = (id: string, message: string) => {
+  const handleResend = (id: string, message: string) => {
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     mutation.mutate({ id, message });
   };
-
-  useEffect(() => {
-    updateMessagesAsRead(chatId, userId, supabase, {});
-  }, [chatId, userId]);
 
   return (
     <div className="flex flex-col h-[46.5rem] bg-gray-50 border-l shadow-sm">
@@ -151,10 +174,11 @@ const Conversation = ({
           return (
             <div key={msg.id} className="flex flex-col items-end gap-1">
               <div
-                className={`max-w-[75%] p-3 rounded-xl shadow text-sm break-words transition-transform duration-100 active:scale-[0.98] ${isSender
+                className={`max-w-[75%] p-3 rounded-xl shadow text-sm break-words transition-transform duration-100 active:scale-[0.98] ${
+                  isSender
                     ? "ml-auto bg-orange-500 text-white"
                     : "mr-auto bg-orange-100 text-gray-800"
-                  }`}
+                }`}
               >
                 <div>{msg.message}</div>
                 <div className="text-xs text-right opacity-70 mt-1">
@@ -167,7 +191,7 @@ const Conversation = ({
                 {msg.status === "failed" && (
                   <div className="text-xs text-red-600 text-right mt-1">
                     <button
-                      onClick={() => onResend(msg.id, msg.message)}
+                      onClick={() => handleResend(msg.id, msg.message)}
                       className="underline hover:text-red-800 active:scale-95"
                     >
                       Retry
@@ -181,31 +205,22 @@ const Conversation = ({
             </div>
           );
         })}
-
         {hasNextPage && (
-          <div className="flex justify-center mt-2">
-            <button
-              onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
-              className="text-orange-600 font-medium py-2 px-6 border border-orange-300 rounded-lg hover:bg-orange-50 disabled:opacity-50"
-            >
-              {isFetchingNextPage ? "Loading..." : "Load More"}
-            </button>
+          <div ref={loadMoreRef} className="flex justify-center mt-2">
+            {isFetchingNextPage && (
+              <div className="flex gap-3">
+									<div className="h-2 w-2 bg-orange-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+									<div className="h-2 w-2 bg-orange-400 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+									<div className="h-2 w-2 bg-orange-400 rounded-full animate-bounce"></div>
+							</div>
+            )}
           </div>
         )}
-
-        {
-          isError && !isFetchingNextPage && (
-            <div className="text-center text-sm text-red-600 mb-2">
-              Failed to load messages. Please try again later.
-            </div>
-          )
-        }
       </div>
 
       {/* Input */}
       <div className="border-t bg-white px-4 py-3">
-        <MessageInput msg={msg} setMsg={setMsg} onSend={onSend} />
+        <MessageInput msg={msg} setMsg={setMsg} onSend={handleSend} />
       </div>
     </div>
   );

@@ -7,9 +7,7 @@ import GeneralError from "@/components/app/shared/error";
 
 const page = async () => {
 	const user = await getUserSession();
-	if (!user) {
-		redirect("/login");
-	}
+	if (!user) return <GeneralError/>
 	const supabase = await createClient();
 	const student_sessions = await getStudentSessionJoin(supabase, {
 		student_id: user.user_id,

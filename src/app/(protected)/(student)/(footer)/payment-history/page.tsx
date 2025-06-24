@@ -2,7 +2,6 @@ import React from "react";
 import PaymentTable from "@/components/app/features/payment/payment-table";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
-import { getStudentSession } from "@/data/queries/student-session/get-student-session";
 import GeneralError from "@/components/app/shared/error";
 import { Roboto_Mono } from "next/font/google";
 import clsx from "clsx";
@@ -27,7 +26,7 @@ const page = async () => {
 
 	return (
 		<>
-			<div className="my-10 ml-[18vw] px-3 mx-auto max-w-4xl w-full">
+			<div className="my-10 mx-auto max-w-5xl">
 				<h2
 					className={clsx(
 						"text-3xl font-semibold my-15",
@@ -35,7 +34,7 @@ const page = async () => {
 					)}>
 					Purchase history
 				</h2>
-				<div className="mt-10 w-full">
+				<div className="mt-10">
 					<PaymentTable data={student_session_result} />
 				</div>
 			</div>

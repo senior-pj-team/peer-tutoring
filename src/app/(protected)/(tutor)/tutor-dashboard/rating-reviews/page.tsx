@@ -13,7 +13,7 @@ const page = () => {
 				<span className="hidden sm:inline">|</span>
 				<span>86 ratings and reviews</span>
 			</div>
-			<ReviewDialogContent />
+			{/* <ReviewDialogContent /> */}
 		</>
 	);
 };

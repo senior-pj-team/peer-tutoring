@@ -21,7 +21,6 @@ const SessionList = async ({
 			{sessions.rows.map((session) => (
 				<GeneralSessionCard
 					key={session.session_id}
-					page="browse"
 					className="rounded-none"
 					content={session}
 					type={""}

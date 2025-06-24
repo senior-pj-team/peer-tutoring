@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { ChatListServer } from "./chat-list-server";
 import ConversationServer from "./conversation-server";
 import SelectConversation from "./select-convo";
+import ConversationLoading from "../../shared/ConversationLoading";
+import ChatListLoading from "../../shared/ChatListLoading";
 
 export default function ChatLayout({ chatId }: { chatId: string | null }) {
     return (
@@ -16,10 +19,14 @@ export default function ChatLayout({ chatId }: { chatId: string | null }) {
 
             {/* Desktop */}
             <div className="hidden lg:grid grid-cols-4 mt-20">
-                <ChatListServer selectedChatId={chatId}/>
+                <Suspense fallback={<ChatListLoading/>}>
+                    <ChatListServer selectedChatId={chatId}/>
+                </Suspense>
                 <div className="col-span-3">
                     {chatId ? (
-                        <ConversationServer chatId={chatId}/>
+                        <Suspense fallback={<ConversationLoading/>}>
+                            <ConversationServer chatId={chatId}/>
+                        </Suspense>
                     ) : (
                         <SelectConversation/>
                     )}

@@ -19,16 +19,20 @@ export default function Step3() {
       <h2 className="text-lg font-semibold">Confirm your application</h2>
 
       <div className="border rounded-lg p-6 max-w-sm w-full bg-white shadow-sm">
-        <p className="text-sm font-medium">Admins will validate the application</p>
+        <p className="text-sm font-medium">
+          Admins will validate the application
+        </p>
         <p className="text-sm text-muted-foreground mt-1">
-          This typically takes 1–2 working days. We'll notify you once your account is approved.
+          This typically takes 1–2 working days. We'll notify you once your
+          account is approved.
         </p>
       </div>
 
       <div className="flex items-center gap-2 mt-1">
         <CheckCircleIcon className="w-4 h-4 text-green-500" />
         <span className="text-xs text-muted-foreground">
-          You'll receive an email notification when your application is processed
+          You'll receive an email notification when your application is
+          processed
         </span>
       </div>
 
@@ -37,24 +41,23 @@ export default function Step3() {
           control={form.control}
           name="isChecked"
           render={({ field }) => (
-            <FormItem className="flex items-start space-x-2 space-y-0">
+            <FormItem className="flex items-center space-x-2 space-y-0">
               <FormControl>
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <div className="space-y-1 leading-none text-sm">
-                  I agree to the{" "}
-                  <a
-                    href="/terms"
-                    target="_blank"
-                    className="underline hover:text-orange-800"
-                  >
-                    Terms and Conditions
-                  </a>
-                <FormMessage className="mt-3"/>
-              </div>
+              <FormLabel>
+                I agree to the{" "}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  className="underline hover:text-orange-800"
+                >
+                  Terms and Conditions
+                </a>
+              </FormLabel>
             </FormItem>
           )}
         />

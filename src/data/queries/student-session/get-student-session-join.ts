@@ -46,8 +46,9 @@ export const getStudentSessionJoin = async (
 
   if(offset && limit) query= query.range(offset, limit)
 
-	const { data, error } = await query;
+  query = query.order('created_at', { ascending: false })
 
+	const { data, error } = await query;
 	if (error) {
 		console.log("Error fetching session info:", error);
 		return null;

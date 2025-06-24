@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import SessionHeader from "@/components/app/features/session/session-header";
 import ReviewRatingAction from "@/components/app/features/session/review-rating-action";
@@ -15,6 +15,7 @@ import { getSessionMatViewbyId } from "@/data/queries/sessions/get-session-mat-v
 import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
+import GeneralLoading from "@/components/app/shared/GeneralLoading";
 
 type Params = Promise<{
 	session_id: string;
@@ -104,46 +105,19 @@ const Page = async ({ params }: { params: Params }) => {
 							</TabsContent>
 
 							<TabsContent value="tutor">
-								<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
+								<Suspense fallback={<GeneralLoading/>}>
+									<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
+								</Suspense>
 							</TabsContent>
 						</div>
 
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-<<<<<<< HEAD:src/app/home/session/[page]/[session_id]/page.tsx
-							{page === "complete" || page == "archived" ? (
-								<ReviewRatingAction
-									ssId={19}
-									toReport={page == "complete"}
-								/>
-							) : (
-								<></>
-							)}
-							{page === "upcoming" && (
-								<UpcomingAction
-									start={sessionData.start_time}
-									sessionId={6}
-									ssId={16}
-								/>
-							)}
-							{page === "browse" && (
-								<EnrollAction
-									session_id={sessionData.session_id!}
-									start_time={sessionData.start_time ?? ""}
-									price={sessionData.price}
-									service_fee={sessionData.service_fee}
-								/>
-							)}
-							{page === "refund" && (
-								<RefundStatus sessionId={Number(session_id)} />
-							)}
-=======
 							<EnrollAction
 								session_id={sessionData.session_id!}
 								start_time={sessionData.start_time ?? ""}
 								price={sessionData.price}
 								service_fee={sessionData.service_fee}
 							/>
->>>>>>> main:src/app/home/session/[session_id]/page.tsx
 						</aside>
 					</div>
 				</Tabs>

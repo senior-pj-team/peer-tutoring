@@ -13,6 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 export default function Step1() {
   const webcamRef = useRef<Webcam>(null);
@@ -66,27 +68,95 @@ export default function Step1() {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-4">
-        {fields.map(({ name, label, placeholder }) => (
-          <FormField
-            key={name}
-            control={form.control}
-            name={name as any}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[1rem]">{label}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={placeholder}
-                    {...field}
-                    value={field.value?.toString() || ""}
-                    className="bg-slate-50"
-                  />
-                </FormControl>
-                <FormMessage className="text-sm" />
-              </FormItem>
-            )}
-          />
-        ))}
+        <FormField
+          control={form.control}
+          name="school"
+          render={({ field }) => (
+            <FormItem className="grid w-full items-center gap-y-2">
+              <FormLabel className="text-xs md:text-sm">School</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="Enter your school"
+                  value={field.value?.toString() || ""}
+                  className="text-[0.6rem] md:text-sm"
+                  disabled={false}
+                />
+              </FormControl>
+              <FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="major"
+          render={({ field }) => (
+            <FormItem className="grid w-full items-center gap-y-2">
+              <FormLabel className="text-xs md:text-sm">Major</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="Enter your major"
+                  value={field.value?.toString() || ""}
+                  className="text-[0.6rem] md:text-sm"
+                  disabled={false}
+                />
+              </FormControl>
+              <FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="year"
+          render={({ field }) => (
+            <FormItem className="grid w-full items-center gap-y-2">
+              <FormLabel className="text-xs md:text-sm">Year</FormLabel>
+              <FormControl>
+                <Select
+                  {...field}
+                  disabled={false}
+                  value={field.value ? field.value?.toString() : undefined}
+                  onValueChange={(val) => field.onChange(Number(val))}>
+                  <SelectTrigger className="text-[0.6rem] md:text-sm w-[95%]">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Year</SelectLabel>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone_number"
+          render={({ field }) => (
+            <FormItem className="grid w-full items-center gap-y-2">
+              <FormLabel className="text-xs md:text-sm">
+                Phone Number
+              </FormLabel>
+              <FormControl className="w-full text-[0.6rem] md:text-sm">
+                <PhoneInput
+                  defaultCountry="TH"
+                  {...field}
+                  placeholder="Enter phone number"
+                  value={field.value?.toString() || ""}
+                  disabled={false}
+                />
+              </FormControl>
+              <FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+            </FormItem>
+          )}
+        />
       </div>
 
       <div className="mt-1">
@@ -104,7 +174,7 @@ export default function Step1() {
                   {capturedImage || form.getValues("studentIdPhoto") ? (
                     <div>
                       <Image
-                        src={capturedImage?? form.getValues("studentIdPhoto")}
+                        src={capturedImage ?? form.getValues("studentIdPhoto")}
                         alt="Captured"
                         width={300}
                         height={300}

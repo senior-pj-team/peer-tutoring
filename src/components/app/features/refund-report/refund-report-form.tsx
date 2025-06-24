@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronDown, CircleCheck, TriangleAlertIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useActionState } from "react";
 import { submitRefundOrReport } from "@/actions/submit-refund-report";
 import { sendEmail } from "@/actions/send-email";

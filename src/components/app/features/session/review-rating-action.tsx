@@ -4,15 +4,6 @@ import RefundReportBtn from "../refund-report/refund-report-btn";
 import ShowReviewRating from "../rating-review/show-review-rating";
 import { Skeleton } from "@/components/ui/skeleton";
 
-<<<<<<< HEAD
-const ReviewRatingAction = ({ssId, toReport}: {ssId: number | null, toReport: boolean}) => {
-
-	return (
-		<>
-			<ShowReviewRating ssId={ssId}/>
-			<RatingReviewBtn ssId={ssId}/>
-			{toReport && <RefundReportBtn isReport={true} ssId={ssId}/>}
-=======
 const ReviewRatingAction = ({
 	ssId,
 	toReport,
@@ -32,7 +23,6 @@ const ReviewRatingAction = ({
 
 			<RatingReviewBtn ssId={ssId} />
 			{toReport && <RefundReportBtn isReport={true} ssId={ssId} />}
->>>>>>> main
 		</>
 	);
 };

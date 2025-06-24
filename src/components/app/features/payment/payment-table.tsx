@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDate, parseISO } from "date-fns";
 import { Fragment } from "react";
 
 const PaymentTable = ({
@@ -8,7 +9,7 @@ const PaymentTable = ({
   data: TStudentSessionJoinResult[];
 }) => {
   return (
-    <div className="w-[100vw] mt-6 overflow-x-auto">
+    <div className="mt-6 overflow-x-auto">
       <div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">
         <table className="min-w-full text-sm text-gray-700">
           <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-600">
@@ -34,7 +35,7 @@ const PaymentTable = ({
                       {eachData.sessions?.session_name || "-"}
                     </td>
                     <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-                      {eachData.created_at}
+                      {formatDate(parseISO(eachData.created_at?? ""),"yyy MMMM dd")}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
                       {eachData.amount_from_student}
@@ -57,7 +58,7 @@ const PaymentTable = ({
                       {eachData.sessions?.session_name || "-"}
                     </td>
                     <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-                      {eachData.held_until}
+                      {formatDate(parseISO(eachData.held_until?? ""),"yyy MMMM dd")}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
                       {eachData.refunded_amount}

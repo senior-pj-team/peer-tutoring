@@ -16,17 +16,11 @@ const initialState: ActionResponseType<string> = {
 };
 
 const RatingReviewForm = ({
-<<<<<<< HEAD
-  ssId,
-}: {
-  ssId: number | null;
-=======
 	ssId,
 	setOpen,
 }: {
 	ssId: number | null;
 	setOpen: Dispatch<SetStateAction<boolean>>;
->>>>>>> main
 }) => {
 	const [rating, setRating] = useState(0);
 	const [review, setReview] = useState("");
@@ -35,7 +29,7 @@ const RatingReviewForm = ({
 		submitRatingReview,
 		initialState,
 	);
-
+	
 	useEffect(() => {
 		if (state.success) {
 			setOpen(false);
@@ -76,34 +70,6 @@ const RatingReviewForm = ({
 				<span className="text-xs text-red-500">{state.error.message}</span>
 			)}
 
-<<<<<<< HEAD
-  return (
-    <div>
-      <Dialog open={dialogOpen} onOpenChange={(open) => setDialogOpen(open)}>
-        <DialogTrigger asChild>
-          <div className="mt-4 text-right">
-            <Button
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm cursor-pointer"
-              onClick={() => setDialogOpen(true)}
-            >
-              Submit
-            </Button>
-          </div>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <form
-            action={action}
-            onSubmit={(e) => {
-              if (!rating || !review.trim()) {
-                e.preventDefault();
-                alert("Please provide a rating and a review.");
-              }
-            }}
-          >
-            <input type="hidden" name="ss_id" value={ssId ?? undefined} />
-            <input type="hidden" name="rating" value={rating} />
-            <input type="hidden" name="review" value={review} />
-=======
 			<form
 				action={action}
 				onSubmit={(e) => {
@@ -112,7 +78,6 @@ const RatingReviewForm = ({
 						setError(true);
 						return;
 					}
->>>>>>> main
 
 					setError(false);
 				}}>

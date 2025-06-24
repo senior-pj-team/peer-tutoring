@@ -32,7 +32,7 @@ export function ChatList({
   useChatListRealtime(supabase, userId, handleReload);
 
   return (
-    <aside className="w-full h-[90vh] border-r bg-white flex flex-col shadow-sm">
+    <aside className="w-full min-h-[90vh] border-r bg-white flex flex-col shadow-sm">
       <div className="px-5 pb-5 pt-8 border-b">
         <h2 className="text-xl font-bold text-orange-700">Chats</h2>
       </div>

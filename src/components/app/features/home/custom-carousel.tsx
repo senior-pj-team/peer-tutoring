@@ -15,41 +15,6 @@ import TutorCard from "@/components/app/shared/tutor-card";
 import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
 import { cn } from "@/lib/utils";
 
-type MySession = {
-	id: number;
-	image: string;
-	sessionName: string;
-	courseCode: string;
-	courseName: string;
-	remainingTime: string;
-};
-
-type Tutor = {
-	name: string;
-	totalStudents: number;
-	totalSessions: number;
-	image: string;
-};
-
-type Session = {
-	id: number;
-	sessionName: string;
-	courseCode: string;
-	courseName: string;
-	school: string;
-	major: string;
-	price: string;
-	remaining: string;
-	description: string;
-	tutor: string;
-	rating: string;
-	type: string;
-	from: string;
-	to: string;
-	date: string;
-	page: string;
-};
-
 export default function CustomCarousel({
 	user,
 	sessions,

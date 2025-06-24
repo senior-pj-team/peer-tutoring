@@ -3,10 +3,18 @@ import { tutorFormSchemaT } from "@/schema/tutor-form-schema";
 
 type Params = {
   userData?: TProfileSchemaServer;
-  tutorData?: tutorFormSchemaT;
+  tutorData?: TTutorData;
   uploadedUrl: string | null;
   user_id: string;
 };
+
+type TTutorData= {
+  school: string;
+  major: string;
+  year: string;
+  phone_number: string;
+  studentId_photo: string;
+}
 
 export async function updateUser(
   supabase: TSupabaseClient,

@@ -42,11 +42,13 @@ type Step2Props = {
 export default function Step2({ bankData }: Step2Props) {
   const form = useFormContext();
   const [useExisting, setUseExisting] = useState(false);
+
   const useExistingBankInfo = () => {
     if (bankData) {
       form.setValue("bankName", bankData.bank_name ?? "");
       form.setValue("accountNumber", bankData.account_number ?? "");
       form.setValue("accountName", bankData.account_name ?? "");
+      form.setValue("type", "refund_transfer")
     }
   };
 
@@ -58,6 +60,7 @@ export default function Step2({ bankData }: Step2Props) {
       form.resetField("bankName");
       form.resetField("accountNumber");
       form.resetField("accountName");
+      form.resetField("type");
     }
   };
 

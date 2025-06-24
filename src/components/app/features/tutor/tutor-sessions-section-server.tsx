@@ -12,10 +12,10 @@ export default async function TutorSessionsSectionServer({ tutor_id }: { tutor_i
     queryKey: ['sessions', tutor_id],
     queryFn: ({ pageParam }) => fetchSessions({ pageParam, tutor_id, supabase}),
     getNextPageParam: (
-      lastPage: { rows: TSessionsMatViewResultRow[] | null; total: number | null },
-      pages: { rows: TSessionsMatViewResultRow[] | null; total: number | null }[]
+      lastPage: { rows: TSessionsMatViewResultRow[] | null; total: number | null } | null,
+      pages: ({ rows: TSessionsMatViewResultRow[] | null; total: number | null } | null)[]
     ) =>
-      lastPage?.rows?.length === LIMIT ? pages.length * LIMIT : undefined,
+      lastPage && lastPage.rows && lastPage.rows.length === LIMIT ? pages.length * LIMIT : undefined,
     initialPageParam: 0,
   });
 
