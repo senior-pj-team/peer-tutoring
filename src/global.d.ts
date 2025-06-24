@@ -61,6 +61,7 @@ declare global {
 		stripe_client_secrete: string;
 		ss_status: TStudentSessionStatus;
 		sessions: {
+			id: number | null;
 			image: string | null;
 			session_name: string | null;
 			course_code: string | null;

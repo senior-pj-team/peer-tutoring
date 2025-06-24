@@ -22,6 +22,7 @@ export const getStudentSessionJoin = async (
       stripe_client_secrete,
       ss_status: status,
       sessions (
+        id,
         image,
         session_name,
         course_code,
@@ -38,13 +39,15 @@ export const getStudentSessionJoin = async (
       )
     `,
 	);
-
+  console.log("offset: ", offset, "limit: ", limit, "student_id: ", student_id);
 	if (student_id) query = query.eq("student_id", student_id);
 	if (student_session_id) query = query.eq("id", student_session_id);
 	if (session_id) query = query.eq("session_id", session_id);
 	if (status) query = query.in("status", status);
 
-  if(offset && limit) query= query.range(offset, limit)
+  if (typeof offset === 'number' && typeof limit === 'number') {
+  query = query.range(offset, offset + limit - 1);
+}
 
   query = query.order('created_at', { ascending: false })
 

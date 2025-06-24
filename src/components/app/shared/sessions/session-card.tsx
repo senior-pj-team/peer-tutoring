@@ -57,7 +57,7 @@ const SessionCard = ({
   let course_name: string | null = "";
   let start_time: string | null = null;
   let end_time: string | null = null;
-  let profile_url: string | null = "";
+  let profile_url: string | null = "N/A";
   let username: string | null = "";
   let tutor_rating: number | null = 0;
   let tutor_id: string | null = "";
@@ -72,7 +72,7 @@ const SessionCard = ({
     course_name = student_session.sessions?.course_name ?? "";
     start_time = student_session.sessions?.start_time ?? "";
     end_time = student_session.sessions?.end_time ?? "";
-    profile_url = student_session.sessions?.tutor?.profile_url ?? "";
+    profile_url = student_session.sessions?.tutor?.profile_url ?? "N/A";
     username = student_session.sessions?.tutor?.username ?? "";
     tutor_rating = student_session.sessions?.tutor?.tutor_rating ?? 0;
     tutor_id = student_session.sessions?.tutor?.id ?? "";
@@ -86,7 +86,7 @@ const SessionCard = ({
     start_time = refund_report.student_session.session.start_time ?? "";
     end_time = refund_report.student_session.session.end_time ?? "";
     profile_url =
-      refund_report.student_session.session.tutor?.profile_url ?? "";
+      refund_report.student_session.session.tutor?.profile_url ?? "NA";
     username = refund_report.student_session.session.tutor?.username ?? "";
     tutor_rating =
       refund_report.student_session.session?.tutor?.tutor_rating ?? 0;
@@ -100,6 +100,8 @@ const SessionCard = ({
     ss_status == "enrolled" ? getRemainingTime(start_time) : undefined;
   const router = useRouter();
   const handleCardClick = () => {
+    if(page="browse") return router.push(`/home/session/${student_session?.sessions?.id?? ""}`)
+
     const nextPage =
       page === "admin"
         ? `/admin-dashboard/session/${1}/content`
@@ -227,7 +229,7 @@ const SessionCard = ({
               <div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
                 <Avatar>
                   <AvatarImage
-                    src={profile_url ?? ""}
+                    src={profile_url}
                     width={50}
                     height={50}
                     alt="User Avatar"
