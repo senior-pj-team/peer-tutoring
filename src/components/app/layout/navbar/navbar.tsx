@@ -10,8 +10,6 @@ import clsx from "clsx";
 import CustomSheet from "./custom-sheet";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { useNotificationsNavBar } from "@/hooks/use-notifications";
@@ -106,9 +104,17 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 
 				{user ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
-						<Link href="/become-tutor">
-							<HoverCustomCard content="Become a tutor" />
-						</Link>
+						{user.user_role === "student" && (
+							<Link href="/become-tutor">
+								<HoverCustomCard content="Become a tutor" />
+							</Link>
+						)}
+						{user.user_role === "tutor" && (
+							<Link href="/tutor-dashboard/sessions/upcoming-sessions">
+								<HoverCustomCard content="Go to tutor dashboard" />
+							</Link>
+						)}
+
 						<Link href="/my-sessions/upcoming-sessions">
 							<HoverCustomCard content="MySessions" ss={mySessions} />
 						</Link>

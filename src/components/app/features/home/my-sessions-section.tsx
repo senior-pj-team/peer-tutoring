@@ -1,64 +1,63 @@
 import CustomCarousel from "@/components/app/features/home/custom-carousel";
+import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
+import { getUserSession } from "@/utils/get-user-session";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
-export default function MySessionsSection() {
-	const sessions = [
-		{
-			id: 1,
-			image: "/React.png",
-			sessionName: "Example session name",
-			courseCode: "10125",
-			courseName: "Web development",
-			remainingTime: "15hr",
-		},
-		{
-			id: 2,
-			image: "/Chinese.jpg",
-			sessionName: "Example session name",
-			courseCode: "10125",
-			courseName: "Web development",
-			remainingTime: "15hr",
-		},
-		{
-			id: 3,
-			image: "/Courses.jpg",
-			sessionName: "Example session name",
-			courseCode: "10125",
-			courseName: "Web development",
-			remainingTime: "15hr",
-		},
-		{
-			id: 4,
-			image: "/React.png",
-			sessionName: "Example session name",
-			courseCode: "10125",
-			courseName: "Web development",
-			remainingTime: "15hr",
-		},
-		{
-			id: 5,
-			image: "/Chinese.jpg",
-			sessionName: "Example session name",
-			courseCode: "10125",
-			courseName: "Web development",
-			remainingTime: "15hr",
-		},
-	];
+export default async function MySessionsSection() {
+	const user = await getUserSession();
+	if (!user) {
+		return null;
+	}
+	const supabase = await createClient();
+	const student_sessions = await getStudentSessionJoin(supabase, {
+		student_id: user.user_id,
+		status: ["enrolled"],
+	});
+	if (!student_sessions)
+		return (
+			<div className="mt-5 px-10 w-full h-85">
+				<div className="text-3xl font-bold tracking-wider">
+					<span>My Upcoming Sessions 📗</span>
+				</div>
+				<div className="flex w-full h-full justify-center items-center ">
+					<span className="font-bold text-gray-400 md:text-xl text-lg">
+						Something went wrong 🚩
+					</span>
+				</div>
+			</div>
+		);
+
+	if (student_sessions.length < 1) {
+		return (
+			<div className="mt-5 px-10 w-full h-85">
+				<div className="text-3xl font-bold tracking-wider">
+					<span>My Upcoming Sessions 📗</span>
+				</div>
+				<div className="flex w-full h-full justify-center items-center ">
+					<span className="font-bold text-gray-400 md:text-xl text-lg">
+						You don't have upcoming sessions for now 👽
+					</span>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="mt-5 px-10">
 			<div className="flex items-center justify-between">
 				<div className="text-3xl font-bold tracking-wider">
-					My Upcoming Sessions
+					My Upcoming Sessions 📗
 				</div>
 
 				<Link
-					href="/"
+					href="/my-sessions/upcoming-sessions"
 					className="text-orange-400 underline hover:text-orange-500 hover:bg-orange-100 py-2 px-3 text-md font-bold leading-5.5 rounded-sm hidden md:block">
 					View my sessions
 				</Link>
 			</div>
 
-			<CustomCarousel content={sessions} />
+			<CustomCarousel my_sessions={student_sessions} />
 		</div>
 	);
 }

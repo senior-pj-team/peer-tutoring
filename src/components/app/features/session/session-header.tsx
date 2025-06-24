@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import Rating from "@/components/app/features/rating-review/rating";
-import clsx from "clsx";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
+import { cn } from "@/lib/utils";
 
 type TSessionHeaderData = {
 	image: string | null;
@@ -11,6 +14,8 @@ type TSessionHeaderData = {
 	school: string | null;
 	major: string | null;
 	tutor_name: string | null;
+	tutor_profile_url: string | null;
+	tutor_id: string;
 	tutor_rating: number | null;
 	session_status: string | null;
 };
@@ -25,9 +30,10 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 		tutor_name,
 		tutor_rating,
 		session_status,
+		tutor_profile_url,
+		tutor_id,
 		image,
 	} = data;
-	const status = "OPEN";
 	return (
 		<div className="bg-white ps-6">
 			<div className="flex flex-col relative">
@@ -43,11 +49,19 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 							</div>
 						</div>
 						<div className="flex items-center">
-							<div className="relative w-6 h-6 rounded-full overflow-hidden me-3">
-								<Image src="/profile.jpg" alt="Tutor avatar" fill />
-							</div>
-							<div className="text-xs underline me-3">
-								<Link href={""}>{tutor_name}</Link>
+							<Avatar>
+								<AvatarImage
+									src={tutor_profile_url ?? ""}
+									width={48}
+									height={48}
+									alt="User Avatar"
+								/>
+								<AvatarFallback>
+									{getAvatarFallback(tutor_name ?? "")}
+								</AvatarFallback>
+							</Avatar>
+							<div className="text-xs underline mx-3">
+								<Link href={`/tutor-view/${tutor_id}`}>{tutor_name}</Link>
 							</div>
 							|
 							<Rating
@@ -58,12 +72,16 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 					</div>
 					<div className="mt-5">
 						<span
-							className={clsx(
+							className={cn(
 								"inline-block text-xs font-semibold px-3 py-1 rounded-full",
-								{
-									"bg-green-100 text-green-800": status === "OPEN",
-									// "bg-red-100 text-red-800": status === "CLOSED",
-								},
+
+								session_status === "open" ||
+									session_status === "completed" ||
+									session_status === "enrolled"
+									? "bg-green-100 text-green-800"
+									: session_status === "closed"
+										? "bg-red-100 text-red-800"
+										: "bg-orange-100 text-orange-800",
 							)}>
 							Status: {session_status}
 						</span>
@@ -71,12 +89,18 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 				</div>
 
 				<div className="absolute right-0 top-0 bottom-0 lg:w-[70%] w-[50%] z-0">
-					<Image
-						src={image ?? "/React.png"}
-						alt="Session Banner"
-						fill
-						className="object-cover"
-					/>
+					{image ? (
+						<Image
+							src={image}
+							sizes="100vw"
+							alt="Session Banner"
+							fill
+							className="object-cover"
+						/>
+					) : (
+						<div className="w-full h-full bg-gray-300"></div>
+					)}
+
 					<div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent"></div>
 				</div>
 			</div>

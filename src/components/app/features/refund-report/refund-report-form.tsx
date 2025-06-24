@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,19 +22,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { ChevronDown, CircleCheck, TriangleAlertIcon } from "lucide-react";
 import { useActionState } from "react";
 import { submitRefundOrReport } from "@/actions/submit-refund-report";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { sendEmail } from "@/actions/send-email";
+import { getUserSession } from "@/utils/get-user-session";
 import { insertNotification } from "@/data/mutations/notification/insert-notification";
 import { useSupabase } from "@/hooks/use-supabase";
-import { getUserSession } from "@/utils/get-user-session";
 
 const initialState: ActionResponseType<string> = {
   success: false,
@@ -36,10 +34,12 @@ const initialState: ActionResponseType<string> = {
 
 const RefundReportForm = ({
   isReport,
-  ssId
+  ssId,
+  setDialogOpen,
 }: {
   isReport: boolean;
   ssId: number | null;
+  setDialogOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const options = isReport
     ? [
@@ -64,8 +64,8 @@ const RefundReportForm = ({
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [check, setCheck] = useState(false);
   const [open, setOpen] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const supabase = useSupabase()
+
+  const supabase = useSupabase();
 
   const [state, formAction, isPending] = useActionState(
     submitRefundOrReport,
@@ -91,6 +91,7 @@ const RefundReportForm = ({
       setError("Please choose a reason.");
       return false;
     }
+
     setError("");
     if (textRef.current) textRef.current.style.boxShadow = "";
     return true;
@@ -128,33 +129,33 @@ const RefundReportForm = ({
       preview,
       title,
       detail,
-      to: "nwai39771@gmail.com", // Replace with dynamic user email in production
+      to: "nwai39771@gmail.com",
     });
   }, [state.success, type]);
 
-  const sendNotification =async ()=>{
+  const sendNotification = async () => {
     if (!state.success) return;
-    let title="";
-    let body="";
-    switch(type){
+    let title = "";
+    let body = "";
+    switch (type) {
       case "report":
-        title= "Report submitted";
-        body= "Your report is being processed."
+        title = "Report submitted";
+        body = "Your report is being processed.";
         break;
       case "refund":
-        title= "Refund request submitted";
-        body= "Your refund request is being processed."
+        title = "Refund request submitted";
+        body = "Your refund request is being processed.";
         break;
       case "refund and report":
-        title= "Report and refund request submitted";
-        body= "Your report and refund request is being processed."
+        title = "Report and refund request submitted";
+        body = "Your report and refund request is being processed.";
         break;
     }
-    const user= await getUserSession();
-    if(!user?.user_id) return;
-    await insertNotification(supabase, title, body, user.user_id, "student" );
-  }
-  
+    const user = await getUserSession();
+    if (!user?.user_id) return;
+    await insertNotification(supabase, title, body, user.user_id, "student");
+  };
+
   useEffect(() => {
     if (state.success || state.error.message) {
       setDialogOpen(true);
@@ -218,6 +219,10 @@ const RefundReportForm = ({
         className="h-[5rem] mt-5 w-full whitespace-normal"
         style={{ overflowWrap: "anywhere" }}
       />
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {!state.success && state.error.message && (
+        <span className="text-xs text-red-500 mt-1">{state.error.message}</span>
+      )}
 
       {isReport && (
         <label className="flex items-center space-x-2 text-xs mt-3">
@@ -231,8 +236,6 @@ const RefundReportForm = ({
         </label>
       )}
 
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
-
       <div className="mt-4 text-right">
         <Button
           type="submit"
@@ -242,35 +245,6 @@ const RefundReportForm = ({
           {isPending ? "Submitting..." : "Submit"}
         </Button>
       </div>
-
-      {/* Dialog for result feedback */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[400px]">
-          <DialogHeader className="mb-2">
-            <DialogTitle className="text-2xl">
-              {state.success ? (
-                <div className="flex items-center gap-1 text-green-500">
-                  <CircleCheck size={18} />
-                  Submitted
-                </div>
-              ) : (
-                <div className="flex items-center gap-1 text-red-500">
-                  <TriangleAlertIcon size={18} />
-                  Error
-                </div>
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          <DialogDescription className="text-sm text-gray-700">
-            {state.success ? state.data : state.error.message}
-          </DialogDescription>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Close</Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </form>
   );
 };

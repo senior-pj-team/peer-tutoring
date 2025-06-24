@@ -4,24 +4,24 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 import GeneralError from "@/components/app/shared/error";
+import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund-report-join";
 
-const Page = async () => {
+const page = async () => {
 	const user = await getUserSession();
 	if (!user) {
 		redirect("/login");
 	}
 	const supabase = await createClient();
-	const student_sessions = await getStudentSessionJoin(supabase, {
+	const data = await getRefundReportJoin(supabase, {
 		student_id: user.user_id,
-		status: ["pending_refund", "refunded"],
 	});
-	if (!student_sessions) return <GeneralError/>;
-	
+	if (!data) return <GeneralError />;
+
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-			{student_sessions.length > 0 ? (
-				student_sessions.map((ss) => (
-					<SessionCard key={ss.id} student_session={ss} page="refund" />
+			{data.length > 0 ? (
+				data.map((ss) => (
+					<SessionCard key={ss?.id} refund_report={ss} page="refund" />
 				))
 			) : (
 				<div className="col-span-full text-center text-gray-500">
@@ -32,4 +32,4 @@ const Page = async () => {
 	);
 };
 
-export default Page;
+export default page;

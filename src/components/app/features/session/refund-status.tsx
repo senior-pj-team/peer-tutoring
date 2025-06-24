@@ -1,6 +1,5 @@
 import React from "react";
 import { Clock, CheckCircle, XCircle } from "lucide-react";
-import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
 import { getRefundReport } from "@/data/queries/refund-and-report/get-refund-report";
 import { format, parseISO } from "date-fns";
@@ -23,15 +22,11 @@ const statusMap = {
 	},
 };
 
-const RefundStatus = async ({ sessionId }: { sessionId: number | null }) => {
-	const user = await getUserSession();
+const RefundStatus = async ({ ssId }: { ssId: number }) => {
 	const supabase = await createClient();
-	if (!supabase || !user || !sessionId) return <></>;
 
-	// This should return an object like: { status: "pending", reason: "...", created_at: "..." }
 	const data = await getRefundReport(supabase, {
-		session_id: sessionId,
-		student_id: user.user_id,
+		ss_id: ssId,
 	});
 	if (!data || data.length < 1)
 		return (

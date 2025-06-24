@@ -14,7 +14,10 @@ export async function BankFormServer() {
 		);
 	}
 	const supabase = await createClient();
-	const bankInfo = await getBankInfoByUser(supabase, user.user_id);
+	const bankInfo = await getBankInfoByUser(supabase, {
+		user_id: user.user_id,
+		account_type: ["refund_transfer", "student_refund"],
+	});
 	return (
 		<>
 			<BankForm bankInfo={bankInfo} />

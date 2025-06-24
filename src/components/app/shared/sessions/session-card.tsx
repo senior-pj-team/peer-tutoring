@@ -21,54 +21,78 @@ import {
 import { useRouter } from "next/navigation";
 import { getRemainingTime } from "@/utils/app/get-remaining-time";
 import { formatDate, parseISO } from "date-fns";
-import GeneralError from "../error";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 
 type SessionCardProp = {
 	student_session?: TStudentSessionJoinResult;
-
+	refund_report?: TRefundReportJoinResult;
 	status?: string;
 	enrollments?: number;
 	pending_refund_students?: number;
 	refunded_students?: number;
 	paid_students?: number;
 	action?: string;
-
 	page?: string;
 };
 
 const SessionCard = ({
 	student_session,
-
+	refund_report,
 	status,
 	enrollments,
 	pending_refund_students,
 	refunded_students,
 	paid_students,
 	action,
-
 	page,
 }: SessionCardProp) => {
-	if (!student_session) return <></>;
-	const { session_id, ss_status, sessions } = student_session;
-	if (!sessions) return <></>;
-	const {
-		image,
-		session_name,
-		course_code,
-		course_name,
-		start_time,
-		end_time,
-		tutor,
-	} = sessions;
-	if (!tutor) return <GeneralError />;
-	const {
-		profile_url: tutor_profile,
-		username: tutor_name,
-		tutor_rating,
-		id,
-	} = tutor;
+	let ss_id: number = 0;
+	let ss_status: TStudentSessionStatus | null = null;
+	let rr_status: TRefundStatus | null = null;
+	let image: string | null = "";
+	let session_name: string | null = "";
+	let course_code: string | null = "";
+	let course_name: string | null = "";
+	let start_time: string | null = null;
+	let end_time: string | null = null;
+	let profile_url: string | null = "";
+	let username: string | null = "";
+	let tutor_rating: number | null = 0;
+	let tutor_id: string | null = "";
+	if (!student_session && !refund_report) return null;
+
+	if (student_session) {
+		ss_id = student_session.id;
+		ss_status = student_session.ss_status;
+		image = student_session.sessions?.image ?? "";
+		session_name = student_session.sessions?.session_name ?? "";
+		course_code = student_session.sessions?.course_code ?? "";
+		course_name = student_session.sessions?.course_name ?? "";
+		start_time = student_session.sessions?.start_time ?? "";
+		end_time = student_session.sessions?.end_time ?? "";
+		profile_url = student_session.sessions?.tutor?.profile_url ?? "";
+		username = student_session.sessions?.tutor?.username ?? "";
+		tutor_rating = student_session.sessions?.tutor?.tutor_rating ?? 0;
+		tutor_id = student_session.sessions?.tutor?.id ?? "";
+	} else if (refund_report) {
+		ss_id = refund_report.ss_id;
+		rr_status = refund_report.status;
+		image = refund_report.student_session.session.image ?? "";
+		session_name = refund_report.student_session.session.session_name ?? "";
+		course_code = refund_report.student_session.session.course_code ?? "";
+		course_name = refund_report.student_session.session.course_name ?? "";
+		start_time = refund_report.student_session.session.start_time ?? "";
+		end_time = refund_report.student_session.session.end_time ?? "";
+		profile_url =
+			refund_report.student_session.session.tutor?.profile_url ?? "";
+		username = refund_report.student_session.session.tutor?.username ?? "";
+		tutor_rating =
+			refund_report.student_session.session?.tutor?.tutor_rating ?? 0;
+		tutor_id = refund_report.student_session.session.tutor?.id ?? "";
+	}
+
 	const start = formatDate(parseISO(start_time ?? "NA"), "HH:mm");
 	const end = formatDate(parseISO(end_time ?? "NA"), "HH:mm");
 	const date = formatDate(parseISO(start_time ?? "NA"), "yy MMMM dd");
@@ -81,7 +105,7 @@ const SessionCard = ({
 				? `/admin-dashboard/session/${1}/content`
 				: page === "tutor"
 					? `/tutor-dashboard/session/${1}/content`
-					: `/home/session/${page}/${session_id}`;
+					: `/my-session/${page}/${ss_id}`;
 
 		router.push(nextPage);
 	};
@@ -132,14 +156,18 @@ const SessionCard = ({
 							<span>{remaining_time}</span>
 						</div>
 					)}
-					{ss_status === "refunded" && (
+					{rr_status && (
 						<div className="flex items-center gap-1 text-xs shrink-0 mt-1">
-							<span className="text-green-500">{ss_status}</span>
-						</div>
-					)}
-					{ss_status == "pending_refund" && (
-						<div className="flex items-center gap-1 text-xs shrink-0 mt-1">
-							<span className="text-yellow-500">pending</span>
+							<span
+								className={cn(
+									rr_status === "approved"
+										? "text-green-500"
+										: rr_status === "rejected"
+											? "text-red-500"
+											: "text-yellow-500",
+								)}>
+								{rr_status}
+							</span>
 						</div>
 					)}
 				</CardTitle>
@@ -190,21 +218,21 @@ const SessionCard = ({
 							<div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
 								<Avatar>
 									<AvatarImage
-										src={tutor_profile ?? ""}
+										src={profile_url ?? ""}
 										width={50}
 										height={50}
 										alt="User Avatar"
 									/>
-									<AvatarFallback className="flex items-center justify-center w-full h-full text-center">
-										{tutor_name && getAvatarFallback(tutor_name)}
+									<AvatarFallback className="flex items-center justify-center w-full h-full text-center bg-gray-200">
+										{username && getAvatarFallback(username)}
 									</AvatarFallback>
 								</Avatar>
 							</div>
 							<div className="text-xs underline me-3">
 								<Link
-									href={`/tutor-view/${id}`}
+									href={`/tutor-view/${tutor_id}`}
 									onClick={(e) => e.stopPropagation()}>
-									{tutor_name ?? "Unknown tutor"}
+									{username ?? "Unknown tutor"}
 								</Link>
 							</div>
 							|

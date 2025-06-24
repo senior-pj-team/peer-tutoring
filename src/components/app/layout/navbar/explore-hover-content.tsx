@@ -1,4 +1,5 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
+import Link from "next/link";
 
 export default function ExploreHoverContent() {
 	return (
@@ -8,12 +9,33 @@ export default function ExploreHoverContent() {
 			</div>
 			<hr />
 			<div className="flex flex-col  my-2">
-				<ContentItem content="Science" />
-				<ContentItem content="Technology" />
-				<ContentItem content="Libral Arts" />
-				<ContentItem content="Business" />
-				<ContentItem content="Engineering" />
-				<ContentItem content="Elective Courses" />
+				<Link href="/home/sessions?category=Science&page=1">
+					<ContentItem content="Science" />
+				</Link>
+				<Link href="/home/sessions?category=Technology&page=1">
+					<ContentItem content="Technology" />
+				</Link>
+
+				<Link href="/home/sessions?category=Libral Arts&page=1">
+					<ContentItem content="Libral Arts" />
+				</Link>
+
+				<Link href="/home/sessions?category=Business&page=1">
+					<ContentItem content="Business" />
+				</Link>
+
+				<Link href="/home/sessions?category=Engineering&page=1">
+					{" "}
+					<ContentItem content="Engineering" />
+				</Link>
+
+				<Link href="/home/sessions?category=Health Science&page=1">
+					<ContentItem content="Health Science" />
+				</Link>
+
+				<Link href="/home/sessions?category=Elective Courses&page=1">
+					<ContentItem content="Elective Courses" />
+				</Link>
 			</div>
 		</HoverCardContent>
 	);

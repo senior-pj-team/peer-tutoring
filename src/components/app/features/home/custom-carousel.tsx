@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import TutorCard from "@/components/app/shared/tutor-card";
 import GeneralSessionCard from "@/components/app/shared/sessions/general-session-card";
+import { cn } from "@/lib/utils";
 
 type MySession = {
 	id: number;
@@ -50,10 +51,16 @@ type Session = {
 };
 
 export default function CustomCarousel({
-	content,
+	user,
+	sessions,
+	my_sessions,
+	tutors,
 	type,
 }: {
-	content: MySession[] | Tutor[] | Session[];
+	user?: UserSession | null;
+	sessions?: TSessionsMatViewResultRow[];
+	my_sessions?: TStudentSessionJoinResult[];
+	tutors?: TTutorWithStatsResult;
 	type?: string;
 }) {
 	const [api, setApi] = useState<CarouselApi>();
@@ -83,59 +90,51 @@ export default function CustomCarousel({
 				}}
 				className="mt-4 relative">
 				<CarouselContent className="-ml-4">
-					{!type &&
-						content.map((c, index) => {
-							if ("remainingTime" in c) {
-								return (
-									<CarouselItem
-										key={index}
-										className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5 ">
-										<SessionCard
-											id={c.id}
-											image={c.image}
-											sessionName={c.sessionName}
-											courseCode={c.courseCode}
-											courseName={c.courseName}
-											remainingTime={c.remainingTime}
-										/>
-									</CarouselItem>
-								);
-							} else if ("totalStudents" in c) {
-								return (
-									<CarouselItem
-										key={index}
-										className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
-										<TutorCard
-											name={c.name}
-											totalSessions={c.totalSessions}
-											totalStudents={c.totalStudents}
-											image={c.image}
-										/>
-									</CarouselItem>
-								);
-							}
-							return null;
-						})}
-					{(type == "free" || type == "closing") &&
-						content.map((c, index) => {
-							if ("type" in c) {
-								return (
-									<CarouselItem
-										key={index}
-										className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
-										<GeneralSessionCard page="browse" content={c} type={type} />
-									</CarouselItem>
-								);
-							}
-							return null;
-						})}
+					{my_sessions &&
+						!type &&
+						my_sessions.map((session) => (
+							<CarouselItem
+								key={session.id}
+								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
+								<SessionCard student_session={session} page="upcoming" />
+							</CarouselItem>
+						))}
+					{tutors &&
+						!type &&
+						tutors.map((tutor) => (
+							<CarouselItem
+								key={tutor.tutor_id}
+								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
+								<TutorCard tutor={tutor} user={user ?? null} />
+							</CarouselItem>
+						))}
+					{sessions &&
+						(type == "free" || type == "closing") &&
+						sessions.map((session) => (
+							<CarouselItem
+								key={session.session_id}
+								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
+								<GeneralSessionCard content={session} type={type} />
+							</CarouselItem>
+						))}
 				</CarouselContent>
+
 				{canScrollPrev && (
-					<CarouselPrevious className="absolute -left-5 top-1/3 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer z-20" />
+					<CarouselPrevious
+						className={cn(
+							"absolute -left-5  drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer z-20",
+							tutors ? "top-1/3" : "top-2/7",
+						)}
+					/>
 				)}
 
 				{canScrollNext && (
-					<CarouselNext className="absolute -right-5 top-1/3 drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer z-20" />
+					<CarouselNext
+						className={cn(
+							"absolute -right-5  drop-shadow-2xl w-12 h-12 hover:bg-orange-400/90 hover:text-white cursor-pointer z-20",
+							tutors ? "top-1/3" : "top-2/7",
+						)}
+					/>
 				)}
 			</Carousel>
 			<div className="py-2 text-center text-sm text-muted-foreground"></div>

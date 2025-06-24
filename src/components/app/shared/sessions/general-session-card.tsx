@@ -5,48 +5,59 @@ import Image from "next/image";
 import Rating from "../../features/rating-review/rating";
 import { ClockAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
-import clsx from "clsx";
 import { CustomHoverCard } from "./custom-hover-card";
+import { shimmer, toBase64 } from "@/utils/app/shimmer";
+import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { cn } from "@/lib/utils";
 
 export default function GeneralSessionCard({
 	content,
 	type,
 	className,
-	page,
 }: {
 	content: TSessionsMatViewResultRow;
 	type?: string;
 	className?: string;
-	page: string;
 }) {
 	const router = useRouter();
 
 	return (
 		<div>
 			<Card
-				className={clsx(
+				className={cn(
 					"cursor-pointer pt-0 pb-2 px-3 border-none shadow-none group",
 					className,
 				)}
 				onClick={() => {
-					router.push(`/home/session/${page}/${content.session_id}`);
+					router.push(`/home/session/${content.session_id}`);
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>
 						{" "}
 						<CardHeader className="px-0 m-0 gap-0">
 							<div
-								className={clsx(
-									"relative w-full h-38 mb-2 group rounded-md bg-blue-50",
+								className={cn(
+									"relative w-full h-40 mb-2 group rounded-md bg-gray-100",
 									className,
 								)}>
-								<Image
-									src={content.image ?? "/no-image.png"}
-									sizes="38"
-									alt="Card image"
-									fill
-									className={clsx("object-cover rounded-md", className)}
-								/>
+								{content.image ? (
+									<Image
+										placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(40, 40))}`}
+										src={content.image}
+										sizes="
+    											(max-width: 640px) 100vw,   
+    											(max-width: 1024px) 50vw,   
+    											33vw                         
+  											"
+										alt="Card image"
+										fill
+										className={cn("object-cover rounded-md", className)}
+									/>
+								) : (
+									<span className="flex items-center justify-center w-full h-full text-gray-500">
+										No Image
+									</span>
+								)}
 								<div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200 rounded-md" />
 							</div>
 
@@ -78,7 +89,7 @@ export default function GeneralSessionCard({
 								{type === "closing" && (
 									<div className="flex items-center gap-1 ">
 										<span className="text-[0.75rem] text-red-800 font-bold">
-											remaining 1hr
+											{getRemainingTime(content.start_time)}
 										</span>
 										<ClockAlert
 											size={15}
@@ -89,7 +100,7 @@ export default function GeneralSessionCard({
 							</div>
 						</CardHeader>
 					</HoverCardTrigger>
-					<CustomHoverCard content={content} page={page} />
+					<CustomHoverCard content={content} />
 				</HoverCard>
 			</Card>
 		</div>

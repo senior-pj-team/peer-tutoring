@@ -1,26 +1,38 @@
 import React from "react";
-import { Hourglass } from "lucide-react";
 import RefundReportBtn from "../refund-report/refund-report-btn";
 import { getRemainingTime } from "@/utils/app/get-remaining-time";
 
-const UpcomingAction = ({ start, ssId, sessionId }: { start: string | null, ssId: number | null, sessionId: number | null }) => {
-  const remainingTime = getRemainingTime(start);
-  return (
-    <>
-      <p className="text-sm font-medium">
-        <Hourglass className="w-4 h-4 text-orange-500 font-bold inline me-1" />
-        {remainingTime == "Started" && <span>Session has started</span>}
-        {remainingTime == "Soon" && <span> Session is about to start</span>}
-        {remainingTime == "Invalid time" && (
-          <span>
-            Only <span className="font-bold">{remainingTime}</span> left until
-            session starts!
-          </span>
-        )}
-      </p>
-      <RefundReportBtn isReport={false} ssId={ssId} sessionId={sessionId}/>
-    </>
-  );
+const UpcomingAction = ({
+	start,
+	ssId,
+}: {
+	start: string | null;
+	ssId: number | null;
+}) => {
+	const remainingTime = getRemainingTime(start);
+
+	return (
+		<>
+			<div className="text-xs text-gray-400 font-bold mb-3">
+				You can request refund before the session starts
+			</div>
+			<p className="text-[0.95rem] font-bold">
+				{remainingTime == "Started" && (
+					<span>Session has already started ⌛</span>
+				)}
+				{remainingTime == "Soon" && <span> Session is about to start ⌛</span>}
+				{remainingTime !== "Started" &&
+					remainingTime !== "Invalid time" &&
+					remainingTime !== "Soon" && (
+						<span>
+							Only <span className="font-extrabold">{remainingTime}</span> left
+							until session starts ⌛!
+						</span>
+					)}
+			</p>
+			<RefundReportBtn isReport={false} ssId={ssId} />
+		</>
+	);
 };
 
 export default UpcomingAction;

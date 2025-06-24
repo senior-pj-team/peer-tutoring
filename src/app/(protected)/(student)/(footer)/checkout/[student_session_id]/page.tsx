@@ -53,8 +53,12 @@ export default async function page({ params }: { params: Params }) {
 									<span>Quantity:</span>
 									<span>Price:</span>
 								</div>
-								<div className="flex flex-col gap-y-4 text-[0.85rem] font-bold text-gray-700">
-									<div>{student_session_data.sessions?.session_name}</div>
+
+								{/* values */}
+								<div className="flex flex-col gap-y-4 text-[0.85rem] font-bold text-gray-700 flex-1">
+									<div className="max-w-[200px] truncate">
+										{student_session_data.sessions?.session_name}
+									</div>
 									<span>1</span>
 									<span>{student_session_data.amount_from_student} ฿</span>
 								</div>

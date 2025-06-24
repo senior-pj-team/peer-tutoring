@@ -14,6 +14,10 @@ declare global {
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
+		username: string | null;
+		profile_url: string | null;
+		school: string | null;
+		major: string | null;
 		email: string;
 		tutor_rating: number | null;
 	};
@@ -27,14 +31,16 @@ declare global {
 
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
+	type TTutorWithStatsResult =
+		DB["public"]["Functions"]["get_tutors_with_stats"]["Returns"];
+
 	type TSelectSessionsMatViewResult =
-		DB["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
+		DB["public"]["Functions"]["select_session_tutor_mat_view"]["Returns"];
 	type TStudentSessionResult = DB["public"]["Tables"]["student_session"]["Row"];
 	type TRefundReportResult = DB["public"]["Tables"]["refund_report"]["Row"];
 	type TRatingReviewUserViewResult =
-		DB["public"]["Views"]["rating_review_user_view"]["Row"];
+		DB["public"]["Views"]["rating_and_review_view"]["Row"];
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
-	type TTutorStats = DB["public"]["Functions"]["get_tutor_stats"]["Returns"];
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
 	type TMessage = DB["public"]["Tables"]["message"]["Row"];
 	type TMessageWithStatus = TMessage & { status: string };
@@ -70,8 +76,36 @@ declare global {
 			} | null;
 		} | null;
 	};
+	type TRefundReportJoinResult = {
+		id: number;
+		reason: string | null;
+		description: string | null;
+		status: TRefundStatus | null;
+		type: TRefundType | null;
+		created_at: string;
+		ss_id: number;
+		student_session: {
+			student_id: string;
+			ss_status: TStudentSessionStatus;
+			session: {
+				image: string | null;
+				session_name: string | null;
+				course_code: string | null;
+				course_name: string | null;
+				max_students: number | null;
+				start_time: string | null;
+				end_time: string | null;
+				tutor: {
+					id: string | null;
+					profile_url: string | null;
+					username: string | null;
+					tutor_rating: number | null;
+				} | null;
+			};
+		};
+	} | null;
+
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
-	type TUserResult = DB["public"]["Tables"]["user"]["Row"];
 	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
 
 	// other global types
@@ -120,12 +154,20 @@ declare global {
 		};
 	};
 
+	type TStudentSessionJoinByIdResult = TStudentSessionResult & {
+		sessions: Omit<TSessionsResult, "tutor"> & {
+			tutor: TTutor | null;
+		};
+	};
+
 	//Enums
 	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type TSessionStatus = DB["public"]["Enums"]["session_status"];
 	type TNotificationStatus = DB["public"]["Enums"]["notification_status"];
 	type TNotificationType = DB["public"]["Enums"]["notification_type"];
-	type TRefund = DB["public"]["Enums"]["refund_type"];
+	type TRefundType = DB["public"]["Enums"]["refund_type"];
+	type TRefundStatus = DB["public"]["Enums"]["refund_status"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
 	type TNotification = DB["public"]["Enums"]["notification_type"];
+	type TRefund = DB["public"]["Enums"]["refund_type"]
 };

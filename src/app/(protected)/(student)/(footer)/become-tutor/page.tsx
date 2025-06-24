@@ -12,7 +12,7 @@ export default async function BecomeTutorPage() {
 	if(!user?.user_id) return <GeneralError/>
 
 	const userData= await getUserById(supabase, user.user_id);
-	const bankData= await getBankInfoByUser(supabase, user.user_id)
+	const bankData= await getBankInfoByUser(supabase, { user_id: user.user_id })
 	
 	return (
 		<div className="max-w-2xl mx-auto p-4">

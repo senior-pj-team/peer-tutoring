@@ -89,7 +89,8 @@ Deno.serve(async (req) => {
 
 		if (
 			event.type === "charge.expired" ||
-			event.type === "payment_intent.payment_failed"
+			event.type === "payment_intent.payment_failed" ||
+			event.type === "payment_intent.canceled"
 		) {
 			const { error } = await supabase
 				.from("student_session")
@@ -144,15 +145,29 @@ Deno.serve(async (req) => {
 				},
 			)} ${purchaseDate_date.getFullYear()}`;
 			if ((count ?? 0) >= ss_data.sessions?.max_students) {
-				const { error: update_error } = await supabase
+				const { error: insert_refund_error } = await supabase
+					.from("refund_report")
+					.insert({
+						ss_id: ss_data.id,
+						type: "refund",
+						reason: "stripe payment succeeded but enrollment is full",
+						description: "Refund as soon as possible",
+						status: "pending",
+					});
+
+				if (insert_refund_error) {
+					throw insert_refund_error;
+				}
+
+				const { error: update_ss_error } = await supabase
 					.from("student_session")
 					.update({
-						status: "pending_refund",
 						stripe_payment_intent_id: payment_intent_id,
 					})
 					.eq("id", student_session_id);
-				if (update_error) {
-					throw update_error;
+
+				if (update_ss_error) {
+					throw update_ss_error;
 				}
 				// send email to student to refund
 
