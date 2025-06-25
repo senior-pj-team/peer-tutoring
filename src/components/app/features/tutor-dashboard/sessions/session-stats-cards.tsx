@@ -53,7 +53,7 @@ export default function SessionStatsCards() {
 					</SelectGroup>
 				</SelectContent>
 			</Select>
-			<div className="*:data-[slot=card]:shadow-lg  @xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 dark:*:data-[slot=card]:bg-card">
+			<div className="*:data-[slot=card]:shadow-lg  @xl/main:grid-cols-2 @5xl/main:grid-cols-3 grid grid-cols-1 gap-4 dark:*:data-[slot=card]:bg-card">
 				<SessionStatsCard
 					title="Total Sessions"
 					stats={126}
@@ -82,16 +82,6 @@ export default function SessionStatsCards() {
 					statsPercent={79}
 					pending_refund_students={3}
 					refunded_students={1}
-				/>
-				<SessionStatsCard
-					title="Canceled Sessions"
-					stats={2}
-					period={period}
-					enrollments={2}
-					paid_students={0}
-					statsPercent={0.54}
-					pending_refund_students={2}
-					refunded_students={2}
 				/>
 			</div>
 		</div>

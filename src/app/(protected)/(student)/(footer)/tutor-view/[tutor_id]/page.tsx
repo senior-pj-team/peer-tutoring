@@ -23,7 +23,12 @@ const Page = async ({ params }: { params: Params }) => {
 	const { tutor_id } = await params;
 	const supabase = await createClient();
 	let data = await getTutorWithStats(supabase, { p_filter_tutor_id: tutor_id });
-	if (!data) return <GeneralError />;
+	if (!data || data.length === 0)
+		return (
+			<div className="pb-">
+				<GeneralError />
+			</div>
+		);
 
 	const tutorStats = data[0] as Omit<
 		TTutorWithStatsResult[number],

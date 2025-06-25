@@ -1,5 +1,5 @@
 import SessionCard from "@/components/app/shared/sessions/session-card";
-import StudentInfo from "@/components/app/shared/student-info";
+import StudentInfo from "@/components/app/features/tutor-profile/tutor-info";
 import React from "react";
 import { Roboto_Mono } from "next/font/google";
 const roboto_mono = Roboto_Mono({

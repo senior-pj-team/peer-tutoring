@@ -1,15 +1,18 @@
 "use client";
-import { updateBankInfo } from "@/actions/update-user-profile";
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CreditCard, Pencil, ChevronDown } from "lucide-react";
+
+import { useFormContext } from "react-hook-form";
 import {
-	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
 	Select,
 	SelectContent,
@@ -19,15 +22,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {
-	bankInfoSchema,
-	TBankInfoSchema,
-} from "@/schema/profile-schema-server";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-
 const BANKS = [
 	"Siam Commercial Bank",
 	"Kasikornbank",
@@ -41,69 +35,32 @@ const BANKS = [
 	"Standard Chartered",
 	"UOB (Thailand)",
 ];
+const TutorBankBox = () => {
+	const { control, watch } = useFormContext();
+	const [disable, setDisable] = useState(true);
+	const bankName = watch("bank_name");
 
-export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
-	let bank_name_data: string | null = null;
-	let account_name_data: string | null = null;
-	let account_number_data: string | null = null;
-	let account_type_data:
-		| "student_refund"
-		| "tutor_transfer"
-		| "refund_transfer"
-		| undefined = "student_refund";
-	const [isPending, startTransition] = useTransition();
-
-	if (bankInfo) {
-		const { bank_name, account_name, account_number, account_type } = bankInfo;
-		bank_name_data = bank_name;
-		account_name_data = account_name;
-		account_number_data = account_number;
-		account_type_data = account_type;
-	}
-	const isKnownBank = BANKS.includes(bank_name_data ?? "");
-
-	const form = useForm<TBankInfoSchema>({
-		resolver: zodResolver(bankInfoSchema),
-		defaultValues: {
-			bank_name: !bank_name_data
-				? ""
-				: isKnownBank
-					? (bank_name_data ?? "")
-					: "Other",
-			other_bank: !bank_name_data
-				? ""
-				: isKnownBank
-					? ""
-					: (bank_name_data ?? ""),
-			account_name: account_name_data ?? "",
-			account_number: account_number_data ?? "",
-			account_type: account_type_data,
-		},
-	});
-	const bankName = form.watch("bank_name");
-
-	const handleSubmit = (values: TBankInfoSchema) => {
-		console.log(values);
-		try {
-			startTransition(async () => {
-				const response = await updateBankInfo(values);
-				response.success
-					? toast.success("Bank Info updated successfully")
-					: toast.error(response.error.message);
-			});
-		} catch (err) {
-			toast.error("Something went wrong", {
-				description: "We couldn't complete your request. Please try again.",
-			});
-		}
-	};
 	return (
-		<Form {...form}>
-			<form
-				className="grid w-[85%] items-center gap-y-8"
-				onSubmit={form.handleSubmit(handleSubmit)}>
+		<Card className="w-full mt-8">
+			<CardHeader className="flex items-center justify-between">
+				<h2 className="text-lg font-semibold flex items-center">
+					<CreditCard className="w-5 h-5 mr-2 text-muted-foreground" /> Bank
+					Account
+				</h2>
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={(e) => {
+						e.preventDefault();
+						setDisable((prev) => !prev);
+					}}
+					className="hover:bg-orange-200 cursor-pointer">
+					<Pencil className="w-4 h-4" />
+				</Button>
+			</CardHeader>
+			<CardContent className="space-y-4 w-full">
 				<FormField
-					control={form.control}
+					control={control}
 					name="bank_name"
 					render={({ field }) => (
 						<FormItem className="grid w-full items-center gap-y-2">
@@ -111,8 +68,8 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 							<FormControl>
 								<Select
 									{...field}
-									disabled={false}
-									value={field.value || ""}
+									disabled={disable}
+									value={field.value || undefined}
 									onValueChange={field.onChange}>
 									<SelectTrigger className="text-[0.6rem] md:text-sm w-full">
 										<SelectValue placeholder="Select a bank" />
@@ -136,7 +93,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 				/>
 				{bankName === "Other" && (
 					<FormField
-						control={form.control}
+						control={control}
 						name="other_bank"
 						render={({ field }) => (
 							<FormItem className="grid w-full items-center gap-y-2">
@@ -149,7 +106,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 										placeholder="Enter Bank"
 										value={field.value || ""}
 										className="text-[0.6rem] md:text-sm"
-										disabled={false}
+										disabled={disable}
 									/>
 								</FormControl>
 								<FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
@@ -159,7 +116,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 				)}
 
 				<FormField
-					control={form.control}
+					control={control}
 					name="account_name"
 					render={({ field }) => (
 						<FormItem className="grid w-full items-center gap-y-2">
@@ -172,7 +129,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 									placeholder="Enter Bank Account Name"
 									value={field.value || ""}
 									className="text-[0.6rem] md:text-sm"
-									disabled={false}
+									disabled={disable}
 								/>
 							</FormControl>
 							<FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
@@ -180,7 +137,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 					)}
 				/>
 				<FormField
-					control={form.control}
+					control={control}
 					name="account_number"
 					render={({ field }) => (
 						<FormItem className="grid w-full items-center gap-y-2">
@@ -191,9 +148,9 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 								<Input
 									{...field}
 									placeholder="Enter Bank Account Number"
-									value={field.value ?? ""}
+									value={field.value?.toString() || ""}
 									className="text-[0.6rem] md:text-sm"
-									disabled={false}
+									disabled={disable}
 								/>
 							</FormControl>
 
@@ -201,26 +158,9 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 						</FormItem>
 					)}
 				/>
-
-				<Button
-					disabled={isPending}
-					size="lg"
-					type="submit"
-					className="md:w-[8.5rem] w-[6.5rem] md:text-[0.9rem] text-[0.7rem] cursor-pointer hover:ring-2 hover:ring-orange-300">
-					{isPending ? (
-						<div className="flex items-center gap-1">
-							<span>Loading</span>
-							<div className="flex items-center gap-0.5">
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
-							</div>
-						</div>
-					) : (
-						"Save Bank Info"
-					)}
-				</Button>
-			</form>
-		</Form>
+			</CardContent>
+		</Card>
 	);
-}
+};
+
+export default TutorBankBox;

@@ -1,30 +1,6 @@
-import { z } from "zod";
-export const profileSchemaServer = z.object({
-	profile_url: z
-		.instanceof(File)
-		.refine((file) => file.size > 0, {
-			message: "Image file is required",
-		})
-		.nullable(),
-	username: z
-		.string()
-		.min(3, "Username must be at least 3 characters long")
-		.max(20, "Username must be less then 20 characters long"),
-	email: z.string().email("Invalid email address"),
-	school: z.string().max(100, "School must be less then 100 characters long"),
-	major: z.string().max(100, "Major must be less then 100 characters long"),
-	year: z.coerce.number({ message: "Year is invalid" }).optional(),
-	phone_number: z.string().or(z.literal("")),
-	social_links: z
-		.array(
-			z.object({
-				value: z.string().url("Invalid url"),
-			}),
-		)
-		.max(5, "you cannot add more than 5 links"),
-});
+import z from "zod";
 
-export const bankInfoSchema = z
+export const tutorProfileSchema = z
 	.object({
 		bank_name: z
 			.string()
@@ -46,6 +22,8 @@ export const bankInfoSchema = z
 			.string()
 			.min(1, "Bank account number is required")
 			.max(100, "Bank account number must be less then 100 characters long"),
+		bio_highlight: z.string().max(1500, "bio highlight is too long"),
+		biography: z.string().max(10000, "bio highlight is too long"),
 	})
 	.superRefine((data, ctx) => {
 		if (data.bank_name === "Other") {
@@ -63,5 +41,4 @@ export const bankInfoSchema = z
 		bank_name: data.bank_name === "Other" ? data.other_bank : data.bank_name,
 	}));
 
-export type TProfileSchemaServer = z.infer<typeof profileSchemaServer>;
-export type TBankInfoSchema = z.infer<typeof bankInfoSchema>;
+export type TTutorProfileSchema = z.infer<typeof tutorProfileSchema>;
