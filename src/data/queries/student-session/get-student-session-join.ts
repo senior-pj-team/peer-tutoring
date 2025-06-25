@@ -30,10 +30,16 @@ export const getStudentSessionJoin = async (
       amount_from_student,
       created_at,
       refunded_amount,
+      amount_to_tutor,
       held_until,
       stripe_client_secrete,
       ss_status: status,
-      sessions!session_id(
+      student:user!student_id!inner(
+        id,
+        profile_url,
+        username
+      ),
+      sessions!session_id!inner(
         id,
         image,
         session_name,
@@ -43,7 +49,7 @@ export const getStudentSessionJoin = async (
         start_time,
         end_time,
         tutor_id,
-        tutor:user!tutor_id (
+        tutor:user!tutor_id!inner(
           id,
           profile_url,
           username,

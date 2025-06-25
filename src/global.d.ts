@@ -57,9 +57,15 @@ declare global {
 		amount_from_student?: number | null;
 		created_at?: string | null;
 		refunded_amount?: number | null;
-		held_until?: nstring | null;
+		held_until?: string | null;
+		amount_to_tutor: number | null;
 		stripe_client_secrete: string;
 		ss_status: TStudentSessionStatus;
+		student: {
+			id: string | null;
+			profile_url: string | null;
+			username: string | null;
+		},
 		sessions: {
 			id: number | null;
 			image: string | null;

@@ -1,6 +1,5 @@
-"use client";
-
-import { useState } from "react";
+'use client'
+import { useEffect, useState } from "react";
 import ReviewCard from "./review-card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +9,14 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSearchTerm(searchInput);
+    }, 400); // adjust debounce time as needed
+
+    return () => clearTimeout(timeout);
+  }, [searchInput]);
+
   const {
     data,
     fetchNextPage,
@@ -18,10 +25,6 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
     isError,
     isLoading,
   } = useInfiniteRatingReviews({ tutor_id, searchTerm });
-
-  const handleSearch = () => {
-    setSearchTerm(searchInput);
-  };
 
   const reviews = data?.pages.flat() || [];
 
@@ -35,9 +38,6 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
           placeholder="Search reviews..."
           className="w-full px-3 py-2 text-sm border border-orange-400 rounded-sm focus:outline-none focus:border-orange-800"
         />
-        <Button className="w-full md:w-auto rounded-sm" onClick={handleSearch}>
-          Search
-        </Button>
       </div>
 
       <ScrollArea className="h-[60vh] md:h-[70vh] p-4 bg-white space-y-4">
