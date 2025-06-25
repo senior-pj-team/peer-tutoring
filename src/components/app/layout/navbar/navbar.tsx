@@ -15,6 +15,7 @@ import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { useNotificationsNavBar } from "@/hooks/use-notifications";
 import { useSupabase } from "@/hooks/use-supabase";
 import { cn } from "@/lib/utils";
+import { useStudentSessionJoin } from "@/hooks/use-student-session-join";
 
 export default function Navbar({ user }: { user: UserSession | null }) {
 	const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
@@ -31,6 +32,11 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 		!!user,
 		supabase,
 	);
+	const {
+		data: mySessions,
+		isLoading: mySessionLoading,
+		isError: mySessionError,
+	}= useStudentSessionJoin(user?.user_id ?? "", !!user, supabase)
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -110,7 +116,7 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 						)}
 
 						<Link href="/my-sessions/upcoming-sessions">
-							<HoverCustomCard content="MySessions" />
+							<HoverCustomCard content="MySessions" ss={mySessions} />
 						</Link>
 						<Link href="/my-sessions/wishlist-sessions">
 							<HoverCustomCard content="WishList" icon={<Heart size="20" />} />

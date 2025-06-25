@@ -29,7 +29,7 @@ const RatingReviewForm = ({
 		submitRatingReview,
 		initialState,
 	);
-
+	
 	useEffect(() => {
 		if (state.success) {
 			setOpen(false);

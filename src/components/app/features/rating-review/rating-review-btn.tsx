@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import RatingReviewForm from "./rating-review-form";
 import { Button } from "@/components/ui/button";
-import { Toaster } from "sonner";
 
 const RatingReviewBtn = ({ ssId }: { ssId: number | null }) => {
 	const [open, setOpen] = useState(false);

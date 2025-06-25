@@ -8,9 +8,7 @@ import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund
 
 const page = async () => {
 	const user = await getUserSession();
-	if (!user) {
-		redirect("/login");
-	}
+	if (!user) return <GeneralError />;
 	const supabase = await createClient();
 	const data = await getRefundReportJoin(supabase, {
 		student_id: user.user_id,

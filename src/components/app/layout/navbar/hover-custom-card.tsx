@@ -3,18 +3,19 @@ import ExploreHoverContent from "./explore-hover-content";
 import SessionHoverContent from "./session-hover-content";
 import NotiHoverContent from "./noti-hover-content";
 import ProfileHoverContent from "./profile-hover-content";
-import Link from "next/link";
 
 export default function HoverCustomCard({
 	content,
 	icon,
 	user,
 	notifications,
+	ss
 }: {
 	content: string;
 	icon?: React.ReactNode;
 	user?: UserSession | null;
 	notifications?: TNotificationResult[];
+	ss?: TStudentSessionJoinResult[]
 }) {
 	return (
 		<HoverCard openDelay={0} closeDelay={0}>
@@ -24,8 +25,8 @@ export default function HoverCustomCard({
 				</div>
 			</HoverCardTrigger>
 			{content === "Explore" && <ExploreHoverContent />}
-			{content === "MySessions" && <SessionHoverContent content="MySessions" />}
-			{content === "WishList" && <SessionHoverContent content="WishList" />}
+			{content === "MySessions" && ss && <SessionHoverContent ss={ss} />}
+			{/* {content === "WishList" && <SessionHoverContent content="WishList" />} */}
 			{content === "Notification" && (
 				<NotiHoverContent notifications={notifications ?? []} />
 			)}

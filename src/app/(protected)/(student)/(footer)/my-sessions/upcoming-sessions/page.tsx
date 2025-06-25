@@ -7,16 +7,14 @@ import GeneralError from "@/components/app/shared/error";
 
 const page = async () => {
 	const user = await getUserSession();
-	if (!user) {
-		redirect("/login");
-	}
+	if (!user) return <GeneralError/>
 	const supabase = await createClient();
 	const student_sessions = await getStudentSessionJoin(supabase, {
 		student_id: user.user_id,
 		status: ["enrolled"],
 	});
 	if (!student_sessions) return <GeneralError />;
-
+	
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 			{student_sessions.length > 0 ? (

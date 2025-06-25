@@ -4,6 +4,8 @@ import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { insertRefundReport } from "@/data/mutations/refund-report/insert-refund-report";
+import { updateStudentSessionStatus } from "@/data/mutations/student-session/update-status";
+import { getRefundReport } from "@/data/queries/refund-and-report/get-refund-report";
 
 const schema = z.object({
 	reason: z.string().min(1),
@@ -41,6 +43,14 @@ export async function submitRefundOrReport(
 	}
 
 	const { reason, description, type, ss_id } = parsed.data;
+
+	const existingReq = (await getRefundReport(supabase, { ss_id,student_id:user.user_id })) ?? [];
+	if (existingReq.length > 0) {
+		return {
+            success: false,
+            error: {message: "You already requested a refund for  this session"}
+        }
+	}
 
 	const insertResult = insertRefundReport(
 		supabase,
