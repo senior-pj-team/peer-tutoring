@@ -727,10 +727,6 @@ export type Database = {
 					social_links: Json;
 					biography: string;
 					phone_number: string;
-					bank_name: string;
-					account_name: string;
-					account_number: string;
-					account_type: Database["public"]["Enums"]["bank_account_type"];
 					total_session_count: number;
 					total_student_count: number;
 					total_review_count: number;

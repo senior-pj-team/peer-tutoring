@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import SessionHeader from "@/components/app/features/session/session-header";
 import ReviewRatingAction from "@/components/app/features/session/review-rating-action";
@@ -15,6 +15,7 @@ import { getSessionMatViewbyId } from "@/data/queries/sessions/get-session-mat-v
 import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
+import GeneralLoading from "@/components/app/shared/GeneralLoading";
 
 type Params = Promise<{
 	session_id: string;
@@ -104,7 +105,9 @@ const Page = async ({ params }: { params: Params }) => {
 							</TabsContent>
 
 							<TabsContent value="tutor">
-								<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
+								<Suspense fallback={<GeneralLoading/>}>
+									<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
+								</Suspense>
 							</TabsContent>
 						</div>
 

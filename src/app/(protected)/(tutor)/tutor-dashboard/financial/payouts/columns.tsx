@@ -1,78 +1,85 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { ColumnDef } from "@tanstack/react-table";
+import { formatDate, parseISO } from "date-fns";
+import Link from "next/link";
 
-export type Payout = {
-	id: string;
-	session: string;
-	student: {
-		name: string;
-		proile_picture: string;
-	};
-	released_at: string;
-	amount: number;
-};
-
-export const columns: ColumnDef<Payout>[] = [
+export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 	{
 		accessorKey: "id",
 		header: "TRN_ID",
 	},
 	{
-		accessorKey: "session",
+		id: "session",
 		header: "Session",
 		cell: ({ row }) => {
-			return <div className=" w-full truncate">{row.getValue("session")}</div>;
+			const session = row.original.sessions;
+			return (
+				<>
+					<div className="truncate">
+						{session?.session_name ?? "Unknown"}
+					</div>
+					<div className="truncate">
+						{session?.course_name ?? "Course"}
+					</div>
+				</>
+			);
 		},
 	},
 	{
-		accessorKey: "student",
+		id: "student",
 		header: "Student",
 		cell: ({ row }) => {
-			console.log(row.getValue("student"));
-			const student = row.getValue("student") as Payout["student"];
+			const student = row.original.student;
+			const studentId = student.id;
+			const studentName = student.username;
+			const studentImage = student.profile_url
+
 			return (
-				<div className="flex items-center space-x-1.5 ">
-					{" "}
+				<div className="flex items-center space-x-2">
 					<Avatar>
-						<AvatarImage src={student.proile_picture} alt="profile_picture" />
-						<AvatarFallback>P</AvatarFallback>
+						<AvatarImage src={studentImage ?? "no-image"} alt={studentName ?? "Unknown"} />
+						<AvatarFallback>
+							{getAvatarFallback(studentName ?? "U")}
+						</AvatarFallback>
 					</Avatar>
-					<span className="w-full truncate">{student.name}</span>
+					<Link href={`/student-view/${studentId}`}>
+						<span className="hover:underline cursor-pointer">
+							{studentName}
+						</span>
+					</Link>
 				</div>
 			);
 		},
 	},
 	{
-		accessorKey: "released_at",
-		header: "Released Date",
+		id: "released_at",
+		header: "Paid on",
 		cell: ({ row }) => {
-			const date = new Date(row.getValue("released_at"));
-			const options: Intl.DateTimeFormatOptions = {
-				day: "numeric",
-				month: "long",
-				year: "numeric",
-			};
-			return date.toLocaleDateString("en-GB", options);
+			const held_untill = row.original.held_until;
+			if (!held_untill) return "-";
+			const displayDate = formatDate(parseISO(held_untill), "yyy MMMM dd")
+			return <div>{displayDate}</div>;
 		},
 	},
 	{
-		accessorKey: "amount",
+		id: "released_amount",
 		header: "Amount",
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue("amount"));
+			const amount = row.original.amount_to_tutor ?? 0;
 			const formatted = new Intl.NumberFormat("th-TH", {
 				style: "currency",
 				currency: "THB",
 			}).format(amount);
-
-			return <div className=" right">{formatted}</div>;
+			return <div>{formatted}</div>;
 		},
 	},
 	{
 		id: "search",
-		accessorFn: (row) => `${row.session} ${row.student?.name}`,
+		accessorFn: (row) =>
+			`${row.sessions?.session_name} ${row.student.username}`,
 		header: () => null,
 		cell: () => null,
 		enableColumnFilter: true,

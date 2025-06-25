@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import GeneralSessionCard from "../../shared/sessions/general-session-card";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useInfiniteSessions } from "@/hooks/use-infinite-sessions";
+import { useInfiniteStudentSessions } from "@/hooks/use-infinite-student-session";
+import SessionCard from "../../shared/sessions/session-card";
 
 type PaginationProps = {
   currentPage: number;
@@ -43,7 +43,7 @@ const PaginationControls = ({
   </div>
 );
 
-const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
+const StudentSessionList = ({ student_id }: { student_id: string }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPagesFetched, setTotalPagesFetched] = useState(1);
 
@@ -54,7 +54,7 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
     hasNextPage,
     isFetchingNextPage,
     isError,
-  } = useInfiniteSessions({ tutor_id });
+  } = useInfiniteStudentSessions({student_id});
 
   const handlePageChange = async (page: number) => {
     if (page < 0) return;
@@ -71,7 +71,7 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
     setCurrentPage(page);
   };
 
-  const currentSessions = sessions?.pages?.[currentPage]?.rows ?? [];
+  const currentSessions = sessions?.pages?.[currentPage] ?? [];
   const disableBack = useMemo(() => currentPage === 0, [currentPage]);
   const disableForward = useMemo(
     () => !hasNextPage && currentPage >= totalPagesFetched - 1,
@@ -82,12 +82,12 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
     <section>
       {currentSessions.length > 0 ? (
         <div className="flex flex-wrap gap-6 my-4 justify-start">
-          {currentSessions.map((session: any, index: number) => (
+          {currentSessions.map((session: TStudentSessionJoinResult, index: number) => (
             <div
               key={index}
               className="w-full sm:w-[48%] lg:w-[23%] max-w-[300px] flex-shrink-0"
             >
-              <GeneralSessionCard content={session} />
+              <SessionCard page="browse" student_session={session}/>
             </div>
           ))}
         </div>
@@ -115,4 +115,4 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
   );
 };
 
-export default TutorSessionsSection;
+export default StudentSessionList;

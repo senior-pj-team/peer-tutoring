@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import SessionHeader from "@/components/app/features/session/session-header";
 import ReviewRatingAction from "@/components/app/features/session/review-rating-action";
@@ -14,6 +14,8 @@ import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
 import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
+import Loading from "@/components/app/shared/GeneralLoading";
+import GeneralLoading from "@/components/app/shared/GeneralLoading";
 
 type Params = Promise<{
 	page: string;
@@ -106,7 +108,9 @@ const Page = async ({ params }: { params: Params }) => {
 							</TabsContent>
 
 							<TabsContent value="payment">
-								<SessionPayment session_id={sessionData.session_id!} />
+								<Suspense fallback={<GeneralLoading/>}>
+									<SessionPayment session_id={sessionData.session_id!} />
+								</Suspense>
 							</TabsContent>
 						</div>
 
@@ -124,7 +128,12 @@ const Page = async ({ params }: { params: Params }) => {
 								/>
 							)}
 
-							{page === "refund" && <RefundStatus ssId={sessionData.id} />}
+							{
+								page === "refund" &&
+								<Suspense fallback={<GeneralLoading/>}>
+									<RefundStatus ssId={sessionData.id} />
+								</Suspense> 
+							}
 						</aside>
 					</div>
 				</Tabs>

@@ -45,20 +45,19 @@ export function DataTable<TData, TValue>({
 		to: new Date(),
 	});
 	const filteredData = useMemo(() => {
-		if (!date?.from) return data;
+		if (!date?.from && !date?.to) return data;
 
 		return data.filter((item) => {
-			if (date.from && isToday(date.from) && date.to && isToday(date.to)) {
-				return true;
-			}
-			const itemDate = new Date((item as { released_at: string }).released_at);
+			const heldUntil = (item as { held_until?: string }).held_until;
+			if (!heldUntil) return false;
+
+			const heldDate = new Date(heldUntil);
 			const from = date.from!;
 			const to = date.to ?? from;
-
+			
 			return (
-				isSameDay(itemDate, from) ||
-				isSameDay(itemDate, to) ||
-				(isAfter(itemDate, from) && isBefore(itemDate, to))
+				(isSameDay(heldDate, from) || isAfter(heldDate, from)) &&
+				(isSameDay(heldDate, to) || isBefore(heldDate, to))
 			);
 		});
 	}, [data, date]);
@@ -117,9 +116,9 @@ export function DataTable<TData, TValue>({
 											{header.isPlaceholder
 												? null
 												: flexRender(
-														header.column.columnDef.header,
-														header.getContext(),
-												  )}
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
 										</TableHead>
 									);
 								})}

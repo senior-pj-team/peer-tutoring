@@ -15,7 +15,7 @@ const TutorStats = ({ data }: { data: TTutorWithStatsResult[number] }) => {
 					{data.username}
 				</span>
 			</div>
-			<div className="flex items-center mt-5 gap-x-3">
+			<div className="flex items-center mt-5 gap-x-23 pl-8">
 				<div
 					className={cn(
 						"relative w-30 h-30 mb-2 group rounded-full bg-gray-100",

@@ -1,79 +1,67 @@
 "use client";
-import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import PendingActionsIcon from "@mui/icons-material/PendingActions";
-import { Button } from "@/components/ui/button";
 
-export default function Step3ApprovalPending() {
+import { CheckCircleIcon } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+
+export default function Step3() {
+  const form = useFormContext();
+
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={3}
-      alignItems="center"
-    >
-      <Typography variant="h6" sx={{ fontFamily: "'Poppins', sans-serif" }}>
-        Application Submitted
-      </Typography>
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        textAlign="center"
-      >
-        Your information is being reviewed by our team
-      </Typography>
+    <div className="flex flex-col items-center gap-4 text-center">
+      <h2 className="text-lg font-semibold">Confirm your application</h2>
 
-      <Paper
-        elevation={0}
-        sx={{
-          p: 4,
-          borderRadius: 3,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          border: "1px solid rgba(0,0,0,0.1)",
-          maxWidth: 400,
-          width: "100%",
-          bgcolor: "background.paper",
-        }}
-      >
-        <PendingActionsIcon color="primary" sx={{ fontSize: 60, mb: 2 }} />
+      <div className="border rounded-lg p-6 max-w-sm w-full bg-white shadow-sm">
+        <p className="text-sm font-medium">
+          Admins will validate the application
+        </p>
+        <p className="text-sm text-muted-foreground mt-1">
+          This typically takes 1–2 working days. We'll notify you once your
+          account is approved.
+        </p>
+      </div>
 
-        <Typography
-          variant="body1"
-          gutterBottom
-          sx={{ fontFamily: "'Poppins', sans-serif" }}
-        >
-          Your application is under review
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ mb: 3, fontFamily: "'Poppins', sans-serif" }}
-        >
-          This typically takes 1-2 business days. We`&apos;`ll notify you once
-          your account is approved.
-        </Typography>
-
-        <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
-          <Button>Edit Application</Button>
-          <Button>Contact Support</Button>
-        </Box>
-      </Paper>
-
-      <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-        <CheckCircleOutlineIcon color="success" fontSize="small" />
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ ml: 1, fontFamily: "'Poppins', sans-serif" }}
-        >
-          You`&apos;`ll receive an email notification when your application is
+      <div className="flex items-center gap-2 mt-1">
+        <CheckCircleIcon className="w-4 h-4 text-green-500" />
+        <span className="text-xs text-muted-foreground">
+          You'll receive an email notification when your application is
           processed
-        </Typography>
-      </Box>
-    </Box>
+        </span>
+      </div>
+
+      <div className="mt-4 w-full max-w-sm text-left">
+        <FormField
+          control={form.control}
+          name="isChecked"
+          render={({ field }) => (
+            <FormItem className="flex items-center space-x-2 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormLabel>
+                I agree to the{" "}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  className="underline hover:text-orange-800"
+                >
+                  Terms and Conditions
+                </a>
+              </FormLabel>
+            </FormItem>
+          )}
+        />
+      </div>
+    </div>
   );
 }

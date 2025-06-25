@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Star, Mail, Phone } from "lucide-react";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
@@ -8,7 +8,7 @@ import TutorStats from "./tutor-stats";
 import SessionList from "./session-list";
 import TutorRARSection from "../tutor/tutor-RAR-section";
 import { getTutorWithStats } from "@/data/queries/tutors/get-tutor-with-stats";
-import { ReviewCardSkeleton } from "../../shared/skeletons/review-card-skeletons";
+import GeneralLoading from "../../shared/GeneralLoading";
 
 const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 	const supabase = await createClient();
@@ -25,6 +25,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 			</>
 		);
 	const tutor = data[0];
+
 	return (
 		<div className="max-w-[53rem] p-6 bg-white space-y-6">
 			{tutor && <TutorStats data={tutor} />}
@@ -38,7 +39,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 					</div>
 					|<span>{tutor.total_review_count} Reviews</span>
 				</h1>
-				<Suspense fallback={<ReviewCardSkeleton />}>
+				<Suspense fallback={<GeneralLoading />}>
 					<TutorRARSection
 						tutor_id={tutor_id}
 						initialSize={4}
@@ -53,7 +54,9 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 						{tutor.total_session_count} sessions 📗 by {tutor.username}
 					</h1>
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8">
-						<SessionList tutor_id={tutor_id} supabase={supabase} />
+						<Suspense fallback={<GeneralLoading/>}>
+							<SessionList tutor_id={tutor_id} supabase={supabase} />
+						</Suspense>
 					</div>
 					<Link href={`/tutor-view/${tutor_id}`}>
 						<Button
