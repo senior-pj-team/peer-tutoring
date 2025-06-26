@@ -4,7 +4,6 @@ import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { insertRefundReport } from "@/data/mutations/refund-report/insert-refund-report";
-import { updateStudentSessionStatus } from "@/data/mutations/student-session/update-status";
 import { getRefundReport } from "@/data/queries/refund-and-report/get-refund-report";
 
 const schema = z.object({
@@ -70,3 +69,8 @@ export async function submitRefundOrReport(
 		data: type + " has been submitted",
 	};
 }
+
+// open, closed, completed, archived, canceled
+// refund only, check session status != completed or now > start_time- 24 hours
+// refund and report | report, check session status != archived
+// report only, no need to check

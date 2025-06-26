@@ -72,7 +72,7 @@ const SessionCard = ({
     course_name = student_session.sessions?.course_name ?? "";
     start_time = student_session.sessions?.start_time ?? "";
     end_time = student_session.sessions?.end_time ?? "";
-    profile_url = student_session.sessions?.tutor?.profile_url ?? "/no-image.png";
+    profile_url = student_session.sessions?.tutor?.profile_url ?? "-";
     username = student_session.sessions?.tutor?.username ?? "";
     tutor_rating = student_session.sessions?.tutor?.tutor_rating ?? 0;
     tutor_id = student_session.sessions?.tutor?.id ?? "";
@@ -99,9 +99,9 @@ const SessionCard = ({
   const remaining_time =
     ss_status == "enrolled" ? getRemainingTime(start_time) : undefined;
   const router = useRouter();
-  const handleCardClick = () => {
-    if(page="browse") return router.push(`/home/session/${student_session?.sessions?.id?? ""}`)
 
+  const handleCardClick = () => {
+    if(page == "browse") return router.push(`/home/session/${student_session?.sessions?.id?? ""}`)
     const nextPage =
       page === "admin"
         ? `/admin-dashboard/session/${1}/content`

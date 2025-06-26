@@ -25,7 +25,7 @@ import { useMemo, useState } from "react";
 import { DebounceSearchBar } from "./debounce-search-bar";
 import { DatePickerWithRange } from "./date-range-picker";
 import { DateRange } from "react-day-picker";
-import { isAfter, isBefore, isSameDay, isToday } from "date-fns";
+import { addDays, isAfter, isBefore, isSameDay, isToday, subDays } from "date-fns";
 import { fuzzyFilter } from "@/utils/app/fuzzy-filter";
 
 interface DataTableProps<TData, TValue> {
@@ -39,12 +39,15 @@ export function DataTable<TData, TValue>({
 	data,
 	type,
 }: DataTableProps<TData, TValue>) {
+
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [date, setDate] = useState<DateRange | undefined>({
-		from: new Date(),
-		to: new Date(),
+		from: subDays(new Date(), 20),
+		to: addDays(new Date(), 10),
 	});
+	
 	const filteredData = useMemo(() => {
+		if(type=="students") return data;
 		if (!date?.from && !date?.to) return data;
 
 		return data.filter((item) => {
@@ -95,11 +98,11 @@ export function DataTable<TData, TValue>({
 									placeholder="Search with student or session..."
 									className="p-4 pr-10 border border-gray-300 rounded-lg focus:outline-primary focus:ring-primary overflow-clip mr-auto"
 								/>
+								<Search
+									className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
+									size={18}
+								/>
 							</div>
-							<Search
-								className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
-								size={18}
-							/>
 						</div>
 					)}
 					{type === "payouts" && (

@@ -7,6 +7,8 @@ import { tutorFormSchema, tutorFormSchemaT } from "@/schema/tutor-form-schema";
 import { uploadStudentIdImage } from "@/data/mutations/user/upload-student-id-images";
 import { updateUser } from "@/data/mutations/user/update-user";
 import { upsertBankInfo } from "@/data/mutations/bank-info/upsert-bank-info";
+import { updateBankInfo } from "@/data/mutations/bank-info/update-bank-info";
+import { insertBankInfo } from "@/data/mutations/bank-info/insert-bank-info";
 
 export async function submitTutorRegistration(
   formData: tutorFormSchemaT
@@ -20,7 +22,7 @@ export async function submitTutorRegistration(
       error: { message: "Something went wrong" },
     };
   }
-
+  
   const parsed = tutorFormSchema.safeParse({
     school: formData.school,
     major: formData.major,
@@ -32,13 +34,16 @@ export async function submitTutorRegistration(
     accountNumber: formData.accountNumber,
     studentIdPhoto: formData.studentIdPhoto,
     isChecked: formData.isChecked,
+    bankId: formData.bankId
   });
+  console.log(parsed.error?.message)
   if (!parsed.success) {
     return {
       success: false,
       error: { message: "Invalid input ❌" },
     };
   }
+  
   const {
     school,
     major,
@@ -49,6 +54,7 @@ export async function submitTutorRegistration(
     accountName,
     accountNumber,
     studentIdPhoto,
+    bankId,
   } = parsed.data;
 
   const photoUrl = await uploadStudentIdImage(
@@ -82,23 +88,37 @@ export async function submitTutorRegistration(
     };
   }
 
-  const upsertResult = await upsertBankInfo(supabase, {
-    user_id: user.user_id,
-    bankData: {
+  if (type == "refund_transfer" && bankId) {
+    const updateResult = await updateBankInfo(
+      supabase,
+      Number(bankId),
+      user.user_id,
+      { account_type: type }
+    );
+    if(!updateResult){
+      return{
+        success: false,
+        error: {message: "Something went wrong"}
+      }
+    }
+  } else if (type == "tutor_transfer") {
+    const insertResult = await insertBankInfo(supabase, {
       bank_name: bankName,
       account_name: accountName,
       account_number: accountNumber,
-      other_bank: "",
-    },
-    account_type: type,
-    onConflict: "account_name,account_number,user_id",
-  });
-
-  if (!upsertResult) {
+      account_type: type,
+    });
+    if(insertResult){
+      return {
+        success: false,
+        error: {message: "Something went wrong"}
+      }
+    }
+  }else{
     return {
       success: false,
-      error: { message: "Something went wrong" },
-    };
+      error: {message: "Something went wrong"}
+    }
   }
 
   return { success: true };

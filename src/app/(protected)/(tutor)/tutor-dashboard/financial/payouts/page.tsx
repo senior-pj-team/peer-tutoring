@@ -18,7 +18,6 @@ export default async function Payouts() {
 	});
 	
 	if (!student_sessions) return <GeneralError />;
-	console.log("student_session: ", student_sessions);
 	
 	return (
 		<div className="container mx-auto px-4 lg:px-6">
