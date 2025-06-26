@@ -12,7 +12,7 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setSearchTerm(searchInput);
-    }, 400); // adjust debounce time as needed
+    }, 400);
 
     return () => clearTimeout(timeout);
   }, [searchInput]);
@@ -36,7 +36,7 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Search reviews..."
-          className="w-full px-3 py-2 text-sm border border-orange-400 rounded-sm focus:outline-none focus:border-orange-800"
+          className="w-full px-3 py-2 text-sm border border-orange-400 rounded-xl focus:outline-none focus:border-orange-800"
         />
       </div>
 

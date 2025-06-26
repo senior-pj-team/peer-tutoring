@@ -14,7 +14,6 @@ import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
 import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
-import Loading from "@/components/app/shared/GeneralLoading";
 import GeneralLoading from "@/components/app/shared/GeneralLoading";
 
 type Params = Promise<{

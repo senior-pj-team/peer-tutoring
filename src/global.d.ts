@@ -49,6 +49,8 @@ declare global {
 		DB["public"]["Functions"]["get_other_participant"]["Returns"];
 	type TOtherUser =
 		DB["public"]["Functions"]["get_other_participant"]["Returns"];
+	type TAmountByStatuses =
+		DB["public"]["Functions"]["sum_tutor_amounts_by_status"]["Returns"];
 
 	type TStudentSessionJoinResult = {
 		id: number;

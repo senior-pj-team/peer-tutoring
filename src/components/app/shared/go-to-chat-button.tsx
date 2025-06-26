@@ -15,14 +15,14 @@ export function GoToChatButton({
 	user2_id,
 	size = 24,
 }: {
-	user1_id: string;
+	user1_id: string | null;
 	user2_id: string | null;
 	size?: number;
 }) {
 	const router = useRouter();
 	const handleClick = async () => {
 		const supabase = createClient();
-		if (!user2_id) return null;
+		if (!user2_id || !user1_id) return null;
 		const chatId = await getOrCreateChat(supabase, user1_id, user2_id);
 		if (!chatId) return;
 		router.push(`/chat/${chatId}`);
@@ -38,7 +38,7 @@ export function GoToChatButton({
 				/>
 			</TooltipTrigger>
 			<TooltipContent>
-				<p>chat with tutor</p>
+				<p>Go to Chat</p>
 			</TooltipContent>
 		</Tooltip>
 	);

@@ -5,6 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ControllerFieldState } from "react-hook-form";
 import TipTapMenuBar from "./tip-tap-menu-bar";
+import { useEffect } from "react";
 
 interface TipTapProps {
   value: string;
@@ -29,16 +30,22 @@ export default function TipTap({ value, onChange, fieldState, disable=false }: T
         },
       }),
     ],
-    content: value || "", // use the value passed from form
+    content: value || "",
     editorProps: {
       attributes: {
         class: "min-h-[12rem] border rounded-md bg-slate-50 py-2 px-3 mt-0 text-sm",
       },
     },
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML()); // Call onChange when the content updates
+      onChange(editor.getHTML());
     },
   });
+
+   useEffect(() => {
+    if (editor) {
+      editor.setEditable(!disable);
+    }
+   }, [editor, disable]);
 
   return (
     <FormItem className="grid gap-1">
@@ -46,7 +53,7 @@ export default function TipTap({ value, onChange, fieldState, disable=false }: T
       <FormControl>
         <div>
           <TipTapMenuBar editor={editor} />
-          <EditorContent editor={editor} disabled={disable}/>
+          <EditorContent editor={editor} className={editor?.isEditable? "": "text-gray-500"}/>
         </div>
       </FormControl>
       <FormMessage />

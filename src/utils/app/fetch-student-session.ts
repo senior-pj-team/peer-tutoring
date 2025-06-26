@@ -13,7 +13,8 @@ export const fetchStudentSession = async ({
   const data = await getStudentSessionJoin(supabase, {
     student_id,
     offset: pageParam,
-    limit: LIMIT
+    limit: LIMIT,
+    status: ['completed','enrolled','paid']
   })
   if (!data) throw new Error("Server error");
   return data;
