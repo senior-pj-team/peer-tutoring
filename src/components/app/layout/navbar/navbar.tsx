@@ -32,9 +32,11 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 		!!user,
 		supabase,
 	);
-	const {
-		data: mySessions,
-	}= useStudentSessionJoin(user?.user_id ?? "", !!user, supabase)
+	const { data: mySessions } = useStudentSessionJoin(
+		user?.user_id ?? "",
+		!!user,
+		supabase,
+	);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -106,7 +108,7 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 								<HoverCustomCard content="Become a tutor" />
 							</Link>
 						)}
-						{user.user_role === "tutor" && (
+						{(user.user_role === "tutor" || user.user_role === "admin") && (
 							<Link href="/tutor-dashboard/sessions/upcoming-sessions">
 								<HoverCustomCard content="Go to tutor dashboard" />
 							</Link>

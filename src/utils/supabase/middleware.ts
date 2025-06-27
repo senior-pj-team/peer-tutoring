@@ -5,6 +5,7 @@ const PUBLIC_PATHS = [
 	"/login",
 	"/auth", // all /auth/* API routes
 	"/home",
+	"/tutor-view",
 	"/sessions",
 	"/session/browse", // all /session/browse/*
 	"/error",

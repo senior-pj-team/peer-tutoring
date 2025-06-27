@@ -93,6 +93,25 @@ declare global {
 		};
 	} | null;
 
+	type TBankInfoJoinTutorResult = {
+		id: number;
+		bank_name: string | null;
+		account_name: string | null;
+		account_number: string | null;
+		account_type: TBankAccountType;
+		user_id: string;
+		user: {
+			profile_url: string | null;
+			username: string | null;
+			email: string | null;
+			school: string | null;
+			major: string | null;
+			year: string | null;
+			bio_highlight: string | null;
+			biography: string | null;
+		};
+	}[];
+
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
 	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
 	type TTutorSessionStats =
@@ -162,4 +181,5 @@ declare global {
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
 	type TNotification = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
+	type TTutorStatus = DB["public"]["Enums"]["tutor_status"];
 }

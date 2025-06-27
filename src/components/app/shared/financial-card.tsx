@@ -10,8 +10,7 @@ import { cn } from "@/lib/utils";
 type SessionStatsCardProps = {
 	title: string;
 	stats: number;
-	period: string;
-	statsPercent?: number;
+	statsPercent?: string;
 	enrollments?: number;
 	dispute_students?: number;
 	refunded_students?: number;
@@ -20,7 +19,6 @@ type SessionStatsCardProps = {
 export default function FinancialStatsCard({
 	title,
 	stats,
-	period,
 	statsPercent,
 }: SessionStatsCardProps) {
 	function generateDescription() {
@@ -29,7 +27,7 @@ export default function FinancialStatsCard({
 				return "all payout received";
 			case "Held Funds":
 				return "payout to be received";
-			case "Refuned Amount":
+			case "Churned Amount":
 				return "refuned to students";
 			case "Platform Earnings":
 				return "Only the platform's earnings received";
@@ -42,10 +40,10 @@ export default function FinancialStatsCard({
 	function generateMessage() {
 		switch (title) {
 			case "Gross Revenue":
-				return "Only released transactions summed";
+				return "Only paid amount summed";
 			case "Held Funds":
 				return "Holding for 7 days";
-			case "Refuned Amount":
+			case "Churned Amount":
 				return "Due to cancellations or disputes";
 			case "Platform Earnings":
 				return "the total amount earned by the platform";
@@ -66,7 +64,7 @@ export default function FinancialStatsCard({
 						title === "Gross Revenue" && "text-green-500",
 						title === "Held Funds" ||
 							(title === "Holding Funds" && "text-orange-500"),
-						title === "Refuned Amount" && "text-red-500",
+						title === "Churned Amount" && "text-red-500",
 						title === "Platform Earnings" && "text-violet-500",
 						title === "Refunds" && "text-red-500",
 					)}>
@@ -81,7 +79,7 @@ export default function FinancialStatsCard({
 				</span>
 
 				<div className="text-muted-foreground text-xs">
-					{generateDescription()} {period}
+					{generateDescription()}
 				</div>
 				<div className="flex items-center gap-x-1 gap-y-2 flex-wrap mt-1 text-[0.75rem] text-violet-500 font-extrabold">
 					{statsPercent} <Percent className="size-3" /> of total sessions

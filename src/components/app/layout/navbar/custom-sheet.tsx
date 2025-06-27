@@ -11,7 +11,7 @@ export default function CustomSheet({
 	user,
 	noti_count,
 }: {
-	user: UserSession | null;
+	user: UserSession;
 	noti_count?: number | null;
 }) {
 	async function handleSignOut() {
@@ -69,7 +69,15 @@ export default function CustomSheet({
 						content="WishList"
 						url="/my-sessions/wishlist-sessions"
 					/>
-					<ContentItem content="Become a Tutor" url="/become-tutor" />
+					{user.user_role === "student" && (
+						<ContentItem content="Become a tutor" url="/become-tutor" />
+					)}
+					{(user.user_role === "tutor" || user.user_role === "admin") && (
+						<ContentItem
+							content="Go to tutor dashboard"
+							url="/tutor-dashboard/sessions/upcoming-sessions"
+						/>
+					)}
 				</div>
 
 				<hr className="mb-2" />

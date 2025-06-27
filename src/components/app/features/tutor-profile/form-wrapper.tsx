@@ -4,13 +4,22 @@ import { updateTutorProfile } from "@/actions/update-tutor-profile";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import {
 	TTutorProfileSchema,
 	tutorProfileSchema,
 } from "@/schema/tutor-profile-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { BankForm } from "../profile-settings/bank-form";
 
 const BANKS = [
 	"Siam Commercial Bank",
@@ -29,17 +38,16 @@ export function FormWrapper({
 	values,
 	children,
 }: {
-	values: TTutorWithStatsResult;
-
+	values: TBankInfoJoinTutorResult;
 	children: React.ReactNode;
 }) {
 	const {
+		id,
 		bank_name,
 		account_name,
 		account_number,
 		account_type,
-		bio_highlight,
-		biography,
+		user: { bio_highlight, biography },
 	} = values[0];
 
 	const isKnownBank = BANKS.includes(bank_name ?? "");
@@ -73,7 +81,7 @@ export function FormWrapper({
 			});
 		}
 	};
-
+	const [open, setOpen] = useState<boolean>(false);
 	return (
 		<div>
 			{account_type === "refund_transfer" && (
@@ -81,7 +89,23 @@ export function FormWrapper({
 					<span className="text-orange-500 text-xs font-extrabold">
 						Your bank accounts for refund and transfer are the same. If you want
 						to set up new for transferring,{" "}
-						<span className="hover:underline cursor-pointer">click here</span>
+						<Dialog open={open} onOpenChange={setOpen}>
+							<DialogTrigger>
+								<span className="hover:underline cursor-pointer">
+									click here
+								</span>
+							</DialogTrigger>
+							<DialogContent>
+								<DialogHeader>
+									<DialogTitle>Set up new Bank Account</DialogTitle>
+								</DialogHeader>
+								<DialogDescription className="text-xs">
+									This new account will only be used to transfer money to you.
+									The existing account will be used for refund cases.
+								</DialogDescription>
+								<BankForm bankInfo={null} oldBankID={id} openDialog={setOpen} />
+							</DialogContent>
+						</Dialog>
 					</span>
 				</div>
 			)}

@@ -1,4 +1,5 @@
 "use server";
+import { updateBankInfo } from "@/data/mutations/bank-info/update-bank-info";
 import { upsertBankInfo } from "@/data/mutations/bank-info/upsert-bank-info";
 import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
 import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
@@ -66,8 +67,9 @@ export async function updateUserProfile(
 	};
 }
 
-export async function updateBankInfo(
+export async function updateUserBankInfo(
 	values: TBankInfoSchema,
+	oldBankID: number | undefined,
 ): Promise<ActionResponseType<any>> {
 	const validatedResult = bankInfoSchema.safeParse(values);
 	if (!validatedResult.success) {
@@ -99,6 +101,23 @@ export async function updateBankInfo(
 			success: false,
 			error: { message: "Something went Wrong ❌" },
 		};
+	}
+
+	if (oldBankID) {
+		const updateOldBankResult = await updateBankInfo(
+			supabase,
+			oldBankID,
+			user.user_id,
+			{
+				account_type: "student_refund",
+			},
+		);
+
+		if (!updateOldBankResult)
+			return {
+				success: false,
+				error: { message: "Something went Wrong ❌" },
+			};
 	}
 	return {
 		success: true,

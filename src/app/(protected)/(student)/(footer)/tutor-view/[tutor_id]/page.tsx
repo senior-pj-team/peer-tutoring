@@ -36,7 +36,7 @@ const Page = async ({ params }: { params: Params }) => {
 			| null;
 	};
 	const user = await getUserSession();
-	if (!user) return;
+
 	return (
 		<>
 			<div className="max-w-full mx-auto pt-8 pb-5 xl:px-30 px-5 flex flex-col md:flex-row gap-10">
@@ -51,10 +51,12 @@ const Page = async ({ params }: { params: Params }) => {
 						<div className="mt-4 text-xl font-semibold mb-3">
 							{tutorStats.username}
 						</div>
-						<GoToChatButton
-							user1_id={tutor_id}
-							user2_id={user ? user.user_id : null}
-						/>
+						{user && (
+							<GoToChatButton
+								user1_id={tutor_id}
+								user2_id={user ? user.user_id : null}
+							/>
+						)}
 					</div>
 
 					<p className="text-sm text-gray-500">

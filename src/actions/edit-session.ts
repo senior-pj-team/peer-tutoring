@@ -12,89 +12,94 @@ import { getUserById } from "@/data/queries/user/get-user-by-id";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 
 export const editSession = async (
-  sessionId: number,
-  rawValues: SessionSchemaT,
-  oldImageString: string | null,
-  previewImageString: string | null
+	sessionId: number,
+	rawValues: SessionSchemaT,
+	oldImageString: string | null,
+	previewImageString: string | null,
 ): Promise<ActionResponseType<any>> => {
-  const result = sessionSchema.safeParse(rawValues);
-  if (!result.success)
-    return {
-      success: false,
-      error: { message: "Validation error" },
-    };
-  const values = result.data;
+	const result = sessionSchema.safeParse(rawValues);
+	if (!result.success)
+		return {
+			success: false,
+			error: { message: "Validation error" },
+		};
+	const values = result.data;
 
-  const start = getDateWithTime(values.date, values.startTime);
-  const end = getDateWithTime(values.date, values.endTime);
-  const user = await getUserSession();
+	const start = getDateWithTime(values.date, values.startTime);
+	const end = getDateWithTime(values.date, values.endTime);
+	const user = await getUserSession();
 
-  if (!user?.user_id) {
-    return {
-      success: false,
-      error: { message: "User not found" },
-    };
-  }
-  const supabase = await createClient();
-  const userData = await getUserById(supabase, user.user_id);
+	if (!user?.user_id) {
+		return {
+			success: false,
+			error: { message: "User not found" },
+		};
+	}
+	const supabase = await createClient();
+	const userData = await getUserById(supabase, user.user_id);
 
-  if (!userData) {
-    return {
-      success: false,
-      error: { message: "User not found" },
-    };
-  }
-  const { role, tutor_status } = userData;
-  if (role != "tutor" || tutor_status == "suspended") {
-    return {
-      success: false,
-      error: { message: "User not authorized" },
-    };
-  }
-  const tutor_id = userData.id;
+	if (!userData) {
+		return {
+			success: false,
+			error: { message: "User not found" },
+		};
+	}
+	const { role } = userData;
+	if (role != "tutor" && role != "admin") {
+		return {
+			success: false,
+			error: { message: "User not authorized" },
+		};
+	}
+	const tutor_id = userData.id;
 
-  const enrollments = await getEnrollmentCount(supabase, {
-    session_id: sessionId,
-  });
-  if ((enrollments ?? 1) > 0) {
-    return {
-      success: false,
-      error: { message: "You cannot edit sessions with enrollments" },
-    };
-  }
-  
-  let uploadedUrl: string | null = null;
-  let isDelete;
-  if (values.image) {
-    uploadedUrl = await uploadImage(values.image, supabase);
-    if (!uploadedUrl) {
-      return {
-        success: false,
-        error: { message: "Failed to upload image" },
-      };
-    }
-    isDelete = oldImageString ? await deleteImage(oldImageString, supabase) : true;
-  }else if(!previewImageString){ //user remove the image
-    isDelete= oldImageString ? await deleteImage(oldImageString, supabase) : true;
-  }
+	const enrollments = await getEnrollmentCount(supabase, {
+		session_id: sessionId,
+	});
+	if ((enrollments ?? 1) > 0) {
+		return {
+			success: false,
+			error: { message: "You cannot edit sessions with enrollments" },
+		};
+	}
 
-  const updateResult = await updateSession(supabase, sessionId, {
-    values,
-    uploadedUrl,
-    start,
-    end,
-    tutor_id,
-    status: "open"
-  });
+	let uploadedUrl: string | null = null;
+	let isDelete;
+	if (values.image) {
+		uploadedUrl = await uploadImage(values.image, supabase);
+		if (!uploadedUrl) {
+			return {
+				success: false,
+				error: { message: "Failed to upload image" },
+			};
+		}
+		isDelete = oldImageString
+			? await deleteImage(oldImageString, supabase)
+			: true;
+	} else if (!previewImageString) {
+		//user remove the image
+		isDelete = oldImageString
+			? await deleteImage(oldImageString, supabase)
+			: true;
+	}
 
-  if (!updateResult) {
-    return {
-      success: false,
-      error: { message: "Something went wrong" },
-    };
-  }
+	const updateResult = await updateSession(supabase, sessionId, {
+		values,
+		uploadedUrl,
+		start,
+		end,
+		tutor_id,
+		status: "open",
+	});
 
-  return {
-    success: true,
-  };
+	if (!updateResult) {
+		return {
+			success: false,
+			error: { message: "Something went wrong" },
+		};
+	}
+
+	return {
+		success: true,
+	};
 };

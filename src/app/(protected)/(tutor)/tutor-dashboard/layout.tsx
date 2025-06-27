@@ -5,8 +5,9 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { getUserById } from "@/data/queries/user/get-user-by-id";
 import { getUserSession } from "@/utils/get-user-session";
 import { redirect } from "next/navigation";
-import loading from "./warning/loading";
+
 import { createClient } from "@/utils/supabase/server";
+import { Ban } from "lucide-react";
 
 export default async function layout({
 	children,
@@ -27,16 +28,8 @@ export default async function layout({
 			</>
 		);
 	}
-	const tutor_data = {
-		...user,
-		email: userData.email,
-		full_name: userData.username ?? "",
-		profile_url: userData.profile_url,
-		user_role: userData.role,
-		tutor_status: userData.tutor_status,
-	};
 
-	if (user?.user_role !== "tutor") {
+	if (user.user_role !== "tutor" && user.user_role !== "admin") {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 
@@ -46,8 +39,18 @@ export default async function layout({
 				<AppSideBar variant="inset" collapsible="icon" />
 
 				<SidebarInset>
-					<SiteHeader />
-					<div className="@container/main flex flex-1 flex-col gap-2">
+					<SiteHeader tutor_status={userData.tutor_status} />
+					<div className="@container/main flex flex-1 flex-col gap-1">
+						{userData.tutor_status === "suspended" && (
+							<div className="w-full h-5  rounded-b-3xl  bg-red-100 flex justify-center items-center ">
+								<span className="text-xs text-red-500 block ">
+									You have been suspended currently by admin team. You cannot
+									create new sessions now.
+								</span>
+								<Ban size={10} className="text-red-500" />
+							</div>
+						)}
+
 						<div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
 							<div className="px-4 lg:px-6">{children}</div>
 						</div>

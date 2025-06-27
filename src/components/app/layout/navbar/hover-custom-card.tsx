@@ -13,7 +13,7 @@ export default function HoverCustomCard({
 }: {
 	content: string;
 	icon?: React.ReactNode;
-	user?: UserSession | null;
+	user?: UserSession;
 	notifications?: TNotificationResult[];
 	ss?: TStudentSessionJoinResult[];
 }) {
@@ -30,11 +30,8 @@ export default function HoverCustomCard({
 			{content === "Notification" && (
 				<NotiHoverContent notifications={notifications ?? []} />
 			)}
-			{content === "Profile" && (
-				<ProfileHoverContent
-					user={user ?? null}
-					noti_count={notifications?.length}
-				/>
+			{content === "Profile" && user && (
+				<ProfileHoverContent user={user} noti_count={notifications?.length} />
 			)}
 		</HoverCard>
 	);

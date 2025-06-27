@@ -45,16 +45,7 @@ export async function submitRefundOrReport(
 
 	const { reason, description, type, ss_id } = parsed.data;
 
-<<<<<<< HEAD
-	const existingReq = (await getRefundReport(supabase, {
-		ss_id,
-	})) ?? [];
-	console.log("@@ : ", existingReq.length);
-=======
-	const existingReq =
-		(await getRefundReport(supabase, { ss_id, student_id: user.user_id })) ??
-		[];
->>>>>>> main
+	const existingReq = (await getRefundReport(supabase, { ss_id: ss_id })) ?? [];
 	if (existingReq.length > 0) {
 		return {
 			success: false,
@@ -79,7 +70,8 @@ export async function submitRefundOrReport(
 			return {
 				success: false,
 				error: {
-					message: "Refund failed: Session is about to start in less than 24 hours ❌",
+					message:
+						"Refund failed: Session is about to start in less than 24 hours ❌",
 				},
 			};
 		}
@@ -90,7 +82,8 @@ export async function submitRefundOrReport(
 			return {
 				success: false,
 				error: {
-					message: "Refund now allowed: This session has been paid and archived ❌",
+					message:
+						"Refund now allowed: This session has been paid and archived ❌",
 				},
 			};
 		}
@@ -116,11 +109,3 @@ export async function submitRefundOrReport(
 		data: `${type} has been submitted ✅`,
 	};
 }
-<<<<<<< HEAD
-=======
-
-// open, closed, completed, archived, canceled
-// refund only, check session status != completed or now > start_time- 24 hours
-// refund and report | report, check session status != archived
-// report only, no need to check
->>>>>>> main

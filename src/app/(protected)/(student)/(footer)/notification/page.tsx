@@ -77,15 +77,6 @@ export default async function page() {
 			</>
 		);
 	}
-
-	if (!tutor_noti_count && tutor_noti_count !== 0) {
-		return (
-			<>
-				<GeneralError />
-			</>
-		);
-	}
-
 	await Promise.all([
 		queryClient.prefetchInfiniteQuery({
 			queryKey: ["student_notifications", user_id, ["student"]],
