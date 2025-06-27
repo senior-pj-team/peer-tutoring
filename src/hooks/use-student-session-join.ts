@@ -31,7 +31,7 @@ async function fetchMySession({
 		student_id: user_id,
 		status: ["enrolled"],
 		offset: 0,
-		limit: 2,
+		limit: 3,
 	});
 	if (!student_sessions) throw new Error("Error fetching data");
 	return student_sessions;

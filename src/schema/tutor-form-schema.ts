@@ -29,6 +29,7 @@ export const tutorFormSchema = z.object({
     .boolean()
     .refine((val) => val === true),
   type: z.enum(["student_refund", "tutor_transfer", "refund_transfer"]),
+  bankId: z.coerce.number().min(0, "Bank ID is required")
 });
 
 export type tutorFormSchemaT = z.infer<typeof tutorFormSchema>;

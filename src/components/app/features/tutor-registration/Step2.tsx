@@ -49,6 +49,7 @@ export default function Step2({ bankData }: Step2Props) {
 			form.setValue("accountNumber", bankData.account_number ?? "");
 			form.setValue("accountName", bankData.account_name ?? "");
 			form.setValue("type", "refund_transfer");
+			form.setValue("bankId", bankData.id);
 		}
 	};
 
@@ -61,6 +62,7 @@ export default function Step2({ bankData }: Step2Props) {
 			form.resetField("accountNumber");
 			form.resetField("accountName");
 			form.resetField("type");
+			form.resetField("bankId");
 		}
 	};
 

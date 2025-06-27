@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { ChatListServer } from "./chat-list-server";
 import ConversationServer from "./conversation-server";
 import SelectConversation from "./select-convo";
-import ConversationLoading from "../../shared/ConversationLoading";
-import ChatListLoading from "../../shared/ChatListLoading";
+import ConversationLoading from "../../shared/conversation-loading";
+import ChatListLoading from "../../shared/chat-list-loading";
 
 export default function ChatLayout({ chatId }: { chatId: string | null }) {
     return (

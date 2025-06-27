@@ -49,7 +49,7 @@ export async function submitRefundOrReport(
 	if (existingReq.length > 0) {
 		return {
 			success: false,
-			error: { message: "You already requested a refund for  this session" },
+			error: { message: "You already requested a refund for this session" },
 		};
 	}
 
@@ -71,3 +71,8 @@ export async function submitRefundOrReport(
 		data: type + " has been submitted",
 	};
 }
+
+// open, closed, completed, archived, canceled
+// refund only, check session status != completed or now > start_time- 24 hours
+// refund and report | report, check session status != archived
+// report only, no need to check

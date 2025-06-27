@@ -1,5 +1,5 @@
-import ChatListLoading from "@/components/app/shared/ChatListLoading";
-import ConversationLoading from "@/components/app/shared/ConversationLoading";
+import ChatListLoading from "@/components/app/shared/chat-list-loading";
+import ConversationLoading from "@/components/app/shared/conversation-loading";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {

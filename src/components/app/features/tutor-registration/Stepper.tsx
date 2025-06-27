@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -16,6 +16,8 @@ import { insertNotification } from "@/data/mutations/notification/insert-notific
 import { sendEmail } from "@/actions/send-email";
 import { useSupabase } from "@/hooks/use-supabase";
 import { getUserSession } from "@/utils/get-user-session";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 const steps = [
 	"Academic Information",
@@ -31,7 +33,8 @@ export default function HorizontalStepper({
 	bankData: TBankInfoResult | null;
 }) {
 	const supabase = useSupabase();
-	const [activeStep, setActiveStep] = React.useState(0);
+	const [activeStep, setActiveStep] = useState(0);
+	const [isPending, startTransition] = useTransition();
 
 	const form = useForm<tutorFormSchemaT>({
 		resolver: zodResolver(tutorFormSchema),
@@ -45,29 +48,36 @@ export default function HorizontalStepper({
 			accountNumber: "",
 			studentIdPhoto: "",
 			type: "tutor_transfer",
+			bankId: 0,
 		},
 	});
 
 	const onSubmit = async (data: tutorFormSchemaT) => {
-		const result = await submitTutorRegistration(data);
-		console.log(result);
-		if (result.success) {
-			await Promise.all([sendResponseEmail(), sendNotification()]);
-		}
-		setActiveStep((prev) => prev + 1);
+		startTransition(async () => {
+			const response = await submitTutorRegistration(data);
+			if (response.success) {
+				await Promise.all([sendResponseEmail(), sendNotification()]);
+				setActiveStep((prev) => prev + 1);
+			} else {
+				toast.error("Something went wrong", {
+					description: `We couldn't complete your request. ${response.error.message}`,
+				});
+			}
+		});
 	};
 
 	const validateStep = async () => {
 		const stepFields: { [key: number]: (keyof tutorFormSchemaT)[] } = {
 			0: ["school", "major", "year", "phone_number", "studentIdPhoto"],
-			1: ["bankName", "accountName", "accountNumber", "type"],
+			1: ["bankName", "accountName", "accountNumber", "type", "bankId"],
 			2: ["isChecked"],
 		};
 
 		const isStepValid = await form.trigger(stepFields[activeStep]);
 		if (isStepValid) {
 			if (activeStep === steps.length - 1) {
-				form.handleSubmit(onSubmit)();
+				console.log(form.getValues());
+				onSubmit(form.getValues());
 			} else {
 				setActiveStep((prev) => prev + 1);
 			}
@@ -164,8 +174,21 @@ export default function HorizontalStepper({
 									disabled={activeStep === 0}>
 									Back
 								</Button>
-								<Button onClick={validateStep}>
-									{activeStep === steps.length - 1 ? "Finish" : "Next"}
+								<Button onClick={validateStep} disabled={isPending}>
+									{isPending ? (
+										<div className="flex items-center gap-1">
+											<span>Loading</span>
+											<div className="flex items-center gap-0.5">
+												<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]" />
+												<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]" />
+												<div className="h-1 w-1 bg-white rounded-full animate-bounce" />
+											</div>
+										</div>
+									) : activeStep === steps.length - 1 ? (
+										"Finish"
+									) : (
+										"Next"
+									)}
 								</Button>
 							</div>
 						</>
