@@ -14,7 +14,9 @@ export async function cancelSession(session_id: number):Promise<ActionResponseTy
         error: { message: "Something went wrong" }
     }
   }
-  const enrollments= await getEnrollmentCount(supabase, {session_id})
+  const enrollments= await getEnrollmentCount(supabase, {
+    session_id
+  })
   if((enrollments ?? 1) > 0){
     return {
         success: false,

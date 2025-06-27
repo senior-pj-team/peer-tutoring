@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 import StudentList from "@/components/app/shared/student-list";
 import AmountCard from "@/components/app/shared/amount-card";
 import { createClient } from "@/utils/supabase/server";
 import GeneralError from "@/components/app/shared/error";
 import { getSumTutorAmountByStatus } from "@/data/queries/student-session/get-sum-tutor-amount-by-status";
+import GeneralLoading from "@/components/app/shared/GeneralLoading";
 
 type Params = Promise<{
 	session_id: string;
@@ -34,7 +35,9 @@ const page = async ({ params }: { params: Params }) => {
                     textColor="text-red-500"
                 />
             </div>
-            <StudentList session_id={session_id}/>
+            <Suspense fallback={<GeneralLoading/>}>
+                <StudentList session_id={session_id}/>
+            </Suspense>
         </div>
     );
 };

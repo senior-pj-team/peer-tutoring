@@ -4,6 +4,7 @@ import ReviewCard from "./review-card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useInfiniteRatingReviews } from "@/hooks/use-infinite-rating-review";
+import { DebounceSearchBar } from "../../shared/debounce-search-bar";
 
 export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
   const [searchInput, setSearchInput] = useState("");
@@ -31,16 +32,15 @@ export default function RatingReviewList({ tutor_id }: { tutor_id: string }) {
   return (
     <div>
       <div className="mt-5 flex flex-col md:flex-row gap-2 w-full items-center px-2">
-        <input
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+        <DebounceSearchBar
+          query={searchInput}
+          setQuery={setSearchInput}
           placeholder="Search reviews..."
-          className="w-full px-3 py-2 text-sm border border-orange-400 rounded-xl focus:outline-none focus:border-orange-800"
+          className="p-4 pr-10 border border-gray-300 rounded-lg focus:outline-primary focus:ring-primary overflow-clip mr-auto"
         />
       </div>
 
-      <ScrollArea className="h-[60vh] md:h-[70vh] p-4 bg-white space-y-4">
+      <ScrollArea className="h-[60vh] md:h-[70vh] p-4 bg-white space-y-4 mt-2">
         {isLoading && reviews.length === 0 ? (
           <div>Loading reviews...</div>
         ) : reviews.length > 0 ? (

@@ -52,40 +52,18 @@ declare global {
 	type TAmountByStatuses =
 		DB["public"]["Functions"]["sum_tutor_amounts_by_status"]["Returns"];
 
-	type TStudentSessionJoinResult = {
-		id: number;
-		session_id: number;
-		student_id: string;
-		amount_from_student?: number | null;
-		created_at?: string | null;
-		refunded_amount?: number | null;
-		held_until?: string | null;
-		amount_to_tutor: number | null;
-		stripe_client_secrete: string;
-		ss_status: TStudentSessionStatus;
-		student: {
-			id: string | null;
-			profile_url: string | null;
-			username: string | null;
-		};
-		sessions: {
-			id: number | null;
-			image: string | null;
-			session_name: string | null;
-			course_code: string | null;
-			course_name: string | null;
-			max_students: number | null;
-			start_time: string | null;
-			end_time: string | null;
-			tutor_id: string | null;
-			tutor: {
-				id: string | null;
-				profile_url: string | null;
-				username: string | null;
-				tutor_rating: number | null;
-			} | null;
-		} | null;
-	};
+	type TStudentSessionJoinResult = 
+		TStudentSessionResult & 
+		{
+			student: TUser
+		} &
+		{
+			sessions: TSessionsResult &
+			{
+				tutor: TUser
+			}
+		}
+		 
 	type TRefundReportJoinResult = {
 		id: number;
 		reason: string | null;

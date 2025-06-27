@@ -1,14 +1,12 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { z } from "zod";
 import { getUserSession } from "@/utils/get-user-session";
 import { tutorFormSchema, tutorFormSchemaT } from "@/schema/tutor-form-schema";
 import { uploadStudentIdImage } from "@/data/mutations/user/upload-student-id-images";
 import { updateUser } from "@/data/mutations/user/update-user";
 import { upsertBankInfo } from "@/data/mutations/bank-info/upsert-bank-info";
 import { updateBankInfo } from "@/data/mutations/bank-info/update-bank-info";
-import { insertBankInfo } from "@/data/mutations/bank-info/insert-bank-info";
 
 export async function submitTutorRegistration(
 	formData: tutorFormSchemaT,
@@ -69,6 +67,44 @@ export async function submitTutorRegistration(
 		};
 	}
 
+<<<<<<< HEAD
+  if (type == "refund_transfer" && bankId) {
+    const updateResult = await updateBankInfo(
+      supabase,
+      Number(bankId),
+      user.user_id,
+      { account_type: type }
+    );
+    if(!updateResult){
+      return{
+        success: false,
+        error: {message: "Something went wrong"}
+      }
+    }
+  } else if (type == "tutor_transfer") {
+    const upsertResult = await upsertBankInfo(supabase, {
+      user_id: user.user_id,
+      bankData: {
+        bank_name: bankName,
+        account_name: accountName,
+        account_number: accountNumber,
+        other_bank: ""
+      },
+      account_type: type,
+    })
+    if(upsertResult){
+      return {
+        success: false,
+        error: {message: "Something went wrong"}
+      }
+    }
+  }else{
+    return {
+      success: false,
+      error: {message: "Something went wrong"}
+    }
+  }
+=======
 	const updateResult = await updateUser(supabase, {
 		tutorData: {
 			school: school,
@@ -80,6 +116,7 @@ export async function submitTutorRegistration(
 		uploadedUrl: photoUrl,
 		user_id: user.user_id,
 	});
+>>>>>>> main
 
 	if (!updateResult) {
 		return {
