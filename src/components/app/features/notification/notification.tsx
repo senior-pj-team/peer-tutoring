@@ -14,11 +14,11 @@ export function Notification({
 		<li
 			className={cn(
 				"flex items-start justify-between  border  p-4 rounded-lg shadow-sm",
-				noti.type === "tutor_warning"
+				noti.type === "tutor_warning" && noti.status !== "read"
 					? "bg-red-50 border-red-200 border-3"
 					: noti.status === "new"
-					? "bg-orange-50 border-orange-200 border-3"
-					: " bg-slate-100 border-gray-200 border-3",
+						? "bg-orange-50 border-orange-200 border-3"
+						: " bg-slate-100 border-gray-200 border-3",
 			)}>
 			<div className="flex flex-col gap-1.5 w-full">
 				<span className="text-gray-700 text-lg font-bold">{noti.title}</span>

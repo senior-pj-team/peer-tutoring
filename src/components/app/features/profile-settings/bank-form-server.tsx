@@ -18,9 +18,17 @@ export async function BankFormServer() {
 		user_id: user.user_id,
 		account_type: ["refund_transfer", "student_refund"],
 	});
+	if (!bankInfo) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
 	return (
 		<>
-			<BankForm bankInfo={bankInfo} />
+			<BankForm bankInfo={bankInfo[0] ?? null} />
 		</>
 	);
 }

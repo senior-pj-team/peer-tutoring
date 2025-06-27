@@ -43,12 +43,14 @@ export async function submitRefundOrReport(
 
 	const { reason, description, type, ss_id } = parsed.data;
 
-	const existingReq = (await getRefundReport(supabase, { ss_id,student_id:user.user_id })) ?? [];
+	const existingReq =
+		(await getRefundReport(supabase, { ss_id, student_id: user.user_id })) ??
+		[];
 	if (existingReq.length > 0) {
 		return {
-            success: false,
-            error: {message: "You already requested a refund for  this session"}
-        }
+			success: false,
+			error: { message: "You already requested a refund for this session" },
+		};
 	}
 
 	const insertResult = insertRefundReport(

@@ -158,7 +158,7 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 									<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
 										<Avatar>
 											<AvatarImage
-												src={user.profile_url ?? ""}
+												src={user.profile_url ?? "/image.png"}
 												width={56}
 												height={56}
 												alt="User Avatar"

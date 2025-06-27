@@ -67,7 +67,7 @@ declare global {
 			id: string | null;
 			profile_url: string | null;
 			username: string | null;
-		},
+		};
 		sessions: {
 			id: number | null;
 			image: string | null;
@@ -117,6 +117,10 @@ declare global {
 
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
 	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
+	type TTutorSessionStats =
+		DB["public"]["Functions"]["get_tutor_session_stats"]["Returns"];
+	type TTutorMonthlyPaidSum =
+		DB["public"]["Functions"]["get_monthly_tutor_amounts_paid"]["Returns"];
 
 	// other global types
 
@@ -179,5 +183,5 @@ declare global {
 	type TRefundStatus = DB["public"]["Enums"]["refund_status"];
 	type TBankAccountType = DB["public"]["Enums"]["bank_account_type"];
 	type TNotification = DB["public"]["Enums"]["notification_type"];
-	type TRefund = DB["public"]["Enums"]["refund_type"]
-};
+	type TRefund = DB["public"]["Enums"]["refund_type"];
+}

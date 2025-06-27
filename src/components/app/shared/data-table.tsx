@@ -25,7 +25,14 @@ import { useMemo, useState } from "react";
 import { DebounceSearchBar } from "./debounce-search-bar";
 import { DatePickerWithRange } from "./date-range-picker";
 import { DateRange } from "react-day-picker";
-import { addDays, isAfter, isBefore, isSameDay, isToday, subDays } from "date-fns";
+import {
+	addDays,
+	isAfter,
+	isBefore,
+	isSameDay,
+	isToday,
+	subDays,
+} from "date-fns";
 import { fuzzyFilter } from "@/utils/app/fuzzy-filter";
 
 interface DataTableProps<TData, TValue> {
@@ -39,15 +46,14 @@ export function DataTable<TData, TValue>({
 	data,
 	type,
 }: DataTableProps<TData, TValue>) {
-
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [date, setDate] = useState<DateRange | undefined>({
 		from: subDays(new Date(), 20),
 		to: addDays(new Date(), 10),
 	});
-	
+
 	const filteredData = useMemo(() => {
-		if(type=="students") return data;
+		if (type == "students") return data;
 		if (!date?.from && !date?.to) return data;
 
 		return data.filter((item) => {
@@ -57,7 +63,7 @@ export function DataTable<TData, TValue>({
 			const heldDate = new Date(heldUntil);
 			const from = date.from!;
 			const to = date.to ?? from;
-			
+
 			return (
 				(isSameDay(heldDate, from) || isAfter(heldDate, from)) &&
 				(isSameDay(heldDate, to) || isBefore(heldDate, to))
@@ -119,9 +125,9 @@ export function DataTable<TData, TValue>({
 											{header.isPlaceholder
 												? null
 												: flexRender(
-													header.column.columnDef.header,
-													header.getContext(),
-												)}
+														header.column.columnDef.header,
+														header.getContext(),
+													)}
 										</TableHead>
 									);
 								})}

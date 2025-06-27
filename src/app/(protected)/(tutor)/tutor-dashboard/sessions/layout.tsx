@@ -1,7 +1,8 @@
 import Tabs from "@/components/app/shared/tabs";
 import SessionStatsCards from "@/components/app/features/tutor-dashboard/sessions/session-stats-cards";
 
-import { Separator } from "@/components/ui/separator";
+import { Suspense } from "react";
+import { SessionStatsSkeleton } from "@/components/app/features/tutor-dashboard/sessions/session-stats-skeleton";
 
 export default async function Sessions({
 	children,
@@ -10,8 +11,9 @@ export default async function Sessions({
 }) {
 	return (
 		<div>
-			<SessionStatsCards />
-			<Separator className="my-6" />
+			<Suspense fallback={<SessionStatsSkeleton />}>
+				<SessionStatsCards />
+			</Suspense>
 
 			<div className="px-4 lg:px-6">
 				<Tabs

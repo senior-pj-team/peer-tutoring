@@ -1,10 +1,8 @@
-import GeneralLoading from '@/components/app/shared/GeneralLoading'
-import React from 'react'
+import GeneralLoading from "@/components/app/shared/general-loading";
+import React from "react";
 
 const loading = () => {
-  return (
-    <GeneralLoading/>
-  )
-}
+	return <GeneralLoading />;
+};
 
-export default loading
+export default loading;

@@ -46,13 +46,19 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 	let bank_name_data: string | null = null;
 	let account_name_data: string | null = null;
 	let account_number_data: string | null = null;
-
+	let account_type_data:
+		| "student_refund"
+		| "tutor_transfer"
+		| "refund_transfer"
+		| undefined = "student_refund";
 	const [isPending, startTransition] = useTransition();
+
 	if (bankInfo) {
-		const { bank_name, account_name, account_number } = bankInfo;
+		const { bank_name, account_name, account_number, account_type } = bankInfo;
 		bank_name_data = bank_name;
 		account_name_data = account_name;
 		account_number_data = account_number;
+		account_type_data = account_type;
 	}
 	const isKnownBank = BANKS.includes(bank_name_data ?? "");
 
@@ -62,15 +68,16 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 			bank_name: !bank_name_data
 				? ""
 				: isKnownBank
-				? bank_name_data ?? ""
-				: "Other",
+					? (bank_name_data ?? "")
+					: "Other",
 			other_bank: !bank_name_data
 				? ""
 				: isKnownBank
-				? ""
-				: bank_name_data ?? "",
+					? ""
+					: (bank_name_data ?? ""),
 			account_name: account_name_data ?? "",
 			account_number: account_number_data ?? "",
+			account_type: account_type_data,
 		},
 	});
 	const bankName = form.watch("bank_name");
@@ -93,7 +100,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 	return (
 		<Form {...form}>
 			<form
-				className="grid w-full items-center gap-y-8"
+				className="grid w-[85%] items-center gap-y-8"
 				onSubmit={form.handleSubmit(handleSubmit)}>
 				<FormField
 					control={form.control}
@@ -105,7 +112,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 								<Select
 									{...field}
 									disabled={false}
-									value={field.value || undefined}
+									value={field.value || ""}
 									onValueChange={field.onChange}>
 									<SelectTrigger className="text-[0.6rem] md:text-sm w-full">
 										<SelectValue placeholder="Select a bank" />
@@ -184,7 +191,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 								<Input
 									{...field}
 									placeholder="Enter Bank Account Number"
-									value={field.value?.toString() || ""}
+									value={field.value ?? ""}
 									className="text-[0.6rem] md:text-sm"
 									disabled={false}
 								/>
