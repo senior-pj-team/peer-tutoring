@@ -14,7 +14,7 @@ import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
 import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
-import GeneralLoading from "@/components/app/shared/GeneralLoading";
+import GeneralLoading from "@/components/app/shared/general-loading";
 
 type Params = Promise<{
 	page: string;
@@ -107,7 +107,7 @@ const Page = async ({ params }: { params: Params }) => {
 							</TabsContent>
 
 							<TabsContent value="payment">
-								<Suspense fallback={<GeneralLoading/>}>
+								<Suspense fallback={<GeneralLoading />}>
 									<SessionPayment session_id={sessionData.session_id!} />
 								</Suspense>
 							</TabsContent>
@@ -127,12 +127,11 @@ const Page = async ({ params }: { params: Params }) => {
 								/>
 							)}
 
-							{
-								page === "refund" &&
-								<Suspense fallback={<GeneralLoading/>}>
+							{page === "refund" && (
+								<Suspense fallback={<GeneralLoading />}>
 									<RefundStatus ssId={sessionData.id} />
-								</Suspense> 
-							}
+								</Suspense>
+							)}
 						</aside>
 					</div>
 				</Tabs>

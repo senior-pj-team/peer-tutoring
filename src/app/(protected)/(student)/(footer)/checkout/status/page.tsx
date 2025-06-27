@@ -9,7 +9,6 @@ export default async function page({
 }) {
 	const { payment_intent } = await searchParams;
 	let paymentIntent;
-	console.log(payment_intent);
 	try {
 		paymentIntent = await stripe.paymentIntents.retrieve(payment_intent);
 	} catch (error) {

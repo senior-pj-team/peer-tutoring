@@ -13,7 +13,7 @@ import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { SessionSkeletonList } from "@/components/app/shared/sessions/session-skeleton-list";
 import { getTutorWithStats } from "@/data/queries/tutors/get-tutor-with-stats";
 import { getYear } from "@/utils/app/get-year";
-import GeneralLoading from "@/components/app/shared/GeneralLoading";
+import GeneralLoading from "@/components/app/shared/general-loading";
 
 type Params = Promise<{
 	tutor_id: string;
@@ -23,7 +23,7 @@ const Page = async ({ params }: { params: Params }) => {
 	const { tutor_id } = await params;
 	const supabase = await createClient();
 	let data = await getTutorWithStats(supabase, { p_filter_tutor_id: tutor_id });
-	if (!data || data.length==0) return <GeneralError />;
+	if (!data || data.length == 0) return <GeneralError />;
 
 	const tutorStats = data[0] as Omit<
 		TTutorWithStatsResult[number],
@@ -160,7 +160,7 @@ const Page = async ({ params }: { params: Params }) => {
 					</div>
 					|<span>{tutorStats.total_review_count} Reviews</span>
 				</h1>
-				<Suspense fallback={<GeneralLoading/>}>
+				<Suspense fallback={<GeneralLoading />}>
 					<TutorRARSection
 						tutor_id={tutor_id}
 						initialSize={6}

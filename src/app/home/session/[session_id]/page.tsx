@@ -15,7 +15,7 @@ import { getSessionMatViewbyId } from "@/data/queries/sessions/get-session-mat-v
 import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
-import GeneralLoading from "@/components/app/shared/GeneralLoading";
+import GeneralLoading from "@/components/app/shared/general-loading";
 
 type Params = Promise<{
 	session_id: string;
@@ -105,20 +105,21 @@ const Page = async ({ params }: { params: Params }) => {
 							</TabsContent>
 
 							<TabsContent value="tutor">
-								<Suspense fallback={<GeneralLoading/>}>
+								<Suspense fallback={<GeneralLoading />}>
 									<SessionTutor tutor_id={sessionData.tutor!.tutor_id} />
 								</Suspense>
 							</TabsContent>
 						</div>
-
-						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
-							<EnrollAction
-								session_id={sessionData.session_id!}
-								start_time={sessionData.start_time ?? ""}
-								price={sessionData.price}
-								service_fee={sessionData.service_fee}
-							/>
-						</aside>
+						{sessionData.status === "open" && (
+							<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
+								<EnrollAction
+									session_id={sessionData.session_id!}
+									start_time={sessionData.start_time ?? ""}
+									price={sessionData.price}
+									service_fee={sessionData.service_fee}
+								/>
+							</aside>
+						)}
 					</div>
 				</Tabs>
 			</div>

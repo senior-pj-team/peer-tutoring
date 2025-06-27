@@ -7,16 +7,24 @@ import { createClient } from "@/utils/supabase/server";
 import { getBankInfoByUser } from "@/data/queries/bank-info/get-bank-info-by-user";
 
 export default async function BecomeTutorPage() {
-	const user= await getUserSession();
-	const supabase= await createClient()
-	if(!user?.user_id) return <GeneralError/>
+	const user = await getUserSession();
+	const supabase = await createClient();
+	if (!user?.user_id) return <GeneralError />;
 
-	const userData= await getUserById(supabase, user.user_id);
-	const bankData= await getBankInfoByUser(supabase, { user_id: user.user_id })
-	
+	const userData = await getUserById(supabase, user.user_id);
+	const bankData = await getBankInfoByUser(supabase, { user_id: user.user_id });
+
+	if (!bankData) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
 	return (
 		<div className="max-w-2xl mx-auto p-4">
-			<Stepper userData={userData} bankData={bankData}/>
+			<Stepper userData={userData} bankData={bankData[0] ?? null} />
 		</div>
 	);
 }

@@ -37,6 +37,11 @@ export const bankInfoSchema = z
 			.string()
 			.min(1, "Bank account name is required")
 			.max(100, "Bank account name must be less then 100 characters long"),
+		account_type: z.enum([
+			"student_refund",
+			"tutor_transfer",
+			"refund_transfer",
+		]),
 		account_number: z
 			.string()
 			.min(1, "Bank account number is required")

@@ -27,14 +27,15 @@ export async function checkoutEnrollment(
 		const session_id = Number(formData.get("session_id"));
 		const supabase = await createClient();
 
-		const session = await getSessionsbyId(supabase, session_id);
-		if (!session) {
+		const session_data = await getSessionsbyId(supabase, { session_id });
+		if (!session_data || session_data.length < 1) {
 			return {
 				success: false,
 				error: { message: "Something went wrong. Please try again!" },
 			};
 		}
 
+		const session = session_data[0];
 		if (session.status !== "open") {
 			return {
 				success: false,
@@ -135,9 +136,11 @@ export async function checkoutEnrollment(
 			};
 		}
 
-		let service_included_amount: number | null = null;
-		if (session.service_fee && session.price) {
-			service_included_amount = Number(session.price + session.service_fee);
+		let service_included_amount: number = 0;
+		if (session.price) {
+			service_included_amount = Number(
+				session.price + (session.service_fee ?? 0),
+			);
 		}
 
 		const student_session = await insertStudentSession(supabase, {

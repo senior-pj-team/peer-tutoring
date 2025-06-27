@@ -8,7 +8,7 @@ import TutorStats from "./tutor-stats";
 import SessionList from "./session-list";
 import TutorRARSection from "../tutor/tutor-RAR-section";
 import { getTutorWithStats } from "@/data/queries/tutors/get-tutor-with-stats";
-import GeneralLoading from "../../shared/GeneralLoading";
+import GeneralLoading from "../../shared/general-loading";
 
 const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 	const supabase = await createClient();
@@ -54,7 +54,7 @@ const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 						{tutor.total_session_count} sessions 📗 by {tutor.username}
 					</h1>
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8">
-						<Suspense fallback={<GeneralLoading/>}>
+						<Suspense fallback={<GeneralLoading />}>
 							<SessionList tutor_id={tutor_id} supabase={supabase} />
 						</Suspense>
 					</div>

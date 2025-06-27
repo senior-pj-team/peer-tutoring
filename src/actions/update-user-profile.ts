@@ -21,7 +21,7 @@ export async function updateUserProfile(
 		const fieldErrors = validatedResult.error.flatten().fieldErrors;
 		const firstFieldErrors =
 			Object.values(fieldErrors).flat().filter(Boolean)[0] ??
-			"Some input is wrong";
+			"Invalid Inputs ❌";
 		return {
 			success: false,
 			error: { message: firstFieldErrors },
@@ -31,7 +31,7 @@ export async function updateUserProfile(
 	if (!user) {
 		return {
 			success: false,
-			error: { message: "Something went Wrong!" },
+			error: { message: "Something went Wrong ❌" },
 		};
 	}
 	const userData = validatedResult.data;
@@ -43,7 +43,7 @@ export async function updateUserProfile(
 		if (!uploadedUrl) {
 			return {
 				success: false,
-				error: { message: "Failed to upload image" },
+				error: { message: "Failed to upload image ❌" },
 			};
 		}
 
@@ -58,7 +58,7 @@ export async function updateUserProfile(
 	if (!updateResult) {
 		return {
 			success: false,
-			error: { message: "Something went Wrong!" },
+			error: { message: "Something went Wrong ❌" },
 		};
 	}
 	return {
@@ -73,8 +73,7 @@ export async function updateBankInfo(
 	if (!validatedResult.success) {
 		const fieldErrors = validatedResult.error.flatten().fieldErrors;
 		const firstFieldErrors =
-			Object.values(fieldErrors).flat().filter(Boolean)[0] ??
-			"Some input is wrong";
+			Object.values(fieldErrors).flat().filter(Boolean)[0] ?? "Invalid Inputs";
 		return {
 			success: false,
 			error: { message: firstFieldErrors },
@@ -84,7 +83,7 @@ export async function updateBankInfo(
 	if (!user) {
 		return {
 			success: false,
-			error: { message: "Something went Wrong!" },
+			error: { message: "Something went Wrong ❌" },
 		};
 	}
 	const bankData = validatedResult.data;
@@ -93,13 +92,12 @@ export async function updateBankInfo(
 	const upsertResult = await upsertBankInfo(supabase, {
 		user_id: user.user_id,
 		bankData,
-		account_type: "student_refund",
 	});
 
 	if (!upsertResult) {
 		return {
 			success: false,
-			error: { message: "Something went Wrong!" },
+			error: { message: "Something went Wrong ❌" },
 		};
 	}
 	return {

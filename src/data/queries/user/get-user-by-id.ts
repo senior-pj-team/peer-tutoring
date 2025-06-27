@@ -4,7 +4,7 @@ export async function getUserById(
 ): Promise<TUser | null> {
 	const { data, error } = await supabase
 		.from("user")
-		.select("*")
+		.select(`*`)
 		.eq("id", userId)
 		.single();
 

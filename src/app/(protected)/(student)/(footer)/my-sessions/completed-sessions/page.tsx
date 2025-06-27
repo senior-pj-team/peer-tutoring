@@ -6,7 +6,7 @@ import GeneralError from "@/components/app/shared/error";
 
 const page = async () => {
 	const user = await getUserSession();
-	if (!user) return <GeneralError/>
+	if (!user) return <GeneralError />;
 	const supabase = await createClient();
 	const student_sessions = await getStudentSessionJoin(supabase, {
 		student_id: user.user_id,
@@ -22,7 +22,7 @@ const page = async () => {
 				))
 			) : (
 				<div className="col-span-full text-center text-gray-500">
-					No completed sessions found.
+					No completed sessions found 👽
 				</div>
 			)}
 		</div>

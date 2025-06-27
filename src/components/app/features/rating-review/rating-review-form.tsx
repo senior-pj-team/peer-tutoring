@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Button } from "@/components/ui/button";
-import { submitRatingReview } from "@/actions/sumbit-rating-review";
+import { submitRatingReview } from "@/actions/submit-rating-review";
 import { useActionState } from "react";
 import { toast } from "sonner";
 
@@ -29,7 +29,7 @@ const RatingReviewForm = ({
 		submitRatingReview,
 		initialState,
 	);
-	
+
 	useEffect(() => {
 		if (state.success) {
 			setOpen(false);
