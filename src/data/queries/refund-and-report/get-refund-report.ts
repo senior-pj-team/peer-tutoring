@@ -4,7 +4,7 @@ type Params = {
 
 export const getRefundReport = async (
 	supabase: TSupabaseClient,
-	{ ss_id}: Params,
+	{ ss_id }: Params,
 ): Promise<TRefundReportResult[] | null> => {
 	let query = supabase.from("refund_report").select("*");
 
