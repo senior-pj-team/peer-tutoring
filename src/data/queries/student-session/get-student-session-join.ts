@@ -24,36 +24,14 @@ export const getStudentSessionJoin = async (
     .from("student_session")
     .select(
       `
-      id,
-      session_id,
-      student_id,
-      amount_from_student,
-      created_at,
-      refunded_amount,
-      amount_to_tutor,
-      held_until,
-      stripe_client_secrete,
-      ss_status: status,
+      *,
       student:user!student_id!inner(
-        id,
-        profile_url,
-        username
+       *
       ),
       sessions!session_id!inner(
-        id,
-        image,
-        session_name,
-        course_code,
-        course_name,
-        max_students,
-        start_time,
-        end_time,
-        tutor_id,
+        *,
         tutor:user!tutor_id!inner(
-          id,
-          profile_url,
-          username,
-          tutor_rating
+          *
         )
       )
     `

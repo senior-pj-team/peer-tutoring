@@ -34,8 +34,6 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 	);
 	const {
 		data: mySessions,
-		isLoading: mySessionLoading,
-		isError: mySessionError,
 	}= useStudentSessionJoin(user?.user_id ?? "", !!user, supabase)
 
 	useEffect(() => {
@@ -52,7 +50,6 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [lastScrollY]);
-
 	return (
 		<div
 			className={clsx(

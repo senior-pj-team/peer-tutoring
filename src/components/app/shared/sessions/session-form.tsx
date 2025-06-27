@@ -22,7 +22,7 @@ import { addDays, formatDate, parseISO } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 
 import {
@@ -45,111 +45,91 @@ import { toast } from "sonner";
 import { createSession } from "@/actions/create-session";
 import { editSession } from "@/actions/edit-session";
 import { cancelSession } from "@/actions/cancel-session";
-import { useRouter } from "next/router";
-
-
-type SessionFormProps = {
-  school: string;
-  major: string;
-  courseCode: string;
-  courseName: string;
-  description: string;
-  requirements: string;
-  date: Date;
-  startTime: string;
-  endTime: string;
-  maxStudents: number;
-  paid: boolean;
-  amount: number;
-  imageString: string;
-  isEdit: boolean;
-  sessionName: string;
-  location: string;
-  category: string;
-  sessionId: number;
-  toCancel?: boolean;
-};
+import { useRouter } from "next/navigation";
+import { formatTimeFromTimestamp } from "@/utils/app/get-formatted-time";
 
 export default function SessionForm({
   data = {
     school: "",
     major: "",
-    courseCode: "",
-    courseName: "",
+    course_code: "",
+    course_name: "",
     description: "",
-    requirements: "",
-    date: addDays(new Date(), 2),
-    startTime: "",
-    endTime: "",
-    maxStudents: 1,
-    paid: true,
-    amount: 0,
-    imageString: "",
-    sessionName: "",
+    requirement: "",
+    start_time: "",
+    end_time: "",
+    max_students: 5,
+    price: 0,
+    image: "",
+    session_name: "",
     location: "",
-    category: "",
-    isEdit: false,
-    sessionId: 0,
-    toCancel: false,
+    category_id: 1,
+    id: NaN,
+    created_at: "",
+    payment_evidence: null,
+    refunded_amount: 0,
+    service_fee: 0,
+    status: "open",
+    tutor_id: "",
+    transferred_amount: 0
   },
+  isEdit = false,
+  toCancel = false,
 }: {
-  data?: SessionFormProps;
+  data?: TSessionsResult;
+  isEdit?: boolean;
+  toCancel?: boolean;
 }) {
   const {
     school,
     major,
-    courseCode,
-    courseName,
+    course_code,
+    course_name,
     description,
-    requirements,
-    date,
-    startTime,
-    endTime,
-    maxStudents,
-    paid,
-    amount,
-    imageString,
-    sessionName,
+    requirement,
+    start_time,
+    end_time,
+    max_students,
+    price,
+    image: imageString,
+    session_name,
     location,
-    category,
-    isEdit,
-    sessionId,
-    toCancel,
+    category_id,
+    id: sessionId,
+    status
   } = data;
 
   let image: File | null = null;
-  const router= useRouter();
+  const router = useRouter();
 
   const form = useForm<SessionSchemaT>({
     resolver: zodResolver(sessionSchema),
     defaultValues: {
-      school,
-      major,
-      courseCode,
-      courseName,
+      school: school ?? "",
+      major: major ?? "",
+      courseCode: course_code ?? "",
+      courseName: course_name ?? "",
       description,
-      requirements,
-      date,
-      startTime,
-      endTime,
-      maxStudents,
-      paid,
-      amount,
-      sessionName,
-      location,
-      category,
+      requirements: requirement ?? "",
+      date: isEdit ? new Date(start_time) : addDays(new Date(), 2),
+      startTime: start_time ? formatTimeFromTimestamp(start_time) : "",
+      endTime: end_time ? formatTimeFromTimestamp(end_time) : "",
+      maxStudents: max_students ?? "",
+      paid: !!price,
+      amount: price,
+      sessionName: session_name,
+      location: location,
+      category: category_id.toString(),
       image,
     },
   });
-
   const [previewUrl, setPreviewUrl] = useState<string | null>(imageString);
   const [isDisable, setDisable] = useState(isEdit);
   const [isDialogOpen, setisDialogOpen] = useState(false);
   const [formValues, setFormValues] = useState<SessionSchemaT>();
-  const [confirmAction, setConfirmAction] = useState<
-    "submit" | "cancel" | null
-  >(null);
+  const [confirmAction, setConfirmAction] = useState<"submit" | "cancel" | null>(null);
   const [isPending, startTransition] = useTransition();
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
 
   const handleDisableToggle = () => setDisable((prev) => !prev);
 
@@ -157,6 +137,7 @@ export default function SessionForm({
     const file = e.target.files?.[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
+      console.log("to set preview", objectUrl);
       setPreviewUrl(objectUrl);
     }
   };
@@ -171,18 +152,20 @@ export default function SessionForm({
     startTransition(async () => {
       if (confirmAction === "cancel") {
         const response = await cancelSession(sessionId);
-        response.success
-          ? toast.success("Session is cancelled", {
-              description: (
-                <div className="text-muted-foreground text-sm">
-                  {`Session was cancelled on ${formatDate(Date.now(), "yyy MMMM dd")}`}
-                </div>
-              ),
-            })
-          : toast.error("Something went wrong", {
-              description: `We couldn't complete your request. ${response.error.message}`,
-            });
-        router.push('/tutor-dashboard/sessions/upcoming-sessions');
+        if (response.success) {
+          toast.success("Session is cancelled", {
+            description: (
+              <div className="text-muted-foreground text-sm">
+                {`Session was cancelled on ${formatDate(Date.now(), "yyy MMMM dd")}`}
+              </div>
+            ),
+          });
+          router.push("/tutor-dashboard/sessions/upcoming-sessions");
+        } else {
+          toast.error("Something went wrong", {
+            description: `We couldn't complete your request. ${response.error.message}`,
+          });
+        }
         setisDialogOpen(false);
         return;
       }
@@ -191,27 +174,33 @@ export default function SessionForm({
       try {
         let response;
         if (isEdit) {
-          response = await editSession(sessionId, formValues, imageString);
+          response = await editSession(sessionId, formValues, imageString, previewUrl);
         } else {
           response = await createSession(formValues);
         }
         const actionType = isEdit ? "updated" : "created";
-        response.success
-          ? toast.success(`Session ${actionType} successfully`, {
-              description: (
-                <div className="text-muted-foreground text-sm">
-                  {`Session was ${actionType}. It will start on ${formatDate(
-                    parseISO(formValues.date.toISOString()),
-                    "yyyy MMMM dd"
-                  )}`}
-                </div>
-              ),
-            })
-          : toast.error("Something went wrong", {
-              description: `We couldn't complete your request. ${response.error.message}`,
-            });
+        if (response.success) {
+          toast.success(`Session ${actionType} successfully`, {
+            description: (
+              <div className="text-muted-foreground text-sm">
+                {`Session was ${actionType}. It will start on ${formatDate(
+                  parseISO(formValues.date.toISOString()),
+                  "yyyy MMMM dd"
+                )}`}
+              </div>
+            ),
+          });
+          if (isEdit) {
+            router.refresh();
+          } else {
+            router.push("/tutor-dashboard/sessions/upcoming-sessions");
+          }
+        } else {
+          toast.error("Something went wrong", {
+            description: `We couldn't complete your request. ${response.error.message}`,
+          });
+        }
         setisDialogOpen(false);
-        isEdit? router.back() : router.push('/tutor-dashboard/sessions/upcoming-sessions');
       } catch (error) {
         console.error(error);
         toast.error("Something went wrong", {
@@ -224,20 +213,27 @@ export default function SessionForm({
   return (
     <div className="relative px-4 lg:px-6">
       {isEdit && (
-        <div className="text-end">
+        <div className="flex items-center justify-between bg-muted p-3 rounded-md mb-4">
+          <div className="text-sm font-medium text-muted-foreground">
+            <span className="inline-block bg-slate-200 text-slate-700 px-3 py-1 rounded-full capitalize">
+              Status: {status}
+            </span>
+          </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={handleDisableToggle}
             className={clsx(
-              "hover:bg-orange-200 cursor-pointer",
+              "hover:bg-orange-100 border border-orange-300 transition",
               isDisable ? "bg-white" : "bg-orange-200"
             )}
+            title={isDisable ? "Enable editing" : "Disable editing"}
           >
-            <Pencil className="w-5 h-5" />
+            <Pencil className="w-5 h-5 text-orange-500" />
           </Button>
         </div>
       )}
+
 
       <Form {...form}>
         <form
@@ -307,18 +303,31 @@ export default function SessionForm({
                   <Label className="mb-1 block text-[1rem]">Image</Label>
                   <div className="lg:w-[30%] h-60 border border-dashed border-gray-400 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 relative">
                     {previewUrl ? (
-                      <Image
-                        src={previewUrl}
-                        alt="Profile Preview"
-                        width={120}
-                        height={120}
-                        priority
-                        className="object-cover w-full h-full"
-                      />
+                      <>
+                        <Image
+                          src={previewUrl}
+                          alt="Profile Preview"
+                          width={120}
+                          height={120}
+                          priority
+                          className="object-cover w-full h-full"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPreviewUrl(null);
+                            form.setValue('image', null);
+                            if (imageInputRef.current) {
+                              imageInputRef.current.value = "";
+                            }
+                          }}
+                          className="absolute top-2 right-2 text-white bg-black/50 hover:bg-black/70 text-xs px-2 py-1 rounded"
+                        >
+                          Remove
+                        </button>
+                      </>
                     ) : (
-                      <span className="text-sm text-gray-400">
-                        No image selected
-                      </span>
+                      <span className="text-sm text-gray-400">No image selected</span>
                     )}
                   </div>
 
@@ -338,6 +347,7 @@ export default function SessionForm({
                               field.onChange(e.target.files?.[0] || null);
                             }}
                             disabled={isDisable}
+                            ref={imageInputRef}
                           />
                         </FormControl>
                         <FormMessage className="text-sm" />
@@ -387,12 +397,13 @@ export default function SessionForm({
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Categories</SelectLabel>
+                          <SelectItem value="1">Science</SelectItem>
                           <SelectItem value="2">Technology</SelectItem>
                           <SelectItem value="3">Libral Arts</SelectItem>
                           <SelectItem value="4">Business</SelectItem>
                           <SelectItem value="5">Engineering</SelectItem>
-                          <SelectItem value="7">Health Science</SelectItem>
                           <SelectItem value="6">Elective Courses</SelectItem>
+                          <SelectItem value="7">Health Science</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -440,8 +451,9 @@ export default function SessionForm({
                   <FormField
                     control={form.control}
                     name="startTime"
-                    render={({ field }) => (
-                      <div className="min-h-[4.5rem] ">
+                    render={({ field }) => {
+                      console.log("field startTime: ", field.value);
+                      return <div className="min-h-[4.5rem] ">
                         <FormItem className="">
                           <FormLabel className="text-[1rem]">
                             Start Time
@@ -459,7 +471,7 @@ export default function SessionForm({
                           <FormMessage className="text-sm" />
                         </FormItem>
                       </div>
-                    )}
+                    }}
                   />
 
                   {/* End time */}
@@ -490,83 +502,7 @@ export default function SessionForm({
                 </div>
               )}
             />
-            <FormField
-              control={form.control}
-              name="maxStudents"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[1rem]">
-                    Maximum Students allowed
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min={1}
-                      {...field}
-                      className="w-[10%]"
-                      disabled={isDisable}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-sm" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[1rem]">Location</FormLabel>
-                  <FormControl>
-                    <Input type="string" {...field} disabled={isDisable} />
-                  </FormControl>
-                  <FormMessage className="text-sm" />
-                </FormItem>
-              )}
-            />
-            {/* Paid toggle and amount */}
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[1rem]">Price</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step={5}
-                      min={0}
-                      {...field}
-                      disabled={!form.watch("paid") || isDisable}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-sm" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="paid"
-              render={({ field }) => (
-                <FormItem className="flex items-center gap-3 mb-3">
-                  <FormLabel>Free</FormLabel>
-                  <FormControl>
-                    <Switch
-                      className="w-[2rem]"
-                      checked={field.value}
-                      onCheckedChange={(checked) => {
-                        field.onChange(checked);
-                        if (!checked) {
-                          form.setValue("amount", 0);
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel>Paid</FormLabel>
-                  <FormMessage className="text-sm" />
-                </FormItem>
-              )}
-            />
+
             <div className="w-full flex items-center gap-2">
               <Button
                 type="submit"

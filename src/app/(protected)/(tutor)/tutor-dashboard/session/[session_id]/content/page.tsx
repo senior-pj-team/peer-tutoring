@@ -14,29 +14,7 @@ const page = async ({ params }: { params: { session_id: string } }) => {
 
   const enrollments=await getEnrollmentCount(supabase, {session_id: Number(session_id)})
 
-  const mappedSession = {
-    school: session.school ?? "",
-    major: session.major ?? "",
-    courseCode: session.course_code ?? "",
-    courseName: session.course_name ?? "",
-    description: session.description ?? "",
-    requirements: session.requirement ?? "",
-    date: new Date(session.start_time),
-    startTime: session.start_time.slice(11, 16),
-    endTime: session.end_time.slice(11, 16),
-    maxStudents: session.max_students ?? 1,
-    paid: session.price != null ? session.price === 0 : false,
-    amount: session.price ?? 0,
-    imageString: session.image ?? "",
-    isEdit: true,
-    sessionName: session.session_name ?? "",
-    location: session.location ?? "",
-    category: String(session.category_id),
-    sessionId: session.id,
-    toCancel: true
-  };
-
-  return <SessionForm data={mappedSession} />;
+  return <SessionForm data={session} toCancel={ (enrollments ?? 1) < 0} isEdit={true}/>;
 };
 
 export default page;

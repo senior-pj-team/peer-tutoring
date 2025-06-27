@@ -52,7 +52,7 @@ const StudentList = async ({ session_id }: { session_id: string }) => {
 			<TableBody>
 				{students.map((student, index) => {
 					const studentInfo = student.student;
-					const status = student.ss_status;
+					const status = student.status;
 
 					return (
 						<TableRow key={index} className="hover:bg-muted/50 transition">

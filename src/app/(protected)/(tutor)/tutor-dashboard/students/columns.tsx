@@ -15,6 +15,7 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
       const studentId = student.id;
       const studentName = student.username;
       const studentImage = student.profile_url;
+      const studentEmail= student.email;
 
       return (
         <div className="flex items-center space-x-2">
@@ -27,11 +28,16 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
               {getAvatarFallback(studentName ?? "U")}
             </AvatarFallback>
           </Avatar>
-          <Link href={`/student-view/${studentId}`}>
-            <span className="hover:underline cursor-pointer">
-              {studentName}
-            </span>
-          </Link>
+          <div>
+              <Link href={`/student-view/${studentId}`}>
+                <span className="hover:underline cursor-pointer">
+                  {studentName}
+                </span>
+              </Link>
+              <div className="truncate">
+                 <span>{studentEmail}</span>
+              </div>
+          </div>
         </div>
       );
     },
@@ -75,7 +81,7 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
     id: "payment_status",
     header: "Payment Status",
     cell: ({ row }) => {
-      const status = row.original.ss_status;
+      const status = row.original.status;
       const color =
         status === "enrolled"
           ? "text-yellow-600"

@@ -14,7 +14,8 @@ import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollmen
 export const editSession = async (
   sessionId: number,
   rawValues: SessionSchemaT,
-  imageString: string
+  oldImageString: string | null,
+  previewImageString: string | null
 ): Promise<ActionResponseType<any>> => {
   const result = sessionSchema.safeParse(rawValues);
   if (!result.success)
@@ -61,9 +62,9 @@ export const editSession = async (
       error: { message: "You cannot edit sessions with enrollments" },
     };
   }
-
-  let isDelete;
+  
   let uploadedUrl: string | null = null;
+  let isDelete;
   if (values.image) {
     uploadedUrl = await uploadImage(values.image, supabase);
     if (!uploadedUrl) {
@@ -72,7 +73,9 @@ export const editSession = async (
         error: { message: "Failed to upload image" },
       };
     }
-    isDelete = await deleteImage(imageString, supabase);
+    isDelete = oldImageString ? await deleteImage(oldImageString, supabase) : true;
+  }else if(!previewImageString){ //user remove the image
+    isDelete= oldImageString ? await deleteImage(oldImageString, supabase) : true;
   }
 
   const updateResult = await updateSession(supabase, sessionId, {
@@ -81,6 +84,7 @@ export const editSession = async (
     start,
     end,
     tutor_id,
+    status: "open"
   });
 
   if (!updateResult) {

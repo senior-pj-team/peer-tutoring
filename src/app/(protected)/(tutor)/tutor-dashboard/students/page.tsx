@@ -15,9 +15,8 @@ export default async function Students() {
 		tutor_id: user.user_id,
 		status: ['enrolled', 'paid', 'refunded', 'completed']
 	});
-
+	
 	if (!student_sessions) return <GeneralError />;
-	console.log("student_session: ", student_sessions);
 	
 	return (
 		<div className="mb-5 px-4 lg:px-6">

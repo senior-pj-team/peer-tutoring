@@ -6,15 +6,28 @@ import GeneralError from "../../shared/error";
 
 const RatingStats = async ({ tutor_id }: { tutor_id: string }) => {
 	const supabase: TSupabaseClient = await createClient();
-	const ratingStats = await getRatingStats(supabase, {
-		tutor_id,
-	});
-	if (!ratingStats) return <GeneralError/>;
+	const rawStats = await getRatingStats(supabase, { tutor_id });
 
-	const total = ratingStats.reduce((sum, item) => sum + item.count, 0);
-	const ratings = ratingStats.map((item) => ({
+	if (!rawStats) return <GeneralError />;
+
+	const ratingMap = new Map<number, number>();
+	rawStats.forEach((item) => {
+		ratingMap.set(item.rating, item.count);
+	});
+	
+	const normalizedStats = Array.from({ length: 5 }, (_, i) => {
+		const rating = 5 - i;
+		return {
+			rating,
+			count: ratingMap.get(rating) ?? 0,
+		};
+	});
+
+	const total = normalizedStats.reduce((sum, item) => sum + item.count, 0);
+
+	const ratings = normalizedStats.map((item) => ({
 		rating: item.rating,
-		percent: Math.round((item.count / total) * 100),
+		percent: total === 0 ? 0 : Math.round((item.count / total) * 100),
 	}));
 
 	return (

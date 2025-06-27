@@ -9,13 +9,13 @@ export default function HoverCustomCard({
 	icon,
 	user,
 	notifications,
-	ss
+	ss,
 }: {
 	content: string;
 	icon?: React.ReactNode;
 	user?: UserSession | null;
 	notifications?: TNotificationResult[];
-	ss?: TStudentSessionJoinResult[]
+	ss?: TStudentSessionJoinResult[];
 }) {
 	return (
 		<HoverCard openDelay={0} closeDelay={0}>

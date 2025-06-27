@@ -677,6 +677,13 @@ export type Database = {
           last_sent_at: string
         }[]
       }
+      get_monthly_tutor_amounts_paid: {
+        Args: { p_tutor_id: string }
+        Returns: {
+          month: string
+          total: number
+        }[]
+      }
       get_or_create_chat: {
         Args: { user1_id: string; user2_id: string }
         Returns: string
@@ -752,6 +759,10 @@ export type Database = {
           total_student_count: number
           total_review_count: number
         }[]
+      }
+      get_unread_message_count: {
+        Args: { p_user_id: string }
+        Returns: number
       }
       pgmq_dequeue: {
         Args: { queue_name: string }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import ChatCard from "./chat-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDate, parseISO } from "date-fns";
-import { useChatListRealtime } from "@/hooks/use-chatlist-realtime";
+import { useChatListRealtime } from "@/hooks/use-chat-list-realtime";
 import { useSupabase } from "@/hooks/use-supabase";
 import { getChatList } from "@/data/queries/chat/get-chat-list";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
