@@ -249,30 +249,35 @@ const SessionCard = ({
 						</div>
 					)}
 					<div className="flex items-center flex-wrap gap-2">
-						{enrollment_error ? null : enrollment_loading ? (
-							<Skeleton className="flex gap-1 h-3 w-10 rounded-lg " />
-						) : (
-							<Badge
-								variant="outline"
-								className="flex gap-1 rounded-lg text-xs bg-green-100">
-								<UserRoundCheck />
-								<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
-									enrollments: {enrollments}
-								</span>
-							</Badge>
-						)}
-						{churneds_error ? null : churneds_loading ? (
-							<Skeleton className="flex gap-1 h-3 w-10 rounded-lg " />
-						) : (
-							<Badge
-								variant="outline"
-								className="flex gap-1 rounded-lg text-xs bg-red-100">
-								<UserRoundCheck />
-								<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
-									chruned: {churneds}
-								</span>
-							</Badge>
-						)}
+						{enrollments !== null &&
+							enrollments !== undefined &&
+							(enrollment_error ? null : enrollment_loading ? (
+								<Skeleton className="flex gap-1 h-3 w-10 rounded-lg " />
+							) : (
+								<Badge
+									variant="outline"
+									className="flex gap-1 rounded-lg text-xs bg-green-100">
+									<UserRoundCheck />
+									<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
+										enrollments: {enrollments}
+									</span>
+								</Badge>
+							))}
+
+						{churneds !== null &&
+							churneds !== undefined &&
+							(churneds_error ? null : churneds_loading ? (
+								<Skeleton className="flex gap-1 h-3 w-10 rounded-lg " />
+							) : (
+								<Badge
+									variant="outline"
+									className="flex gap-1 rounded-lg text-xs bg-red-100">
+									<UserRoundCheck />
+									<span className="text-[0.5rem] md:text-[0.6rem] text-gray-800">
+										chruned: {churneds}
+									</span>
+								</Badge>
+							))}
 					</div>
 				</div>
 			</CardHeader>

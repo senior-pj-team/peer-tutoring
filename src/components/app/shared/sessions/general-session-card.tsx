@@ -9,17 +9,20 @@ import { CustomHoverCard } from "./custom-hover-card";
 import { shimmer, toBase64 } from "@/utils/app/shimmer";
 import { getRemainingTime } from "@/utils/app/get-remaining-time";
 import { cn } from "@/lib/utils";
+import { subHours } from "date-fns";
 
 export default function GeneralSessionCard({
 	content,
-	type,
 	className,
 }: {
 	content: TSessionsMatViewResultRow;
-	type?: string;
 	className?: string;
 }) {
 	const router = useRouter();
+	const remainingTime = getRemainingTime(
+		subHours(content.start_time ?? "", 24).toISOString(),
+	);
+	const keywords = ["hour", "minute", "Soon", "Started"];
 
 	return (
 		<div>
@@ -86,15 +89,11 @@ export default function GeneralSessionCard({
 										? "Free"
 										: `฿${content.price + (content.service_fee ?? 0)}`}
 								</span>
-								{type === "closing" && (
+								{keywords.some((kw) => remainingTime.includes(kw)) && (
 									<div className="flex items-center gap-1 ">
 										<span className="text-[0.75rem] text-red-800 font-bold">
-											{getRemainingTime(content.start_time)}
+											{remainingTime} left to enroll
 										</span>
-										<ClockAlert
-											size={15}
-											className="text-[0.75rem] text-red-600 font-extrabold"
-										/>
 									</div>
 								)}
 							</div>

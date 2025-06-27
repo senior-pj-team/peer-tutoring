@@ -1,5 +1,5 @@
 "use client";
-import { updateBankInfo } from "@/actions/update-user-profile";
+import { updateUserBankInfo } from "@/actions/update-user-profile";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -19,12 +19,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import {
 	bankInfoSchema,
 	TBankInfoSchema,
 } from "@/schema/profile-schema-server";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import React, { Dispatch, SetStateAction, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -42,7 +43,15 @@ const BANKS = [
 	"UOB (Thailand)",
 ];
 
-export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
+export function BankForm({
+	bankInfo,
+	oldBankID,
+	openDialog,
+}: {
+	bankInfo: TBankInfoResult | null;
+	oldBankID?: number;
+	openDialog?: Dispatch<SetStateAction<boolean>>;
+}) {
 	let bank_name_data: string | null = null;
 	let account_name_data: string | null = null;
 	let account_number_data: string | null = null;
@@ -50,7 +59,7 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 		| "student_refund"
 		| "tutor_transfer"
 		| "refund_transfer"
-		| undefined = "student_refund";
+		| undefined = oldBankID !== undefined ? "tutor_transfer" : "student_refund";
 	const [isPending, startTransition] = useTransition();
 
 	if (bankInfo) {
@@ -83,13 +92,16 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 	const bankName = form.watch("bank_name");
 
 	const handleSubmit = (values: TBankInfoSchema) => {
-		console.log(values);
 		try {
 			startTransition(async () => {
-				const response = await updateBankInfo(values);
+				const response = await updateUserBankInfo(values, oldBankID);
 				response.success
 					? toast.success("Bank Info updated successfully")
 					: toast.error(response.error.message);
+				if (openDialog) {
+					console.log(openDialog);
+					openDialog(false);
+				}
 			});
 		} catch (err) {
 			toast.error("Something went wrong", {
@@ -100,8 +112,18 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 	return (
 		<Form {...form}>
 			<form
-				className="grid w-[85%] items-center gap-y-8"
-				onSubmit={form.handleSubmit(handleSubmit)}>
+				onSubmit={form.handleSubmit(handleSubmit)}
+				className={cn(
+					"grid items-center ",
+					oldBankID !== undefined ? "gap-y-5 w-full" : "gap-y-8 w-[85%]",
+				)}>
+				<FormField
+					control={form.control}
+					name="account_type"
+					render={({ field }) => (
+						<input type="hidden" {...field} value={account_type_data} />
+					)}
+				/>
 				<FormField
 					control={form.control}
 					name="bank_name"
@@ -202,24 +224,29 @@ export function BankForm({ bankInfo }: { bankInfo: TBankInfoResult | null }) {
 					)}
 				/>
 
-				<Button
-					disabled={isPending}
-					size="lg"
-					type="submit"
-					className="md:w-[8.5rem] w-[6.5rem] md:text-[0.9rem] text-[0.7rem] cursor-pointer hover:ring-2 hover:ring-orange-300">
-					{isPending ? (
-						<div className="flex items-center gap-1">
-							<span>Loading</span>
-							<div className="flex items-center gap-0.5">
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
+				<div
+					className={cn(oldBankID !== undefined && "w-full flex justify-end")}>
+					<Button
+						disabled={isPending}
+						size="lg"
+						type="submit"
+						className="md:w-[8.5rem] w-[6.5rem] md:text-[0.9rem] text-[0.7rem] cursor-pointer hover:ring-2 hover:ring-orange-300">
+						{isPending ? (
+							<div className="flex items-center gap-1">
+								<span>Loading</span>
+								<div className="flex items-center gap-0.5">
+									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+									<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
+								</div>
 							</div>
-						</div>
-					) : (
-						"Save Bank Info"
-					)}
-				</Button>
+						) : oldBankID !== undefined ? (
+							"Create Account"
+						) : (
+							"Save Bank Info"
+						)}
+					</Button>
+				</div>
 			</form>
 		</Form>
 	);

@@ -12,85 +12,85 @@ import { getUserById } from "@/data/queries/user/get-user-by-id";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 
 export const editSession = async (
-  sessionId: number,
-  rawValues: SessionSchemaT,
-  imageString: string
+	sessionId: number,
+	rawValues: SessionSchemaT,
+	imageString: string,
 ): Promise<ActionResponseType<any>> => {
-  const result = sessionSchema.safeParse(rawValues);
-  if (!result.success)
-    return {
-      success: false,
-      error: { message: "Validation error" },
-    };
-  const values = result.data;
+	const result = sessionSchema.safeParse(rawValues);
+	if (!result.success)
+		return {
+			success: false,
+			error: { message: "Validation error" },
+		};
+	const values = result.data;
 
-  const start = getDateWithTime(values.date, values.startTime);
-  const end = getDateWithTime(values.date, values.endTime);
-  const user = await getUserSession();
+	const start = getDateWithTime(values.date, values.startTime);
+	const end = getDateWithTime(values.date, values.endTime);
+	const user = await getUserSession();
 
-  if (!user?.user_id) {
-    return {
-      success: false,
-      error: { message: "User not found" },
-    };
-  }
-  const supabase = await createClient();
-  const userData = await getUserById(supabase, user.user_id);
+	if (!user?.user_id) {
+		return {
+			success: false,
+			error: { message: "User not found" },
+		};
+	}
+	const supabase = await createClient();
+	const userData = await getUserById(supabase, user.user_id);
 
-  if (!userData) {
-    return {
-      success: false,
-      error: { message: "User not found" },
-    };
-  }
-  const { role, tutor_status } = userData;
-  if (role != "tutor" || tutor_status == "suspended") {
-    return {
-      success: false,
-      error: { message: "User not authorized" },
-    };
-  }
-  const tutor_id = userData.id;
+	if (!userData) {
+		return {
+			success: false,
+			error: { message: "User not found" },
+		};
+	}
+	const { role } = userData;
+	if (role != "tutor" && role != "admin") {
+		return {
+			success: false,
+			error: { message: "User not authorized" },
+		};
+	}
+	const tutor_id = userData.id;
 
-  const enrollments = await getEnrollmentCount(supabase, {
-    session_id: sessionId,
-  });
-  if ((enrollments ?? 1) > 0) {
-    return {
-      success: false,
-      error: { message: "You cannot edit sessions with enrollments" },
-    };
-  }
+	const enrollments = await getEnrollmentCount(supabase, {
+		session_id: sessionId,
+	});
+	if ((enrollments ?? 1) > 0) {
+		return {
+			success: false,
+			error: { message: "You cannot edit sessions with enrollments" },
+		};
+	}
 
-  let isDelete;
-  let uploadedUrl: string | null = null;
-  if (values.image) {
-    uploadedUrl = await uploadImage(values.image, supabase);
-    if (!uploadedUrl) {
-      return {
-        success: false,
-        error: { message: "Failed to upload image" },
-      };
-    }
-    isDelete = await deleteImage(imageString, supabase);
-  }
+	let isDelete;
+	let uploadedUrl: string | null = null;
+	if (values.image) {
+		uploadedUrl = await uploadImage(values.image, supabase);
+		if (!uploadedUrl) {
+			return {
+				success: false,
+				error: { message: "Failed to upload image" },
+			};
+		}
+		isDelete = await deleteImage(imageString, supabase);
+	}
 
-  const updateResult = await updateSession(supabase, sessionId, {
-    values,
-    uploadedUrl,
-    start,
-    end,
-    tutor_id,
-  });
+	const updateResult = await updateSession(supabase, sessionId, {
+		values,
+		uploadedUrl,
+		start,
+		end,
+		tutor_id,
+	});
 
-  if (!updateResult) {
-    return {
-      success: false,
-      error: { message: "Something went wrong" },
-    };
-  }
+	if (!updateResult) {
+		return {
+			success: false,
+			error: { message: "Something went wrong" },
+		};
+	}
 
-  return {
-    success: true,
-  };
+	return {
+		success: true,
+	};
 };

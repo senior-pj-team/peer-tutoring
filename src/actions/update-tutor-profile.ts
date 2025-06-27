@@ -41,7 +41,7 @@ export async function updateTutorProfile(
 		};
 	}
 	const { role } = userData;
-	if (role != "tutor") {
+	if (role != "tutor" && role != "admin") {
 		return {
 			success: false,
 			error: { message: "User is not authorized ❌" },

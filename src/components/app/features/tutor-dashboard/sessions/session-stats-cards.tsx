@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 export default async function SessionStatsCards() {
 	const supabase = await createClient();
 	const user = await getUserSession();
-	if (!user || user.user_role !== "tutor") {
+	if (!user) {
 		return null;
 	}
 

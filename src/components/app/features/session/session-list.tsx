@@ -23,7 +23,6 @@ const SessionList = async ({
 					key={session.session_id}
 					className="rounded-none"
 					content={session}
-					type={""}
 				/>
 			))}
 		</>

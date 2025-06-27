@@ -11,7 +11,7 @@ export default function ProfileHoverContent({
 	user,
 	noti_count,
 }: {
-	user: UserSession | null;
+	user: UserSession;
 	noti_count?: number;
 }) {
 	async function handleSignOut() {
@@ -62,9 +62,16 @@ export default function ProfileHoverContent({
 				<Link href="/my-sessions/wishlist-sessions">
 					<ContentItem content="WishList" />
 				</Link>
-				<Link href="/become-tutor">
-					<ContentItem content="Become a Tutor" />
-				</Link>
+				{user.user_role === "student" && (
+					<Link href="/become-tutor">
+						<ContentItem content="Become a tutor" />
+					</Link>
+				)}
+				{(user.user_role === "tutor" || user.user_role === "admin") && (
+					<Link href="/tutor-dashboard/sessions/upcoming-sessions">
+						<ContentItem content="Go to tutor dashboard" />
+					</Link>
+				)}
 				<hr />
 				<Link href="/notification">
 					<ContentItem content="Notification" content_count={noti_count} />

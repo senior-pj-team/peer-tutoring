@@ -12,12 +12,12 @@ import { getUserById } from "@/data/queries/user/get-user-by-id";
 export const createSession = async (
 	rawValues: SessionSchemaT,
 ): Promise<ActionResponseType<any>> => {
-
 	const result = sessionSchema.safeParse(rawValues);
-	if (!result.success) return {
-		success: false,
-		error: { message: "Validation error" },
-	}
+	if (!result.success)
+		return {
+			success: false,
+			error: { message: "Validation error" },
+		};
 	const values = result.data;
 
 	const start = getDateWithTime(values.date, values.startTime);
@@ -37,14 +37,14 @@ export const createSession = async (
 		return {
 			success: false,
 			error: { message: "User not found" },
-		}
+		};
 	}
 	const { role, tutor_status } = userData;
-	if (role != "tutor" || tutor_status == "suspended") {
+	if ((role != "tutor" && role != "admin") || tutor_status == "suspended") {
 		return {
 			success: false,
 			error: { message: "User not authorized" },
-		}
+		};
 	}
 	const tutor_id = userData.id;
 
@@ -73,9 +73,9 @@ export const createSession = async (
 			success: false,
 			error: { message: "Something went wrong" },
 		};
-	}else{
+	} else {
 		return {
-			success: true
-		}
+			success: true,
+		};
 	}
 };

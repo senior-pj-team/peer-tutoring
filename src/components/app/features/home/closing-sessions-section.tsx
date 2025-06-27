@@ -64,11 +64,7 @@ export async function ClosingSessionsSection() {
 					}
 					return (
 						<div className="py-2" key={session.session_id}>
-							<GeneralSessionCard
-								content={session}
-								type="closing"
-								key={index}
-							/>
+							<GeneralSessionCard content={session} key={index} />
 						</div>
 					);
 				})}
