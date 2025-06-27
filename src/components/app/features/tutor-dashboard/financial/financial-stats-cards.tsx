@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import FinancialStatsCard from "@/components/app/shared/financial-card";
 
-export default function FinancialStatsCards() {
+export default function FinancialStatsCards({ user_id }: { user_id: string }) {
 	const [period, setPeriod] = useState<string>("all time");
 	return (
 		<div className="flex flex-col gap-3 px-4 lg:px-6">

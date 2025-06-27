@@ -1,47 +1,82 @@
 import React from "react";
 import NotificationList from "@/components/app/features/notification/notification-list";
-const mockNotifications = [
-	{
-		id: "1",
-		message:
-			"Warning: You missed your scheduled session with student Clara at 2:00 PM.",
-		createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-	},
-	{
-		id: "2",
-		message:
-			"Reminder: Repeated lateness has been observed. Please be punctual for your sessions.",
-		createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-	},
-	{
-		id: "3",
-		message:
-			"Action Required: Incomplete session summary for last week’s class with Kevin.",
-		createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-	},
-	{
-		id: "4",
-		message:
-			"Notice: A complaint was filed by a student regarding inappropriate language. Please review guidelines.",
-		createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-	},
-	{
-		id: "5",
-		message:
-			"Final Warning: Failure to update your availability calendar may affect your visibility to students.",
-		createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-	},
-];
+import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
+import GeneralError from "@/components/app/shared/error";
+import { getUserById } from "@/data/queries/user/get-user-by-id";
+import { getQueryClient } from "@/utils/app/get-query-client";
+import { getUserSession } from "@/utils/get-user-session";
+import { createClient } from "@/utils/supabase/server";
+import { getNotificationCount } from "@/data/queries/notification/get-notification-count";
 
-const page = () => {
+async function fetchNotifications({
+	supabase,
+	pageParam,
+	user_id,
+	type,
+}: {
+	supabase: TSupabaseClient;
+	pageParam: number;
+	user_id: string;
+	type: TNotificationType[];
+}) {
+	const data = await getNotificationByUser(supabase, {
+		offset: pageParam,
+		limit: 15,
+		user_id,
+		type,
+	});
+	if (!data) throw new Error("Error fetching");
+	return data;
+}
+
+async function page() {
+	const queryClient = getQueryClient();
+	const supabase = await createClient();
+
+	const user = await getUserSession();
+	if (!user) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
+	const [warning_count] = await Promise.all([
+		getNotificationCount(supabase, {
+			user_id: user.user_id,
+			type: ["tutor_warning"],
+		}),
+		queryClient.prefetchInfiniteQuery({
+			queryKey: ["tutor_warning", user.user_id, ["tutor_warning"]],
+			queryFn: ({ pageParam }) =>
+				fetchNotifications({
+					supabase,
+					pageParam,
+					user_id: user.user_id,
+					type: ["tutor_warning"],
+				}),
+			initialPageParam: 0,
+		}),
+	]);
+	if (!warning_count && warning_count !== 0) {
+		return (
+			<>
+				<GeneralError />
+			</>
+		);
+	}
+
 	return (
-		<div className="mt-10">
+		<div>
 			<NotificationList
-				initialNotifications={mockNotifications}
-				isWarning={true}
+				user_id={user.user_id}
+				type={["tutor_warning"]}
+				q_key="tutor_warning"
+				count={warning_count}
 			/>
 		</div>
 	);
-};
+}
 
 export default page;

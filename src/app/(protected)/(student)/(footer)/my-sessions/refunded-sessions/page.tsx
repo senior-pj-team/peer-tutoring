@@ -1,8 +1,6 @@
 import SessionCard from "@/components/app/shared/sessions/session-card";
 import { getUserSession } from "@/utils/get-user-session";
-import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 import GeneralError from "@/components/app/shared/error";
 import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund-report-join";
 
@@ -23,7 +21,7 @@ const page = async () => {
 				))
 			) : (
 				<div className="col-span-full text-center text-gray-500">
-					No refunded sessions found.
+					No refunded sessions found 👽
 				</div>
 			)}
 		</div>

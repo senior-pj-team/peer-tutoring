@@ -45,6 +45,7 @@ export function DataTable<TData, TValue>({
 		to: new Date(),
 	});
 	const filteredData = useMemo(() => {
+		if (type === "students") return data;
 		if (!date?.from && !date?.to) return data;
 
 		return data.filter((item) => {
@@ -54,7 +55,7 @@ export function DataTable<TData, TValue>({
 			const heldDate = new Date(heldUntil);
 			const from = date.from!;
 			const to = date.to ?? from;
-			
+
 			return (
 				(isSameDay(heldDate, from) || isAfter(heldDate, from)) &&
 				(isSameDay(heldDate, to) || isBefore(heldDate, to))
@@ -95,11 +96,11 @@ export function DataTable<TData, TValue>({
 									placeholder="Search with student or session..."
 									className="p-4 pr-10 border border-gray-300 rounded-lg focus:outline-primary focus:ring-primary overflow-clip mr-auto"
 								/>
+								<Search
+									className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
+									size={18}
+								/>
 							</div>
-							<Search
-								className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none md:block hidden z-20"
-								size={18}
-							/>
 						</div>
 					)}
 					{type === "payouts" && (
@@ -116,9 +117,9 @@ export function DataTable<TData, TValue>({
 											{header.isPlaceholder
 												? null
 												: flexRender(
-													header.column.columnDef.header,
-													header.getContext(),
-												)}
+														header.column.columnDef.header,
+														header.getContext(),
+													)}
 										</TableHead>
 									);
 								})}

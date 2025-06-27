@@ -57,21 +57,27 @@ export default async function page() {
 		);
 	}
 
-	const student_noti_count = await getNotificationCount(supabase, {
-		user_id,
-		type: ["student"],
-	});
-	if (!student_noti_count && student_noti_count !== 0) {
+	const [student_noti_count, tutor_noti_count] = await Promise.all([
+		getNotificationCount(supabase, {
+			user_id,
+			type: ["student"],
+		}),
+		getNotificationCount(supabase, {
+			user_id,
+			type: ["tutor", "tutor_reminder"],
+		}),
+	]);
+	if (
+		(!student_noti_count && student_noti_count !== 0) ||
+		(!tutor_noti_count && tutor_noti_count !== 0)
+	) {
 		return (
 			<>
 				<GeneralError />
 			</>
 		);
 	}
-	const tutor_noti_count = await getNotificationCount(supabase, {
-		user_id,
-		type: ["tutor", "tutor_reminder"],
-	});
+
 	if (!tutor_noti_count && tutor_noti_count !== 0) {
 		return (
 			<>
@@ -80,24 +86,26 @@ export default async function page() {
 		);
 	}
 
-	await queryClient.prefetchInfiniteQuery({
-		queryKey: ["student_notifications", user_id, ["student"]],
-		queryFn: ({ pageParam }) =>
-			fetchNotifications({ supabase, pageParam, user_id, type: ["student"] }),
-		initialPageParam: 0,
-	});
+	await Promise.all([
+		queryClient.prefetchInfiniteQuery({
+			queryKey: ["student_notifications", user_id, ["student"]],
+			queryFn: ({ pageParam }) =>
+				fetchNotifications({ supabase, pageParam, user_id, type: ["student"] }),
+			initialPageParam: 0,
+		}),
 
-	await queryClient.prefetchInfiniteQuery({
-		queryKey: ["tutor_notifications", user_id, ["tutor", "tutor_reminder"]],
-		queryFn: ({ pageParam }) =>
-			fetchNotifications({
-				supabase,
-				pageParam,
-				user_id,
-				type: ["tutor", "tutor_reminder"],
-			}),
-		initialPageParam: 0,
-	});
+		await queryClient.prefetchInfiniteQuery({
+			queryKey: ["tutor_notifications", user_id, ["tutor", "tutor_reminder"]],
+			queryFn: ({ pageParam }) =>
+				fetchNotifications({
+					supabase,
+					pageParam,
+					user_id,
+					type: ["tutor", "tutor_reminder"],
+				}),
+			initialPageParam: 0,
+		}),
+	]);
 	return (
 		<div>
 			<Tabs defaultValue="student">

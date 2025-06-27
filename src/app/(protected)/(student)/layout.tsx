@@ -31,7 +31,11 @@ export default async function Layout({
 		user_role: userData.role,
 	};
 
-	if (user?.user_role !== "student" && user?.user_role !== "tutor") {
+	if (
+		user?.user_role !== "student" &&
+		user?.user_role !== "tutor" &&
+		user?.user_role !== "admin"
+	) {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 

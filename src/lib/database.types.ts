@@ -677,6 +677,13 @@ export type Database = {
 					last_sent_at: string;
 				}[];
 			};
+			get_monthly_tutor_amounts_paid: {
+				Args: { p_tutor_id: string };
+				Returns: {
+					month: string;
+					total: number;
+				}[];
+			};
 			get_or_create_chat: {
 				Args: { user1_id: string; user2_id: string };
 				Returns: string;
@@ -711,6 +718,23 @@ export type Database = {
 					count: number;
 				}[];
 			};
+			get_tutor_session_stats: {
+				Args: { p_tutor_id: string };
+				Returns: {
+					upcoming_sessions: number;
+					completed_sessions: number;
+					archived_sessions: number;
+					all_sessions: number;
+					enrollments_for_upcoming_sessions: number;
+					churned_for_upcoming_sessions: number;
+					enrollments_for_completed_sessions: number;
+					churned_for_completed_sessions: number;
+					enrollments_for_archived_sessions: number;
+					churned_for_archived_sessions: number;
+					enrollments_for_all_sessions: number;
+					churned_for_all_sessions: number;
+				}[];
+			};
 			get_tutors_with_stats: {
 				Args: { p_filter_tutor_id?: string; p_min_rating?: number };
 				Returns: {
@@ -727,6 +751,10 @@ export type Database = {
 					social_links: Json;
 					biography: string;
 					phone_number: string;
+					bank_name: string;
+					account_name: string;
+					account_number: string;
+					account_type: Database["public"]["Enums"]["bank_account_type"];
 					total_session_count: number;
 					total_student_count: number;
 					total_review_count: number;
@@ -764,6 +792,14 @@ export type Database = {
 					offset_count?: number;
 				};
 				Returns: Database["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
+			};
+			sum_tutor_amounts_by_status: {
+				Args: { p_session_id?: number; p_tutor_id?: string };
+				Returns: {
+					holding: number;
+					refunded: number;
+					paid: number;
+				}[];
 			};
 			update_session_status: {
 				Args: { session_id: number; new_status: string };

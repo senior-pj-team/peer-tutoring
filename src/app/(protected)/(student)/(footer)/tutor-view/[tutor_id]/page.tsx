@@ -13,7 +13,7 @@ import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { SessionSkeletonList } from "@/components/app/shared/sessions/session-skeleton-list";
 import { getTutorWithStats } from "@/data/queries/tutors/get-tutor-with-stats";
 import { getYear } from "@/utils/app/get-year";
-import GeneralLoading from "@/components/app/shared/GeneralLoading";
+import GeneralLoading from "@/components/app/shared/general-loading";
 
 type Params = Promise<{
 	tutor_id: string;

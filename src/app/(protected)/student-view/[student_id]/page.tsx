@@ -3,7 +3,7 @@ import React, { Suspense } from "react";
 import { Roboto_Mono } from "next/font/google";
 import StudentSessionListServer from "@/components/app/features/session/student-session-list-server";
 import { SessionSkeletonList } from "@/components/app/shared/sessions/session-skeleton-list";
-import GeneralLoading from "@/components/app/shared/GeneralLoading";
+import GeneralLoading from "@/components/app/shared/general-loading";
 
 const roboto_mono = Roboto_Mono({
 	weight: ["700"],
