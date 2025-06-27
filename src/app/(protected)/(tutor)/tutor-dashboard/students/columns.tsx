@@ -15,23 +15,34 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
       const studentId = student.id;
       const studentName = student.username;
       const studentImage = student.profile_url;
+      const studentEmail = student.email;
 
       return (
-        <div className="flex items-center space-x-2">
-          <Avatar>
+        <div className="flex items-center gap-3 max-w-[300px]">
+          <Avatar className="flex-shrink-0 w-10 h-10">
             <AvatarImage
-              src={studentImage ?? "no-image"}
+              src={studentImage ?? ""}
               alt={studentName ?? "Unknown"}
             />
             <AvatarFallback>
               {getAvatarFallback(studentName ?? "U")}
             </AvatarFallback>
           </Avatar>
-          <Link href={`/student-view/${studentId}`}>
-            <span className="hover:underline cursor-pointer">
-              {studentName}
+
+          <div className="flex flex-col overflow-hidden">
+            <Link href={`/student-view/${studentId}`}>
+              <span className="font-medium text-sm text-gray-800 hover:underline truncate max-w-[200px]">
+                {studentName}
+              </span>
+            </Link>
+
+            <span
+              title={studentEmail}
+              className="text-xs text-gray-500 truncate max-w-[200px]"
+            >
+              {studentEmail}
             </span>
-          </Link>
+          </div>
         </div>
       );
     },
@@ -75,7 +86,7 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
     id: "payment_status",
     header: "Payment Status",
     cell: ({ row }) => {
-      const status = row.original.ss_status;
+      const status = row.original.status;
       const color =
         status === "enrolled"
           ? "text-yellow-600"

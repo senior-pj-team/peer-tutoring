@@ -20,6 +20,13 @@ export const getStudentSessionJoin = async (
 		limit,
 	}: Params,
 ): Promise<TStudentSessionJoinResult[] | null> => {
+<<<<<<< HEAD
+  let query = supabase
+    .from("student_session")
+    .select(
+      `
+      *,
+=======
 	let query = supabase.from("student_session").select(
 		`
       id,
@@ -32,26 +39,14 @@ export const getStudentSessionJoin = async (
       held_until,
       stripe_client_secrete,
       ss_status: status,
+>>>>>>> main
       student:user!student_id!inner(
-        id,
-        profile_url,
-        username
+       *
       ),
       sessions!session_id!inner(
-        id,
-        image,
-        session_name,
-        course_code,
-        course_name,
-        max_students,
-        start_time,
-        end_time,
-        tutor_id,
+        *,
         tutor:user!tutor_id!inner(
-          id,
-          profile_url,
-          username,
-          tutor_rating
+          *
         )
       )
     `,

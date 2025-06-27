@@ -5,6 +5,8 @@ import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { insertRefundReport } from "@/data/mutations/refund-report/insert-refund-report";
 import { getRefundReport } from "@/data/queries/refund-and-report/get-refund-report";
+import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
+import { differenceInHours, parseISO } from "date-fns";
 
 const schema = z.object({
 	reason: z.string().min(1),
@@ -23,7 +25,7 @@ export async function submitRefundOrReport(
 	if (!user) {
 		return {
 			success: false,
-			error: { message: "Somemthing went wrong ❌" },
+			error: { message: "Something went wrong ❌" },
 		};
 	}
 
@@ -43,9 +45,16 @@ export async function submitRefundOrReport(
 
 	const { reason, description, type, ss_id } = parsed.data;
 
+<<<<<<< HEAD
+	const existingReq = (await getRefundReport(supabase, {
+		ss_id,
+	})) ?? [];
+	console.log("@@ : ", existingReq.length);
+=======
 	const existingReq =
 		(await getRefundReport(supabase, { ss_id, student_id: user.user_id })) ??
 		[];
+>>>>>>> main
 	if (existingReq.length > 0) {
 		return {
 			success: false,
@@ -53,7 +62,41 @@ export async function submitRefundOrReport(
 		};
 	}
 
-	const insertResult = insertRefundReport(
+	const ss = await getStudentSessionJoinById(supabase, ss_id);
+	if (!ss) {
+		return {
+			success: false,
+			error: { message: "Something went wrong" },
+		};
+	}
+
+	const startTime = parseISO(ss.sessions.start_time);
+	const now = new Date();
+
+	if (type === "refund") {
+		const hoursUntilStart = differenceInHours(startTime, now);
+		if (hoursUntilStart < 24) {
+			return {
+				success: false,
+				error: {
+					message: "Refund failed: Session is about to start in less than 24 hours ❌",
+				},
+			};
+		}
+	}
+
+	if (type === "refund and report") {
+		if (ss.sessions.status === "archived") {
+			return {
+				success: false,
+				error: {
+					message: "Refund now allowed: This session has been paid and archived ❌",
+				},
+			};
+		}
+	}
+
+	const insertResult = await insertRefundReport(
 		supabase,
 		ss_id,
 		reason,
@@ -61,18 +104,23 @@ export async function submitRefundOrReport(
 		type,
 	);
 
-	if (!insertResult)
+	if (!insertResult) {
 		return {
 			success: false,
 			error: { message: "Something went wrong" },
 		};
+	}
+
 	return {
 		success: true,
-		data: type + " has been submitted",
+		data: `${type} has been submitted ✅`,
 	};
 }
+<<<<<<< HEAD
+=======
 
 // open, closed, completed, archived, canceled
 // refund only, check session status != completed or now > start_time- 24 hours
 // refund and report | report, check session status != archived
 // report only, no need to check
+>>>>>>> main

@@ -38,7 +38,7 @@ export function GoToChatButton({
 				/>
 			</TooltipTrigger>
 			<TooltipContent>
-				<p>Go to Chat</p>
+				<p>Chat Now</p>
 			</TooltipContent>
 		</Tooltip>
 	);
