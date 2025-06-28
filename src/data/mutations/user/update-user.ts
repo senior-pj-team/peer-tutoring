@@ -1,11 +1,11 @@
 import { TProfileSchemaServer } from "@/schema/profile-schema-server";
-import { tutorFormSchemaT } from "@/schema/tutor-form-schema";
 
 type Params = {
   userData?: TProfileSchemaServer;
   tutorData?: TTutorData;
-  uploadedUrl: string | null;
+  uploadedUrl?: string | null;
   user_id: string;
+  updateObj?: { [key: string]: any; }
 };
 
 type TTutorData= {
@@ -18,10 +18,9 @@ type TTutorData= {
 
 export async function updateUser(
   supabase: TSupabaseClient,
-  { userData, tutorData, uploadedUrl, user_id }: Params
-): Promise<boolean> {
+  { userData, tutorData, uploadedUrl, user_id, updateObj }: Params
+): Promise<TUser[] | null> {
   let toUpdate: { [key: string]: any; } | undefined;
-
   if (userData) {
     toUpdate = {
       username: userData.username,
@@ -41,22 +40,27 @@ export async function updateUser(
       studentId_photo: uploadedUrl,
       tutor_status: "pending",
     };
+  }else if(updateObj){
+    toUpdate= updateObj
   }
 
   if (!toUpdate) {
     console.warn("No data provided to update.");
-    return false;
+    return null;
   }
-
-  const { error } = await supabase
+  
+  const { data ,error } = await supabase
     .from("user")
     .update(toUpdate)
-    .eq("id", user_id);
+    .eq("id", user_id)
+    .select('*');
+
+  console.log(data, error);
 
   if (error) {
     console.error("Error updating user:", error.message);
-    return false;
+    return null;
   }
 
-  return true;
+  return data;
 }

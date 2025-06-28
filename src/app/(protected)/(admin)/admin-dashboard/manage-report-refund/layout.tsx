@@ -12,6 +12,10 @@ export default function ManageReportRefundLayout({
 			path: "/admin-dashboard/manage-report-refund/report",
 		},
 		{
+			name: "Report History",
+			path: "/admin-dashboard/manage-report-refund/report-history"
+		},
+		{
 			name: "Refunds",
 			path: "/admin-dashboard/manage-report-refund/refund",
 		},

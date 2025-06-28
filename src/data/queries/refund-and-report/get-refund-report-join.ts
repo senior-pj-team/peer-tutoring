@@ -11,7 +11,14 @@ export async function getRefundReportJoin(
     student_session!inner (
       student_id,
       ss_status: status,
-      session:sessions (
+      student: user!inner(
+          id,
+          profile_url,
+          username,
+          tutor_rating,
+          email
+      ),
+      session:sessions!inner(
         image,
         session_name,
         course_code,
@@ -19,11 +26,12 @@ export async function getRefundReportJoin(
         max_students,
         start_time,
         end_time,
-        tutor: user (
+        tutor: user!inner(
           id,
           profile_url,
           username,
-          tutor_rating
+          tutor_rating,
+          email
         )
       )
     )`);
