@@ -1,6 +1,6 @@
 type Params = {
 	student_session_id: number;
-	ss_status: TStudentSessionStatus;
+	ss_status?: TStudentSessionStatus;
 };
 
 export async function updateStudentSessionStatus(

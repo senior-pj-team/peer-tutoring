@@ -36,7 +36,7 @@ export const getStudentSessionJoin = async (
       )
     `,
 	);
-
+	
 	if (student_id) query = query.eq("student_id", student_id);
 	if (student_session_id) query = query.eq("id", student_session_id);
 	if (session_id) query = query.eq("session_id", session_id);

@@ -72,9 +72,13 @@ declare global {
 		type: TRefundType | null;
 		created_at: string;
 		ss_id: number;
+		receipt: string | null;
+		processed_at: string | null;
 		student_session: {
+			id: number;
 			student_id: string;
 			ss_status: TStudentSessionStatus;
+			refunded_amount: number | null;
 			student: {
 				id: string | null;
 				profile_url: string | null;

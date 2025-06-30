@@ -291,7 +291,9 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
+          processed_at: string | null
           reason: string | null
+          receipt: string | null
           ss_id: number
           status: Database["public"]["Enums"]["refund_status"] | null
           type: Database["public"]["Enums"]["refund_type"] | null
@@ -300,7 +302,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          processed_at?: string | null
           reason?: string | null
+          receipt?: string | null
           ss_id: number
           status?: Database["public"]["Enums"]["refund_status"] | null
           type?: Database["public"]["Enums"]["refund_type"] | null
@@ -309,7 +313,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: number
+          processed_at?: string | null
           reason?: string | null
+          receipt?: string | null
           ss_id?: number
           status?: Database["public"]["Enums"]["refund_status"] | null
           type?: Database["public"]["Enums"]["refund_type"] | null
@@ -350,11 +356,13 @@ export type Database = {
           created_at: string
           description: string
           end_time: string
+          held_until: string | null
           id: number
           image: string | null
           location: string
           major: string | null
           max_students: number
+          paid_out_at: string | null
           payment_evidence: string | null
           price: number
           refunded_amount: number | null
@@ -374,11 +382,13 @@ export type Database = {
           created_at?: string
           description: string
           end_time: string
+          held_until?: string | null
           id?: number
           image?: string | null
           location: string
           major?: string | null
           max_students: number
+          paid_out_at?: string | null
           payment_evidence?: string | null
           price: number
           refunded_amount?: number | null
@@ -398,11 +408,13 @@ export type Database = {
           created_at?: string
           description?: string
           end_time?: string
+          held_until?: string | null
           id?: number
           image?: string | null
           location?: string
           major?: string | null
           max_students?: number
+          paid_out_at?: string | null
           payment_evidence?: string | null
           price?: number
           refunded_amount?: number | null
@@ -452,7 +464,6 @@ export type Database = {
           amount_from_student: number | null
           amount_to_tutor: number | null
           created_at: string
-          held_until: string | null
           id: number
           refunded_amount: number | null
           service_fees: number | null
@@ -467,7 +478,6 @@ export type Database = {
           amount_from_student?: number | null
           amount_to_tutor?: number | null
           created_at?: string
-          held_until?: string | null
           id?: number
           refunded_amount?: number | null
           service_fees?: number | null
@@ -482,7 +492,6 @@ export type Database = {
           amount_from_student?: number | null
           amount_to_tutor?: number | null
           created_at?: string
-          held_until?: string | null
           id?: number
           refunded_amount?: number | null
           service_fees?: number | null
@@ -644,6 +653,7 @@ export type Database = {
           description: string | null
           document: unknown | null
           end_time: string | null
+          held_until: string | null
           image: string | null
           location: string | null
           major: string | null
@@ -666,6 +676,19 @@ export type Database = {
       custom_access_token_hook: {
         Args: { event: Json }
         Returns: Json
+      }
+      get_amount_summaries: {
+        Args: {
+          p_session_id?: number
+          p_start_date?: string
+          p_end_date?: string
+          p_last_days?: number
+        }
+        Returns: {
+          sum_earned: number
+          sum_refunded: number
+          sum_holding_amount_to_tutor: number
+        }[]
       }
       get_chat_list: {
         Args: { user_id: string }
@@ -837,7 +860,7 @@ export type Database = {
     }
     CompositeTypes: {
       session_tutor_mat_view_result: {
-        rows: TSessionsMatViewResultRow[] | null
+        rows: unknown[] | null
         total: number | null
       }
     }
