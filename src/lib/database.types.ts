@@ -466,6 +466,7 @@ export type Database = {
           created_at: string
           id: number
           refunded_amount: number | null
+          refunded_at: string | null
           service_fees: number | null
           session_id: number
           status: Database["public"]["Enums"]["student_session_status"]
@@ -480,6 +481,7 @@ export type Database = {
           created_at?: string
           id?: number
           refunded_amount?: number | null
+          refunded_at?: string | null
           service_fees?: number | null
           session_id: number
           status: Database["public"]["Enums"]["student_session_status"]
@@ -494,6 +496,7 @@ export type Database = {
           created_at?: string
           id?: number
           refunded_amount?: number | null
+          refunded_at?: string | null
           service_fees?: number | null
           session_id?: number
           status?: Database["public"]["Enums"]["student_session_status"]
@@ -555,6 +558,7 @@ export type Database = {
           school: string | null
           social_links: Json | null
           studentId_photo: string | null
+          suspend_until: string | null
           tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
@@ -575,6 +579,7 @@ export type Database = {
           school?: string | null
           social_links?: Json | null
           studentId_photo?: string | null
+          suspend_until?: string | null
           tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
@@ -595,6 +600,7 @@ export type Database = {
           school?: string | null
           social_links?: Json | null
           studentId_photo?: string | null
+          suspend_until?: string | null
           tutor_rating?: number | null
           tutor_status?: Database["public"]["Enums"]["tutor_status"] | null
           username?: string | null
@@ -682,12 +688,11 @@ export type Database = {
           p_session_id?: number
           p_start_date?: string
           p_end_date?: string
-          p_last_days?: number
         }
         Returns: {
-          sum_earned: number
+          sum_revenue: number
           sum_refunded: number
-          sum_holding_amount_to_tutor: number
+          sum_amount_to_tutor: number
         }[]
       }
       get_chat_list: {
@@ -728,6 +733,7 @@ export type Database = {
           school: string | null
           social_links: Json | null
           studentId_photo: string | null
+          suspend_until: string | null
           tutor_rating: number | null
           tutor_status: Database["public"]["Enums"]["tutor_status"] | null
           username: string | null
@@ -739,6 +745,14 @@ export type Database = {
         Returns: {
           rating: number
           count: number
+        }[]
+      }
+      get_tutor_counts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          active_tutors: number
+          suspended_tutors: number
+          tutors_with_3plus_warnings: number
         }[]
       }
       get_tutor_session_stats: {
@@ -759,7 +773,13 @@ export type Database = {
         }[]
       }
       get_tutors_with_stats: {
-        Args: { p_filter_tutor_id?: string; p_min_rating?: number }
+        Args: {
+          p_filter_tutor_id?: string
+          p_min_rating?: number
+          p_search_text?: string
+          p_offset?: number
+          p_limit?: number
+        }
         Returns: {
           tutor_id: string
           profile_url: string
@@ -774,6 +794,8 @@ export type Database = {
           social_links: Json
           biography: string
           phone_number: string
+          tutor_status: Database["public"]["Enums"]["tutor_status"]
+          suspend_until: string
           bank_name: string
           account_name: string
           account_number: string
@@ -781,6 +803,7 @@ export type Database = {
           total_session_count: number
           total_student_count: number
           total_review_count: number
+          warning_count: number
         }[]
       }
       get_unread_message_count: {

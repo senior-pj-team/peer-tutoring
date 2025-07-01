@@ -27,7 +27,7 @@ export default async function ReportPage() {
 	return (
 	 <HydrationBoundary state={dehydrate(queryClient)}>
 		<div className="space-y-6 px-4 lg:px-6">
-			<h1 className="text-xl font-semibold">Pending Refund Requests</h1>
+			<h1 className="text-xl font-semibold">Pending Reports</h1>
 			<div className="grid gap-4">
 					<RefundReportList qKey={"pending-report"} status={["pending"]} type={["report", "refund and report"]}/>
 			</div>

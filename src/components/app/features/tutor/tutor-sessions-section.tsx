@@ -2,46 +2,10 @@
 
 import React, { useMemo, useState } from "react";
 import GeneralSessionCard from "../../shared/sessions/general-session-card";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useInfiniteSessions } from "@/hooks/use-infinite-sessions";
+import { PaginationControls } from "../../shared/paginition-controls";
 
-type PaginationProps = {
-  currentPage: number;
-  onPageChange: (page: number) => void;
-  disableBack: boolean;
-  disableForward: boolean;
-};
 
-const PaginationControls = ({
-  currentPage,
-  onPageChange,
-  disableBack,
-  disableForward,
-}: PaginationProps) => (
-  <div className="flex items-center justify-center gap-6 mt-6">
-    <button
-      onClick={() => onPageChange(currentPage - 1)}
-      disabled={disableBack}
-      className="flex items-center gap-1 px-4 py-2 rounded-sm text-gray-700 text-xs font-medium transition hover:bg-gray-100"
-      aria-label="Previous Page"
-    >
-      <ChevronLeftIcon className="w-4 h-4" />
-      <span className="hidden sm:block">Previous</span>
-    </button>
-
-    <span className="text-gray-800 font-medium">{currentPage + 1}</span>
-
-    <button
-      onClick={() => onPageChange(currentPage + 1)}
-      disabled={disableForward}
-      className="text-xs flex items-center gap-1 px-4 py-2 rounded-sm text-gray-700 font-medium transition hover:bg-gray-100"
-      aria-label="Next Page"
-    >
-      <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon className="w-4 h-4" />
-    </button>
-  </div>
-);
 
 const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
   const [currentPage, setCurrentPage] = useState(0);

@@ -38,6 +38,7 @@ export async function approveRefund(
 
   const updateSSResult = await updateStudentSession(supabase, ss_id, {
     status: "refunded",
+    refunded_at: new Date().toISOString()
   });
 
   if (!updateSSResult) {
