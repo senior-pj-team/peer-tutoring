@@ -50,7 +50,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 		if (student_session_data_result.length >= 0) {
 			const student_session_data = student_session_data_result[0];
 
-			if (student_session_data.ss_status === "expired_payment") {
+			if (student_session_data.status === "expired_payment") {
 				setIsLoading(false);
 				setMessage("The payment session is expired. Please enroll again!");
 				return;

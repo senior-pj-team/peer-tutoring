@@ -289,28 +289,6 @@ export default function TutorTable() {
               <strong>{selectedTutor?.username}</strong>?
             </p>
           ) : (
-            // <>
-            //   <p className="text-sm text-muted-foreground mb-2">
-            //     Select suspension period for{" "}
-            //     <strong>{selectedTutor?.username}</strong>:
-            //   </p>
-
-            //   <div className="grid grid-cols-3 gap-2">
-            //     {[3, 5, 7, 10, 30].map((day) => (
-            //       <label key={day} className="flex items-center space-x-2">
-            //         <input
-            //           type="radio"
-            //           name="suspendDays"
-            //           value={day}
-            //           checked={suspendDays === String(day)}
-            //           onChange={(e) => setSuspendDays(e.target.value)}
-            //           className="accent-red-600"
-            //         />
-            //         <span className="text-sm">{day} days</span>
-            //       </label>
-            //     ))}
-            //   </div>
-            // </>
             <>
               <p className="text-sm text-muted-foreground mb-3">
                 Select suspension period(in days) for{" "}

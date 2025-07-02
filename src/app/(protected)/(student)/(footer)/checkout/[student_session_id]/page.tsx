@@ -33,6 +33,7 @@ export default async function page({ params }: { params: Params }) {
 			</>
 		);
 	}
+	
 	const student_session_data = result[0];
 
 	return (

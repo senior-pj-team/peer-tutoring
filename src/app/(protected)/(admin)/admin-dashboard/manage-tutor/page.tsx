@@ -7,7 +7,7 @@ import TutorCountsCard from "@/components/app/features/tutor/tutor-counts";
 import TutorTable from "@/components/app/features/tutor/tutor-table";
 import { createClient } from "@/utils/supabase/server";
 import { getQueryClient } from "@/utils/app/get-query-client";
-import { Input } from "@/components/ui/input";
+
 
 export default async function ManageTutorPage() {
   const supabse = await createClient();
