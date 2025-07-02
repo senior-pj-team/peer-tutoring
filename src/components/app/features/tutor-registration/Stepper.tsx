@@ -108,7 +108,7 @@ export default function HorizontalStepper({
 			preview,
 			title,
 			detail,
-			to: "williamkhant4@gmail.com",
+			to: "nwai39771@gmail.com",
 		});
 	}, []);
 

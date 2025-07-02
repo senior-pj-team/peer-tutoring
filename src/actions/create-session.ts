@@ -39,6 +39,7 @@ export const createSession = async (
 			error: { message: "User not found" },
 		};
 	}
+
 	const { role, tutor_status } = userData;
 	if ((role != "tutor" && role != "admin") || tutor_status == "suspended") {
 		return {
@@ -46,11 +47,12 @@ export const createSession = async (
 			error: { message: "User not authorized" },
 		};
 	}
-	const tutor_id = userData.id;
 
+	const tutor_id = userData.id;
 	let uploadedUrl: string | null = null;
+
 	if (values.image) {
-		uploadedUrl = await uploadImage(values.image, supabase);
+		uploadedUrl = await uploadImage(values.image, supabase, {});
 		if (!uploadedUrl) {
 			return {
 				success: false,

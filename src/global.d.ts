@@ -52,8 +52,8 @@ declare global {
 	type TAmountByStatuses =
 		DB["public"]["Functions"]["sum_tutor_amounts_by_status"]["Returns"];
 
-	type TStudentSessionJoinResult = 
-		TStudentSessionResult & 
+	type TStudentSessionJoinResult =
+		TStudentSessionResult &
 		{
 			student: TUser
 		} &
@@ -63,7 +63,7 @@ declare global {
 				tutor: TUser
 			}
 		}
-		 
+
 	type TRefundReportJoinResult = {
 		id: number;
 		reason: string | null;
@@ -72,9 +72,20 @@ declare global {
 		type: TRefundType | null;
 		created_at: string;
 		ss_id: number;
+		receipt: string | null;
+		processed_at: string | null;
 		student_session: {
+			id: number;
 			student_id: string;
 			ss_status: TStudentSessionStatus;
+			refunded_amount: number | null;
+			student: {
+				id: string | null;
+				profile_url: string | null;
+				username: string | null;
+				tutor_rating: number | null;
+				email: string | null
+			},
 			session: {
 				image: string | null;
 				session_name: string | null;
@@ -88,29 +99,17 @@ declare global {
 					profile_url: string | null;
 					username: string | null;
 					tutor_rating: number | null;
+					email: string | null
 				} | null;
 			};
 		};
 	} | null;
 
-	type TBankInfoJoinTutorResult = {
-		id: number;
-		bank_name: string | null;
-		account_name: string | null;
-		account_number: string | null;
-		account_type: TBankAccountType;
-		user_id: string;
-		user: {
-			profile_url: string | null;
-			username: string | null;
-			email: string | null;
-			school: string | null;
-			major: string | null;
-			year: string | null;
-			bio_highlight: string | null;
-			biography: string | null;
-		};
-	}[];
+	type
+
+	type TBankInfoJoinTutorResult = TBankInfoResult & {
+		user: TUser
+	};
 
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
 	type TBankInfoResult = DB["public"]["Tables"]["bank_info"]["Row"];
@@ -182,4 +181,5 @@ declare global {
 	type TNotification = DB["public"]["Enums"]["notification_type"];
 	type TRefund = DB["public"]["Enums"]["refund_type"];
 	type TTutorStatus = DB["public"]["Enums"]["tutor_status"];
+	type TAppRole = DB["public"]["Enums"]["app_role"];
 }
