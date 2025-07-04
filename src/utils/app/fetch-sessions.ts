@@ -1,20 +1,32 @@
 import { getSessionsMatView } from "@/data/queries/sessions/get-sessions-mat-view";
 
-export const LIMIT = 4;
 export const fetchSessions = async ({
-  pageParam = 0,
-  tutor_id,
-  supabase
+	pageParam = 0,
+	limit,
+	tutor_id,
+	supabase,
+	status,
+	search,
+	page,
 }: {
-  pageParam: number;
-  tutor_id: string;
-  supabase: TSupabaseClient;
+	pageParam?: number;
+	limit: number;
+	tutor_id?: string;
+	supabase: TSupabaseClient;
+	status?: TSessionStatus[] | null;
+	search?: string;
+	page?: number;
 }) => {
-  const data = await getSessionsMatView(supabase, {
-    tutorId: tutor_id,
-    offset: pageParam,
-    limit: LIMIT,
-  })
-  if (!data) throw new Error("Server error");
-  return data;
-}
+	if (page) {
+		pageParam = (page - 1) * limit;
+	}
+	const data = await getSessionsMatView(supabase, {
+		search,
+		status: status ?? undefined,
+		tutorId: tutor_id,
+		offset: pageParam,
+		limit,
+	});
+	if (!data) throw new Error("Server error");
+	return data;
+};

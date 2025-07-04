@@ -7,64 +7,72 @@ import { Ban } from "lucide-react";
 import { useSupabase } from "@/hooks/use-supabase";
 import RefundReportCard from "./refund-report-card";
 
-export default function RefundReportList({qKey, status, type} : {qKey: string, status: TRefundStatus[], type: TRefundType[]} ) {
-  const supabase = useSupabase();
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isFetchingNextPage,
-    isError,
-  } = useInfiniteQuery({
-    queryKey: [qKey],
-    queryFn: async ({ pageParam = 0 }) =>
-          await getRefundReportJoin(supabase, {
-            status,
-            type,
-            offset: pageParam,
-            limit: 5,
-          }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) =>
-      Array.isArray(lastPage) && lastPage.length === 5 ? allPages.length + 5 : undefined,
-  });
-  
-  const results = data?.pages.flat() || [];
+export default function RefundReportList({
+	qKey,
+	status,
+	type,
+}: {
+	qKey: string;
+	status: TRefundStatus[];
+	type: TRefundType[];
+}) {
+	const supabase = useSupabase();
+	const {
+		data,
+		fetchNextPage,
+		hasNextPage,
+		isLoading,
+		isFetchingNextPage,
+		isError,
+	} = useInfiniteQuery({
+		queryKey: [qKey],
+		queryFn: async ({ pageParam = 0 }) =>
+			await getRefundReportJoin(supabase, {
+				status,
+				type,
+				offset: pageParam,
+				limit: 5,
+			}),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, allPages) =>
+			Array.isArray(lastPage) && lastPage.length === 5
+				? allPages.length + 5
+				: undefined,
+	});
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Something went wrong while loading refund requests.</p>;
+	const results = data?.pages.flat() || [];
 
-  return (
-    <div className="space-y-4">
-      {results.length > 0 ? (
-        <>
-          {results.map((result) =>
-            result ? (
-              <RefundReportCard data={result} key={result.id}/>
-            ) : null
-          )}
-          {hasNextPage && (
-            <div className="text-center">
-              <Button
-                variant="outline"
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-              >
-                {isFetchingNextPage ? "Loading..." : "Show More"}
-              </Button>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="flex flex-col items-center justify-center mt-[10rem] text-center text-gray-500">
-          <Ban className="w-12 h-12 mb-4 text-gray-400" />
-          <p className="text-lg font-medium">No data found</p>
-          <p className="text-sm text-gray-400">
-            There are currently no  refund and report
-          </p>
-        </div>
-      )}
-    </div>
-  );
+	if (isLoading) return <p>Loading...</p>;
+	if (isError)
+		return <p>Something went wrong while loading refund requests.</p>;
+
+	return (
+		<div className="space-y-4">
+			{results.length > 0 ? (
+				<>
+					{results.map((result) =>
+						result ? <RefundReportCard data={result} key={result.id} /> : null,
+					)}
+					{hasNextPage && (
+						<div className="text-center">
+							<Button
+								variant="outline"
+								onClick={() => fetchNextPage()}
+								disabled={isFetchingNextPage}>
+								{isFetchingNextPage ? "Loading..." : "Show More"}
+							</Button>
+						</div>
+					)}
+				</>
+			) : (
+				<div className="flex flex-col items-center justify-center mt-[10rem] text-center text-gray-500">
+					<Ban className="w-12 h-12 mb-4 text-gray-400" />
+					<p className="text-lg font-medium">No data found</p>
+					<p className="text-sm text-gray-400">
+						There are currently no refund and report
+					</p>
+				</div>
+			)}
+		</div>
+	);
 }

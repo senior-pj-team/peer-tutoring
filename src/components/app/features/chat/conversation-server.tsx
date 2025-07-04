@@ -28,13 +28,18 @@ export default async function ConversationServer({
 	if (!user) return <GeneralError />;
 	const userId = user.user_id;
 
-	const otherUser= await getOtherChatParticipant(chatId, userId, supabase)
+	const otherUser = await getOtherChatParticipant(chatId, userId, supabase);
 
-	if(!otherUser || !otherUser.username) return <GeneralError/>
+	if (!otherUser || !otherUser.username) return <GeneralError />;
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Conversation chatId={chatId} userId={userId} userProfile={otherUser.profile_url} userName={otherUser.username}/>
+			<Conversation
+				chatId={chatId}
+				userId={userId}
+				userProfile={otherUser.profile_url}
+				userName={otherUser.username}
+			/>
 		</HydrationBoundary>
 	);
 }

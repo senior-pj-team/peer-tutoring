@@ -3,7 +3,7 @@ type Params = {
 	p_filter_tutor_id?: string;
 	p_offset?: number;
 	p_limit?: number;
-	search?: string
+	search?: string;
 };
 
 export const getTutorWithStats = async (
@@ -15,7 +15,7 @@ export const getTutorWithStats = async (
 		p_filter_tutor_id,
 		p_offset,
 		p_limit,
-		p_search_text: search
+		p_search_text: search,
 	});
 	if (error) {
 		console.log("error", error);

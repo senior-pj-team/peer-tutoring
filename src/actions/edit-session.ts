@@ -66,7 +66,9 @@ export const editSession = async (
 	let uploadedUrl: string | null = null;
 	let isDelete;
 	if (values.image) {
-		uploadedUrl = await uploadImage(values.image, supabase);
+		uploadedUrl = await uploadImage(values.image, supabase, {
+			path: "session_images/",
+		});
 		if (!uploadedUrl) {
 			return {
 				success: false,

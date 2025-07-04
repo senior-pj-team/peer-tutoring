@@ -2,8 +2,8 @@ type Params = {
 	student_id?: string;
 	type?: TRefundType[];
 	status?: TRefundStatus[];
-  offset?: number;
-  limit?: number;
+	offset?: number;
+	limit?: number;
 };
 export async function getRefundReportJoin(
 	supabase: TSupabaseClient,
@@ -43,8 +43,9 @@ export async function getRefundReportJoin(
 	if (type) query = query.in("type", type);
 	if (status) query = query.in("status", status);
 
-  if(offset != undefined && limit != undefined ) query= query.range(offset, offset + limit -1);
-  console.log("Hello", offset, limit);
+	if (offset != undefined && limit != undefined)
+		query = query.range(offset, offset + limit - 1);
+	console.log("Hello", offset, limit);
 	const { data, error } = await query;
 	if (error) {
 		console.log("Get refund report join error: ", error.message);

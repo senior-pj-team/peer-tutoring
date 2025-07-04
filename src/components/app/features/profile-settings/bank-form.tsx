@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { LoadingDots } from "../../shared/loading-dots";
 
 const BANKS = [
 	"Siam Commercial Bank",
@@ -234,11 +235,7 @@ export function BankForm({
 						{isPending ? (
 							<div className="flex items-center gap-1">
 								<span>Loading</span>
-								<div className="flex items-center gap-0.5">
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
-								</div>
+								<LoadingDots />
 							</div>
 						) : oldBankID !== undefined ? (
 							"Create Account"

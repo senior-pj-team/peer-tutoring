@@ -13,8 +13,8 @@ import { createClient } from "@/utils/supabase/server";
 import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
-import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
 import GeneralLoading from "@/components/app/shared/general-loading";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 
 type Params = Promise<{
 	page: string;
@@ -26,57 +26,61 @@ const Page = async ({ params }: { params: Params }) => {
 
 	const supabase = await createClient();
 
-	const sessionData = await getStudentSessionJoinById(
-		supabase,
-		Number(student_session_id),
-	);
-
-	if (!sessionData) {
+	const [session, enrollment_count] = await Promise.all([
+		getStudentSessionView(supabase, {
+			columns:
+				"student_session_id, session_image, session_name, tutor_school, tutor_major, course_code, course_name, tutor_username, tutor_rating,tutor_profile_url, tutor_id,session_status, session_start_time, session_end_time, description, requirement, location, max_students ",
+			student_session_id: Number(student_session_id),
+		}),
+		getEnrollmentCount(supabase, {
+			session_id: Number(student_session_id),
+			ss_status: ["enrolled", "pending_refund", "completed", "paid"],
+		}),
+	]);
+	if (
+		!session ||
+		session.length < 1 ||
+		(!enrollment_count && enrollment_count !== 0)
+	) {
 		return (
 			<>
 				<GeneralError />
 			</>
 		);
 	}
-	const enrollment_count = await getEnrollmentCount(supabase, {
-		session_id: sessionData.session_id!,
-		ss_status: ["enrolled", "pending_refund", "completed", "paid"],
-	});
-
-	if (!enrollment_count && enrollment_count !== 0) {
-		return (
-			<>
-				<GeneralError />
-			</>
-		);
-	}
-
+	const sessionData = session[0];
 	const headerData = {
-		image: sessionData.sessions?.image,
-		session_name: sessionData.sessions?.session_name,
-		school: sessionData.sessions?.tutor?.school ?? null,
-		major: sessionData.sessions?.tutor?.major ?? null,
-		course_code: sessionData.sessions?.course_code ?? null,
-		course_name: sessionData.sessions?.course_name ?? null,
-		tutor_name: sessionData.sessions?.tutor?.username ?? null,
-		tutor_rating: sessionData.sessions?.tutor?.tutor_rating ?? null,
-		tutor_profile_url: sessionData.sessions?.tutor?.profile_url ?? null,
-		tutor_id: sessionData.sessions?.tutor_id,
-		session_status: sessionData.status,
+		image: sessionData.session_image,
+		session_name: sessionData.session_name,
+		school: sessionData.tutor_school ?? null,
+		major: sessionData.tutor_major ?? null,
+		course_code: sessionData.course_code ?? null,
+		course_name: sessionData.course_name ?? null,
+		tutor_name: sessionData.tutor_username ?? null,
+		tutor_rating: sessionData.tutor_rating ?? null,
+		tutor_profile_url: sessionData.tutor_profile_url ?? null,
+		tutor_id: sessionData.tutor_id ?? "",
+		session_status: sessionData.session_status,
 	};
 
-	const date = formatDate(sessionData.sessions?.start_time!, "dd MMMM yyyy");
-	const start_time = format(sessionData.sessions?.start_time!, "hh:mm a");
-	const end_time = format(sessionData.sessions?.end_time!, "hh:mm a");
+	const date = sessionData.session_start_time
+		? formatDate(sessionData.session_start_time, "dd MMMM yyyy")
+		: "Unknown";
+	const start_time = sessionData.session_start_time
+		? format(sessionData.session_start_time, "hh:mm a")
+		: "Unknown";
+	const end_time = sessionData.session_end_time
+		? format(sessionData.session_end_time, "hh:mm a")
+		: "Unknown";
 
 	const contentData = {
-		description: sessionData.sessions?.description,
-		requirement: sessionData.sessions?.requirement,
-		location: sessionData.sessions?.location,
+		description: sessionData.description,
+		requirement: sessionData.requirement,
+		location: sessionData.location,
 		date,
 		start_time,
 		end_time,
-		max_students: sessionData.sessions?.max_students,
+		max_students: sessionData.max_students,
 		enrolled_students: enrollment_count,
 	};
 
@@ -116,20 +120,20 @@ const Page = async ({ params }: { params: Params }) => {
 						<aside className="static xl:block xl:sticky xl:top-40 xl:right-[5rem] h-fit border shadow p-5 rounded-lg bg-white w-[25rem] space-y-3">
 							{(page === "complete" || page == "archived") && (
 								<ReviewRatingAction
-									ssId={sessionData.id}
+									ssId={sessionData.student_session_id}
 									toReport={page == "complete"}
 								/>
 							)}
 							{page === "upcoming" && (
 								<UpcomingAction
-									start={sessionData.sessions?.start_time}
-									ssId={sessionData.id}
+									start={sessionData.session_start_time}
+									ssId={sessionData.student_session_id}
 								/>
 							)}
 
 							{page === "refund" && (
 								<Suspense fallback={<GeneralLoading />}>
-									<RefundStatus ssId={sessionData.id} />
+									<RefundStatus ssId={sessionData.student_session_id ?? 0} />
 								</Suspense>
 							)}
 						</aside>

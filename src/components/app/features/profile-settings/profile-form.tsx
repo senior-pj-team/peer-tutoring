@@ -30,6 +30,7 @@ import { useState, useTransition } from "react";
 import { updateUserProfile } from "@/actions/update-user-profile";
 import { Label } from "@/components/ui/label";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
+import { LoadingDots } from "../../shared/loading-dots";
 
 export function ProfileForm({
 	userData: {
@@ -322,9 +323,7 @@ export function ProfileForm({
 							<div className="flex items-center gap-1">
 								<span>Loading</span>
 								<div className="flex items-center gap-0.5">
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
+									<LoadingDots />
 								</div>
 							</div>
 						) : (

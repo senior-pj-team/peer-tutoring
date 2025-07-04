@@ -8,10 +8,12 @@ import { insertSession } from "@/data/mutations/sessions/insert-session";
 
 import { getUserSession } from "@/utils/get-user-session";
 import { getUserById } from "@/data/queries/user/get-user-by-id";
+import { addDays } from "date-fns";
 
 export const createSession = async (
 	rawValues: SessionSchemaT,
 ): Promise<ActionResponseType<any>> => {
+	console.log(rawValues);
 	const result = sessionSchema.safeParse(rawValues);
 	if (!result.success)
 		return {
@@ -52,7 +54,9 @@ export const createSession = async (
 	let uploadedUrl: string | null = null;
 
 	if (values.image) {
-		uploadedUrl = await uploadImage(values.image, supabase, {});
+		uploadedUrl = await uploadImage(values.image, supabase, {
+			path: "session_images/",
+		});
 		if (!uploadedUrl) {
 			return {
 				success: false,
@@ -66,6 +70,7 @@ export const createSession = async (
 		uploadedUrl,
 		start,
 		end,
+		addDays(new Date(), 7).toISOString(),
 		tutor_id,
 		supabase,
 	);

@@ -66,7 +66,7 @@ export async function FreeSessionsSection() {
 					}
 					return (
 						<div className="py-2" key={session.session_id}>
-							<GeneralSessionCard content={session} type="free" key={index} />
+							<GeneralSessionCard content={session} key={index} />
 						</div>
 					);
 				})}

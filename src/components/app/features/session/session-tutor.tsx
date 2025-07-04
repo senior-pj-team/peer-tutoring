@@ -12,6 +12,7 @@ import GeneralLoading from "../../shared/general-loading";
 
 const SessionTutor = async ({ tutor_id }: { tutor_id: string }) => {
 	const supabase = await createClient();
+
 	const data = await getTutorWithStats(supabase, {
 		p_filter_tutor_id: tutor_id,
 	});

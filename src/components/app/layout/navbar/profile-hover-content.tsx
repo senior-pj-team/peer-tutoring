@@ -24,10 +24,12 @@ export default function ProfileHoverContent({
 			redirect("/home");
 		}
 	}
-	const supabase= useSupabase();
-	const {
-			data: unreadMessages,
-	}= useUnreadMessageCount(user?.user_id ?? "", !!user, supabase)
+	const supabase = useSupabase();
+	const { data: unreadMessages } = useUnreadMessageCount(
+		user?.user_id ?? "",
+		!!user,
+		supabase,
+	);
 	return (
 		<HoverCardContent className="w-70 absolute -right-5">
 			<div className="py-4 px-3 flex gap-x-5">
@@ -82,7 +84,7 @@ export default function ProfileHoverContent({
 					<ContentItem content="Notification" content_count={noti_count} />
 				</Link>
 				<Link href="/chat">
-					<ContentItem content="Chat" content_count={unreadMessages?? 0}/>
+					<ContentItem content="Chat" content_count={unreadMessages ?? 0} />
 				</Link>
 				<hr />
 				<Link href="/profile-setting/profile">
@@ -117,7 +119,9 @@ function ContentItem({
 			<div>{content}</div>
 
 			{(content_count ?? 0) > 0 &&
-				(content === "WishList" || content === "Notification" || content === "Chat") && (
+				(content === "WishList" ||
+					content === "Notification" ||
+					content === "Chat") && (
 					<span className=" p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
 						{content_count}
 					</span>

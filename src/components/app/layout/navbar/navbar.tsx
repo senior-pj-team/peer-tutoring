@@ -33,6 +33,7 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 		supabase,
 	);
 	const { data: mySessions } = useStudentSessionJoin(
+		"session_id, session_image, session_name, course_code, course_name",
 		user?.user_id ?? "",
 		!!user,
 		supabase,
@@ -156,12 +157,15 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 								icon={
 									<div className="overflow-hidden  hover:bg-orange-50 hover:text-orange-400 cursor-pointer border-none rounded-full ">
 										<Avatar>
-											<AvatarImage
-												src={user.profile_url ?? "/image.png"}
-												width={56}
-												height={56}
-												alt="User Avatar"
-											/>
+											{user.profile_url && (
+												<AvatarImage
+													src={user.profile_url ?? "/image.png"}
+													width={56}
+													height={56}
+													alt="User Avatar"
+												/>
+											)}
+
 											<AvatarFallback>
 												{getAvatarFallback(user.full_name)}
 											</AvatarFallback>

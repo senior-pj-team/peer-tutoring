@@ -24,7 +24,7 @@ export default function CustomCarousel({
 }: {
 	user?: UserSession | null;
 	sessions?: TSessionsMatViewResultRow[];
-	my_sessions?: TStudentSessionJoinResult[];
+	my_sessions?: TStudentSessionViewResult[];
 	tutors?: TTutorWithStatsResult;
 	type?: string;
 }) {
@@ -59,7 +59,7 @@ export default function CustomCarousel({
 						!type &&
 						my_sessions.map((session) => (
 							<CarouselItem
-								key={session.id}
+								key={session.student_session_id}
 								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
 								<SessionCard student_session={session} page="upcoming" />
 							</CarouselItem>
@@ -79,7 +79,7 @@ export default function CustomCarousel({
 							<CarouselItem
 								key={session.session_id}
 								className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-5">
-								<GeneralSessionCard content={session} type={type} />
+								<GeneralSessionCard content={session} />
 							</CarouselItem>
 						))}
 				</CarouselContent>

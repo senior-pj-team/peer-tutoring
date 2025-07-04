@@ -1,5 +1,5 @@
 import React from "react";
-import Stepper from "@/components/app/features/tutor-registration/Stepper";
+import Stepper from "@/components/app/features/tutor/tutor-registration/Stepper";
 import { getUserSession } from "@/utils/get-user-session";
 import GeneralError from "@/components/app/shared/error";
 import { getUserById } from "@/data/queries/user/get-user-by-id";

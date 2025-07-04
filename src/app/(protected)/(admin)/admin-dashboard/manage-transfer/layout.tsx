@@ -1,11 +1,7 @@
 import React from "react";
 import Tabs from "@/components/app/shared/tabs";
 
-export default function ManageTransferLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function layout({ children }: { children: React.ReactNode }) {
 	const tabs = [
 		{
 			name: "Pending Transfers",
@@ -19,6 +15,7 @@ export default function ManageTransferLayout({
 
 	return (
 		<div className="space-y-6 px-4 lg:px-6">
+			<h1 className="text-xl font-semibold">Manage Session Transfers</h1>
 			<Tabs tabs={tabs} />
 			{children}
 		</div>

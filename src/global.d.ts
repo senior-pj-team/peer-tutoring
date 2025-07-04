@@ -14,8 +14,7 @@ declare global {
 	type TTutor = {
 		tutor_id: string;
 		name: string | null;
-		username: string | null;
-		profile_url: string | null;
+		tutor_profile: string | null;
 		school: string | null;
 		major: string | null;
 		email: string;
@@ -40,29 +39,22 @@ declare global {
 	type TRefundReportResult = DB["public"]["Tables"]["refund_report"]["Row"];
 	type TRatingReviewUserViewResult =
 		DB["public"]["Views"]["rating_and_review_view"]["Row"];
-	type TStudentSessionStatus = DB["public"]["Enums"]["student_session_status"];
 	type TChatList = DB["public"]["Functions"]["get_chat_list"]["Returns"];
 	type TMessage = DB["public"]["Tables"]["message"]["Row"];
 	type TMessageWithStatus = TMessage & { status: string };
 	type TUser = DB["public"]["Tables"]["user"]["Row"];
 	type TOtherUser =
 		DB["public"]["Functions"]["get_other_participant"]["Returns"];
-	type TOtherUser =
-		DB["public"]["Functions"]["get_other_participant"]["Returns"];
 	type TAmountByStatuses =
 		DB["public"]["Functions"]["sum_tutor_amounts_by_status"]["Returns"];
 
-	type TStudentSessionJoinResult =
-		TStudentSessionResult &
-		{
-			student: TUser
-		} &
-		{
-			sessions: TSessionsResult &
-			{
-				tutor: TUser
-			}
-		}
+	type TStudentSessionJoinResult = TStudentSessionResult & {
+		student: TUser;
+	} & {
+		sessions: TSessionsResult & {
+			tutor: TUser;
+		};
+	};
 
 	type TRefundReportJoinResult = {
 		id: number;
@@ -84,8 +76,8 @@ declare global {
 				profile_url: string | null;
 				username: string | null;
 				tutor_rating: number | null;
-				email: string | null
-			},
+				email: string | null;
+			};
 			session: {
 				image: string | null;
 				session_name: string | null;
@@ -99,16 +91,32 @@ declare global {
 					profile_url: string | null;
 					username: string | null;
 					tutor_rating: number | null;
-					email: string | null
+					email: string | null;
 				} | null;
 			};
 		};
 	} | null;
 
-	type
+	type;
 
 	type TBankInfoJoinTutorResult = TBankInfoResult & {
-		user: TUser
+		user: TUser;
+	};
+
+	type TSessionJoinResult = {
+		id: number;
+		session_name: string;
+		price: number;
+		service_fee: number | null;
+		end_time: string;
+		held_until: string | null;
+		paid_out_at: string | null;
+		tutor: {
+			id: string;
+			profile_url: string | null;
+			username: string | null;
+			email: string;
+		};
 	};
 
 	type TNotificationResult = DB["public"]["Tables"]["notification"]["Row"];
@@ -117,6 +125,17 @@ declare global {
 		DB["public"]["Functions"]["get_tutor_session_stats"]["Returns"];
 	type TTutorMonthlyPaidSum =
 		DB["public"]["Functions"]["get_monthly_tutor_amounts_paid"]["Returns"];
+
+	type TStudentSessionViewResult =
+		DB["public"]["Views"]["student_session_view"]["Row"];
+	type TAmountSummaries =
+		DB["public"]["Functions"]["get_amount_summaries"]["Returns"];
+	type TSumAmountToTutor = {
+		session_id: number;
+		sum: number;
+	}[];
+	type TMonthlyProfits =
+		DB["public"]["Functions"]["get_monthly_profits"]["Returns"];
 
 	// other global types
 

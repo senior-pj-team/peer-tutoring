@@ -18,12 +18,8 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 			const session = row.original.sessions;
 			return (
 				<>
-					<div className="truncate">
-						{session?.session_name ?? "Unknown"}
-					</div>
-					<div className="truncate">
-						{session?.course_name ?? "Course"}
-					</div>
+					<div className="truncate">{session?.session_name ?? "Unknown"}</div>
+					<div className="truncate">{session?.course_name ?? "Course"}</div>
 				</>
 			);
 		},
@@ -35,12 +31,15 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 			const student = row.original.student;
 			const studentId = student.id;
 			const studentName = student.username;
-			const studentImage = student.profile_url
+			const studentImage = student.profile_url;
 
 			return (
 				<div className="flex items-center space-x-2">
 					<Avatar>
-						<AvatarImage src={studentImage ?? "no-image"} alt={studentName ?? "Unknown"} />
+						<AvatarImage
+							src={studentImage ?? "no-image"}
+							alt={studentName ?? "Unknown"}
+						/>
 						<AvatarFallback>
 							{getAvatarFallback(studentName ?? "U")}
 						</AvatarFallback>
@@ -56,11 +55,11 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 	},
 	{
 		id: "released_at",
-		header: "Paid on",
+		header: "Paid at",
 		cell: ({ row }) => {
-			const held_untill = row.original.held_until;
+			const held_untill = row.original.sessions.paid_out_at;
 			if (!held_untill) return "-";
-			const displayDate = formatDate(parseISO(held_untill), "yyy MMMM dd")
+			const displayDate = formatDate(parseISO(held_untill), "yyy MMMM dd");
 			return <div>{displayDate}</div>;
 		},
 	},

@@ -11,10 +11,9 @@ export function CustomHoverCard({
 	content: TSessionsMatViewResultRow;
 }) {
 	const router = useRouter();
-	const minus24h = format(
-		subHours(content.start_time ?? "", 24),
-		"dd MMMM yyyy",
-	);
+	const closing = subHours(content.start_time ?? "", 24);
+	const closingHour = format(closing, "HH:mm a");
+	const closingDate = format(closing, "dd MMMM yyyy");
 
 	return (
 		<HoverCardContent
@@ -22,7 +21,7 @@ export function CustomHoverCard({
 			side="right"
 			sideOffset={-30}>
 			<div className="text-[0.65rem] text-ellipsis line-clamp-2 mb-2 ml-[0.2rem] font-bold text-red-500">
-				Session will be closed on {minus24h}
+				Session will be closed at {closingHour} on {closingDate}
 			</div>
 			<div className="flex flex-col mb-1">
 				<span className="max-w-[full] font-bold text-lg line-clamp-2">

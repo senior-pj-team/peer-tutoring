@@ -7,8 +7,48 @@ import { getUserSession } from "@/utils/get-user-session";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
-import { Ban } from "lucide-react";
+import {
+	Ban,
+	BarChartIcon,
+	UsersIcon,
+	User,
+	Star,
+	CircleAlert,
+	Shapes,
+} from "lucide-react";
 
+const menus = [
+	{
+		title: "Profile",
+		url: "/tutor-dashboard/profile",
+		icon: <User size={18} />,
+	},
+	{
+		title: "Sessions",
+		url: "/tutor-dashboard/sessions/upcoming-sessions",
+		icon: <Shapes size={18} />,
+	},
+	{
+		title: "Students",
+		url: "/tutor-dashboard/students",
+		icon: <UsersIcon size={18} />,
+	},
+	{
+		title: "Financial",
+		url: "/tutor-dashboard/financial/stats",
+		icon: <BarChartIcon size={18} />,
+	},
+	{
+		title: "Rating and Reviews",
+		url: "/tutor-dashboard/rating-reviews",
+		icon: <Star size={18} />,
+	},
+	{
+		title: "Warning",
+		url: "/tutor-dashboard/warning",
+		icon: <CircleAlert size={18} />,
+	},
+];
 export default async function layout({
 	children,
 }: {
@@ -29,14 +69,14 @@ export default async function layout({
 		);
 	}
 
-	if (user.user_role !== "tutor" && user.user_role !== "admin") {
+	if (userData.role !== "tutor" && userData.role !== "admin") {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 
 	return (
 		<div>
 			<SidebarProvider>
-				<AppSideBar variant="inset" collapsible="icon" />
+				<AppSideBar variant="inset" collapsible="icon" menus={menus} />
 
 				<SidebarInset>
 					<SiteHeader tutor_status={userData.tutor_status} />

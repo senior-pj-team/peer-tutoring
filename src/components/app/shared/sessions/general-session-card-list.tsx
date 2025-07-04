@@ -68,7 +68,7 @@ export async function GeneralSessionCardList({
 		<>
 			<div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
 				{data.rows.map((session: TSessionsMatViewResultRow, index) => {
-					return <GeneralSessionCard content={session} type="a" key={index} />;
+					return <GeneralSessionCard content={session} key={index} />;
 				})}
 			</div>
 			<div className="my-3">

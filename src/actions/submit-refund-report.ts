@@ -28,7 +28,7 @@ export async function submitRefundOrReport(
 			error: { message: "Something went wrong ❌" },
 		};
 	}
-	
+
 	const parsed = schema.safeParse({
 		reason: formData.get("reason"),
 		description: formData.get("description"),

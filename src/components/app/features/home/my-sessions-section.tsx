@@ -1,5 +1,5 @@
 import CustomCarousel from "@/components/app/features/home/custom-carousel";
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
@@ -10,7 +10,9 @@ export default async function MySessionsSection() {
 		return null;
 	}
 	const supabase = await createClient();
-	const student_sessions = await getStudentSessionJoin(supabase, {
+	const student_sessions = await getStudentSessionView(supabase, {
+		columns:
+			"student_session_id, session_id, student_session_status, session_image, session_name, course_code, course_name, session_start_time, session_end_time, tutor_username, tutor_profile_url, tutor_rating, tutor_id",
 		student_id: user.user_id,
 		status: ["enrolled"],
 	});

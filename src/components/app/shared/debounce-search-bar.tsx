@@ -14,7 +14,7 @@ export function DebounceSearchBar({
 	setQuery: (query: string) => void;
 	debounce?: number;
 	placeholder: string;
-	callback?: ()=>void
+	callback?: () => void;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
 	const [value, setValue] = useState(initialValue);
 
@@ -34,14 +34,13 @@ export function DebounceSearchBar({
 		<Input
 			type="text"
 			value={value}
-			onChange={(e: React.ChangeEvent<HTMLInputElement>) =>{
+			onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 				setValue(e.target.value);
-				if(callback) {
+				if (callback) {
 					console.log("debouncing");
-					callback()
+					callback();
 				}
-			  }
-			}
+			}}
 			placeholder={placeholder}
 			{...props}
 		/>

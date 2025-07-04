@@ -1,6 +1,6 @@
-import FinancialStatsCards from "@/components/app/features/tutor-dashboard/financial/financial-stats-cards";
-import { FinancialStatsCardsSkeleton } from "@/components/app/features/tutor-dashboard/financial/financial-stats-cards-skeleton";
-import { FinancialStatsChartServer } from "@/components/app/features/tutor-dashboard/financial/financial-stats-chart-server";
+import FinancialStatsCards from "@/components/app/features/tutor/tutor-dashboard/financial/financial-stats-cards";
+import { FinancialStatsCardsSkeleton } from "@/components/app/features/tutor/tutor-dashboard/financial/financial-stats-cards-skeleton";
+import { FinancialStatsChartServer } from "@/components/app/features/tutor/tutor-dashboard/financial/financial-stats-chart-server";
 import GeneralError from "@/components/app/shared/error";
 import GeneralLoading from "@/components/app/shared/general-loading";
 import {
@@ -29,7 +29,7 @@ export default async function page() {
 						<CardTitle> Gross Revenue</CardTitle>
 						<CardDescription>
 							<span className="@[540px]/card:block hidden">
-								System Earnings over last 12 months
+								Your Earnings over last 12 months
 							</span>
 							<span className="@[540px]/card:hidden">Last 12 months</span>
 						</CardDescription>

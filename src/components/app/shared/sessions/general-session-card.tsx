@@ -10,12 +10,15 @@ import { shimmer, toBase64 } from "@/utils/app/shimmer";
 import { getRemainingTime } from "@/utils/app/get-remaining-time";
 import { cn } from "@/lib/utils";
 import { subHours } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 
 export default function GeneralSessionCard({
 	content,
+	page,
 	className,
 }: {
 	content: TSessionsMatViewResultRow;
+	page?: string;
 	className?: string;
 }) {
 	const router = useRouter();
@@ -32,7 +35,11 @@ export default function GeneralSessionCard({
 					className,
 				)}
 				onClick={() => {
-					router.push(`/home/session/${content.session_id}`);
+					if (page) {
+						router.push(`/admin-dashboard/session/${content.session_id}`);
+					} else {
+						router.push(`/home/session/${content.session_id}`);
+					}
 				}}>
 				<HoverCard openDelay={0} closeDelay={0}>
 					<HoverCardTrigger>
@@ -72,6 +79,7 @@ export default function GeneralSessionCard({
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
+
 									router.push(`/tutor-view/${content.tutor?.tutor_id}`);
 								}}>
 								Tutor {content.tutor?.name}
@@ -89,17 +97,34 @@ export default function GeneralSessionCard({
 										? "Free"
 										: `฿${content.price + (content.service_fee ?? 0)}`}
 								</span>
-								{keywords.some((kw) => remainingTime.includes(kw)) && (
-									<div className="flex items-center gap-1 ">
-										<span className="text-[0.75rem] text-red-800 font-bold">
-											{remainingTime} left to enroll
-										</span>
-									</div>
+								{page === "admin" && (
+									<Badge
+										className={cn(
+											content.status === "open"
+												? "bg-green-100 text-green-500"
+												: content.status === "cancelled"
+													? "bg-red-100 text-red-500"
+													: content.status === "closed"
+														? "bg-purple-100 text-purple-500"
+														: content.status === "completed"
+															? "bg-orange-100 text-orange-500"
+															: "bg-gray-100 text-gray-500",
+										)}>
+										{content.status}
+									</Badge>
 								)}
+								{page !== "admin" &&
+									keywords.some((kw) => remainingTime.includes(kw)) && (
+										<div className="flex items-center gap-1 ">
+											<span className="text-[0.75rem] text-red-800 font-bold">
+												{remainingTime} left to enroll
+											</span>
+										</div>
+									)}
 							</div>
 						</CardHeader>
 					</HoverCardTrigger>
-					<CustomHoverCard content={content} />
+					{page !== "admin" && <CustomHoverCard content={content} />}
 				</HoverCard>
 			</Card>
 		</div>

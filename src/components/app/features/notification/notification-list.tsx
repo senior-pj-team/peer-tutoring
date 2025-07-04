@@ -76,6 +76,7 @@ const NotificationList = ({
 				<GeneralError />
 			</div>
 		);
+
 	return (
 		<>
 			<div className="pb-4 space-y-4">

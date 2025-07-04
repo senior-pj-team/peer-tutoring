@@ -31,12 +31,15 @@ export default function CustomSheet({
 						<>
 							<div className="w-12 h-12 border-none rounded-full overflow-hidden flex-shrink-0">
 								<Avatar>
-									<AvatarImage
-										src={user.profile_url ?? ""}
-										width={56}
-										height={56}
-										alt="User Avatar"
-									/>
+									{user.profile_url && (
+										<AvatarImage
+											src={user.profile_url}
+											width={56}
+											height={56}
+											alt="User Avatar"
+										/>
+									)}
+
 									<AvatarFallback>
 										{getAvatarFallback(user.full_name)}
 									</AvatarFallback>

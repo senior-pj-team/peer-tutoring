@@ -15,7 +15,7 @@ export default function HoverCustomCard({
 	icon?: React.ReactNode;
 	user?: UserSession;
 	notifications?: TNotificationResult[];
-	ss?: TStudentSessionJoinResult[];
+	ss?: TStudentSessionViewResult[];
 }) {
 	return (
 		<HoverCard openDelay={0} closeDelay={0}>

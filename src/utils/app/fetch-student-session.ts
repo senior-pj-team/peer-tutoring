@@ -1,21 +1,44 @@
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 
-export const LIMIT = 8;
 export const fetchStudentSession = async ({
-  pageParam = 0,
-  student_id,
-  supabase
+	columns = "*",
+	pageParam = 0,
+	page,
+	search,
+	status,
+	dateFilterCol,
+	start,
+	end,
+	student_id,
+	supabase,
+	limit,
 }: {
-  pageParam: number;
-  student_id: string;
-  supabase: TSupabaseClient;
+	columns?: string;
+	pageParam?: number;
+	search?: string;
+	page?: number;
+	status?: TStudentSessionStatus[] | null;
+	dateFilterCol?: "enrolled_at" | "refunded_at" | "paid_out_at" | null;
+	start?: string;
+	end?: string;
+	student_id?: string;
+	supabase: TSupabaseClient;
+	limit?: number;
 }) => {
-  const data = await getStudentSessionJoin(supabase, {
-    student_id,
-    offset: pageParam,
-    limit: LIMIT,
-    status: ['completed','enrolled','paid']
-  })
-  if (!data) throw new Error("Server error");
-  return data;
-}
+	if (page) {
+		pageParam = page * (limit ?? 0);
+	}
+	const data = await getStudentSessionView(supabase, {
+		columns,
+		student_id,
+		offset: pageParam,
+		limit: limit ?? 0,
+		search,
+		status: status ?? null,
+		dateFilterCol,
+		start,
+		end,
+	});
+	if (!data) throw new Error("Server error");
+	return data;
+};

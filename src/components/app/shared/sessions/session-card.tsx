@@ -23,7 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type SessionCardProp = {
 	session?: TSessionsResult;
-	student_session?: TStudentSessionJoinResult;
+	student_session?: TStudentSessionViewResult;
 	refund_report?: TRefundReportJoinResult;
 	page?: string;
 };
@@ -45,7 +45,7 @@ const SessionCard = ({
 	let course_name: string | null = "";
 	let start_time: string | null = null;
 	let end_time: string | null = null;
-	let profile_url: string | null = "N/A";
+	let profile_url: string | null = null;
 	let username: string | null = "";
 	let tutor_rating: number | null = 0;
 	let tutor_id: string | null = "";
@@ -53,20 +53,19 @@ const SessionCard = ({
 	if (!student_session && !refund_report && !session) return null;
 
 	if (student_session) {
-		session_id = student_session.sessions?.id ?? null;
-		ss_id = student_session.id;
-		ss_status = student_session.ss_status;
-		image = student_session.sessions?.image ?? "";
-		session_name = student_session.sessions?.session_name ?? "";
-		course_code = student_session.sessions?.course_code ?? "no info";
-		course_name = student_session.sessions?.course_name ?? "no info";
-		start_time = student_session.sessions?.start_time ?? "";
-		end_time = student_session.sessions?.end_time ?? "";
-		profile_url =
-			student_session.sessions?.tutor?.profile_url ?? "/no-image.png";
-		username = student_session.sessions?.tutor?.username ?? "";
-		tutor_rating = student_session.sessions?.tutor?.tutor_rating ?? 0;
-		tutor_id = student_session.sessions?.tutor?.id ?? "";
+		session_id = student_session.session_id ?? null;
+		ss_id = student_session.student_session_id;
+		ss_status = student_session.student_session_status;
+		image = student_session.session_image ?? "";
+		session_name = student_session.session_name ?? "";
+		course_code = student_session.course_code ?? "no info";
+		course_name = student_session.course_name ?? "no info";
+		start_time = student_session.session_start_time ?? "";
+		end_time = student_session.session_end_time ?? "";
+		profile_url = student_session.tutor_profile_url;
+		username = student_session.tutor_username ?? "";
+		tutor_rating = student_session.tutor_rating ?? 0;
+		tutor_id = student_session.tutor_id ?? "";
 	} else if (refund_report) {
 		ss_id = refund_report.ss_id;
 		rr_status = refund_report.status;
@@ -79,7 +78,7 @@ const SessionCard = ({
 		start_time = refund_report.student_session.session.start_time ?? "";
 		end_time = refund_report.student_session.session.end_time ?? "";
 		profile_url =
-			refund_report.student_session.session.tutor?.profile_url ?? "NA";
+			refund_report.student_session.session.tutor?.profile_url ?? null;
 		username = refund_report.student_session.session.tutor?.username ?? "";
 		tutor_rating =
 			refund_report.student_session.session?.tutor?.tutor_rating ?? 0;
@@ -222,18 +221,21 @@ const SessionCard = ({
 				)}
 
 				<div className="px-3 mt-2 w-full">
-					{profile_url !== "N/A" && (
+					{profile_url && username && tutor_rating && (
 						<div className="flex items-center flex-wrap">
 							<div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
 								<Avatar>
-									<AvatarImage
-										src={profile_url}
-										width={50}
-										height={50}
-										alt="User Avatar"
-									/>
+									{profile_url && (
+										<AvatarImage
+											src={profile_url}
+											width={50}
+											height={50}
+											alt="User Avatar"
+										/>
+									)}
+
 									<AvatarFallback className="flex items-center justify-center w-full h-full text-center bg-gray-200">
-										{username && getAvatarFallback(username)}
+										{getAvatarFallback(username ?? "PP")}
 									</AvatarFallback>
 								</Avatar>
 							</div>
@@ -248,6 +250,7 @@ const SessionCard = ({
 							<Rating className="ms-3" rating={tutor_rating ?? 0} />
 						</div>
 					)}
+
 					<div className="flex items-center flex-wrap gap-2">
 						{enrollments !== null &&
 							enrollments !== undefined &&

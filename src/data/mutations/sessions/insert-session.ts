@@ -5,10 +5,11 @@ export const insertSession = async (
 	uploadedUrl: string | null,
 	start: Date,
 	end: Date,
+	held_until: string,
 	tutor_id: string,
 	supabase: TSupabaseClient,
 ): Promise<Boolean> => {
-	const {data, error}= await supabase.from("sessions").insert({
+	const { data, error } = await supabase.from("sessions").insert({
 		session_name: values.sessionName,
 		course_code: values.courseCode,
 		course_name: values.courseName,
@@ -19,6 +20,7 @@ export const insertSession = async (
 		requirement: values.requirements,
 		start_time: start.toISOString(),
 		end_time: end.toISOString(),
+		held_until,
 		max_students: values.maxStudents,
 		location: values.location,
 		category_id: Number(values.category),
@@ -27,6 +29,6 @@ export const insertSession = async (
 		service_fee: values.amount * 0.15,
 		tutor_id: tutor_id,
 	});
-	if(error) return false
-	return  true
+	if (error) return false;
+	return true;
 };

@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/app/shared/data-table";
+import { DataTable } from "@/components/app/features/data-table/data-table";
 import { columns } from "./columns";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";

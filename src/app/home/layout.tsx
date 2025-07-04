@@ -4,7 +4,6 @@ import { createClient } from "../../utils/supabase/server";
 import React from "react";
 import { getUserSession } from "@/utils/get-user-session";
 import { getUserById } from "@/data/queries/user/get-user-by-id";
-import { redirect } from "next//navigation";
 import GeneralError from "@/components/app/shared/error";
 
 export default async function Layout({
