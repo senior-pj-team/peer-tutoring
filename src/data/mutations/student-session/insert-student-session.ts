@@ -5,7 +5,6 @@ type InsertStudentSessionParams = {
 	amount_from_student: number | null;
 	amount_to_tutor: number | null;
 	service_fee: number | null;
-	held_until: string;
 };
 
 export async function insertStudentSession(
@@ -17,7 +16,6 @@ export async function insertStudentSession(
 		amount_from_student,
 		amount_to_tutor,
 		service_fee,
-		held_until,
 	}: InsertStudentSessionParams,
 ): Promise<TStudentSessionResult | null> {
 	const { data, error } = await supabase
@@ -29,7 +27,6 @@ export async function insertStudentSession(
 			amount_from_student,
 			amount_to_tutor,
 			service_fees: service_fee,
-			held_until,
 		})
 		.select();
 

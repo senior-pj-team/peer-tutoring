@@ -19,29 +19,22 @@ import GeneralLoading from "@/components/app/shared/general-loading";
 
 type Params = Promise<{
 	session_id: string;
-	page: string;
 }>;
 
 const Page = async ({ params }: { params: Params }) => {
-	const { session_id, page } = await params;
+	const { session_id } = await params;
 
 	const supabase = await createClient();
 
-	const sessionData = await getSessionMatViewbyId(supabase, Number(session_id));
+	const [sessionData, enrollment_count] = await Promise.all([
+		getSessionMatViewbyId(supabase, Number(session_id)),
+		await getEnrollmentCount(supabase, {
+			session_id: Number(session_id),
+			ss_status: ["enrolled", "pending_refund", "completed", "paid"],
+		}),
+	]);
 
-	if (!sessionData) {
-		return (
-			<>
-				<GeneralError />
-			</>
-		);
-	}
-	const enrollment_count = await getEnrollmentCount(supabase, {
-		session_id: sessionData.session_id!,
-		ss_status: ["enrolled", "pending_refund", "completed", "paid"],
-	});
-
-	if (!enrollment_count && enrollment_count !== 0) {
+	if (!sessionData || (!enrollment_count && enrollment_count !== 0)) {
 		return (
 			<>
 				<GeneralError />
@@ -59,13 +52,19 @@ const Page = async ({ params }: { params: Params }) => {
 		tutor_name: sessionData.tutor!.name,
 		tutor_rating: sessionData.tutor!.tutor_rating,
 		session_status: sessionData.status,
-		tutor_profile_url: sessionData.tutor!.profile_url,
+		tutor_profile_url: sessionData.tutor!.tutor_profile,
 		tutor_id: sessionData.tutor?.tutor_id!,
 	};
 
-	const date = formatDate(sessionData.start_time!, "dd MMMM yyyy");
-	const start_time = format(sessionData.start_time!, "hh:mm a");
-	const end_time = format(sessionData.end_time!, "hh:mm a");
+	const date = sessionData.start_time
+		? formatDate(sessionData.start_time, "dd MMMM yyyy")
+		: "Unknown";
+	const start_time = sessionData.start_time
+		? format(sessionData.start_time, "hh:mm a")
+		: "Unknown";
+	const end_time = sessionData.end_time
+		? format(sessionData.end_time, "hh:mm a")
+		: "Unknown";
 
 	const contentData = {
 		description: sessionData.description,

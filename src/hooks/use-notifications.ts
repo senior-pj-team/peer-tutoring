@@ -1,6 +1,7 @@
 import { deleteNotificationbyId } from "@/data/mutations/notification/delete-notification-by-Id";
 import { updateNotification } from "@/data/mutations/notification/update-notification";
 import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
+import { fetchNotifications } from "@/utils/app/fetch-notifications";
 import {
 	InfiniteData,
 	useInfiniteQuery,
@@ -10,33 +11,6 @@ import {
 } from "@tanstack/react-query";
 
 const LIMIT = 15;
-
-async function fetchNotifications({
-	pageParam,
-	limit,
-	user_id,
-	status,
-	type,
-	supabase,
-}: {
-	pageParam?: number;
-	limit?: number;
-	user_id: string;
-	status?: TNotificationStatus[];
-	type: TNotificationType[];
-	supabase: TSupabaseClient;
-}) {
-	const data = await getNotificationByUser(supabase, {
-		offset: pageParam,
-		status,
-		limit,
-		user_id,
-		type,
-	});
-	if (!data) throw new Error("Error fetching");
-
-	return data;
-}
 
 export function useNotifications(
 	q_key: string,
@@ -51,6 +25,7 @@ export function useNotifications(
 			fetchNotifications({ pageParam, limit: LIMIT, user_id, type, supabase }),
 		initialPageParam: 0,
 		getNextPageParam: (_, allPages) => {
+			console.log(allPages.length * LIMIT);
 			return count - allPages.length * LIMIT > 0
 				? allPages.length * LIMIT
 				: undefined;

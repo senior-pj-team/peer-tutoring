@@ -95,9 +95,6 @@ export async function checkoutEnrollment(
 				amount_from_student: session.price,
 				amount_to_tutor: session.price,
 				service_fee: session.service_fee,
-				held_until: new Date(
-					new Date(session.start_time!).getTime() + 7 * 24 * 60 * 60 * 1000,
-				).toISOString(),
 			});
 
 			if (!student_session) {
@@ -150,9 +147,6 @@ export async function checkoutEnrollment(
 			amount_from_student: service_included_amount,
 			amount_to_tutor: session.price,
 			service_fee: session.service_fee,
-			held_until: new Date(
-				new Date(session.start_time!).getTime() + 7 * 24 * 60 * 60 * 1000,
-			).toISOString(),
 		});
 
 		if (!student_session) {
@@ -217,6 +211,3 @@ export async function checkoutEnrollment(
 	}
 	redirect(`/checkout/${student_session_id}`);
 }
-
-// validate for pending_enroll exist for this student and this session in student_session table.
-// to add one more status for after clicking pay now

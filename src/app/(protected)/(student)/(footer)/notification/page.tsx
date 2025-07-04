@@ -4,6 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
 import { getNotificationCount } from "@/data/queries/notification/get-notification-count";
 import { getUserById } from "@/data/queries/user/get-user-by-id";
+import { fetchNotifications } from "@/utils/app/fetch-notifications";
 import { getQueryClient } from "@/utils/app/get-query-client";
 import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";
@@ -11,27 +12,6 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import React from "react";
-
-async function fetchNotifications({
-	supabase,
-	pageParam,
-	user_id,
-	type,
-}: {
-	supabase: TSupabaseClient;
-	pageParam: number;
-	user_id: string;
-	type: TNotificationType[];
-}) {
-	const data = await getNotificationByUser(supabase, {
-		offset: pageParam,
-		limit: 15,
-		user_id,
-		type,
-	});
-	if (!data) throw new Error("Error fetching");
-	return data;
-}
 
 export default async function page() {
 	const queryClient = getQueryClient();
@@ -100,7 +80,7 @@ export default async function page() {
 	return (
 		<div>
 			<Tabs defaultValue="student">
-				{user_data.role === "tutor" && (
+				{(user_data.role === "tutor" || user_data.role === "admin") && (
 					<TabsList className="grid w-full grid-cols-2 max-w-md mb-4 bg-orange-100 rounded-md p-1">
 						<TabsTrigger
 							value="student"

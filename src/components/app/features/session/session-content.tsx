@@ -40,7 +40,7 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 					<h2 className="text-lg font-semibold mb-1">🗒️ Description</h2>
 					<Expandable
 						max={200}
-						text={description ?? "No-description"}
+						text={description ?? "No description"}
 						className="mt-3 text-sm text-gray-600 ml-1"
 					/>
 				</div>
@@ -61,7 +61,8 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 					/>
 				</div>
 				{/* date time */}
-				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700 mt-10">
+				<h2 className="text-lg font-semibold mb-1">🚀 Session Details</h2>
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700 mt-4">
 					<div className="flex items-center gap-1">
 						<CalendarDays size={18} />
 						<div className="space-x-1">

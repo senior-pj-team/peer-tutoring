@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { submitRatingReview } from "@/actions/submit-rating-review";
 import { useActionState } from "react";
 import { toast } from "sonner";
+import { LoadingDots } from "../../shared/loading-dots";
 
 const initialState: ActionResponseType<string> = {
 	success: false,
@@ -88,12 +89,8 @@ const RatingReviewForm = ({
 					<Button type="submit" disabled={isPending}>
 						{isPending ? (
 							<div className="flex items-center gap-1">
-								<span>Submitting</span>
-								<div className="flex items-center gap-0.5">
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]" />
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]" />
-									<div className="h-1 w-1 bg-white rounded-full animate-bounce" />
-								</div>
+								<span>Loading</span>
+								<LoadingDots />
 							</div>
 						) : (
 							"Submit"

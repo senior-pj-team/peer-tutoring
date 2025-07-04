@@ -1,8 +1,8 @@
 import Tabs from "@/components/app/shared/tabs";
-import SessionStatsCards from "@/components/app/features/tutor-dashboard/sessions/session-stats-cards";
+import SessionStatsCards from "@/components/app/features/tutor/tutor-dashboard/sessions/session-stats-cards";
 
 import { Suspense } from "react";
-import { SessionStatsSkeleton } from "@/components/app/features/tutor-dashboard/sessions/session-stats-skeleton";
+import { SessionStatsSkeleton } from "@/components/app/features/tutor/tutor-dashboard/sessions/session-stats-skeleton";
 
 export default async function Sessions({
 	children,

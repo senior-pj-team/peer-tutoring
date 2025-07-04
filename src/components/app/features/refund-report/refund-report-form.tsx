@@ -27,6 +27,7 @@ import { getUserSession } from "@/utils/get-user-session";
 import { insertNotification } from "@/data/mutations/notification/insert-notification";
 import { useSupabase } from "@/hooks/use-supabase";
 import { toast } from "sonner";
+import { LoadingDots } from "../../shared/loading-dots";
 
 const initialState: ActionResponseType<string> = {
 	success: false,
@@ -236,11 +237,15 @@ const RefundReportForm = ({
 			)}
 
 			<div className="mt-4 text-right">
-				<Button
-					type="submit"
-					className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 text-sm rounded"
-					disabled={isPending}>
-					{isPending ? "Submitting..." : "Submit"}
+				<Button type="submit" disabled={isPending}>
+					{isPending ? (
+						<div className="flex items-center gap-1">
+							<span>Loading</span>
+							<LoadingDots />
+						</div>
+					) : (
+						"Submit"
+					)}
 				</Button>
 			</div>
 		</form>

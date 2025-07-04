@@ -62,7 +62,6 @@ const StudentSessionList = ({ student_id }: { student_id: string }) => {
 				await fetchNextPage();
 				setTotalPagesFetched((prev) => prev + 1);
 			} catch (e) {
-				// Let isError flag handle UI response
 				return;
 			}
 		}
@@ -81,7 +80,7 @@ const StudentSessionList = ({ student_id }: { student_id: string }) => {
 			{currentSessions.length > 0 ? (
 				<div className="flex flex-wrap gap-6 my-4 justify-start">
 					{currentSessions.map(
-						(session: TStudentSessionJoinResult, index: number) => (
+						(session: TStudentSessionViewResult, index: number) => (
 							<div
 								key={index}
 								className="w-full sm:w-[48%] lg:w-[23%] max-w-[300px] flex-shrink-0">

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "@/components/app/shared/data-table";
+import { DataTable } from "@/components/app/features/data-table/data-table";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -196,8 +196,8 @@ export default function ManageTutorPage() {
 											tutor.warnings >= 5
 												? "bg-red-500"
 												: tutor.warnings >= 3
-												? "bg-yellow-500"
-												: "bg-green-500"
+													? "bg-yellow-500"
+													: "bg-green-500"
 										}`}
 										style={{ width: `${(tutor.warnings / 5) * 100}%` }}
 									/>
@@ -290,7 +290,7 @@ function WarningDialog({ tutor, setData }: { tutor: Tutor; setData: any }) {
 								...t,
 								warnings: Math.min(t.warnings + 1, 5),
 								lastWarning: warningText,
-						  }
+							}
 						: t,
 				),
 			);

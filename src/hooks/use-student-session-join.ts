@@ -1,7 +1,11 @@
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
-import { useQuery } from "@tanstack/react-query";
+import { getStudentSessionViewCount } from "@/data/queries/student-session/get-student-session-view-count";
+import { fetchStudentSession } from "@/utils/app/fetch-student-session";
+import { getDateRange } from "@/utils/app/get-date-range";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { DateRange } from "react-day-picker";
 
 export function useStudentSessionJoin(
+	columns: string,
 	user_id: string,
 	enabled: boolean,
 	supabase: TSupabaseClient,
@@ -9,9 +13,13 @@ export function useStudentSessionJoin(
 	return useQuery({
 		queryKey: ["nav_bar_mySessions", user_id],
 		queryFn: () =>
-			fetchMySession({
-				user_id,
+			fetchStudentSession({
+				columns,
+				pageParam: 0,
+				student_id: user_id,
 				supabase,
+				limit: 3,
+				status: ["enrolled", "completed", "paid"],
 			}),
 		staleTime: 1000 * 60 * 60,
 		enabled,
@@ -20,19 +28,76 @@ export function useStudentSessionJoin(
 	});
 }
 
-async function fetchMySession({
-	user_id,
+export function useStudentSessionJoinWithCount({
+	key,
 	supabase,
+	page,
+	limit,
+	columns = "*",
+	search,
+	status,
+	dateFilterCol,
+	dateFilter,
+	student_id,
 }: {
-	user_id: string;
+	key: string;
 	supabase: TSupabaseClient;
+	page: number;
+	limit: number;
+	columns?: string;
+	search?: string;
+	status?: TStudentSessionStatus[] | null;
+	dateFilterCol?: "enrolled_at" | "refunded_at" | "paid_out_at" | null;
+	dateFilter?: DateRange | undefined;
+	student_id?: string;
 }) {
-	const student_sessions = await getStudentSessionJoin(supabase, {
-		student_id: user_id,
-		status: ["enrolled"],
-		offset: 0,
-		limit: 3,
+	const datesAreValid =
+		(!dateFilterCol && dateFilter) || (dateFilterCol && !dateFilter)
+			? false
+			: true;
+	let dateRange: {
+		start_date: string | undefined;
+		end_date: string | undefined;
+	} = {
+		start_date: undefined,
+		end_date: undefined,
+	};
+	if (dateFilter && dateFilter.from && dateFilter.to) {
+		dateRange = getDateRange(dateFilter);
+		console.log(dateRange);
+	}
+
+	return useQuery({
+		queryKey: [key, search, status, dateFilter, dateFilterCol, page, limit],
+		queryFn: async (): Promise<{
+			data: TStudentSessionViewResult[];
+			count: number;
+		}> => {
+			const [data, count] = await Promise.all([
+				fetchStudentSession({
+					columns,
+					search,
+					page,
+					limit,
+					status,
+					dateFilterCol,
+					start: dateRange.start_date,
+					end: dateRange.end_date,
+					student_id,
+					supabase,
+				}),
+				getStudentSessionViewCount(supabase, {
+					search,
+					status,
+					dateFilterCol,
+					start: dateRange.start_date,
+					end: dateRange.start_date,
+				}),
+			]);
+			if (!count && count !== 0) throw Error("count error");
+			return { data: data, count };
+		},
+		enabled: datesAreValid,
+		placeholderData: keepPreviousData,
 	});
-	if (!student_sessions) throw new Error("Error fetching data");
-	return student_sessions;
 }

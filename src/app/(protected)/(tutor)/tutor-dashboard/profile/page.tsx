@@ -1,8 +1,8 @@
-import TutorBioBox from "@/components/app/features/tutor-profile/tutor-bio-box";
-import TutorHighLightBox from "@/components/app/features/tutor-profile/tutor-highlight-box";
-import TutorBankBox from "@/components/app/features/tutor-profile/tutor-bank-box";
-import { TutorInfo } from "@/components/app/features/tutor-profile/tutor-info";
-import { FormWrapper } from "@/components/app/features/tutor-profile/form-wrapper";
+import TutorBioBox from "@/components/app/features/tutor/tutor-profile/tutor-bio-box";
+import TutorHighLightBox from "@/components/app/features/tutor/tutor-profile/tutor-highlight-box";
+import TutorBankBox from "@/components/app/features/tutor/tutor-profile/tutor-bank-box";
+import { TutorInfo } from "@/components/app/features/tutor/tutor-profile/tutor-info";
+import { FormWrapper } from "@/components/app/features/tutor/tutor-profile/form-wrapper";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { getBankInfoJoinBank } from "@/data/queries/bank-info/get-bank-info-join-tutor";

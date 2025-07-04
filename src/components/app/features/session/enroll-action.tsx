@@ -16,6 +16,7 @@ import { checkoutEnrollment } from "@/actions/checkout-enrollment";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { LoadingDots } from "../../shared/loading-dots";
 
 const initialState: ActionResponseType<TStudentSessionResult> = {
 	success: false,
@@ -115,11 +116,7 @@ const EnrollAction = ({
 									{isPending ? (
 										<div className="flex items-center gap-1">
 											<span>Loading</span>
-											<div className="flex items-center gap-0.5">
-												<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-												<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-												<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
-											</div>
+											<LoadingDots />
 										</div>
 									) : (
 										"Checkout"

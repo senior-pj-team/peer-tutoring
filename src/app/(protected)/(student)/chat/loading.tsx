@@ -20,10 +20,10 @@ export default function Loading() {
 			{/* Desktop Skeleton */}
 			<div className="hidden lg:grid grid-cols-4 mt-20 h-[90vh]">
 				{/* Sidebar */}
-				<ChatListLoading/>
+				<ChatListLoading />
 
 				{/* Chat Area */}
-				<ConversationLoading/>
+				<ConversationLoading />
 			</div>
 		</>
 	);

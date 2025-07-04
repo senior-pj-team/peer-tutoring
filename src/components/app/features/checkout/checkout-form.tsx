@@ -10,10 +10,11 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@/components/ui/button";
 import { useSupabase } from "@/hooks/use-supabase";
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
-import { updateStudentSessionStatus } from "@/data/mutations/student-session/update-status";
+import { updateStudentSession } from "@/data/mutations/student-session/update-student-session";
 import { useRouter } from "next/navigation";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
+import { LoadingDots } from "../../shared/loading-dots";
 
 const stripePromise = loadStripe(
 	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -38,7 +39,9 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 		setMessage("");
 		setIsLoading(true);
 
-		const student_session_data_result = await getStudentSessionJoin(supabase, {
+		const student_session_data_result = await getStudentSessionView(supabase, {
+			columns:
+				"student_session_status, student_session_id, session_id, student_id",
 			student_session_id,
 		});
 		if (!student_session_data_result) {
@@ -50,14 +53,14 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 		if (student_session_data_result.length >= 0) {
 			const student_session_data = student_session_data_result[0];
 
-			if (student_session_data.ss_status === "expired_payment") {
+			if (student_session_data.student_session_status === "expired_payment") {
 				setIsLoading(false);
 				setMessage("The payment session is expired. Please enroll again!");
 				return;
 			}
 
 			const has_enrolled_ss = await getEnrollmentCount(supabase, {
-				student_session_id: student_session_data.id,
+				student_session_id: student_session_data.student_session_id ?? 0,
 				ss_status: [
 					"enrolled",
 					"expired_payment",
@@ -79,8 +82,8 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				return;
 			}
 			const has_pay_now = await getEnrollmentCount(supabase, {
-				session_id: student_session_data.session_id,
-				student_id: student_session_data.student_id,
+				session_id: student_session_data.session_id ?? 0,
+				student_id: student_session_data.student_id ?? "",
 				ss_status: ["pending_payment"],
 			});
 
@@ -95,7 +98,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			}
 
 			const enrollment_count = await getEnrollmentCount(supabase, {
-				session_id: student_session_data.session_id,
+				session_id: student_session_data.session_id ?? 0,
 				ss_status: ["completed", "enrolled", "paid", "pending_payment"],
 			});
 
@@ -105,19 +108,19 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 				return;
 			}
 
-			if (
-				enrollment_count + paid_count >=
-				student_session_data.sessions!.max_students!
-			) {
+			if (enrollment_count + paid_count >= student_session_data.max_students!) {
 				setIsLoading(false);
 				setMessage("Sry, no avalible seats left for this session!");
 				return;
 			}
 
-			const updateResult = await updateStudentSessionStatus(supabase, {
-				student_session_id,
-				ss_status: "pending_payment",
-			});
+			const updateResult = await updateStudentSession(
+				supabase,
+				[student_session_id],
+				{
+					status: "pending_payment",
+				},
+			);
 			if (!updateResult) {
 				setIsLoading(false);
 				setMessage("Something went wrong. Please try again!");
@@ -170,11 +173,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 					{isLoading ? (
 						<div className="flex items-center gap-1">
 							<span>Loading</span>
-							<div className="flex items-center gap-0.5">
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-								<div className="h-1 w-1 bg-white rounded-full animate-bounce"></div>
-							</div>
+							<LoadingDots />
 						</div>
 					) : (
 						"Pay now"

@@ -8,7 +8,13 @@ import { formatDate } from "date-fns";
 
 const ShowReviewRating = async ({ ssId }: { ssId: number | null }) => {
 	const supabase = await createClient();
-	if (!supabase || !ssId) return <GeneralError />;
+
+	if (!supabase || !ssId)
+		return (
+			<div className="h-36 bg-white rounded-lg shadow flex w-full justify-center items-center text-red-500 text-sm">
+				Something went wrong ❌
+			</div>
+		);
 
 	const reviews = await getRatingReview(supabase, { ss_id: ssId });
 

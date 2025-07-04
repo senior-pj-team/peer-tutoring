@@ -67,44 +67,6 @@ export async function submitTutorRegistration(
 		};
 	}
 
-<<<<<<< HEAD
-  if (type == "refund_transfer" && bankId) {
-    const updateResult = await updateBankInfo(
-      supabase,
-      Number(bankId),
-      user.user_id,
-      { account_type: type }
-    );
-    if(!updateResult){
-      return{
-        success: false,
-        error: {message: "Something went wrong"}
-      }
-    }
-  } else if (type == "tutor_transfer") {
-    const upsertResult = await upsertBankInfo(supabase, {
-      user_id: user.user_id,
-      bankData: {
-        bank_name: bankName,
-        account_name: accountName,
-        account_number: accountNumber,
-        other_bank: ""
-      },
-      account_type: type,
-    })
-    if(upsertResult){
-      return {
-        success: false,
-        error: {message: "Something went wrong"}
-      }
-    }
-  }else{
-    return {
-      success: false,
-      error: {message: "Something went wrong"}
-    }
-  }
-=======
 	const updateResult = await updateUser(supabase, {
 		tutorData: {
 			school: school,
@@ -116,7 +78,6 @@ export async function submitTutorRegistration(
 		uploadedUrl: photoUrl,
 		user_id: user.user_id,
 	});
->>>>>>> main
 
 	if (!updateResult) {
 		return {
@@ -139,11 +100,15 @@ export async function submitTutorRegistration(
 			};
 		}
 	} else if (type == "tutor_transfer") {
-		const insertResult = await insertBankInfo(supabase, {
-			bank_name: bankName,
-			account_name: accountName,
-			account_number: accountNumber,
-			account_type: type,
+		const insertResult = await upsertBankInfo(supabase, {
+			user_id: user.user_id,
+			bankData: {
+				bank_name: bankName,
+				account_name: accountName,
+				account_number: accountNumber,
+				account_type: type,
+				other_bank: "",
+			},
 		});
 		if (insertResult) {
 			return {

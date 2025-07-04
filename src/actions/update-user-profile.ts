@@ -40,7 +40,9 @@ export async function updateUserProfile(
 	let uploadedUrl: string | null = null;
 
 	if (userData.profile_url) {
-		uploadedUrl = await uploadImage(userData.profile_url, supabase);
+		uploadedUrl = await uploadImage(userData.profile_url, supabase, {
+			path: "",
+		});
 		if (!uploadedUrl) {
 			return {
 				success: false,

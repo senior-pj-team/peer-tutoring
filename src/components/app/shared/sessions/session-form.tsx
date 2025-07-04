@@ -72,6 +72,8 @@ export default function SessionForm({
 		status: "open",
 		tutor_id: "",
 		transferred_amount: 0,
+		held_until: null,
+		paid_out_at: null,
 	},
 	isEdit = false,
 	toCancel = false,
@@ -510,8 +512,8 @@ export default function SessionForm({
 						/>
 						<div className="w-full flex items-center gap-2">
 							<Button
-								type="submit"
 								size="lg"
+								type="submit"
 								className="md:w-[20%] ml-auto cursor-pointer">
 								{isEdit ? <span>Save Changes</span> : <span>Submit</span>}
 							</Button>

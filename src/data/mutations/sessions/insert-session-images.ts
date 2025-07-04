@@ -1,9 +1,10 @@
 export const uploadImage = async (
 	image: File,
 	supabase: TSupabaseClient,
+	{ path = "" }: { path?: string },
 ): Promise<string | null> => {
 	const fileExt = image.name.split(".").pop();
-	const filePath = `${Date.now()}.${fileExt}`;
+	const filePath = `${path}${Date.now()}.${fileExt}`;
 
 	const { error } = await supabase.storage
 		.from("session-images")

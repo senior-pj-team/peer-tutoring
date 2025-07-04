@@ -1,4 +1,4 @@
-import { SessionList } from "@/components/app/features/tutor-dashboard/sessions/session-list";
+import { SessionList } from "@/components/app/features/tutor/tutor-dashboard/sessions/session-list";
 import { getSessionsbyId } from "@/data/queries/sessions/get-sessions-by-Id";
 import { getUserSession } from "@/utils/get-user-session";
 import { createClient } from "@/utils/supabase/server";

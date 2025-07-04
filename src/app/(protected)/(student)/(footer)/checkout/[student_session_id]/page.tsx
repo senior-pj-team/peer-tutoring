@@ -9,7 +9,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 
 import { createClient } from "@/utils/supabase/server";
 import { Book } from "lucide-react";
@@ -21,7 +21,9 @@ export default async function page({ params }: { params: Params }) {
 	const { student_session_id } = await params;
 	const supabase = await createClient();
 
-	const result = await getStudentSessionJoin(supabase, {
+	const result = await getStudentSessionView(supabase, {
+		columns:
+			"student_session_id, session_name, amount_from_student, stripe_client_secrete",
 		student_session_id,
 		status: ["pending_enroll", "pending_payment"],
 	});
@@ -57,7 +59,7 @@ export default async function page({ params }: { params: Params }) {
 								{/* values */}
 								<div className="flex flex-col gap-y-4 text-[0.85rem] font-bold text-gray-700 flex-1">
 									<div className="max-w-[200px] truncate">
-										{student_session_data.sessions?.session_name}
+										{student_session_data.session_name}
 									</div>
 									<span>1</span>
 									<span>{student_session_data.amount_from_student} ฿</span>
@@ -84,7 +86,9 @@ export default async function page({ params }: { params: Params }) {
 								Choose payment methods{" "}
 							</span>
 							<CheckoutForm
-								student_session_id={student_session_data.id}
+								student_session_id={
+									student_session_data.student_session_id ?? 0
+								}
 								clientSecret={student_session_data.stripe_client_secrete}
 							/>
 							<div className="flex flex-col mt-3 space-y-3 items-start w-full">
@@ -114,6 +118,10 @@ export default async function page({ params }: { params: Params }) {
 													<li>
 														Refunds will be processed within 7 days, subject to
 														admin team approval.
+													</li>
+													<li>
+														Note that you cannot fully get your purchased price
+														as the transaction fee will be deducted.
 													</li>
 													<li>
 														Students can rate, report, or request a refund

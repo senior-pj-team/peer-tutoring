@@ -11,53 +11,19 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {
-	BarChartIcon,
-	UsersIcon,
-	User,
-	Star,
-	CircleAlert,
-	Shapes,
-	Book,
-} from "lucide-react";
+import { Book, LucideProps } from "lucide-react";
 import Link from "next/link";
 
-const menus = [
-	{
-		title: "Profile",
-		url: "/tutor-dashboard/profile",
-		icon: User,
-	},
-	{
-		title: "Sessions",
-		url: "/tutor-dashboard/sessions/upcoming-sessions",
-		icon: Shapes,
-	},
-	{
-		title: "Students",
-		url: "/tutor-dashboard/students",
-		icon: UsersIcon,
-	},
-	{
-		title: "Financial",
-		url: "/tutor-dashboard/financial/stats",
-		icon: BarChartIcon,
-	},
-	{
-		title: "Rating and Reviews",
-		url: "/tutor-dashboard/rating-reviews",
-		icon: Star,
-	},
-	{
-		title: "Warning",
-		url: "/tutor-dashboard/warning",
-		icon: CircleAlert,
-	},
-];
+type Menus = {
+	title: string;
+	url: string;
+	icon: React.ReactNode;
+};
 
 export default function AppSideBar({
+	menus,
 	...props
-}: React.ComponentProps<typeof Sidebar>) {
+}: { menus: Menus[] } & React.ComponentProps<typeof Sidebar>) {
 	return (
 		<Sidebar
 			collapsible="offcanvas"
@@ -86,7 +52,7 @@ export default function AppSideBar({
 										<SidebarMenuButton
 											tooltip={menu.title}
 											className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2">
-											{menu.icon && <menu.icon size={18} />}
+											{menu.icon}
 											<span>{menu.title}</span>
 										</SidebarMenuButton>
 									</Link>

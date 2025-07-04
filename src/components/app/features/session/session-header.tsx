@@ -5,6 +5,7 @@ import Rating from "@/components/app/features/rating-review/rating";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { cn } from "@/lib/utils";
+import { shimmer, toBase64 } from "@/utils/app/shimmer";
 
 type TSessionHeaderData = {
 	image: string | null;
@@ -50,18 +51,21 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 						</div>
 						<div className="flex items-center">
 							<Avatar>
-								<AvatarImage
-									src={tutor_profile_url ?? ""}
-									width={48}
-									height={48}
-									alt="User Avatar"
-								/>
+								{tutor_profile_url && (
+									<AvatarImage
+										src={tutor_profile_url}
+										width={48}
+										height={48}
+										alt="User Avatar"
+									/>
+								)}
+
 								<AvatarFallback>
 									{getAvatarFallback(tutor_name ?? "")}
 								</AvatarFallback>
 							</Avatar>
 							<div className="text-xs underline mx-3">
-								<Link href={`/tutor-view/${tutor_id}`}>{tutor_name}</Link>
+								<Link href={`/home/tutor-view/${tutor_id}`}>{tutor_name}</Link>
 							</div>
 							|
 							<Rating
@@ -93,6 +97,7 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 						<Image
 							src={image}
 							sizes="100vw"
+							placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(100, 100))}`}
 							alt="Session Banner"
 							fill
 							className="object-cover"
