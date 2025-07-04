@@ -79,6 +79,7 @@ declare global {
 				email: string | null;
 			};
 			session: {
+				id: number;
 				image: string | null;
 				session_name: string | null;
 				course_code: string | null;
@@ -111,6 +112,7 @@ declare global {
 		end_time: string;
 		held_until: string | null;
 		paid_out_at: string | null;
+		payment_evidence: string | null;
 		tutor: {
 			id: string;
 			profile_url: string | null;

@@ -6,24 +6,26 @@ import {
 } from "@tanstack/react-query";
 import { createClient } from "@/utils/supabase/server";
 import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund-report-join";
-import RefundReportList from "@/components/app/features/refund-report/refund-report-list-client";
+import RefundReportList from "@/components/app/features/refund-report/refund-report-list";
 
 export default async function Page() {
 	const queryClient = new QueryClient();
 	const supabase = await createClient();
 
 	await queryClient.prefetchInfiniteQuery({
-		queryKey: ["refund-report-history"],
+		queryKey: [
+			"refund-report",
+			["refund", "refund and report", "report"],
+			["approved", "rejected"],
+			undefined,
+		],
 		queryFn: async ({ pageParam = 0 }) =>
 			await getRefundReportJoin(supabase, {
 				status: ["approved", "rejected"],
 				offset: pageParam,
 				limit: 5,
 			}),
-		getNextPageParam: (
-			lastPage: TRefundReportJoinResult[] | null,
-			allPages: (TRefundReportJoinResult[] | null)[],
-		) => (lastPage && lastPage.length === 5 ? allPages.length * 5 : undefined),
+
 		initialPageParam: 0,
 	});
 	return (
@@ -34,7 +36,7 @@ export default async function Page() {
 				</h1>
 				<div className="grid gap-4">
 					<RefundReportList
-						qKey={"refund-report-history"}
+						qKey="refund-report"
 						status={["approved", "rejected"]}
 						type={["refund", "refund and report", "report"]}
 					/>

@@ -1,5 +1,6 @@
 type Params = {
 	student_id?: string;
+	session_id?: number;
 	type?: TRefundType[];
 	status?: TRefundStatus[];
 	offset?: number;
@@ -7,8 +8,9 @@ type Params = {
 };
 export async function getRefundReportJoin(
 	supabase: TSupabaseClient,
-	{ student_id, type, status, offset, limit }: Params,
+	{ student_id, session_id, type, status, offset, limit }: Params,
 ): Promise<TRefundReportJoinResult[] | null> {
+	console.log(session_id);
 	let query = supabase.from("refund_report").select(`*,
     student_session!inner (
       id,
@@ -23,6 +25,7 @@ export async function getRefundReportJoin(
           email
       ),
       session:sessions!inner(
+        id,
         image,
         session_name,
         course_code,
@@ -40,16 +43,18 @@ export async function getRefundReportJoin(
       )
     )`);
 	if (student_id) query = query.eq("student_session.student_id", student_id);
+	if (session_id) query = query.eq("student_session.sessions.id", session_id);
 	if (type) query = query.in("type", type);
 	if (status) query = query.in("status", status);
 
 	if (offset != undefined && limit != undefined)
 		query = query.range(offset, offset + limit - 1);
-	console.log("Hello", offset, limit);
+
 	const { data, error } = await query;
 	if (error) {
 		console.log("Get refund report join error: ", error.message);
 		return null;
 	}
+	console.log(data);
 	return data as unknown as TRefundReportJoinResult[];
 }

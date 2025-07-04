@@ -3,6 +3,8 @@ import { TransferActionDialog } from "./transfer-action-dialog";
 import { createClient } from "@/utils/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { format, formatDate } from "date-fns";
+import RefundReportList from "../../refund-report/refund-report-list";
+import { TransferReceiptDialog } from "./transfer-receipt-dialog";
 
 type Params = {
 	session_id: number;
@@ -13,6 +15,7 @@ type Params = {
 	status: TSessionStatus;
 	held_until: string;
 	paid_out_at: string | null;
+	receipt: string | null;
 };
 export async function FinancialTabServer({
 	session_id,
@@ -23,6 +26,7 @@ export async function FinancialTabServer({
 	status,
 	held_until,
 	paid_out_at,
+	receipt,
 }: Params) {
 	const supabase = await createClient();
 	const amountSummaries = await getamountSummaries(supabase, {
@@ -42,11 +46,12 @@ export async function FinancialTabServer({
 		<div className="py-6">
 			{status === "completed" ? (
 				<Badge className="bg-purple-50 mb-4">
-					<div className="text-sm font-bold text-purple-500">{`You cannot transfer before ${formatDate(held_until, "dd MMMM yyyy")}`}</div>
+					<div className="mr-1 text-sm font-bold text-purple-500">{`You cannot transfer before ${formatDate(held_until, "dd MMMM yyyy")}`}</div>
 				</Badge>
 			) : status === "archived" && paid_out_at ? (
 				<Badge className="bg-green-50 mb-4">
 					<div className="text-sm font-bold text-green-500">{`You have transferred on ${format(paid_out_at, "dd MMMM yyyy hh:mm a")}`}</div>
+					<TransferReceiptDialog receipt={receipt} />
 				</Badge>
 			) : status === "open" || status === "closed" || status === "cancelled" ? (
 				<Badge className="bg-red-50 mb-4">
@@ -102,6 +107,13 @@ export async function FinancialTabServer({
 					<div className="text-xs text-gray-400">Profit earned by admin</div>
 				</div>
 			</div>
+			<div className="text-2xl my-4 mt-2 font-bold">Reports and Refunds</div>
+			<RefundReportList
+				session_id={session_id}
+				qKey="refund-report"
+				type={["refund", "refund and report", "report"]}
+				status={["approved", "pending", "rejected"]}
+			/>
 		</div>
 	);
 }

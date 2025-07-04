@@ -94,6 +94,7 @@ export async function SessionServer({ session_id }: { session_id: string }) {
 									status={sessionData.status ?? "open"}
 									held_until={sessionData.held_until ?? "N/A"}
 									paid_out_at={sessionData.paid_out_at}
+									receipt={sessionData.payment_evidence}
 								/>
 							</Suspense>
 						</TabsContent>

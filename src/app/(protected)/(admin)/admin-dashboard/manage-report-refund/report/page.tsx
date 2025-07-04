@@ -1,4 +1,4 @@
-import RefundReportList from "@/components/app/features/refund-report/refund-report-list-client";
+import RefundReportList from "@/components/app/features/refund-report/refund-report-list";
 
 import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund-report-join";
 import { createClient } from "@/utils/supabase/server";
@@ -13,7 +13,12 @@ export default async function ReportPage() {
 	const supabase = await createClient();
 
 	await queryClient.prefetchInfiniteQuery({
-		queryKey: ["pending-report"],
+		queryKey: [
+			"refund-report",
+			["report", "refund and report"],
+			["pending"],
+			undefined,
+		],
 		queryFn: async ({ pageParam = 0 }) =>
 			await getRefundReportJoin(supabase, {
 				status: ["pending"],
@@ -33,7 +38,7 @@ export default async function ReportPage() {
 				<h1 className="text-xl font-semibold">Pending Reports</h1>
 				<div className="grid gap-4">
 					<RefundReportList
-						qKey={"pending-report"}
+						qKey="refund-report"
 						status={["pending"]}
 						type={["report", "refund and report"]}
 					/>

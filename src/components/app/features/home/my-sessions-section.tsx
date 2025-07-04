@@ -37,7 +37,7 @@ export default async function MySessionsSection() {
 					<span>My Upcoming Sessions 📗</span>
 				</div>
 				<div className="flex w-full h-full justify-center items-center ">
-					<span className="font-bold text-gray-400 md:text-xl text-lg">
+					<span className="font-bold text-gray-400 md:text-lg text-xl">
 						You don't have upcoming sessions for now 👽
 					</span>
 				</div>

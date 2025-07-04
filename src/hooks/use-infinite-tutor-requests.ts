@@ -1,7 +1,6 @@
-"use client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBankInfoJoinUser } from "@/data/queries/bank-info/get-bank-info-join-user";
-import { createClient } from "@/utils/supabase/client";
+import { useSupabase } from "./use-supabase";
 
 const LIMIT = 5;
 
@@ -22,7 +21,7 @@ export async function fetchTutorRequests({
 	pageParam: number;
 	LIMIT: number;
 }): Promise<TBankInfoJoinTutorResult[]> {
-	const supabase = await createClient();
+	const supabase = useSupabase();
 	const result = await getBankInfoJoinUser(supabase, {
 		account_type: ["tutor_transfer", "refund_transfer"],
 		tutor_status: ["pending"],
