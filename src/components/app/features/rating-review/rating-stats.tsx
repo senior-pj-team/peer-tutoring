@@ -14,7 +14,7 @@ const RatingStats = async ({ tutor_id }: { tutor_id: string }) => {
 	rawStats.forEach((item) => {
 		ratingMap.set(item.rating, item.count);
 	});
-	
+
 	const normalizedStats = Array.from({ length: 5 }, (_, i) => {
 		const rating = 5 - i;
 		return {

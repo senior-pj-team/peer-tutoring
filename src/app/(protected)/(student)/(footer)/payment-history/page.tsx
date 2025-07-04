@@ -15,12 +15,9 @@ const page = async () => {
 	const supabase = await createClient();
 	const user = await getUserSession();
 	if (!user) return <></>;
-	const student_session_result = await getStudentSessionJoin(
-		supabase,
-		{
-			student_id: user.user_id,
-		}
-	);
+	const student_session_result = await getStudentSessionJoin(supabase, {
+		student_id: user.user_id,
+	});
 
 	if (!student_session_result) return <GeneralError />;
 

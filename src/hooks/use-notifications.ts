@@ -1,6 +1,5 @@
 import { deleteNotificationbyId } from "@/data/mutations/notification/delete-notification-by-Id";
 import { updateNotification } from "@/data/mutations/notification/update-notification";
-import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
 import { fetchNotifications } from "@/utils/app/fetch-notifications";
 import {
 	InfiniteData,

@@ -1,143 +1,44 @@
-"use client";
+import RefundReportList from "@/components/app/features/refund-report/refund-report-list-client";
 
-import { useMemo, useState } from "react";
-import { DataTable } from "@/components/app/features/data-table/data-table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ColumnDef } from "@tanstack/react-table";
+import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund-report-join";
+import { createClient } from "@/utils/supabase/server";
+import {
+	dehydrate,
+	HydrationBoundary,
+	QueryClient,
+} from "@tanstack/react-query";
+import React from "react";
+export default async function ReportPage() {
+	const queryClient = new QueryClient();
+	const supabase = await createClient();
 
-interface Report {
-	id: string;
-	sessionName: string;
-	tutorName: string;
-	reportedBy: string;
-	reason: string;
-	date: string;
-	status: "pending" | "reviewed";
-}
-
-const mockReports: Report[] = [
-	{
-		id: "rep-001",
-		sessionName: "Intro to Python",
-		tutorName: "John Smith",
-		reportedBy: "Alice Wong",
-		reason: "Tutor didn't show up",
-		date: "2025-04-30",
-		status: "pending",
-	},
-	{
-		id: "rep-002",
-		sessionName: "Business English",
-		tutorName: "Jane Doe",
-		reportedBy: "Bob Tan",
-		reason: "Inappropriate content",
-		date: "2025-04-29",
-		status: "reviewed",
-	},
-];
-
-export default function ReportPage() {
-	const [reports, setReports] = useState<Report[]>(mockReports);
-
-	const handleMarkReviewed = (id: string) => {
-		setReports((prev) =>
-			prev.map((report) =>
-				report.id === id ? { ...report, status: "reviewed" } : report,
-			),
-		);
-	};
-
-	const pendingReports = useMemo(
-		() => reports.filter((r) => r.status === "pending"),
-		[reports],
-	);
-	const reviewedReports = useMemo(
-		() => reports.filter((r) => r.status === "reviewed"),
-		[reports],
-	);
-
-	const commonColumns: ColumnDef<Report>[] = [
-		{
-			accessorKey: "reportedBy",
-			header: "Student Name",
-		},
-		{
-			accessorKey: "sessionName",
-			header: "Session Name",
-		},
-		{
-			accessorKey: "tutorName",
-			header: "Tutor Name",
-		},
-		{
-			accessorKey: "reason",
-			header: "Reason",
-		},
-		{
-			accessorKey: "date",
-			header: "Request Date",
-		},
-	];
-
-	const pendingColumns: ColumnDef<Report>[] = [
-		{
-			id: "search",
-			accessorFn: (row) =>
-				`${row.reportedBy} ${row.tutorName} ${row.sessionName} ${row.reason}`,
-			header: () => null,
-			cell: () => null,
-			enableSorting: false,
-			enableColumnFilter: true,
-		},
-		...commonColumns,
-		{
-			id: "action",
-			header: "Action",
-			cell: ({ row }) => (
-				<Button size="sm" onClick={() => handleMarkReviewed(row.original.id)}>
-					Mark as Reviewed
-				</Button>
-			),
-		},
-	];
-
-	const reviewedColumns: ColumnDef<Report>[] = [
-		{
-			id: "search",
-			accessorFn: (row) =>
-				`${row.reportedBy} ${row.tutorName} ${row.sessionName} ${row.reason}`,
-			header: () => null,
-			cell: () => null,
-			enableSorting: false,
-			enableColumnFilter: true,
-		},
-		...commonColumns,
-		{
-			id: "status",
-			header: "Status",
-			cell: () => <Badge variant="success">Reviewed</Badge>,
-		},
-	];
-
+	await queryClient.prefetchInfiniteQuery({
+		queryKey: ["pending-report"],
+		queryFn: async ({ pageParam = 0 }) =>
+			await getRefundReportJoin(supabase, {
+				status: ["pending"],
+				type: ["report", "refund and report"],
+				offset: pageParam,
+				limit: 5,
+			}),
+		getNextPageParam: (
+			lastPage: TRefundReportJoinResult[] | null,
+			allPages: (TRefundReportJoinResult[] | null)[],
+		) => (lastPage && lastPage.length === 5 ? allPages.length * 5 : undefined),
+		initialPageParam: 0,
+	});
 	return (
-		<div className="space-y-8">
-			<div>
-				<h2 className="text-lg font-semibold mb-2">Pending Reports</h2>
-				<DataTable
-					columns={pendingColumns}
-					data={pendingReports}
-					type="reports"
-				/>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<div className="space-y-6 px-4 lg:px-6">
+				<h1 className="text-xl font-semibold">Pending Reports</h1>
+				<div className="grid gap-4">
+					<RefundReportList
+						qKey={"pending-report"}
+						status={["pending"]}
+						type={["report", "refund and report"]}
+					/>
+				</div>
 			</div>
-			<div>
-				<h2 className="text-lg font-semibold mb-2">Reviewed Reports</h2>
-				<DataTable
-					columns={reviewedColumns}
-					data={reviewedReports}
-					type="reports"
-				/>
-			</div>
-		</div>
+		</HydrationBoundary>
 	);
 }

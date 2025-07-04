@@ -57,10 +57,12 @@ const PaymentTable = ({ data }: { data: TStudentSessionJoinResult[] }) => {
 											{eachData.sessions?.session_name || "-"}
 										</td>
 										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-											{formatDate(
-												parseISO(eachData.held_until ?? ""),
-												"yyy MMMM dd",
-											)}
+											{eachData.sessions.held_until
+												? formatDate(
+														parseISO(eachData.sessions.held_until),
+														"yyy MMMM dd",
+													)
+												: "Unknown"}
 										</td>
 										<td className="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
 											{eachData.refunded_amount}฿

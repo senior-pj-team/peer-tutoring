@@ -8,6 +8,6 @@ export async function deleteNotificationbyId(
 		console.log("Delete notification by id error: ", error.message);
 		return false;
 	}
-	
+
 	return true;
 }

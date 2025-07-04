@@ -38,7 +38,7 @@ export function FormWrapper({
 	values,
 	children,
 }: {
-	values: TBankInfoJoinTutorResult;
+	values: TBankInfoJoinTutorResult[];
 	children: React.ReactNode;
 }) {
 	const {

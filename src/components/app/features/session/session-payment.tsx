@@ -6,16 +6,15 @@ import GeneralError from "../../shared/error";
 import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 
 const SessionPayment = async ({ session_id }: { session_id: number }) => {
-
 	const supabase = await createClient();
 	const user = await getUserSession();
-	if (!user) return <GeneralError/>;
-	
+	if (!user) return <GeneralError />;
+
 	const student_session_result = await getStudentSessionJoin(supabase, {
 		student_id: user.user_id,
 		session_id,
 	});
-	
+
 	if (!student_session_result) return <GeneralError />;
 	return (
 		<div className="p-6 ">

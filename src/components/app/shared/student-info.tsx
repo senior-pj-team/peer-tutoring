@@ -8,6 +8,8 @@ import GeneralError from "./error";
 import { createClient } from "@/utils/supabase/server";
 import { getUserById } from "@/data/queries/user/get-user-by-id";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
+import { getUserSession } from "@/utils/get-user-session";
+import { GoToChatButton } from "./go-to-chat-button";
 
 const StudentInfo = async ({ student_id }: { student_id: string | null }) => {
 	const supabase = await createClient();
@@ -15,6 +17,8 @@ const StudentInfo = async ({ student_id }: { student_id: string | null }) => {
 
 	const student = await getUserById(supabase, student_id);
 	if (!student) return <GeneralError />;
+
+	const user = await getUserSession();
 
 	return (
 		<div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-white gap-x-25">
@@ -28,9 +32,18 @@ const StudentInfo = async ({ student_id }: { student_id: string | null }) => {
 
 			{/* Info */}
 			<div className="text-center md:text-left flex-1 space-y-2">
-				<h1 className="text-2xl font-semibold text-orange-700">
-					{student.username}
-				</h1>
+				<div className="flex ietms-center gap-3 justify-start">
+					<h1 className="text-2xl font-semibold text-orange-700">
+						{student.username}
+					</h1>
+					{user && (
+						<GoToChatButton
+							user1_id={user?.user_id}
+							user2_id={student.id}
+							size={25}
+						/>
+					)}
+				</div>
 				<p className="text-muted-foreground text-sm">{student.email}</p>
 
 				<div className="flex flex-wrap gap-2 text-sm mt-2">

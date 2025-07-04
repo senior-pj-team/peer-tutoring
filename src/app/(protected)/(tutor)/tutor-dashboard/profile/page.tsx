@@ -5,7 +5,7 @@ import { TutorInfo } from "@/components/app/features/tutor/tutor-profile/tutor-i
 import { FormWrapper } from "@/components/app/features/tutor/tutor-profile/form-wrapper";
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
-import { getBankInfoJoinBank } from "@/data/queries/bank-info/get-bank-info-join-tutor";
+import { getBankInfoJoinUser } from "@/data/queries/bank-info/get-bank-info-join-user";
 
 export default async function page() {
 	const user = await getUserSession();
@@ -18,7 +18,7 @@ export default async function page() {
 	}
 
 	const supabase = await createClient();
-	const tutor_data = await getBankInfoJoinBank(supabase, {
+	const tutor_data = await getBankInfoJoinUser(supabase, {
 		user_id: user.user_id,
 		account_type: ["refund_transfer", "tutor_transfer"],
 	});

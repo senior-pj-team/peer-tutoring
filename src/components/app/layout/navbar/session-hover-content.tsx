@@ -1,8 +1,5 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
 import Image from "next/image";
-import sessionPicOne from "../../../../../public/session-one.jpg";
-import sessionPicTwo from "../../../../../public/session-two.jpg";
-import sessionPicThree from "../../../../../public/session-three.jpg";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

@@ -19,7 +19,6 @@ import TipTap from "../tip-tap";
 import { Button } from "@/components/ui/button";
 import DatePicker from "../date-picker";
 import { addDays, formatDate, parseISO } from "date-fns";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useRef, useState, useTransition } from "react";

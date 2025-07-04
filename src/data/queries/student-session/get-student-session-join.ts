@@ -28,7 +28,7 @@ export const getStudentSessionJoin = async (
 ): Promise<TStudentSessionJoinResult[] | null> => {
 	let query = supabase.from("student_session").select(
 		`
-		*,
+      *,
       student:user!student_id!inner(
        *
       ),

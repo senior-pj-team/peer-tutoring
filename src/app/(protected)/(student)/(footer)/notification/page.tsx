@@ -1,7 +1,6 @@
 import NotificationList from "@/components/app/features/notification/notification-list";
 import GeneralError from "@/components/app/shared/error";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getNotificationByUser } from "@/data/queries/notification/get-notification-by-user";
 import { getNotificationCount } from "@/data/queries/notification/get-notification-count";
 import { getUserById } from "@/data/queries/user/get-user-by-id";
 import { fetchNotifications } from "@/utils/app/fetch-notifications";
