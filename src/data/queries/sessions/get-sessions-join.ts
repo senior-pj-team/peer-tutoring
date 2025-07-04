@@ -21,6 +21,7 @@ export async function getSessionsJoin(
 		end_time,
 		held_until,
 		paid_out_at,
+		payment_evidence,
 		tutor:user!tutor_id!inner(
 			id,
 			profile_url,

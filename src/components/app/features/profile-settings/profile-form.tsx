@@ -67,8 +67,8 @@ export function ProfileForm({
 	const [previewUrl, setPreviewUrl] = useState<string | null>(profile_url);
 	const [isPending, startTransition] = useTransition();
 
-	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
+	const handleImageChange = (e?: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e ? e.target.files?.[0] : null;
 		if (file) {
 			const objectUrl = URL.createObjectURL(file);
 			setPreviewUrl(objectUrl);
@@ -114,28 +114,36 @@ export function ProfileForm({
 								</span>
 							)}
 						</div>
-
-						<FormField
-							control={form.control}
-							name="profile_url"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											id="picture"
-											type="file"
-											className="text-[0.6rem] md:text-sm w-full"
-											onChange={(e) => {
-												handleImageChange(e);
-												field.onChange(e.target.files?.[0] || null);
-											}}
-											disabled={false}
-										/>
-									</FormControl>
-									<FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
-								</FormItem>
-							)}
-						/>
+						<div className="flex items-center gap-1">
+							<FormField
+								control={form.control}
+								name="profile_url"
+								render={({ field }) => (
+									<FormItem>
+										<FormControl>
+											<Input
+												id="picture"
+												type="file"
+												className="text-[0.6rem] md:text-sm w-full"
+												onChange={(e) => {
+													handleImageChange(e);
+													field.onChange(e.target.files?.[0] || null);
+												}}
+												disabled={false}
+											/>
+										</FormControl>
+										<FormMessage className="md:text-[0.75rem] text-[0.55rem]" />
+									</FormItem>
+								)}
+							/>
+							<Button
+								type="button"
+								variant="ghost"
+								className="cursor-pointer"
+								onClick={() => handleImageChange()}>
+								<TrashIcon size={20} color="red" />
+							</Button>
+						</div>
 					</div>
 					<FormField
 						control={form.control}

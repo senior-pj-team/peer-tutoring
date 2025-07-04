@@ -5,6 +5,7 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { format } from "date-fns";
 import Link from "next/link";
 import { TransferActionDialog } from "../financial/transfer-action-dialog";
+import { TransferReceiptDialog } from "../financial/transfer-receipt-dialog";
 
 export function TransferCard({
 	data,
@@ -20,15 +21,16 @@ export function TransferCard({
 	return (
 		<Card key={data.id}>
 			<div className="flex justify-between items-center pr-5">
-				<CardContent className="flex justify-between items-center w-full">
-					<div className="flex flex-col w-full pr-3 gap-2">
+				<CardContent className="flex justify-between items-center w-[90%]">
+					<div className="flex flex-col w-full pr-3 gap-2 flex-5">
 						<div className="w-full line-clamp-1 truncate mb-3 ">
 							<Link key={data.id} href={`/admin-dashboard/session/${data.id}`}>
-								<p className="font-medium hover:underline cursor_pointer ">
+								<p className="font-medium hover:underline cursor_pointer mr-1">
 									{data.session_name}
 								</p>
 							</Link>
 						</div>
+
 						<div className="flex gap-2 items-center">
 							<span className="text-xs text-gray-400 font-bold">
 								{status === "archived" ? <>Paid out at: </> : <>Held until: </>}
@@ -92,7 +94,7 @@ export function TransferCard({
 						</div>
 					</div>
 				</CardContent>
-				{status !== "archived" && (
+				{status !== "archived" ? (
 					<TransferActionDialog
 						session_id={data.id}
 						session_name={data.session_name}
@@ -102,6 +104,10 @@ export function TransferCard({
 						start={start}
 						end={end}
 					/>
+				) : (
+					<>
+						<TransferReceiptDialog receipt={data.payment_evidence} />
+					</>
 				)}
 			</div>
 		</Card>

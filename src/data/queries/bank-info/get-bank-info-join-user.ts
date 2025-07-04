@@ -24,10 +24,8 @@ export async function getBankInfoJoinUser(
 
 	if (offset != undefined && limit != undefined)
 		query = query.range(offset, offset + limit - 1);
-	console.log(offset, limit), "@@ dal";
 
 	const { data, error } = await query;
-	console.log("data: ", data);
 
 	if (error) {
 		console.log("Error in get bank info: ", error.message);

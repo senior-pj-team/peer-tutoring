@@ -41,7 +41,7 @@ export async function updateUserProfile(
 
 	if (userData.profile_url) {
 		uploadedUrl = await uploadImage(userData.profile_url, supabase, {
-			path: "",
+			path: "profile_images/",
 		});
 		if (!uploadedUrl) {
 			return {
@@ -52,6 +52,8 @@ export async function updateUserProfile(
 
 		if (profile_url) await deleteImage(profile_url, supabase);
 	}
+	console.log(profile_url);
+	console.log(uploadedUrl);
 
 	const updateResult = await updateUser(supabase, {
 		userData,

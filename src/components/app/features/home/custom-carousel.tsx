@@ -36,12 +36,10 @@ export default function CustomCarousel({
 		if (!api) {
 			return;
 		}
-		// setCount(api.scrollSnapList().length);
 		setCanScrollNext(api.canScrollNext());
 		setCanScrollPrev(api.canScrollPrev());
 
 		api.on("select", () => {
-			// setCurrent(api.selectedScrollSnap() + 1);
 			setCanScrollNext(api.canScrollNext());
 			setCanScrollPrev(api.canScrollPrev());
 		});

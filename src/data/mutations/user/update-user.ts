@@ -55,8 +55,6 @@ export async function updateUser(
 		.eq("id", user_id)
 		.select("*");
 
-	console.log(data, error);
-
 	if (error) {
 		console.error("Error updating user:", error.message);
 		return null;

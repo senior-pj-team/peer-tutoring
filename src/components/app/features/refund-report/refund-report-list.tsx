@@ -6,12 +6,15 @@ import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund
 import { Ban } from "lucide-react";
 import { useSupabase } from "@/hooks/use-supabase";
 import RefundReportCard from "./refund-report-card";
+import GeneralLoading from "../../shared/general-loading";
 
 export default function RefundReportList({
+	session_id,
 	qKey,
 	status,
 	type,
 }: {
+	session_id?: number;
 	qKey: string;
 	status: TRefundStatus[];
 	type: TRefundType[];
@@ -25,11 +28,12 @@ export default function RefundReportList({
 		isFetchingNextPage,
 		isError,
 	} = useInfiniteQuery({
-		queryKey: [qKey],
+		queryKey: [qKey, type, status, session_id],
 		queryFn: async ({ pageParam = 0 }) =>
 			await getRefundReportJoin(supabase, {
 				status,
 				type,
+				session_id,
 				offset: pageParam,
 				limit: 5,
 			}),
@@ -42,7 +46,12 @@ export default function RefundReportList({
 
 	const results = data?.pages.flat() || [];
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading)
+		return (
+			<div className="w-full">
+				<GeneralLoading />
+			</div>
+		);
 	if (isError)
 		return <p>Something went wrong while loading refund requests.</p>;
 

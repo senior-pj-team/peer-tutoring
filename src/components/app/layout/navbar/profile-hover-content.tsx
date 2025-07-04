@@ -30,6 +30,7 @@ export default function ProfileHoverContent({
 		!!user,
 		supabase,
 	);
+
 	return (
 		<HoverCardContent className="w-70 absolute -right-5">
 			<div className="py-4 px-3 flex gap-x-5">

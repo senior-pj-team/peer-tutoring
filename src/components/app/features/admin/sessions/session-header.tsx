@@ -108,7 +108,14 @@ export function SessionHeader({
 							rating={tutor?.tutor_rating?.toFixed(1) as unknown as number}
 						/>
 					</div>
-					{enrollment < 1 && <SessionCancelBtn session_id={session_id} />}
+					{enrollment < 1 && status === "open" && (
+						<SessionCancelBtn
+							session_id={session_id}
+							session_name={session_name ?? "unknown"}
+							tutor_email={tutor?.email ?? "unknown"}
+							tutor_id={tutor?.tutor_id ?? ""}
+						/>
+					)}
 				</section>
 			</section>
 		</div>
