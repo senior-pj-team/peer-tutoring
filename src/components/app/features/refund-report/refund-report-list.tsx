@@ -37,10 +37,10 @@ export default function RefundReportList({
 				offset: pageParam,
 				limit: 5,
 			}),
-		initialPageParam: 1,
+		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages) =>
 			Array.isArray(lastPage) && lastPage.length === 5
-				? allPages.length + 5
+				? allPages.length + 1
 				: undefined,
 	});
 

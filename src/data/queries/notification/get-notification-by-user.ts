@@ -1,3 +1,5 @@
+import { offsetSign } from "recharts/types/util/ChartUtils";
+
 type Params = {
 	offset?: number;
 	limit?: number;
@@ -22,7 +24,8 @@ export async function getNotificationByUser(
 		query.in("type", type);
 	}
 
-	if (offset && limit) query.range(offset, offset + limit - 1);
+	if (typeof offset === "number" && typeof limit === "number")
+		query.range(offset, offset + limit - 1);
 
 	const { data, error } = await query.order("created_at", { ascending: false });
 

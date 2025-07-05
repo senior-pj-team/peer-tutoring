@@ -24,7 +24,6 @@ export function useNotifications(
 			fetchNotifications({ pageParam, limit: LIMIT, user_id, type, supabase }),
 		initialPageParam: 0,
 		getNextPageParam: (_, allPages) => {
-			console.log(allPages.length * LIMIT);
 			return count - allPages.length * LIMIT > 0
 				? allPages.length * LIMIT
 				: undefined;
@@ -149,6 +148,8 @@ export function useNotificationsNavBar(
 		queryFn: () =>
 			fetchNotifications({
 				user_id,
+				pageParam: 0,
+				limit: 8,
 				status: ["new"],
 				type,
 				supabase,

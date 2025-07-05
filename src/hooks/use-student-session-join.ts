@@ -28,7 +28,7 @@ export function useStudentSessionJoin(
 	});
 }
 
-export function useStudentSessionJoinWithCount({
+export function useStudentSessionViewWithCount({
 	key,
 	supabase,
 	page,
@@ -64,7 +64,6 @@ export function useStudentSessionJoinWithCount({
 	};
 	if (dateFilter && dateFilter.from && dateFilter.to) {
 		dateRange = getDateRange(dateFilter);
-		console.log(dateRange);
 	}
 
 	return useQuery({

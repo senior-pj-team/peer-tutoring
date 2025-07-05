@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "id",
+		accessorKey: "id",
 		header: "ID",
 		cell: ({ row }) => {
 			const id = row.original.student_session_id;

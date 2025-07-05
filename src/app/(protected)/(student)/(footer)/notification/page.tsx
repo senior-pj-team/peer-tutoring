@@ -60,16 +60,23 @@ export default async function page() {
 		queryClient.prefetchInfiniteQuery({
 			queryKey: ["student_notifications", user_id, ["student"]],
 			queryFn: ({ pageParam }) =>
-				fetchNotifications({ supabase, pageParam, user_id, type: ["student"] }),
+				fetchNotifications({
+					supabase,
+					pageParam,
+					user_id,
+					limit: 15,
+					type: ["student"],
+				}),
 			initialPageParam: 0,
 		}),
 
-		await queryClient.prefetchInfiniteQuery({
+		queryClient.prefetchInfiniteQuery({
 			queryKey: ["tutor_notifications", user_id, ["tutor", "tutor_reminder"]],
 			queryFn: ({ pageParam }) =>
 				fetchNotifications({
 					supabase,
 					pageParam,
+					limit: 15,
 					user_id,
 					type: ["tutor", "tutor_reminder"],
 				}),
