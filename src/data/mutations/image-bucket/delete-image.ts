@@ -1,18 +1,25 @@
 export const deleteImage = async (
-	imageUrl: string,
 	supabase: TSupabaseClient,
+	{
+		imageUrl,
+		path,
+	}: {
+		imageUrl: string;
+		path: string;
+	},
 ): Promise<boolean> => {
 	if (!imageUrl) return false;
 
 	try {
-		const urlParts = imageUrl.split("/");
-		const fileName = urlParts[urlParts.length - 1];
+		const pathStart = imageUrl.indexOf(`${path}/`) + path.length + 1;
+		const fullPath = imageUrl.slice(pathStart);
+		const relPath = fullPath.split("session-images/")[1].trim();
 
-		console.log("to delete: ", fileName);
+		console.log("to delete: ", relPath);
 
 		const { error } = await supabase.storage
 			.from("session-images")
-			.remove([fileName]);
+			.remove([relPath]);
 
 		if (error) {
 			console.error("Delete error:", error.message);

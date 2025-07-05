@@ -1,7 +1,12 @@
 export const uploadImage = async (
-	image: File,
 	supabase: TSupabaseClient,
-	{ path = "" }: { path?: string },
+	{
+		image,
+		path,
+	}: {
+		image: File;
+		path: string;
+	},
 ): Promise<string | null> => {
 	const fileExt = image.name.split(".").pop();
 	const filePath = `${path}${Date.now()}.${fileExt}`;

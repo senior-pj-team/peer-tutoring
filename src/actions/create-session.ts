@@ -1,6 +1,6 @@
 "use server";
 
-import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
+import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { getDateWithTime } from "@/utils/app/get-date-with-time";
 import { createClient } from "@/utils/supabase/server";
@@ -54,8 +54,9 @@ export const createSession = async (
 	let uploadedUrl: string | null = null;
 
 	if (values.image) {
-		uploadedUrl = await uploadImage(values.image, supabase, {
-			path: "session_images/",
+		uploadedUrl = await uploadImage(supabase, {
+			image: values.image,
+			path: "session-images/",
 		});
 		if (!uploadedUrl) {
 			return {

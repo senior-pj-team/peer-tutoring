@@ -1,6 +1,6 @@
 "use server";
 
-import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
+import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 import { updateSession } from "@/data/mutations/sessions/update-sessions";
 import { updateStudentSession } from "@/data/mutations/student-session/update-student-session";
 import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
@@ -25,7 +25,8 @@ export async function transferTutor(
 
 	let uploadedUrl: string | null = null;
 	if (values.receipt) {
-		uploadedUrl = await uploadImage(values.receipt, supabase, {
+		uploadedUrl = await uploadImage(supabase, {
+			image: values.receipt,
 			path: "receipts/",
 		});
 		if (!uploadedUrl) {
