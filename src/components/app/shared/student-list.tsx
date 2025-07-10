@@ -10,13 +10,13 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { getStudentSessionJoin } from "@/data/queries/student-session/get-student-session-join";
 import { createClient } from "@/utils/supabase/server";
 import GeneralError from "./error";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import Link from "next/link";
 import { GoToChatButton } from "./go-to-chat-button";
 import { getUserSession } from "@/utils/get-user-session";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 
 const statusColors: Record<string, string> = {
 	enrolled: "text-green-400",
@@ -33,12 +33,15 @@ const StudentList = async ({
 	admin?: boolean;
 }) => {
 	const supabase = await createClient();
-	const students = await getStudentSessionJoin(supabase, {
+
+	const columns= "student_session_id, session_id, student_session_status, student_id, session_status, student_id, student_username, student_email, student_profile_url";
+	const studentSessions = await getStudentSessionView(supabase, {
+		columns,
 		session_id: Number(session_id),
 		status: ["enrolled", "completed", "paid", "refunded"],
 	});
 
-	if (!students) return <GeneralError />;
+	if (!studentSessions) return <GeneralError />;
 
 	const user = await getUserSession();
 
@@ -55,35 +58,32 @@ const StudentList = async ({
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{students.map((student, index) => {
-					const studentInfo = student.student;
-					const status = student.status;
-
+				{studentSessions.map((studentSession, index) => {
 					return (
 						<TableRow key={index} className="hover:bg-muted/50 transition">
 							<TableCell>
 								<div className="flex items-center gap-3">
 									<Avatar className="h-9 w-9">
 										<AvatarImage
-											src={studentInfo.profile_url ?? ""}
-											alt={studentInfo.username ?? "Student"}
+											src={studentSession.student_profile_url ?? ""}
+											alt={studentSession.student_username ?? "Student"}
 										/>
 										<AvatarFallback>
-											{getAvatarFallback(studentInfo.username ?? "S")}
+											{getAvatarFallback(studentSession.student_username ?? "S")}
 										</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col justify-left gap-2 space-y-0">
 										<Link
-											href={`/student-view/${studentInfo.id}`}
+											href={`/student-view/${studentSession.student_id}`}
 											className="flex items-center gap-2 group">
 											<span className="font-medium group-hover:underline">
-												{studentInfo.username ?? "Unnamed"}
+												{studentSession.student_username ?? "Unnamed"}
 											</span>
 										</Link>
 									</div>
 									{!admin && (
 										<GoToChatButton
-											user1_id={studentInfo.id ?? null}
+											user1_id={studentSession.student_id ?? null}
 											user2_id={user ? user.user_id : null}
 										/>
 									)}
@@ -92,14 +92,14 @@ const StudentList = async ({
 							<TableCell className="text-sm text-muted-foreground">
 								{/* Placeholder if you don’t have email */}
 								<span
-									title={studentInfo.email}
+									title={studentSession.student_email?? "NA"} 
 									className="text-xs text-gray-500 truncate max-w-[200px] mt-0">
-									{studentInfo.email ?? "Not Provided"}
+									{studentSession.student_email ?? "Not Provided"}
 								</span>
 							</TableCell>
 							<TableCell>
-								<span className={cn("font-bold", statusColors[status])}>
-									{status.replace("_", " ").toUpperCase()}
+								<span className={cn("font-bold", statusColors[studentSession.student_session_status?? "NA"])}>
+									{studentSession.student_session_status}
 								</span>
 							</TableCell>
 						</TableRow>

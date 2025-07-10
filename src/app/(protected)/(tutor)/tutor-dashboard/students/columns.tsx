@@ -7,40 +7,35 @@ import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { formatDate, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 
-export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
+export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "student",
 		header: "Student",
 		cell: ({ row }) => {
-			const student = row.original.student;
-			const studentId = student.id;
-			const studentName = student.username;
-			const studentImage = student.profile_url;
-			const studentEmail = student.email;
 
 			return (
 				<div className="flex items-center gap-3 max-w-[300px]">
 					<Avatar className="flex-shrink-0 w-10 h-10">
-						{studentImage && (
-							<AvatarImage src={studentImage} alt={studentName ?? "Unknown"} />
+						{row.original.student_profile_url && (
+							<AvatarImage src={row.original.student_profile_url} alt={row.original.student_username ?? "Unknown"} />
 						)}
 
 						<AvatarFallback>
-							{getAvatarFallback(studentName ?? "U")}
+							{getAvatarFallback(row.original.student_username ?? "U")}
 						</AvatarFallback>
 					</Avatar>
 
 					<div className="flex flex-col overflow-hidden">
-						<Link href={`/student-view/${studentId}`}>
+						<Link href={`/student-view/${row.original.student_id}`}>
 							<span className="font-medium text-sm text-gray-800 hover:underline truncate max-w-[200px]">
-								{studentName}
+								{row.original.student_username}
 							</span>
 						</Link>
 
 						<span
-							title={studentEmail}
+							title={row.original.student_email?? "NA"}
 							className="text-xs text-gray-500 truncate max-w-[200px]">
-							{studentEmail}
+							{row.original.student_email}
 						</span>
 					</div>
 				</div>
@@ -51,12 +46,11 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 		id: "session",
 		header: "Session",
 		cell: ({ row }) => {
-			const session = row.original.sessions;
 			return (
 				<div className="max-w-[250px]">
-					<Link href={`/tutor-dashboard/session/${session.id}/content`}>
+					<Link href={`/tutor-dashboard/session/${row.original.session_id}/content`}>
 						<div className="truncate hover:underline">
-							{session?.session_name ?? "Unknown"}
+							{row.original.session_name ?? "Unknown"}
 						</div>
 					</Link>
 				</div>
@@ -67,9 +61,8 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 		id: "enrolled_at",
 		header: "Enrolled Date",
 		cell: ({ row }) => {
-			const createdAt = row.original.created_at;
-			if (!createdAt) return "-";
-			const displayDate = formatDate(parseISO(createdAt), "yyy MMMM dd");
+			if (!row.original.enrolled_at) return "-";
+			const displayDate = formatDate(parseISO(row.original.enrolled_at), "yyy MMMM dd");
 			return <div>{displayDate}</div>;
 		},
 	},
@@ -77,7 +70,7 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 		id: "released_amount",
 		header: "Amount",
 		cell: ({ row }) => {
-			const amount = row.original.amount_from_student ?? 0;
+			const amount = row.original.amount_to_tutor ?? 0;
 			const formatted = new Intl.NumberFormat("th-TH", {
 				style: "currency",
 				currency: "THB",
@@ -89,7 +82,7 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 		id: "enrollment_status",
 		header: "Enrollment Status",
 		cell: ({ row }) => {
-			const status = row.original.status;
+			const status= row.original.student_session_status;
 			const color =
 				status === "enrolled"
 					? "text-purple-500 bg-purple-100"
@@ -102,21 +95,11 @@ export const columns: ColumnDef<TStudentSessionJoinResult>[] = [
 								: status === "failed_payment" || status === "expired_payment"
 									? "text-red-500 bg-red-100"
 									: "text-gray-600 bg-gray-100";
-
 			return (
 				<div>
 					<Badge className={`${color}`}>{status}</Badge>
 				</div>
 			);
 		},
-	},
-	{
-		id: "search",
-		accessorFn: (row) =>
-			`${row.sessions?.session_name} ${row.student.username}`,
-		header: () => null,
-		cell: () => null,
-		enableColumnFilter: true,
-		filterFn: "fuzzy",
 	},
 ];

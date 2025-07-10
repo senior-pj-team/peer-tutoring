@@ -1,28 +1,43 @@
 export const uploadImage = async (
-	supabase: TSupabaseClient,
-	{
-		image,
-		path,
-	}: {
-		image: File;
-		path: string;
-	},
+  image: File | string,
+  supabase: TSupabaseClient,
+  { path = "" }: { path?: string } = {}
 ): Promise<string | null> => {
-	const fileExt = image.name.split(".").pop();
-	const filePath = `${path}${Date.now()}.${fileExt}`;
+  const timestamp = Date.now();
+  let filePath = "";
+  let uploadData: File | Buffer;
 
-	const { error } = await supabase.storage
-		.from("session-images")
-		.upload(filePath, image);
+  // Handle base64 string
+  if (typeof image === "string" && image.startsWith("data:image/")) {
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+	uploadData = Buffer.from(base64Data, "base64");
+    filePath = `${path}${timestamp}.jpg`;
+  } 
+  // Handle File object
+  else if (image instanceof File) {
+    const extension = image.name.split(".").pop() ?? "jpg";
+    filePath = `${path}${timestamp}.${extension}`;
+    uploadData = image;
+  } 
+  else {
+    console.error("Invalid image type: must be File or base64 string");
+    return null;
+  }
 
-	if (error) {
-		console.error("Upload error:", error.message);
-		return null;
-	}
+  const { error: uploadError } = await supabase.storage
+    .from("session-images")
+    .upload(filePath, uploadData, {
+      contentType: "image/jpeg",
+    });
 
-	const { data } = supabase.storage
-		.from("session-images")
-		.getPublicUrl(filePath);
+  if (uploadError) {
+    console.log("Upload error:", uploadError.message);
+    return null;
+  }
+  
+  const { data } = supabase.storage
+    .from("session-images")
+    .getPublicUrl(filePath);
 
-	return data.publicUrl ?? null;
+  return data?.publicUrl ?? null;
 };

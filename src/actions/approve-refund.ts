@@ -25,8 +25,7 @@ export async function approveRefund(
 
 	let uploadedUrl: string | null = null;
 	if (values.receipt) {
-		uploadedUrl = await uploadImage(supabase, {
-			image: values.receipt,
+		uploadedUrl = await uploadImage(values.receipt, supabase, {
 			path: "receipts/",
 		});
 		if (!uploadedUrl) {

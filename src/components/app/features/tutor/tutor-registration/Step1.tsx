@@ -46,33 +46,7 @@ export default function Step1() {
 			form.setValue("studentIdPhoto", capturedImage, { shouldValidate: true });
 		}
 	};
-
-	const fields = useMemo(
-		() => [
-			{
-				name: "school",
-				label: "School",
-				placeholder: "Enter your faculty",
-			},
-			{
-				name: "major",
-				label: "Major",
-				placeholder: "Enter your major",
-			},
-			{
-				name: "year",
-				label: "Year",
-				placeholder: "Enter your year",
-			},
-			{
-				name: "phone_number",
-				label: "Phone number",
-				placeholder: "Enter your phone number",
-			},
-		],
-		[],
-	);
-
+	
 	return (
 		<div className="flex flex-col gap-6">
 			<div className="grid gap-4">

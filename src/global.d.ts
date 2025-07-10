@@ -70,7 +70,7 @@ declare global {
 			id: number;
 			student_id: string;
 			ss_status: TStudentSessionStatus;
-			refunded_amount: number | null;
+			amount_from_stripe: number | null;
 			student: {
 				id: string | null;
 				profile_url: string | null;

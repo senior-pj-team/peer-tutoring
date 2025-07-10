@@ -2,44 +2,28 @@
 
 import React, { useMemo, useState } from "react";
 import GeneralSessionCard from "../../shared/sessions/general-session-card";
-import { useInfiniteSessions } from "@/hooks/use-infinite-sessions";
 import { PaginationControls } from "../../shared/paginition-controls";
+import { usePaginatedSessionsMatViewQuery } from "@/hooks/use-sessions-mat-view";
 
 const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
 	const [currentPage, setCurrentPage] = useState(0);
-	const [totalPagesFetched, setTotalPagesFetched] = useState(1);
+	const {data: sessions, isError, status} = usePaginatedSessionsMatViewQuery({
+		key: "tutor-sessions",
+		page: currentPage + 1, // paginition button shows currentPage +1 so keep it as 0 and +1 to use it in the hook
+		limit: 4,
+		tutor_id,
+	})
 
-	const {
-		status,
-		data: sessions,
-		fetchNextPage,
-		hasNextPage,
-		isFetchingNextPage,
-		isError,
-	} = useInfiniteSessions({ tutor_id });
+	const currentSessions = sessions?.rows ?? [];
+	const totalSessions = sessions?.total ?? 0;
 
-	const handlePageChange = async (page: number) => {
-		if (page < 0) return;
+	const disableBack = useMemo(() => currentPage <= 0, [currentPage]);
 
-		if (page >= totalPagesFetched) {
-			try {
-				await fetchNextPage();
-				setTotalPagesFetched((prev) => prev + 1);
-			} catch (e) {
-				// Let isError flag handle UI response
-				return;
-			}
-		}
-		setCurrentPage(page);
-	};
-
-	const currentSessions = sessions?.pages?.[currentPage]?.rows ?? [];
-	const disableBack = useMemo(() => currentPage === 0, [currentPage]);
+	const totalPages= Math.ceil( totalSessions / 4)
 	const disableForward = useMemo(
-		() => !hasNextPage && currentPage >= totalPagesFetched - 1,
-		[currentPage, hasNextPage, totalPagesFetched],
+		() => currentPage >= totalPages - 1,
+		[currentPage, totalPages],
 	);
-
 	return (
 		<section>
 			{currentSessions.length > 0 ? (
@@ -65,12 +49,12 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
 					No sessions available.
 				</div>
 			)}
-
+			
 			<PaginationControls
 				currentPage={currentPage}
-				onPageChange={handlePageChange}
+				onPageChange={setCurrentPage}
 				disableBack={disableBack}
-				disableForward={disableForward || isFetchingNextPage}
+				disableForward={disableForward || status === "pending"}
 			/>
 		</section>
 	);

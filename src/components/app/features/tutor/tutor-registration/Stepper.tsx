@@ -56,7 +56,8 @@ export default function HorizontalStepper({
 		startTransition(async () => {
 			const response = await submitTutorRegistration(data);
 			if (response.success) {
-				await Promise.all([sendResponseEmail(), sendNotification()]);
+				// await Promise.all([sendResponseEmail(), sendNotification()]);
+				await sendNotification();
 				setActiveStep((prev) => prev + 1);
 			} else {
 				toast.error("Something went wrong", {
@@ -99,18 +100,18 @@ export default function HorizontalStepper({
 		}
 	};
 
-	const sendResponseEmail = React.useCallback(async () => {
-		const title = "Your tutor registration request is being processed.";
-		const detail =
-			"We will validate your request and notify you. This will take 2-3 working days";
-		const preview = "Tutor registration sent";
-		await sendEmail({
-			preview,
-			title,
-			detail,
-			to: "nwai39771@gmail.com",
-		});
-	}, []);
+	// const sendResponseEmail = React.useCallback(async () => {
+	// 	const title = "Your tutor registration request is being processed.";
+	// 	const detail =
+	// 		"We will validate your request and notify you. This will take 2-3 working days";
+	// 	const preview = "Tutor registration sent";
+	// 	await sendEmail({
+	// 		preview,
+	// 		title,
+	// 		detail,
+	// 		to: "nwai39771@gmail.com",
+	// 	});
+	// }, []);
 
 	const sendNotification = async () => {
 		const user = await getUserSession();

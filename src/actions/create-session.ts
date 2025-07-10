@@ -54,8 +54,7 @@ export const createSession = async (
 	let uploadedUrl: string | null = null;
 
 	if (values.image) {
-		uploadedUrl = await uploadImage(supabase, {
-			image: values.image,
+		uploadedUrl = await uploadImage(values.image, supabase, {
 			path: "session-images/",
 		});
 		if (!uploadedUrl) {

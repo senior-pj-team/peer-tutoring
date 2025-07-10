@@ -10,6 +10,7 @@ export const fetchStudentSession = async ({
 	start,
 	end,
 	student_id,
+	tutor_id,
 	supabase,
 	limit,
 }: {
@@ -22,6 +23,7 @@ export const fetchStudentSession = async ({
 	start?: string;
 	end?: string;
 	student_id?: string;
+	tutor_id?: string;
 	supabase: TSupabaseClient;
 	limit?: number;
 }) => {
@@ -31,6 +33,7 @@ export const fetchStudentSession = async ({
 	const data = await getStudentSessionView(supabase, {
 		columns,
 		student_id,
+		tutor_id,
 		offset: pageParam,
 		limit: limit ?? 0,
 		search,

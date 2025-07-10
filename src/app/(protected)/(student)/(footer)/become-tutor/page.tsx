@@ -10,7 +10,7 @@ export default async function BecomeTutorPage() {
 	const user = await getUserSession();
 	const supabase = await createClient();
 	if (!user?.user_id) return <GeneralError />;
-
+	
 	const userData = await getUserById(supabase, user.user_id);
 	const bankData = await getBankInfoByUser(supabase, { user_id: user.user_id });
 

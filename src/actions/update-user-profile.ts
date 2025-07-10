@@ -45,8 +45,7 @@ export async function updateUserProfile(
 	console.log("previewUrl: ", previewUrl);
 	console.log("upload url:, ", userData.profile_url);
 	if (userData.profile_url) {
-		uploadedUrl = await uploadImage(supabase, {
-			image: userData.profile_url,
+		uploadedUrl = await uploadImage(userData.profile_url, supabase, {
 			path: "profile-images/",
 		});
 		if (!uploadedUrl) {
@@ -62,12 +61,6 @@ export async function updateUserProfile(
 				imageUrl: profile_url,
 			});
 	}
-
-	if (!previewUrl && profile_url)
-		await deleteImage(supabase, {
-			path: "profile-images/",
-			imageUrl: profile_url,
-		});
 
 	const updateResult = await updateUser(supabase, {
 		userData,

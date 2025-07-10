@@ -34,7 +34,7 @@ export default function RefundReportList({
 				status,
 				type,
 				session_id,
-				offset: pageParam,
+				offset: pageParam * 5,
 				limit: 5,
 			}),
 		initialPageParam: 0,
