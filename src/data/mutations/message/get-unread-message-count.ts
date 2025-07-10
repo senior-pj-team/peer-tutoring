@@ -10,7 +10,7 @@ export async function getUnreadMessageCount(
 	);
 
 	if (error) {
-		console.error("Error fetching unread count via RPC:", error);
+		console.log("Error fetching unread count via RPC:", error);
 		return null;
 	}
 

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { DataTableServer } from "../../data-table/data-table-server";
 import { PaginationState } from "@tanstack/react-table";
-import { useStudentSessionJoinWithCount } from "@/hooks/use-student-session-join";
+import { useStudentSessionViewWithCount } from "@/hooks/use-student-session-join";
 import { useSupabase } from "@/hooks/use-supabase";
 import { columns } from "@/app/(protected)/(admin)/admin-dashboard/financial/transactions/columns";
-import { ChevronDownIcon, Search, XCircle } from "lucide-react";
+import { Search, XCircle } from "lucide-react";
 import { DebounceSearchBar } from "../../../shared/debounce-search-bar";
 import { MultiSelect } from "@/components/ui/mutil-select";
 import {
@@ -71,7 +71,7 @@ export function TransactionList() {
 		isError,
 		isPlaceholderData,
 		isFetching,
-	} = useStudentSessionJoinWithCount({
+	} = useStudentSessionViewWithCount({
 		key: "admin_trns",
 		supabase,
 		page: pagination.pageIndex,

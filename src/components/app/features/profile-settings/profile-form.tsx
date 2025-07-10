@@ -26,7 +26,7 @@ import {
 import { PhoneInput } from "@/components/ui/phone-input";
 import { TrashIcon } from "lucide-react";
 import { toast } from "sonner";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { updateUserProfile } from "@/actions/update-user-profile";
 import { Label } from "@/components/ui/label";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
@@ -66,9 +66,10 @@ export function ProfileForm({
 	});
 	const [previewUrl, setPreviewUrl] = useState<string | null>(profile_url);
 	const [isPending, startTransition] = useTransition();
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const handleImageChange = (e?: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e ? e.target.files?.[0] : null;
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
 		if (file) {
 			const objectUrl = URL.createObjectURL(file);
 			setPreviewUrl(objectUrl);
@@ -79,7 +80,11 @@ export function ProfileForm({
 	const handleSubmit = async (values: TProfileSchema) => {
 		try {
 			startTransition(async () => {
-				const response = await updateUserProfile(values, profile_url);
+				const response = await updateUserProfile(
+					values,
+					profile_url,
+					previewUrl,
+				);
 				response.success
 					? toast.success("Profile updated successfully")
 					: toast.error(response.error.message);
@@ -122,6 +127,7 @@ export function ProfileForm({
 									<FormItem>
 										<FormControl>
 											<Input
+												ref={fileInputRef}
 												id="picture"
 												type="file"
 												className="text-[0.6rem] md:text-sm w-full"
@@ -140,7 +146,14 @@ export function ProfileForm({
 								type="button"
 								variant="ghost"
 								className="cursor-pointer"
-								onClick={() => handleImageChange()}>
+								onClick={() => {
+									form.setValue("profile_url", null);
+
+									if (fileInputRef.current) {
+										fileInputRef.current.value = "";
+									}
+									setPreviewUrl(null);
+								}}>
 								<TrashIcon size={20} color="red" />
 							</Button>
 						</div>

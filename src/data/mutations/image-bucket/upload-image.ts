@@ -31,7 +31,7 @@ export const uploadImage = async (
     });
 
   if (uploadError) {
-    console.error("Upload error:", uploadError.message);
+    console.log("Upload error:", uploadError.message);
     return null;
   }
   

@@ -1,6 +1,6 @@
 "use server";
 
-import { uploadImage } from "@/data/mutations/upload-images";
+import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 import { updateSession } from "@/data/mutations/sessions/update-sessions";
 import { updateStudentSession } from "@/data/mutations/student-session/update-student-session";
 import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";

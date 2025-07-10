@@ -1,5 +1,5 @@
 "use server";
-import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
+import { deleteImage } from "@/data/mutations/image-bucket/delete-image";
 import { updateUser } from "@/data/mutations/user/update-user";
 import { createClient } from "@/utils/supabase/server";
 
@@ -33,7 +33,12 @@ export async function verifyTutorRequests(
 		};
 	}
 	const toDelete = student[0].studentId_photo;
-	const isDeleted = toDelete ? await deleteImage(toDelete, supabase) : true;
+	const isDeleted = toDelete
+		? await deleteImage(supabase, {
+				path: "student-id-photos/",
+				imageUrl: toDelete,
+			})
+		: true;
 	console.log("photo deleted? ", isDeleted);
 
 	return {

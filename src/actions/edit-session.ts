@@ -1,7 +1,7 @@
 "use server";
 
-import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
-import { uploadImage } from "@/data/mutations/upload-images";
+import { deleteImage } from "@/data/mutations/image-bucket/delete-image";
+import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 import { updateSession } from "@/data/mutations/sessions/update-sessions";
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { getDateWithTime } from "@/utils/app/get-date-with-time";
@@ -76,12 +76,18 @@ export const editSession = async (
 			};
 		}
 		isDelete = oldImageString
-			? await deleteImage(oldImageString, supabase)
+			? await deleteImage(supabase, {
+					path: "session-images/",
+					imageUrl: oldImageString,
+				})
 			: true;
 	} else if (!previewImageString) {
 		//user remove the image
 		isDelete = oldImageString
-			? await deleteImage(oldImageString, supabase)
+			? await deleteImage(supabase, {
+					path: "session-images/",
+					imageUrl: oldImageString,
+				})
 			: true;
 	}
 

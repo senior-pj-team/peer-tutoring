@@ -1,7 +1,7 @@
 "use server";
 
 import { updateRefundReport } from "@/data/mutations/refund-report/update-refund-report";
-import { uploadImage } from "@/data/mutations/upload-images";
+import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 import { updateStudentSession } from "@/data/mutations/student-session/update-student-session";
 import {
 	TApproveRefundTransferSchema,

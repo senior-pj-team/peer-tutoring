@@ -58,22 +58,25 @@ export async function FinancialTabServer({
 					<div className="text-sm font-bold text-red-500">{`You cannot transfer yet for ${status} session`}</div>
 				</Badge>
 			) : null}
-			{status === "completed" && amountSummaries ? (
-				<TransferActionDialog
-					session_id={session_id}
-					session_name={session_name}
-					tutor_id={tutor_id}
-					tutor_name={tutor_name}
-					tutor_email={tutor_email}
-					amount={amountSummaries[0].sum_amount_to_tutor}
-				/>
-			) : (
-				!amountSummaries && (
-					<div className="border border-gray-200 px-2 py-3 rounded-md text-red-500 font-bold text-sm w-[25%] text-center cursor-not-allowed">
-						Something went wrong
-					</div>
-				)
-			)}
+			<div className="mb-4">
+				{status === "completed" && amountSummaries ? (
+					<TransferActionDialog
+						session_id={session_id}
+						session_name={session_name}
+						tutor_id={tutor_id}
+						tutor_name={tutor_name}
+						tutor_email={tutor_email}
+						amount={amountSummaries[0].sum_amount_to_tutor}
+					/>
+				) : (
+					!amountSummaries && (
+						<div className="border border-gray-200 px-2 py-3 rounded-md text-red-500 font-bold text-sm w-[25%] text-center cursor-not-allowed">
+							Something went wrong
+						</div>
+					)
+				)}
+			</div>
+
 			<div className="text-2xl my-4 mt-2 font-bold">Financial Stats</div>
 			<div className="flex w-full items-center gap-x-5 mb-8">
 				<div className="w-[250px] h-[110px] border border-gray-200 rounded-md p-4 flex flex-col">

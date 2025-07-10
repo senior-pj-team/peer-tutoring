@@ -6,7 +6,7 @@ import { tutorFormSchema, tutorFormSchemaT } from "@/schema/tutor-form-schema";
 import { updateUser } from "@/data/mutations/user/update-user";
 import { upsertBankInfo } from "@/data/mutations/bank-info/upsert-bank-info";
 import { updateBankInfo } from "@/data/mutations/bank-info/update-bank-info";
-import { uploadImage } from "@/data/mutations/upload-images";
+import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 
 export async function submitTutorRegistration(
 	formData: tutorFormSchemaT,

@@ -28,7 +28,7 @@ export function useStudentSessionJoin(
 	});
 }
 
-export function useStudentSessionJoinWithCount({
+export function useStudentSessionViewWithCount({
 	key,
 	supabase,
 	page,
