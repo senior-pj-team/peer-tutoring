@@ -39,7 +39,6 @@ export default function TutorOnboardingCard({
 
 	const handleAction = (action: ActionType) => {
 		setCurrentAction(action);
-
 		startTransition(async () => {
 			const response = await verifyTutorRequests(action, request.user_id);
 

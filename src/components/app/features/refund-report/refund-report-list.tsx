@@ -34,13 +34,13 @@ export default function RefundReportList({
 				status,
 				type,
 				session_id,
-				offset: pageParam,
+				offset: pageParam * 5,
 				limit: 5,
 			}),
-		initialPageParam: 1,
+		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages) =>
 			Array.isArray(lastPage) && lastPage.length === 5
-				? allPages.length + 5
+				? allPages.length + 1
 				: undefined,
 	});
 

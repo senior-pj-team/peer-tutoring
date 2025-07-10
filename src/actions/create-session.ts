@@ -1,6 +1,6 @@
 "use server";
 
-import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
+import { uploadImage } from "@/data/mutations/upload-images";
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { getDateWithTime } from "@/utils/app/get-date-with-time";
 import { createClient } from "@/utils/supabase/server";

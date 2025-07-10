@@ -13,7 +13,7 @@ type TTutorData = {
 	major: string;
 	year: string;
 	phone_number: string;
-	studentId_photo: string;
+	studentId_photo: string | null;
 };
 
 export async function updateUser(
@@ -45,7 +45,6 @@ export async function updateUser(
 	}
 
 	if (!toUpdate) {
-		console.warn("No data provided to update.");
 		return null;
 	}
 

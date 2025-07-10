@@ -2,7 +2,7 @@
 import { updateBankInfo } from "@/data/mutations/bank-info/update-bank-info";
 import { upsertBankInfo } from "@/data/mutations/bank-info/upsert-bank-info";
 import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
-import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
+import { uploadImage } from "@/data/mutations/upload-images";
 import { updateUser } from "@/data/mutations/user/update-user";
 import {
 	bankInfoSchema,
@@ -52,8 +52,6 @@ export async function updateUserProfile(
 
 		if (profile_url) await deleteImage(profile_url, supabase);
 	}
-	console.log(profile_url);
-	console.log(uploadedUrl);
 
 	const updateResult = await updateUser(supabase, {
 		userData,

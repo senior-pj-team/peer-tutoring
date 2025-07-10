@@ -1,7 +1,7 @@
 "use server";
 
 import { deleteImage } from "@/data/mutations/sessions/delete-session-images";
-import { uploadImage } from "@/data/mutations/sessions/insert-session-images";
+import { uploadImage } from "@/data/mutations/upload-images";
 import { updateSession } from "@/data/mutations/sessions/update-sessions";
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { getDateWithTime } from "@/utils/app/get-date-with-time";

@@ -18,28 +18,17 @@ import { updateRefundReport } from "@/data/mutations/refund-report/update-refund
 import { useSupabase } from "@/hooks/use-supabase";
 import { toast } from "sonner";
 import { LoadingDots } from "@/components/app/shared/loading-dots";
-import { AlertTriangle, FileText } from "lucide-react";
-import { getBankInfoByUser } from "@/data/queries/bank-info/get-bank-info-by-user";
+import { AlertTriangle } from "lucide-react";
 
-import { useForm } from "react-hook-form";
 import {
-	Form,
-	FormField,
-	FormItem,
-	FormControl,
-	FormMessage,
-	FormLabel,
-} from "@/components/ui/form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	approveRefundTransferSchema,
 	TApproveRefundTransferSchema,
 } from "@/schema/appove-refund-transfer";
 import { approveRefund } from "@/actions/approve-refund";
 import { sendEmail } from "@/actions/send-email";
 import { insertNotification } from "@/data/mutations/notification/insert-notification";
 import Image from "next/image";
+import { ActionDialog } from "../../shared/action-dialog";
+import { useRouter } from "next/navigation";
 
 export default function RefundReportCard({
 	data,
@@ -47,6 +36,7 @@ export default function RefundReportCard({
 	data: TRefundReportJoinResult;
 }) {
 	const supabase = useSupabase();
+	const router = useRouter();
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
@@ -54,21 +44,6 @@ export default function RefundReportCard({
 	const [currentAction, setCurrentAction] = useState<
 		"approve" | "reject" | null
 	>(null);
-
-	//states for approve dialog box
-	const [studentBankInfo, setStudentBankInfo] = useState<
-		TBankInfoResult[] | null
-	>(null);
-	const [isDragging, setIsDragging] = useState(false);
-
-	const form = useForm<TApproveRefundTransferSchema>({
-		resolver: zodResolver(approveRefundTransferSchema),
-		defaultValues: {
-			receipt: undefined,
-		},
-	});
-
-	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	if (
 		!data ||
@@ -121,6 +96,7 @@ export default function RefundReportCard({
 				});
 			}
 		});
+		router.refresh();
 	};
 
 	const handleApprove = async () => {
@@ -132,7 +108,7 @@ export default function RefundReportCard({
 					{ status: "approved", processed_at: new Date().toISOString() },
 					{ id: data.id },
 				);
-
+				
 				if (rejectResult) {
 					toast.success("Approved", {
 						description: (
@@ -147,19 +123,14 @@ export default function RefundReportCard({
 						sendResponseEmail("approved"),
 						sendNotification("approved"),
 					]);
-					window.location.reload();
 				} else {
 					toast.error("Something went wrong", {
 						description: `Error rejecting this ${data.type}`,
 					});
 				}
 			});
+			router.refresh();
 		} else {
-			const bankInfo = await getBankInfoByUser(supabase, {
-				user_id: student.id ?? "",
-				account_type: ["student_refund", "refund_transfer"],
-			});
-			setStudentBankInfo(bankInfo);
 			setIsApproveDialogOpen(true);
 		}
 	};
@@ -184,27 +155,29 @@ export default function RefundReportCard({
 					),
 				});
 
+				console.log("status: ", response.success);
+
 				await Promise.all([
 					sendResponseEmail("approved"),
 					sendNotification("approved"),
 				]);
-
-				window.location.reload();
 			} else {
 				toast.error("Something went wrong", {
 					description: `Error approving this ${data.type}. ${response.error.message}`,
 				});
+				console.log("status: ", response.success);
 			}
 		});
-		window.location.reload();
+		router.refresh();
 	};
+
 
 	const sendResponseEmail = useCallback(
 		async (status: "approved" | "rejected") => {
 			const title = `${data.type} ${status}`;
 			const detail =
 				status === "approved"
-					? `Your ${data.type}  has been approved. The refunded amount will be transferred to your bank account shortly.`
+					? `Your ${data.type}  has been approved. Session's fees will be transferred to your bank account shortly. But you will be detuced a transaction fees`
 					: `Your ${data.type}  has been rejected. Please contact support for further details.`;
 			const preview = `Refund ${status}`;
 
@@ -493,154 +466,25 @@ export default function RefundReportCard({
 			</Dialog>
 
 			{/* Approve Dialog */}
-			<Dialog open={isApproveDialogOpen} onOpenChange={setIsApproveDialogOpen}>
-				<DialogContent
-					className="max-w-md sm:max-w-lg"
-					onOpenAutoFocus={(e) => e.preventDefault()}>
-					<DialogHeader>
-						<DialogTitle>Approve Refund Request</DialogTitle>
-					</DialogHeader>
-					<div className="text-sm text-gray-700 space-y-4">
-						{studentBankInfo ? (
-							studentBankInfo.map((bankInfo) => (
-								<div key={bankInfo.id}>
-									<div className="bg-gray-50 p-4 rounded-lg space-y-2">
-										<div className="flex justify-between">
-											<span className="text-gray-600">Session:</span>
-											<span>{session.session_name || "N/A"}</span>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-gray-600">Student:</span>
-											<Link href={`/student-view/${student?.id}`}>
-												<span className="hover:underline">
-													{student?.username || "N/A"}
-												</span>
-											</Link>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-gray-600">Tutor:</span>
-											<Link href={`/tutor-view/${tutor?.id}`}>
-												<span className="hover:underline">
-													{tutor?.username || "N/A"}
-												</span>
-											</Link>
-										</div>
-									</div>
-
-									<div className="bg-gray-50 p-4 rounded-lg mt-2">
-										<h3 className="font-medium mb-2">Bank Information</h3>
-										<div className="space-y-2">
-											<div className="flex justify-between">
-												<span className="text-gray-600">Bank:</span>
-												<span>{bankInfo.bank_name || "N/A"}</span>
-											</div>
-											<div className="flex justify-between">
-												<span className="text-gray-600">Account Name:</span>
-												<span>{bankInfo.account_name || "N/A"}</span>
-											</div>
-											<div className="flex justify-between">
-												<span className="text-gray-600">Account Number:</span>
-												<span>{bankInfo.account_number || "N/A"}</span>
-											</div>
-										</div>
-									</div>
-
-									<Form {...form}>
-										<form
-											onSubmit={form.handleSubmit(handleApproveConfirm)}
-											className="space-y-3 my-5">
-											<FormField
-												control={form.control}
-												name="receipt"
-												render={({ field }) => (
-													<FormItem>
-														<FormLabel>Upload Transfer Receipt</FormLabel>
-														<FormControl>
-															<div
-																className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer ${
-																	isDragging
-																		? "border-blue-400 bg-blue-50"
-																		: "border-gray-300"
-																}`}
-																onClick={() => fileInputRef.current?.click()}
-																onDragOver={(e) => {
-																	e.preventDefault();
-																	setIsDragging(true);
-																}}
-																onDragLeave={() => setIsDragging(false)}
-																onDrop={(e) => {
-																	e.preventDefault();
-																	setIsDragging(false);
-																	if (
-																		e.dataTransfer.files &&
-																		e.dataTransfer.files.length > 0
-																	) {
-																		field.onChange(e.dataTransfer.files[0]);
-																		e.dataTransfer.clearData();
-																	}
-																}}>
-																<div className="text-gray-500 text-sm my-5">
-																	{field.value ? (
-																		<div className="flex items-center gap-2 justify-center text-sm text-gray-700">
-																			<FileText className="w-4 h-4" />
-																			<span>{field.value.name}</span>
-																		</div>
-																	) : (
-																		<span>
-																			Drag and drop receipt here or click to
-																			browse
-																		</span>
-																	)}
-																</div>
-																<input
-																	type="file"
-																	ref={fileInputRef}
-																	className="hidden"
-																	onChange={(e) => {
-																		if (e.target.files && e.target.files[0]) {
-																			field.onChange(e.target.files[0]);
-																		}
-																	}}
-																/>
-															</div>
-														</FormControl>
-														<FormMessage />
-													</FormItem>
-												)}
-											/>
-											<div className="flex gap-2 justify-end">
-												<Button
-													variant="outline"
-													type="button"
-													onClick={() => {
-														form.reset();
-														setIsApproveDialogOpen(false);
-													}}>
-													Cancel
-												</Button>
-												<Button
-													variant="default"
-													type="submit"
-													disabled={isPending}>
-													{isPending && currentAction === "approve" ? (
-														<LoadingDots />
-													) : (
-														"Confirm Approve"
-													)}
-												</Button>
-											</div>
-										</form>
-									</Form>
-								</div>
-							))
-						) : (
-							<span className="text-red-400">
-								Error displaying bank information
-							</span>
-						)}
-					</div>
-				</DialogContent>
-			</Dialog>
+			<ActionDialog
+				type="refund"
+				isPending={isPending}
+				onSubmit={handleApproveConfirm}
+				openDialog={isApproveDialogOpen}
+				setopenDialog={setIsApproveDialogOpen}
+				dialogTitle="Refund money to student"
+				content={ 
+					{ 
+					  session_id: data.student_session.session.id, 
+					  session_name: data.student_session.session.session_name, 
+					  tutor_id: data.student_session.session.tutor.id ?? "" , 
+					  tutor_name: data.student_session.session.tutor.username, 
+					  student_id: data.student_session.student.id?? "",
+					  student_name: data.student_session.student.username,
+					  amount: data.student_session.amount_from_stripe
+					}
+				}
+			/>
 		</>
 	);
 }

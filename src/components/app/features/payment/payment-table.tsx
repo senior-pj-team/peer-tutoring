@@ -3,7 +3,7 @@
 import { formatDate, parseISO } from "date-fns";
 import { Fragment } from "react";
 
-const PaymentTable = ({ data }: { data: TStudentSessionJoinResult[] }) => {
+const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 	return (
 		<div className="mt-6 overflow-x-auto">
 			<div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">
@@ -27,11 +27,11 @@ const PaymentTable = ({ data }: { data: TStudentSessionJoinResult[] }) => {
 										key={`purchase-${index}`}
 										className="hover:bg-gray-50 transition duration-150">
 										<td className="px-6 py-4 whitespace-nowrap">
-											{eachData.sessions?.session_name || "-"}
+											{eachData.session_name || "-"}
 										</td>
 										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
 											{formatDate(
-												parseISO(eachData.created_at ?? ""),
+												parseISO(eachData.session_created_at ?? ""),
 												"yyy MMMM dd",
 											)}
 										</td>
@@ -48,24 +48,24 @@ const PaymentTable = ({ data }: { data: TStudentSessionJoinResult[] }) => {
 								);
 							}
 
-							if (eachData.refunded_amount) {
+							if (eachData.student_session_status == "refunded") {
 								rows.push(
 									<tr
 										key={`refund-${index}`}
 										className="hover:bg-gray-50 transition duration-150">
 										<td className="px-6 py-4 whitespace-nowrap">
-											{eachData.sessions?.session_name || "-"}
+											{eachData.session_name || "-"}
 										</td>
 										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-											{eachData.sessions.held_until
+											{eachData.refunded_at
 												? formatDate(
-														parseISO(eachData.sessions.held_until),
+														parseISO(eachData.refunded_at),
 														"yyy MMMM dd",
 													)
 												: "Unknown"}
 										</td>
 										<td className="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
-											{eachData.refunded_amount}฿
+											{eachData.amount_from_stripe}฿
 										</td>
 										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
 											-

@@ -17,11 +17,11 @@ const page = async ({ params }: { params: { session_id: string } }) => {
 	const enrollments = await getEnrollmentCount(supabase, {
 		session_id: Number(session_id),
 	});
-
+	
 	return (
 		<SessionForm
 			data={session[0]}
-			toCancel={(enrollments ?? 1) < 0}
+			toCancel={(enrollments ?? 1) <= 0}
 			isEdit={true}
 		/>
 	);

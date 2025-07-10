@@ -39,6 +39,7 @@ export function useStudentSessionJoinWithCount({
 	dateFilterCol,
 	dateFilter,
 	student_id,
+	tutor_id
 }: {
 	key: string;
 	supabase: TSupabaseClient;
@@ -50,6 +51,7 @@ export function useStudentSessionJoinWithCount({
 	dateFilterCol?: "enrolled_at" | "refunded_at" | "paid_out_at" | null;
 	dateFilter?: DateRange | undefined;
 	student_id?: string;
+	tutor_id?: string;
 }) {
 	const datesAreValid =
 		(!dateFilterCol && dateFilter) || (dateFilterCol && !dateFilter)
@@ -64,9 +66,8 @@ export function useStudentSessionJoinWithCount({
 	};
 	if (dateFilter && dateFilter.from && dateFilter.to) {
 		dateRange = getDateRange(dateFilter);
-		console.log(dateRange);
 	}
-
+	console.log("Hook called", datesAreValid);
 	return useQuery({
 		queryKey: [key, search, status, dateFilter, dateFilterCol, page, limit],
 		queryFn: async (): Promise<{
@@ -84,6 +85,7 @@ export function useStudentSessionJoinWithCount({
 					start: dateRange.start_date,
 					end: dateRange.end_date,
 					student_id,
+					tutor_id,
 					supabase,
 				}),
 				getStudentSessionViewCount(supabase, {
@@ -92,10 +94,16 @@ export function useStudentSessionJoinWithCount({
 					dateFilterCol,
 					start: dateRange.start_date,
 					end: dateRange.start_date,
+					student_id,
+					tutor_id,
 				}),
 			]);
-			if (!count && count !== 0) throw Error("count error");
-			return { data: data, count };
+			if (count === undefined || count === null) {
+				console.log({data, count}, "@@");
+				throw Error("count error")
+			};
+			console.log({data, count}, "@@");
+			return { data, count };
 		},
 		enabled: datesAreValid,
 		placeholderData: keepPreviousData,

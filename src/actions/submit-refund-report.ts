@@ -5,8 +5,8 @@ import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { insertRefundReport } from "@/data/mutations/refund-report/insert-refund-report";
 import { getRefundReport } from "@/data/queries/refund-and-report/get-refund-report";
-import { getStudentSessionJoinById } from "@/data/queries/student-session/get-student-session-join-By-Id";
 import { differenceInHours, parseISO } from "date-fns";
+import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 
 const schema = z.object({
 	reason: z.string().min(1),
@@ -53,15 +53,15 @@ export async function submitRefundOrReport(
 		};
 	}
 
-	const ss = await getStudentSessionJoinById(supabase, ss_id);
-	if (!ss) {
+	const ss = await getStudentSessionView(supabase,{student_session_id: ss_id, columns: "session_start_time, session_status"});
+	if (!ss || ss.length!=1 ) {
 		return {
 			success: false,
 			error: { message: "Something went wrong" },
 		};
 	}
 
-	const startTime = parseISO(ss.sessions.start_time);
+	const startTime = parseISO(ss[0].session_start_time?? "NA");
 	const now = new Date();
 
 	if (type === "refund") {
@@ -78,7 +78,7 @@ export async function submitRefundOrReport(
 	}
 
 	if (type === "refund and report") {
-		if (ss.sessions.status === "archived") {
+		if (ss[0].session_status === "archived") {
 			return {
 				success: false,
 				error: {

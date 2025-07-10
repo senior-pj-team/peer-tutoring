@@ -3,10 +3,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { getUserSession } from "@/utils/get-user-session";
 import { tutorFormSchema, tutorFormSchemaT } from "@/schema/tutor-form-schema";
-import { uploadStudentIdImage } from "@/data/mutations/user/upload-student-id-images";
 import { updateUser } from "@/data/mutations/user/update-user";
 import { upsertBankInfo } from "@/data/mutations/bank-info/upsert-bank-info";
 import { updateBankInfo } from "@/data/mutations/bank-info/update-bank-info";
+import { uploadImage } from "@/data/mutations/upload-images";
 
 export async function submitTutorRegistration(
 	formData: tutorFormSchemaT,
@@ -55,17 +55,18 @@ export async function submitTutorRegistration(
 		bankId,
 	} = parsed.data;
 
-	const photoUrl = await uploadStudentIdImage(
-		studentIdPhoto,
-		user.user_id,
-		supabase,
-	);
-	if (!photoUrl) {
-		return {
-			success: false,
-			error: { message: "Something went wrong" },
-		};
-	}
+	let uploadedUrl: string | null = null;
+		if (studentIdPhoto) {
+			uploadedUrl = await uploadImage(studentIdPhoto, supabase, {
+				path: "student-id-photos/",
+			});
+			if (!uploadedUrl) {
+				return {
+					success: false,
+					error: { message: "Failed to upload receipt" },
+				};
+			}
+		}
 
 	const updateResult = await updateUser(supabase, {
 		tutorData: {
@@ -73,9 +74,9 @@ export async function submitTutorRegistration(
 			major: major,
 			year: year,
 			phone_number: phone_number,
-			studentId_photo: photoUrl,
+			studentId_photo: uploadedUrl?? "",
 		},
-		uploadedUrl: photoUrl,
+		uploadedUrl: uploadedUrl,
 		user_id: user.user_id,
 	});
 
