@@ -15,7 +15,6 @@ import { useSupabase } from "@/hooks/use-supabase";
 import { getDateRangeWithOptionalEnd } from "@/utils/app/get-date-range";
 import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { FinancialStatsCardsSkeleton } from "../../tutor/tutor-dashboard/financial/financial-stats-cards-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function FinancialStats() {

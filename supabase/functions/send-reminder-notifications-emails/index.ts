@@ -29,20 +29,19 @@ Deno.serve(async (req) => {
 			break;
 		}
 		if (!data || data.length === 0) break;
-
 		const [job] = data;
-		const { topic, session_name, start_time, tutor_id, students } = job.message;
-
-		if (topic === "send reminders") {
+		const { topic } = job;
+		if (topic === "send reminders" || topic === "send session complete") {
+			const { session_name, start_time, tutor_id, students } = job.message;
 			const studentSSIDs = students.map(
 				(s: { student_id: string; id: number }) => s.id,
 			);
-
+			const status = topic === "send reminders" ? "enrolled" : "completed";
 			const { data: ss_data, error: ss_data_error } = await supabase
 				.from("student_session")
 				.select("student_id")
 				.in("id", [studentSSIDs])
-				.eq("status", "enrolled");
+				.eq("status", status);
 
 			if (ss_data_error) {
 				throw ss_data_error;
@@ -60,17 +59,30 @@ Deno.serve(async (req) => {
 			const tutorEmail = tutorRes.data.email;
 			const studentsResData = studentsRes.data;
 
+			const noti_title =
+				topic === "send reminders"
+					? "Reminder notification"
+					: "Session Completed";
+			const noti_body_student =
+				topic === "send reminders"
+					? `Be prepared. ${session_name} session is starting tomorrow ⌛`
+					: `Congrats, ${session_name} session is completed. You can give reviews and ratings for tutor now 🚀`;
+			const noti_body_tutor =
+				topic === "send reminders"
+					? `Prepare for tomorrow ${session_name} session ⌛`
+					: `You have completed tutoring ${session_name} session. Your fund out will be held for 7 days.`;
+
 			const notifications = [
 				...studentsResData.map((s) => ({
-					title: "Reminder notification",
-					body: `Be prepared. ${session_name} session is starting tomorrow⌛`,
+					title: noti_title,
+					body: noti_body_student,
 					status: "new",
 					user_id: s.id,
 					type: "student",
 				})),
 				{
-					title: "Reminder notification",
-					body: `Prepare for tomorrow ${session_name} session.`,
+					title: noti_title,
+					body: noti_body_tutor,
 					status: "new",
 					user_id: tutor_id,
 					type: "tutor_reminder",
@@ -96,6 +108,7 @@ Deno.serve(async (req) => {
 					sessionName: session_name,
 					sessionStartTime: sessionStartTime,
 					receipent: "tutor",
+					type: topic,
 				}),
 			);
 			const student_email_template = await renderAsync(
@@ -103,6 +116,7 @@ Deno.serve(async (req) => {
 					sessionName: session_name,
 					sessionStartTime: sessionStartTime,
 					receipent: "student",
+					type: topic,
 				}),
 			);
 			await Promise.all(

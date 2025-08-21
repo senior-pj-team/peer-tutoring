@@ -17,6 +17,7 @@ export const ReminderEmail = ({
 	sessionName,
 	sessionStartTime,
 	receipent,
+	topic,
 	supportEmail = "support@orion.com",
 	appUrl = "https://localhost:3000/home",
 }: {
@@ -24,11 +25,16 @@ export const ReminderEmail = ({
 	sessionStartTime: string;
 	supportEmail?: string;
 	receipent: "student" | "tutor";
+	topic?: string;
 	appUrl?: string;
 }) => (
 	<Html>
 		<Head />
-		<Preview>Reminder for upcoming session⏳</Preview>
+		<Preview>
+			{topic === "send reminders"
+				? "Reminder for upcoming session ⏳"
+				: "Session Completed 🚀"}
+		</Preview>
 
 		<Body
 			style={{
@@ -76,7 +82,9 @@ export const ReminderEmail = ({
 						color: "#333333",
 						padding: "16px 16px 0px 16px",
 					}}>
-					Reminder for Upcoming Session {sessionName}⏳
+					{topic === "send reminders"
+						? `Reminder for Upcoming Session ${sessionName} ⏳`
+						: `Congrats, ${sessionName} session Completed 🚀`}
 				</Text>
 
 				<Row style={{ padding: "0 16px 24px" }}>
@@ -87,16 +95,21 @@ export const ReminderEmail = ({
 								color: "#555555",
 								margin: "8px 0 0",
 							}}>
-							{receipent === "student" ? (
+							{receipent === "student" && topic === "send reminders" ? (
 								<>
 									Wishes you learn the best for tomorrow session📖. Your session
 									starts at {sessionStartTime}.
 								</>
-							) : (
+							) : receipent === "tutor" && topic === "send reminders" ? (
 								<>
 									Share your knowlege and skills to students the best for
 									tomorrow session💡. Your session starts at {sessionStartTime}.
 								</>
+							) : receipent === "student" &&
+							  topic === "send session complete" ? (
+								<></>
+							) : (
+								<></>
 							)}
 						</Text>
 					</Column>
