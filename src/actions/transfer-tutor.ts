@@ -36,17 +36,18 @@ export async function transferTutor(
 		}
 	}
 
-	const ss_data = await getStudentSessionView(supabase, {
+	let ss_data = await getStudentSessionView(supabase, {
 		columns: "student_session_id, amount_to_tutor",
 		session_id,
 		status: ["enrolled", "completed"],
 	});
 
 	if (!ss_data || ss_data.length < 1) {
-		return {
-			success: false,
-			error: { message: "Something went wrong!" },
-		};
+		ss_data= [];
+		// return {
+		// 	success: false,
+		// 	error: { message: "Something went wrong!" },
+		// };
 	}
 
 	const { ss_ids, transferred_amount } = ss_data.reduce(
@@ -75,7 +76,7 @@ export async function transferTutor(
 	if (!updateSessionResult || !updateStudentSeessionResult) {
 		return {
 			success: false,
-			error: { message: "Something went wrong!" },
+			error: { message: "Update went wrong!" },
 		};
 	}
 

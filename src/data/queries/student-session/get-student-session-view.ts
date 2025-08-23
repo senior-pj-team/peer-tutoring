@@ -62,6 +62,7 @@ export const getStudentSessionView = async (
 	}
 
 	query = query.order("enrolled_at", { ascending: false });
+	console.log(query, "@@");
 
 	const { data, error } = await query;
 

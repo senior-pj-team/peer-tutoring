@@ -1,9 +1,9 @@
 "use client";
 
 import { formatDate, parseISO } from "date-fns";
-import { Fragment } from "react";
 
 const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
+	console.log(data, "purchased history")
 	return (
 		<div className="mt-6 overflow-x-auto">
 			<div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">
@@ -13,7 +13,6 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 							<th className="px-6 py-3 text-left">Session</th>
 							<th className="px-6 py-3 text-left">Date</th>
 							<th className="px-6 py-3 text-left">Amount</th>
-							<th className="px-6 py-3 text-left">Invoice #</th>
 							<th className="px-6 py-3 text-left">Transaction Type</th>
 						</tr>
 					</thead>
@@ -21,7 +20,7 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 						{data.map((eachData, index) => {
 							const rows = [];
 
-							if (eachData.amount_from_student) {
+							if (eachData.amount_from_student || eachData.amount_from_student== 0) {
 								rows.push(
 									<tr
 										key={`purchase-${index}`}
@@ -31,15 +30,12 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 										</td>
 										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
 											{formatDate(
-												parseISO(eachData.session_created_at ?? ""),
+												parseISO(eachData.enrolled_at ?? ""),
 												"yyy MMMM dd",
 											)}
 										</td>
 										<td className="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
 											{eachData.amount_from_student}฿
-										</td>
-										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-											-
 										</td>
 										<td className="px-6 py-4 text-green-600 font-medium whitespace-nowrap">
 											Purchased
@@ -66,9 +62,6 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 										</td>
 										<td className="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
 											{eachData.amount_from_stripe}฿
-										</td>
-										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-											-
 										</td>
 										<td className="px-6 py-4 text-red-600 font-medium whitespace-nowrap">
 											Refunded

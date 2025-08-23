@@ -126,12 +126,11 @@ const RefundReportForm = ({
 				preview = "We've received your report and refund request.";
 				break;
 		}
-
 		await sendEmail({
 			preview,
 			title,
 			detail,
-			to: "williamkhant4@gmail.com",
+			to: "nwai39771@gmail.com",
 		});
 	}, [state.success, type]);
 	let title = "";
@@ -162,7 +161,7 @@ const RefundReportForm = ({
 		if (state.success || state.error.message) {
 			setDialogOpen(true);
 			if (state.success) {
-				toast.success(`${title} 🎉`);
+				toast.success(`${title} 🎉 request submitted`);
 				Promise.all([sendResponseEmail(), sendNotification()]);
 			}
 		}

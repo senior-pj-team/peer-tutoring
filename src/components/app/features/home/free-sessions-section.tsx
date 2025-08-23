@@ -2,7 +2,6 @@ import { getSessionsMatView } from "@/data/queries/sessions/get-sessions-mat-vie
 import CustomCarousel from "./custom-carousel";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import { type } from "os";
 import GeneralSessionCard from "../../shared/sessions/general-session-card";
 
 export async function FreeSessionsSection() {

@@ -2,9 +2,9 @@
 
 import React, { useMemo, useState } from "react";
 import SessionCard from "../../shared/sessions/session-card";
-import { useStudentSessionJoinWithCount } from "@/hooks/use-student-session-join";
 import { useSupabase } from "@/hooks/use-supabase";
 import { PaginationControls } from "../../shared/paginition-controls";
+import { useStudentSessionViewWithCount } from "@/hooks/use-student-session-join";
 
 
 
@@ -16,7 +16,7 @@ const StudentSessionList = ({ student_id }: { student_id: string }) => {
     data: sessions,
     status,
     isError,
-  } = useStudentSessionJoinWithCount({
+  } = useStudentSessionViewWithCount({
     key: "student_sessions",
     supabase,
     page: currentPage,

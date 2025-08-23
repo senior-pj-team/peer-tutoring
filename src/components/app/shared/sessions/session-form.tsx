@@ -83,6 +83,7 @@ export default function SessionForm({
   isEdit?: boolean;
   toCancel?: boolean;
 }) {
+
   const {
     school,
     major,
@@ -101,7 +102,7 @@ export default function SessionForm({
     id: sessionId,
     status,
   } = data;
-
+  
   let image: File | null = null;
   const router = useRouter();
 
@@ -126,6 +127,7 @@ export default function SessionForm({
       image,
     },
   });
+
   const [previewUrl, setPreviewUrl] = useState<string | null>(imageString);
   const [isDisable, setDisable] = useState(isEdit);
   const [isDialogOpen, setisDialogOpen] = useState(false);

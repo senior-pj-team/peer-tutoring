@@ -3,7 +3,7 @@
 import { columns } from "@/app/(protected)/(tutor)/tutor-dashboard/financial/payouts/columns";
 import { DataTableServer } from "@/components/app/features/data-table/data-table-server";
 import { PaginationState } from "@tanstack/react-table";
-import { useStudentSessionJoinWithCount } from "@/hooks/use-student-session-join";
+import { useStudentSessionViewWithCount } from "@/hooks/use-student-session-join";
 import { useSupabase } from "@/hooks/use-supabase";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -53,7 +53,7 @@ export default function PayoutList({
     isError,
     isPlaceholderData,
     isFetching,
-  } = useStudentSessionJoinWithCount({
+  } = useStudentSessionViewWithCount({
     key: "tutor_payouts",
     supabase,
     page: pagination.pageIndex,
