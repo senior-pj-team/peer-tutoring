@@ -58,7 +58,7 @@ export function FinancialStats() {
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-4 w-full">
 				{isLoading &&
 					Array.from({ length: 4 }).map((_, idx) => (
-						<div className="h-[167px] w-full rounded-md shadow-md bg-white p-2">
+						<div className="h-[167px] w-full rounded-md shadow-md bg-white p-2" key={idx}>
 							<Skeleton className="w-[50%] h-4 mb-4 rounded-3xl" />
 							<Skeleton className="w-30 h-10 mb-5 rounded-xl" />
 							<Skeleton className="w-[65%] h-4 mb-2 rounded-3xl" />

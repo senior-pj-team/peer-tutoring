@@ -3,7 +3,7 @@
 import { columns } from "@/app/(protected)/(tutor)/tutor-dashboard/students/columns";
 import { DataTableServer } from "@/components/app/features/data-table/data-table-server";
 import { PaginationState } from "@tanstack/react-table";
-import { useStudentSessionJoinWithCount } from "@/hooks/use-student-session-join";
+import { useStudentSessionViewWithCount } from "@/hooks/use-student-session-join";
 import { useSupabase } from "@/hooks/use-supabase";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -48,7 +48,7 @@ export default function TutorStudentList({tutor_id}: {tutor_id: string | undefin
             isError,
             isPlaceholderData,
             isFetching,
-        } = useStudentSessionJoinWithCount({
+        } = useStudentSessionViewWithCount({
             key: "tutor_students",
             supabase,
             page: pagination.pageIndex,

@@ -181,7 +181,7 @@ export default function TutorTable() {
 									</div>
 								</TableCell>
 								<TableCell>
-									<p className="text-sm">⭐ {tutor.tutor_rating.toFixed(1)}</p>
+									<p className="text-sm">⭐ {tutor.tutor_rating}</p>
 									<p className="text-xs text-gray-500">
 										{tutor.total_session_count} sessions
 									</p>

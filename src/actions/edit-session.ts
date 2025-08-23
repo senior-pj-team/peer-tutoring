@@ -65,6 +65,7 @@ export const editSession = async (
 
 	let uploadedUrl: string | null = null;
 	let isDelete;
+	console.log("log from server: ", values.image, previewImageString, oldImageString);
 	if (values.image) {
 		uploadedUrl = await uploadImage(values.image, supabase, {
 			path: "session_images/",
@@ -81,7 +82,9 @@ export const editSession = async (
 					imageUrl: oldImageString,
 				})
 			: true;
+			console.log("values.image exists");
 	} else if (!previewImageString) {
+		console.log("previewImageString does not exists");
 		//user remove the image
 		isDelete = oldImageString
 			? await deleteImage(supabase, {
@@ -89,7 +92,9 @@ export const editSession = async (
 					imageUrl: oldImageString,
 				})
 			: true;
+		uploadedUrl=  null;
 	}
+	uploadedUrl= oldImageString;
 
 	const updateResult = await updateSession(supabase, sessionId, {
 		values,

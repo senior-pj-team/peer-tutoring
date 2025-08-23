@@ -112,7 +112,7 @@ const Page = async ({ params }: { params: Params }) => {
 
 							<TabsContent value="payment">
 								<Suspense fallback={<GeneralLoading />}>
-									<SessionPayment session_id={sessionData.session_id!} />
+									<SessionPayment student_session_id={Number(student_session_id!)} />
 								</Suspense>
 							</TabsContent>
 						</div>

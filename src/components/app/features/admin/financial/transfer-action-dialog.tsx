@@ -54,7 +54,7 @@ export function TransferActionDialog({
 				await Promise.all([sendResponseEmail(), sendNotification()]);
 			} else {
 				toast.error("Something went wrong", {
-					description: `Error transferring to tutor `,
+					description: `${response.error.message} `,
 				});
 			}
 		});
