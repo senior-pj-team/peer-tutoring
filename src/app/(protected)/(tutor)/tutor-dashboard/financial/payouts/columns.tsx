@@ -10,7 +10,7 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "id",
 		header: "TRN_ID",
-		accessorKey: "id",
+		accessorKey: "TRN_ID",
 		cell: ({ row }) => {
 			return <div>{row.original.student_session_id}</div>;
 		},
@@ -41,10 +41,13 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 				<div className="flex items-center gap-3 max-w-[300px]">
 					<Avatar className="flex-shrink-0 w-10 h-10">
 						{row.original.student_profile_url && (
-							<AvatarImage src={row.original.student_profile_url} alt={row.original.student_username ?? "Unknown"} />
+							<AvatarImage
+								src={row.original.student_profile_url}
+								alt={row.original.student_username ?? "Unknown"}
+							/>
 						)}
 						<AvatarFallback>
-							{getAvatarFallback(row.original.student_username?? "U")}
+							{getAvatarFallback(row.original.student_username ?? "U")}
 						</AvatarFallback>
 					</Avatar>
 
@@ -55,7 +58,7 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 							</span>
 						</Link>
 						<span
-							title={row.original.student_email?? ""}
+							title={row.original.student_email ?? ""}
 							className="text-xs text-gray-500 truncate max-w-[200px]">
 							{row.original.student_email ?? "-"}
 						</span>

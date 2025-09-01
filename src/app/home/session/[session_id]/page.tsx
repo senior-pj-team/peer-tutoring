@@ -1,14 +1,8 @@
 import React, { Suspense } from "react";
-
 import SessionHeader from "@/components/app/features/session/session-header";
-import ReviewRatingAction from "@/components/app/features/session/review-rating-action";
-import UpcomingAction from "@/components/app/features/session/upcoming-action";
 import EnrollAction from "@/components/app/features/session/enroll-action";
-import RefundStatus from "@/components/app/features/session/refund-status";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SessionContent from "@/components/app/features/session/session-content";
-import SessionPayment from "@/components/app/features/session/session-payment";
 import SessionTutor from "@/components/app/features/session/session-tutor";
 import { createClient } from "@/utils/supabase/server";
 import { getSessionMatViewbyId } from "@/data/queries/sessions/get-session-mat-view-by-Id";

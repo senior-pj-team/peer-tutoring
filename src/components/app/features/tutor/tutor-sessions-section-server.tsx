@@ -1,5 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import {
+	dehydrate,
+	HydrationBoundary,
+	QueryClient,
+} from "@tanstack/react-query";
 import TutorSessionsSection from "./tutor-sessions-section";
 import { fetchSessions } from "@/utils/app/fetch-sessions";
 
@@ -13,7 +17,8 @@ export default async function TutorSessionsSectionServer({
 
 	await queryClient.prefetchQuery({
 		queryKey: ["tutor-sessions", 1, undefined, undefined, tutor_id],
-		queryFn: async () => await fetchSessions({ pageParam: 1, tutor_id, supabase, limit: 4 }),
+		queryFn: async () =>
+			await fetchSessions({ pageParam: 1, tutor_id, supabase, limit: 4 }),
 	});
 
 	return (

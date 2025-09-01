@@ -1,23 +1,6 @@
 import { HoverCardContent } from "@/components/ui/hover-card";
-import { BookOpen, MessageSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-
-const notifications = [
-	{
-		id: 1,
-		text: "Web Development starts tomorrow.",
-		icon: <BookOpen className="w-4 h-4 text-orange-400" />,
-		read: false,
-	},
-	{
-		id: 2,
-		text: "Database class finished — your tutor would appreciate a review.",
-		icon: <MessageSquare className="w-4 h-4 text-orange-400" />,
-		read: true,
-	},
-	// Add more if needed
-];
 
 export default function NotiHoverContent({
 	notifications,

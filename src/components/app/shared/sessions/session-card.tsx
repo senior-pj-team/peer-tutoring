@@ -97,7 +97,7 @@ const SessionCard = ({
 
 	const start = format(start_time!, "hh:mm a");
 	const end = format(end_time!, "hh:mm a");
-	const date = formatDate(start_time ?? "NA", "yy MMMM dd");
+	const date = formatDate(start_time ?? "NA", "yyyy MMMM dd");
 	const remaining_time =
 		ss_status == "enrolled" ? getRemainingTime(start_time) : undefined;
 	const router = useRouter();

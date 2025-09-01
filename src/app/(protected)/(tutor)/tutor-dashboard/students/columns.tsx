@@ -11,13 +11,16 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "student",
 		header: "Student",
+		accessorKey: "student",
 		cell: ({ row }) => {
-
 			return (
 				<div className="flex items-center gap-3 max-w-[300px]">
 					<Avatar className="flex-shrink-0 w-10 h-10">
 						{row.original.student_profile_url && (
-							<AvatarImage src={row.original.student_profile_url} alt={row.original.student_username ?? "Unknown"} />
+							<AvatarImage
+								src={row.original.student_profile_url}
+								alt={row.original.student_username ?? "Unknown"}
+							/>
 						)}
 
 						<AvatarFallback>
@@ -33,7 +36,7 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 						</Link>
 
 						<span
-							title={row.original.student_email?? "NA"}
+							title={row.original.student_email ?? "NA"}
 							className="text-xs text-gray-500 truncate max-w-[200px]">
 							{row.original.student_email}
 						</span>
@@ -45,10 +48,12 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "session",
 		header: "Session",
+		accessorKey: "session",
 		cell: ({ row }) => {
 			return (
 				<div className="max-w-[250px]">
-					<Link href={`/tutor-dashboard/session/${row.original.session_id}/content`}>
+					<Link
+						href={`/tutor-dashboard/session/${row.original.session_id}/content`}>
 						<div className="truncate hover:underline">
 							{row.original.session_name ?? "Unknown"}
 						</div>
@@ -60,15 +65,20 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "enrolled_at",
 		header: "Enrolled Date",
+		accessorKey: "enrolled_at",
 		cell: ({ row }) => {
 			if (!row.original.enrolled_at) return "-";
-			const displayDate = formatDate(parseISO(row.original.enrolled_at), "yyy MMMM dd");
+			const displayDate = formatDate(
+				parseISO(row.original.enrolled_at),
+				"yyy MMMM dd",
+			);
 			return <div>{displayDate}</div>;
 		},
 	},
 	{
 		id: "released_amount",
 		header: "Amount",
+		accessorKey: "released_amount",
 		cell: ({ row }) => {
 			const amount = row.original.amount_to_tutor ?? 0;
 			const formatted = new Intl.NumberFormat("th-TH", {
@@ -81,8 +91,9 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 	{
 		id: "enrollment_status",
 		header: "Enrollment Status",
+		accessorKey: "enrollment_status",
 		cell: ({ row }) => {
-			const status= row.original.student_session_status;
+			const status = row.original.student_session_status;
 			const color =
 				status === "enrolled"
 					? "text-purple-500 bg-purple-100"

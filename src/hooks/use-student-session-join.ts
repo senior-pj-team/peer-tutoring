@@ -39,7 +39,7 @@ export function useStudentSessionViewWithCount({
 	dateFilterCol,
 	dateFilter,
 	student_id,
-	tutor_id
+	tutor_id,
 }: {
 	key: string;
 	supabase: TSupabaseClient;
@@ -99,10 +99,10 @@ export function useStudentSessionViewWithCount({
 				}),
 			]);
 			if (count === undefined || count === null) {
-				console.log({data, count}, "@@");
-				throw Error("count error")
-			};
-			console.log({data, count}, "@@");
+				console.log({ data, count }, "@@");
+				throw Error("count error");
+			}
+			console.log({ data, count }, "@@");
 			return { data, count };
 		},
 		enabled: datesAreValid,

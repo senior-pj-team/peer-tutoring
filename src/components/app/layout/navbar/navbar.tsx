@@ -5,7 +5,7 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 import HoverCustomCard from "./hover-custom-card";
 import SearchBar from "./search-bar";
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import CustomSheet from "./custom-sheet";
 import Link from "next/link";

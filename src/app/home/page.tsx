@@ -1,7 +1,6 @@
 import CustomHeroCarousel from "@/components/app/features/home/custom-hero-carousel";
 import MySessionsSection from "@/components/app/features/home/my-sessions-section";
 import TopTutorsSection from "@/components/app/features/home/top-tutors-section";
-
 import { Roboto_Mono } from "next/font/google";
 import { FreeSessionsSection } from "@/components/app/features/home/free-sessions-section";
 import { Suspense } from "react";

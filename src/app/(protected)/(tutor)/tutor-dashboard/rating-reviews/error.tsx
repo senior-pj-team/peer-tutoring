@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import GeneralError from "@/components/app/shared/error";
 import React from "react";
 

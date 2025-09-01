@@ -35,7 +35,8 @@ export async function getSessionsJoin(
 	if (dateFilterCol && start && end) {
 		query = query.gte(`${dateFilterCol}`, start).lt(`${dateFilterCol} `, end);
 	}
-
+	console.log("hello");
+	console.log(offset, limit);
 	if (typeof offset === "number" && typeof limit === "number") {
 		query = query.range(offset, offset + limit - 1);
 	}

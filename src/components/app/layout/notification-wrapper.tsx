@@ -115,7 +115,7 @@ export function NotificationWrapper({
 					console.log("audio error");
 				});
 				queryClient.invalidateQueries({
-					queryKey: ["nav_bar_noti", user!.user_id],
+					queryKey: ["nav_bar_noti", user?.user_id],
 				});
 				toast.info(`New notification ${payload.notification?.title}`, {
 					action: {

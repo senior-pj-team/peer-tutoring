@@ -7,19 +7,23 @@ import { usePaginatedSessionsMatViewQuery } from "@/hooks/use-sessions-mat-view"
 
 const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
 	const [currentPage, setCurrentPage] = useState(0);
-	const {data: sessions, isError, status} = usePaginatedSessionsMatViewQuery({
+	const {
+		data: sessions,
+		isError,
+		status,
+	} = usePaginatedSessionsMatViewQuery({
 		key: "tutor-sessions",
 		page: currentPage + 1, // paginition button shows currentPage +1 so keep it as 0 and +1 to use it in the hook
 		limit: 4,
 		tutor_id,
-	})
+	});
 
 	const currentSessions = sessions?.rows ?? [];
 	const totalSessions = sessions?.total ?? 0;
 
 	const disableBack = useMemo(() => currentPage <= 0, [currentPage]);
 
-	const totalPages= Math.ceil( totalSessions / 4)
+	const totalPages = Math.ceil(totalSessions / 4);
 	const disableForward = useMemo(
 		() => currentPage >= totalPages - 1,
 		[currentPage, totalPages],
@@ -49,7 +53,7 @@ const TutorSessionsSection = ({ tutor_id }: { tutor_id: string }) => {
 					No sessions available.
 				</div>
 			)}
-			
+
 			<PaginationControls
 				currentPage={currentPage}
 				onPageChange={setCurrentPage}

@@ -34,7 +34,8 @@ const StudentList = async ({
 }) => {
 	const supabase = await createClient();
 
-	const columns= "student_session_id, session_id, student_session_status, student_id, session_status, student_id, student_username, student_email, student_profile_url";
+	const columns =
+		"student_session_id, session_id, student_session_status, student_id, session_status, student_id, student_username, student_email, student_profile_url";
 	const studentSessions = await getStudentSessionView(supabase, {
 		columns,
 		session_id: Number(session_id),
@@ -69,7 +70,9 @@ const StudentList = async ({
 											alt={studentSession.student_username ?? "Student"}
 										/>
 										<AvatarFallback>
-											{getAvatarFallback(studentSession.student_username ?? "S")}
+											{getAvatarFallback(
+												studentSession.student_username ?? "S",
+											)}
 										</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col justify-left gap-2 space-y-0">
@@ -92,13 +95,17 @@ const StudentList = async ({
 							<TableCell className="text-sm text-muted-foreground">
 								{/* Placeholder if you don’t have email */}
 								<span
-									title={studentSession.student_email?? "NA"} 
+									title={studentSession.student_email ?? "NA"}
 									className="text-xs text-gray-500 truncate max-w-[200px] mt-0">
 									{studentSession.student_email ?? "Not Provided"}
 								</span>
 							</TableCell>
 							<TableCell>
-								<span className={cn("font-bold", statusColors[studentSession.student_session_status?? "NA"])}>
+								<span
+									className={cn(
+										"font-bold",
+										statusColors[studentSession.student_session_status ?? "NA"],
+									)}>
 									{studentSession.student_session_status}
 								</span>
 							</TableCell>

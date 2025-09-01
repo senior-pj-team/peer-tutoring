@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -46,7 +46,7 @@ export default function Step1() {
 			form.setValue("studentIdPhoto", capturedImage, { shouldValidate: true });
 		}
 	};
-	
+
 	return (
 		<div className="flex flex-col gap-6">
 			<div className="grid gap-4">

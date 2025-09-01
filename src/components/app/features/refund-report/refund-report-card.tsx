@@ -20,9 +20,7 @@ import { toast } from "sonner";
 import { LoadingDots } from "@/components/app/shared/loading-dots";
 import { AlertTriangle } from "lucide-react";
 
-import {
-	TApproveRefundTransferSchema,
-} from "@/schema/appove-refund-transfer";
+import { TApproveRefundTransferSchema } from "@/schema/appove-refund-transfer";
 import { approveRefund } from "@/actions/approve-refund";
 import { sendEmail } from "@/actions/send-email";
 import { insertNotification } from "@/data/mutations/notification/insert-notification";
@@ -108,7 +106,7 @@ export default function RefundReportCard({
 					{ status: "approved", processed_at: new Date().toISOString() },
 					{ id: data.id },
 				);
-				
+
 				if (rejectResult) {
 					toast.success("Approved", {
 						description: (
@@ -170,7 +168,6 @@ export default function RefundReportCard({
 		});
 		router.refresh();
 	};
-
 
 	const sendResponseEmail = useCallback(
 		async (status: "approved" | "rejected") => {
@@ -473,17 +470,15 @@ export default function RefundReportCard({
 				openDialog={isApproveDialogOpen}
 				setopenDialog={setIsApproveDialogOpen}
 				dialogTitle="Refund money to student"
-				content={ 
-					{ 
-					  session_id: data.student_session.session.id, 
-					  session_name: data.student_session.session.session_name, 
-					  tutor_id: data.student_session.session.tutor.id ?? "" , 
-					  tutor_name: data.student_session.session.tutor.username, 
-					  student_id: data.student_session.student.id?? "",
-					  student_name: data.student_session.student.username,
-					  amount: data.student_session.amount_from_stripe
-					}
-				}
+				content={{
+					session_id: data.student_session.session.id,
+					session_name: data.student_session.session.session_name,
+					tutor_id: data.student_session.session.tutor.id ?? "",
+					tutor_name: data.student_session.session.tutor.username,
+					student_id: data.student_session.student.id ?? "",
+					student_name: data.student_session.student.username,
+					amount: data.student_session.amount_from_stripe,
+				}}
 			/>
 		</>
 	);

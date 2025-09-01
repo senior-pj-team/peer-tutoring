@@ -34,9 +34,14 @@ export function UseSessionsJoinInifiniteQuery({
 			return result;
 		},
 		initialPageParam: 0,
-		getNextPageParam: (lastPage, allPages) =>
-			Array.isArray(lastPage) && lastPage.length === 10
-				? allPages.length + 1
-				: undefined,
+		getNextPageParam: (lastPage, allPages) => {
+			const limitValue = limit ?? 10;
+
+			if (!Array.isArray(lastPage) || lastPage.length < limitValue) {
+				return undefined;
+			}
+
+			return allPages.length * limitValue;
+		},
 	});
 }

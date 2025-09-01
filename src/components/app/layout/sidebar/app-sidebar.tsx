@@ -11,7 +11,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Book, LucideProps } from "lucide-react";
+import { Book } from "lucide-react";
 import Link from "next/link";
 
 type Menus = {

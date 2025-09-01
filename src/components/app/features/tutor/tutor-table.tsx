@@ -99,7 +99,7 @@ export default function TutorTable() {
 					selectedTutor.tutor_id,
 					Number(suspendDays),
 				);
-				
+
 				if (suspendResult.success) {
 					toast.success(" Suspended successfully.");
 					queryClient.invalidateQueries({ queryKey: ["tutors"] });

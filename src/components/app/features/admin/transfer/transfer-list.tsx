@@ -41,6 +41,7 @@ export function TransferList({ status }: { status: TSessionStatus[] }) {
 			</div>
 		);
 	const results = data?.pages.flat() || [];
+
 	return (
 		<div className="space-y-6 px-4 lg:px-6">
 			<div className=" mb-6 flex gap-1 items-center">

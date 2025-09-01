@@ -59,7 +59,7 @@ const RefundReportForm = ({
 				"Change of Plans",
 				"other",
 			];
-			
+
 	const [position, setPosition] = useState("Select a reason");
 	const [description, setDes] = useState("");
 	const [error, setError] = useState("");

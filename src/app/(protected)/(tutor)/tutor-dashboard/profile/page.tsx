@@ -9,6 +9,7 @@ import { getBankInfoJoinUser } from "@/data/queries/bank-info/get-bank-info-join
 
 export default async function page() {
 	const user = await getUserSession();
+
 	if (!user) {
 		return (
 			<div className="max-w-4xl mx-auto p-6 flex h-full flex-col items-center justify-center">
@@ -22,6 +23,7 @@ export default async function page() {
 		user_id: user.user_id,
 		account_type: ["refund_transfer", "tutor_transfer"],
 	});
+	console.log(tutor_data);
 
 	if (!tutor_data || tutor_data.length === 0) {
 		return (

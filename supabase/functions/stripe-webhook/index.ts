@@ -162,6 +162,7 @@ Deno.serve(async (req) => {
 				const { error: update_ss_error } = await supabase
 					.from("student_session")
 					.update({
+						status: "failed_payment",
 						stripe_payment_intent_id: payment_intent_id,
 					})
 					.eq("id", student_session_id);

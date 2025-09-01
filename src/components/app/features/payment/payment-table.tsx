@@ -3,7 +3,6 @@
 import { formatDate, parseISO } from "date-fns";
 
 const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
-	console.log(data, "purchased history")
 	return (
 		<div className="mt-6 overflow-x-auto">
 			<div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">
@@ -20,7 +19,10 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 						{data.map((eachData, index) => {
 							const rows = [];
 
-							if (eachData.amount_from_student || eachData.amount_from_student== 0) {
+							if (
+								eachData.amount_from_student ||
+								eachData.amount_from_student == 0
+							) {
 								rows.push(
 									<tr
 										key={`purchase-${index}`}

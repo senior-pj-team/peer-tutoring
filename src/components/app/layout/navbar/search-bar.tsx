@@ -105,9 +105,7 @@ export default function SearchBar() {
 									key={index}
 									className="flex items-center gap-3 p-4 text-sm cursor-pointer hover:bg-orange-50 hover:text-orange-400"
 									onClick={() => {
-										router.push(
-											`/home/session/browse/${suggestion.session_id}`,
-										);
+										router.push(`/home/session/${suggestion.session_id}`);
 										setShowSuggestions(false);
 									}}>
 									{suggestion.image ? (

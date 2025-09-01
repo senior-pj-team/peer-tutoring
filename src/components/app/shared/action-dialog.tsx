@@ -95,7 +95,7 @@ export function ActionDialog({
 			? amount_to_tutor[0].sum
 			: content.amount;
 
-	if(ref) ref.current = amount_to_tutor ? amount_to_tutor[0].sum : null;
+	if (ref) ref.current = amount_to_tutor ? amount_to_tutor[0].sum : null;
 
 	const bankInfo = !data ? undefined : data[0];
 

@@ -81,7 +81,7 @@ export async function FinancialTabServer({
 			<div className="flex w-full items-center gap-x-5 mb-8">
 				<div className="w-[250px] h-[110px] border border-gray-200 rounded-md p-4 flex flex-col">
 					<div className="text-sm text-gray-400  mb-3">Total Revenue</div>
-					<div className="text-2xl font-bold mb-1">{sum_revenue}</div>
+					<div className="text-2xl font-bold mb-1">{sum_revenue ?? 0}</div>
 					<div className="text-xs text-gray-400">Amount from stripe summed</div>
 				</div>
 
@@ -90,7 +90,7 @@ export async function FinancialTabServer({
 						Total Amount to transfer
 					</div>
 					<div className="text-2xl font-bold mb-1">
-						{sum_amount_to_tutor ?? "N/A"}
+						{sum_amount_to_tutor ?? 0}
 					</div>
 					<div className="text-xs text-gray-400">Amount to tutor summed</div>
 				</div>
@@ -105,7 +105,7 @@ export async function FinancialTabServer({
 					<div className="text-2xl font-bold mb-1">
 						{sum_revenue && sum_amount_to_tutor
 							? (sum_revenue - sum_amount_to_tutor).toFixed(2)
-							: "NA "}
+							: 0}
 					</div>
 					<div className="text-xs text-gray-400">Profit earned by admin</div>
 				</div>

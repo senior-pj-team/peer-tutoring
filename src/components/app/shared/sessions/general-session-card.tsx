@@ -3,7 +3,6 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
 import Image from "next/image";
 import Rating from "../../features/rating-review/rating";
-import { ClockAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CustomHoverCard } from "./custom-hover-card";
 import { shimmer, toBase64 } from "@/utils/app/shimmer";
