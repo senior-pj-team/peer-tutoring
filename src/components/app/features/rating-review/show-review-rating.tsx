@@ -2,7 +2,6 @@ import React from "react";
 import Rating from "./rating";
 import { getRatingReview } from "@/data/queries/rating-and-review/get-rating-review-user-view";
 import { createClient } from "@/utils/supabase/server";
-import GeneralError from "../../shared/error";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDate } from "date-fns";
 

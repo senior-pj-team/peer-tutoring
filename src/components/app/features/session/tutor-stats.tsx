@@ -1,8 +1,6 @@
 import React from "react";
-import { BookOpen, Mail, Pencil, Phone, Star, Users } from "lucide-react";
 import Expandable from "../../shared/expandable-text";
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
 import { cn } from "@/lib/utils";
 import { shimmer, toBase64 } from "@/utils/app/shimmer";
