@@ -29,6 +29,9 @@ export const insertSession = async (
 		service_fee: values.amount * 0.15,
 		tutor_id: tutor_id,
 	});
-	if (error) return false;
+	if (error) {
+		console.log("insert session error: ", error)
+		return false
+	};
 	return true;
 };
