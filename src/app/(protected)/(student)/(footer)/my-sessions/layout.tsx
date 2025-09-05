@@ -11,7 +11,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 		{ name: "Refunded", path: "/my-sessions/refunded-sessions" },
 		{ name: "Completed", path: "/my-sessions/completed-sessions" },
 		{ name: "Archived", path: "/my-sessions/archived-sessions" },
-		{ name: "Wish List", path: "/my-sessions/wishlist-sessions" },
 	];
 	return (
 		<div>
