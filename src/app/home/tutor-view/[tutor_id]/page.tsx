@@ -70,10 +70,14 @@ const Page = async ({ params }: { params: Params }) => {
 					<div className="text-sm text-green-800 my-3">
 						Joined at{" "}
 						<span className="font-extrabold">
-							{format(
-								parseISO(tutorStats.registered_tutor_at ?? "NA"),
+							{
+								tutorStats.registered_tutor_at 
+								? format(
+								parseISO(tutorStats.registered_tutor_at),
 								"yyyy MMMM dd",
-							) ?? "NA"}
+							)
+							: "NA"
+							}
 						</span>
 					</div>
 					<div className="mt-6">

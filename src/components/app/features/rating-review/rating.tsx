@@ -1,6 +1,5 @@
 import React from "react";
 import { Star } from "lucide-react";
-import clsx from "clsx";
 import { cn } from "@/lib/utils";
 
 const Rating = ({
@@ -36,7 +35,8 @@ const Rating = ({
 								? "text-[0.65rem] font-medium text-gray-500 text-center"
 								: "text-xs font-medium text-gray-500 text-center",
 						)}>
-						{rating} / 5
+						{Math.floor(rating * 10) / 10} / 5 
+						{/* truncated */}
 					</p>
 				)}
 			</div>
