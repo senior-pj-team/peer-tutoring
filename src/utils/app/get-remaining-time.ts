@@ -1,14 +1,10 @@
+import { differenceInMilliseconds } from "date-fns";
+
 export const getRemainingTime = (time: string | undefined | null): string => {
-	if (!time) return " - ";
 
-	const now = new Date();
-	const startDateTime = new Date(time);
+	if (!time) return "";
 
-	if (isNaN(startDateTime.getTime())) {
-		return "Invalid time";
-	}
-
-	const diffMs = startDateTime.getTime() - now.getTime();
+	const diffMs = differenceInMilliseconds(time, new Date());
 
 	if (diffMs <= 0) {
 		return "Started";

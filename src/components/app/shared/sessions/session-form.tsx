@@ -2,7 +2,7 @@
 
 import { sessionSchema, SessionSchemaT } from "@/schema/session-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
 
 import {
@@ -21,7 +21,7 @@ import DatePicker from "../date-picker";
 import { addDays, formatDate, parseISO } from "date-fns";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 
 import {
@@ -39,6 +39,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { createSession } from "@/actions/create-session";
@@ -48,6 +49,7 @@ import { useRouter } from "next/navigation";
 import { formatTimeFromTimestamp } from "@/utils/app/get-formatted-time";
 import { LoadingDots } from "../loading-dots";
 import { Switch } from "@/components/ui/switch";
+import LearningMaterials from "./learning-material";
 
 export default function SessionForm({
   data = {
@@ -75,6 +77,7 @@ export default function SessionForm({
     transferred_amount: 0,
     held_until: null,
     paid_out_at: null,
+    learning_materials: []
   },
   isEdit = false,
   toCancel = false,
@@ -101,11 +104,11 @@ export default function SessionForm({
     category_id,
     id: sessionId,
     status,
+    learning_materials
   } = data;
-  
+
   let image: File | null = null;
   const router = useRouter();
-
   const form = useForm<SessionSchemaT>({
     resolver: zodResolver(sessionSchema),
     defaultValues: {
@@ -125,7 +128,16 @@ export default function SessionForm({
       location: location,
       category: category_id.toString(),
       image,
+      learning_materials: typeof(learning_materials)=="string" ? JSON.parse(learning_materials) : (learning_materials ?? [])
     },
+  });
+
+  const { fields, append, remove } = useFieldArray<
+    SessionSchemaT,
+    "learning_materials"
+  >({
+    control: form.control,
+    name: "learning_materials",
   });
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(imageString);
@@ -137,6 +149,9 @@ export default function SessionForm({
   >(null);
   const [isPending, startTransition] = useTransition();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [materialDialogOpen, setMaterialDialogOpen] = useState<boolean>(false);
+  const [materialName, setMaterialName] = useState("");
+  const [materialUrl, setMaterialUrl] = useState("");
 
   const isPaid = form.watch("paid");
 
@@ -148,6 +163,15 @@ export default function SessionForm({
       const objectUrl = URL.createObjectURL(file);
       console.log("to set preview", objectUrl);
       setPreviewUrl(objectUrl);
+    }
+  };
+
+  const handleAddMaterial = () => {
+    if (materialName.trim()) {
+      append({ name: materialName, url: materialUrl });
+      setMaterialName("");
+      setMaterialUrl("");
+      setMaterialDialogOpen(false);
     }
   };
 
@@ -479,6 +503,25 @@ export default function SessionForm({
                 />
               )}
             />
+
+            {/* Learning Materials */}
+            <div className="gap-y-10">
+              <FormLabel className="text-[1rem]">Learning Materials</FormLabel>
+
+              <LearningMaterials fields={fields} remove={remove} isDisable={isDisable}/>
+
+              <Button
+                type="button"
+                onClick={() => setMaterialDialogOpen(true)}
+                variant="outline"
+                size="sm"
+                className="mt-2 w-fit text-xs"
+                disabled={isDisable}
+              >
+                + Add Material
+              </Button>
+            </div>
+
             <FormField
               control={form.control}
               name="date"
@@ -673,6 +716,41 @@ export default function SessionForm({
               )}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Material Add Dialog */}
+      <Dialog open={materialDialogOpen} onOpenChange={setMaterialDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Learning Material</DialogTitle>
+            <DialogDescription>
+              Enter the material details. Only the name will be displayed.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-3 mt-3">
+            <Input
+              placeholder="Material Name"
+              value={materialName}
+              onChange={(e) => setMaterialName(e.target.value)}
+            />
+            <Input
+              placeholder="Material URL"
+              value={materialUrl}
+              onChange={(e) => setMaterialUrl(e.target.value)}
+            />
+          </div>
+
+          <DialogFooter className="mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setMaterialDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleAddMaterial}>OK</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

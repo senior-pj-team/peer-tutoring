@@ -79,7 +79,7 @@ export default function GeneralSessionCard({
 									e.preventDefault();
 									e.stopPropagation();
 
-									router.push(`/tutor-view/${content.tutor?.tutor_id}`);
+									router.push(`/home/tutor-view/${content.tutor?.tutor_id}`);
 								}}>
 								Tutor {content.tutor?.name}
 							</span>

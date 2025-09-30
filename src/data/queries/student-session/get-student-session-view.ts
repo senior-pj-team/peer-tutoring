@@ -1,5 +1,3 @@
-import { addDays, format, parseISO, startOfDay } from "date-fns";
-
 type Params = {
 	columns: string;
 	student_session_id?: number;
@@ -62,7 +60,6 @@ export const getStudentSessionView = async (
 	}
 
 	query = query.order("enrolled_at", { ascending: false });
-	console.log(query, "@@");
 
 	const { data, error } = await query;
 

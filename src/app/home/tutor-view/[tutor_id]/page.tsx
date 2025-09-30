@@ -86,12 +86,6 @@ const Page = async ({ params }: { params: Params }) => {
 							<Mail size={15} />
 							<span className="text-gray-700">{tutorStats.email ?? "NA"}</span>
 						</div>
-						<div className="text-sm flex items-center gap-5 mt-2">
-							<Phone size={15} />
-							<span className="text-gray-700">
-								{tutorStats.phone_number ?? "NA"}
-							</span>
-						</div>
 					</div>
 					{tutorStats.social_links && tutorStats.social_links.length > 0 && (
 						<div className="mt-6 ">

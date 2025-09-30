@@ -66,7 +66,7 @@ export function TransferActionDialog({
 			preview: "Your Payout Has Been Transferred 🎉",
 			title: `Thank you for creating great learning experiences on our platform`,
 			detail: `You should see the funds ${amountRef.current}฿ for Session ${session_name} in your account, depending on your bank’s processing times. If you have any questions or don’t receive the payment within that window, please reach out to our support team.You can log in to your tutor dashboard and go to “Payouts” to check.`,
-			to: "williamkhant4@gmail.com",
+			to: "nwai39771@gmail.com",
 		});
 	}, [tutor_email]);
 
