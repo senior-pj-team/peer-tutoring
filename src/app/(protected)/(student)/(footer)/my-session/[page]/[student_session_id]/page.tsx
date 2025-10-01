@@ -15,6 +15,7 @@ import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollmen
 import { format, formatDate } from "date-fns";
 import GeneralLoading from "@/components/app/shared/general-loading";
 import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
+import { getSessionsbyId } from "@/data/queries/sessions/get-sessions-by-Id";
 
 type Params = Promise<{
 	page: string;
@@ -29,7 +30,7 @@ const Page = async ({ params }: { params: Params }) => {
 	const [session, enrollment_count] = await Promise.all([
 		getStudentSessionView(supabase, {
 			columns:
-				"student_session_id, session_image, session_name, tutor_school, tutor_major, course_code, course_name, tutor_username, tutor_rating,tutor_profile_url, tutor_id,session_status, session_start_time, session_end_time, description, requirement, location, max_students ",
+				"student_session_id, session_image, session_name, tutor_school, tutor_major, course_code, course_name, tutor_username, tutor_rating,tutor_profile_url, tutor_id,session_status, session_start_time, session_end_time, description, requirement, location, max_students, learning_materials",
 			student_session_id: Number(student_session_id),
 		}),
 		getEnrollmentCount(supabase, {
@@ -82,6 +83,7 @@ const Page = async ({ params }: { params: Params }) => {
 		end_time,
 		max_students: sessionData.max_students,
 		enrolled_students: enrollment_count,
+		learning_materials: session[0].learning_materials
 	};
 
 	return (

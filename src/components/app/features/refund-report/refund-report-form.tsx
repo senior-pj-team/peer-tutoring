@@ -162,6 +162,7 @@ const RefundReportForm = ({
 			setDialogOpen(true);
 			if (state.success) {
 				toast.success(`${title} 🎉 request submitted`);
+				setDialogOpen(false);
 				Promise.all([sendResponseEmail(), sendNotification()]);
 			}
 		}
