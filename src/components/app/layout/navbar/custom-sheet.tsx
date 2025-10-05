@@ -68,10 +68,6 @@ export default function CustomSheet({
 						content="My Sessions"
 						url="/my-sessions/upcoming-sessions"
 					/>
-					<ContentItem
-						content="WishList"
-						url="/my-sessions/wishlist-sessions"
-					/>
 					{user.user_role === "student" && (
 						<ContentItem content="Become a tutor" url="/become-tutor" />
 					)}
@@ -140,7 +136,7 @@ function ContentItem({
 				</div>
 
 				{(content_count ?? 0) > 0 &&
-					(content === "WishList" || content === "Notification") && (
+					(content === "Notification") && (
 						<span className=" p-3 bg-orange-500 text-white text-[0.5rem] rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
 							{content_count}
 						</span>

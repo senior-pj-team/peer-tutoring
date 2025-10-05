@@ -67,9 +67,6 @@ export default function ProfileHoverContent({
 				<Link href="/my-sessions/upcoming-sessions">
 					<ContentItem content="My Sessions" />
 				</Link>
-				<Link href="/my-sessions/wishlist-sessions">
-					<ContentItem content="WishList" />
-				</Link>
 				{user.user_role === "student" && (
 					<Link href="/become-tutor">
 						<ContentItem content="Become a tutor" />
@@ -120,8 +117,7 @@ function ContentItem({
 			<div>{content}</div>
 
 			{(content_count ?? 0) > 0 &&
-				(content === "WishList" ||
-					content === "Notification" ||
+				(	content === "Notification" ||
 					content === "Chat") && (
 					<span className=" p-3 bg-orange-500 text-white text-xs rounded-full h-[0.25rem] w-[0.25rem] flex items-center justify-center mx-3">
 						{content_count}

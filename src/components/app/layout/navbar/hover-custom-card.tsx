@@ -26,7 +26,6 @@ export default function HoverCustomCard({
 			</HoverCardTrigger>
 			{content === "Explore" && <ExploreHoverContent />}
 			{content === "MySessions" && ss && <SessionHoverContent ss={ss} />}
-			{/* {content === "WishList" && <SessionHoverContent content="WishList" />} */}
 			{content === "Notification" && (
 				<NotiHoverContent notifications={notifications ?? []} />
 			)}
