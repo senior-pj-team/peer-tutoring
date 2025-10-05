@@ -15,7 +15,7 @@ import {
 import { checkoutEnrollment } from "@/actions/checkout-enrollment";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { getTimeDifference } from "@/utils/app/get-remaining-time";
 import { LoadingDots } from "../../shared/loading-dots";
 
 const initialState: ActionResponseType<TStudentSessionResult> = {
@@ -54,7 +54,7 @@ const EnrollAction = ({
 			setresponseDialogOpen(true);
 		}
 	}, [state, router]);
-	const remainingTime = getRemainingTime(start_time);
+	const remainingTime = getTimeDifference(start_time);
 
 	return (
 		<>

@@ -16,7 +16,7 @@ const SessionPayment = async ({
 
 	const student_session_result = await getStudentSessionView(supabase, {
 		columns:
-			"student_session_id, session_id, student_session_status, session_image, session_name, course_code, course_name, session_start_time, session_end_time, tutor_username, tutor_profile_url, tutor_rating, tutor_id, amount_from_student, amount_to_tutor, enrolled_at",
+			"student_session_id, session_id, student_session_status, session_image, session_name, course_code, course_name, session_start_time, session_end_time, tutor_username, tutor_profile_url, tutor_rating, tutor_id, amount_from_student, amount_to_tutor, enrolled_at, refunded_at, amount_from_stripe",
 		student_session_id,
 	});
 

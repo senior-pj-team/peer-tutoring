@@ -6,7 +6,7 @@ import Rating from "../../features/rating-review/rating";
 import { useRouter } from "next/navigation";
 import { CustomHoverCard } from "./custom-hover-card";
 import { shimmer, toBase64 } from "@/utils/app/shimmer";
-import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { getTimeDifference } from "@/utils/app/get-remaining-time";
 import { cn } from "@/lib/utils";
 import { subHours } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,7 @@ export default function GeneralSessionCard({
 	className?: string;
 }) {
 	const router = useRouter();
-	const remainingTime = getRemainingTime(
+	const remainingTime = getTimeDifference(
 		subHours(content.start_time ?? "", 24).toISOString(),
 	);
 
@@ -111,19 +111,24 @@ export default function GeneralSessionCard({
 										{content.status}
 									</Badge>
 								)}
-								{page !== "admin" && remainingTime == "Started" && (
-									<span className="font-red">Session closed ⌛</span>
-								)}
+								{
+									page !== "admin" &&
+									(
+										remainingTime == "Started" ?
+											<span className="font-red">Session closed ⌛</span>
+											: remainingTime == "Soon" ?
+												<span className="font-red">Closing Soon ⌛</span>
+												: remainingTime !== "Invalid time" &&
+												(
+													<span>
+														<span className=" text-xs font-extrabold text-primary">
+															{remainingTime} left to enroll ⌛
+														</span>{" "}
+													</span>
 
-								{page !== "admin" &&
-									remainingTime !== "Started" &&
-									remainingTime !== "Invalid time" && (
-										<span>
-											<span className=" text-xs font-extrabold text-primary">
-												{remainingTime} left to enroll ⌛
-											</span>{" "}
-										</span>
-									)}
+												)
+									)
+								}
 							</div>
 						</CardHeader>
 					</HoverCardTrigger>

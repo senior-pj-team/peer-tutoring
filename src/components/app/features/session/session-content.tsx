@@ -8,6 +8,8 @@ import {
 	UserMinus2Icon,
 	UserPlus2Icon,
 } from "lucide-react";
+import { Json } from "@/lib/database.types";
+import LearningMaterials from "../../shared/sessions/learning-material";
 
 type TSessionContentData = {
 	description: string | null;
@@ -18,6 +20,7 @@ type TSessionContentData = {
 	end_time: string | null;
 	max_students: number | null;
 	enrolled_students: number;
+	learning_materials: Json
 };
 
 const SessionContent = ({ data }: { data: TSessionContentData }) => {
@@ -30,9 +33,11 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 		end_time,
 		max_students,
 		enrolled_students,
+		learning_materials
 	} = data;
 
 	const remaining_slots = (max_students ?? 0) - (enrolled_students ?? 0);
+
 	return (
 		<div>
 			<div className="max-w-[53rem] p-6 bg-white space-y-6">
@@ -52,6 +57,15 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 						className="mt-3 text-sm text-gray-600 ml-1"
 					/>
 				</div>
+				{
+					typeof(learning_materials) == "string" && (
+						<div>
+					<h2 className="text-lg font-semibold mb-1">📚 Learning Materials</h2>
+					<LearningMaterials fields={JSON.parse(learning_materials)} isDisable={false} />
+				</div>
+						
+					)
+				}
 				<div>
 					<h2 className="text-lg font-semibold mb-1">📍 Location</h2>
 					<Expandable

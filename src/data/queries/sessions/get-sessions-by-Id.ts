@@ -2,13 +2,14 @@ type Params = {
 	session_id?: number;
 	tutor_id?: string;
 	status?: TSessionStatus[];
+	columns?: string 
 };
 
 export async function getSessionsbyId(
 	supabase: TSupabaseClient,
-	{ session_id, tutor_id, status }: Params,
+	{ session_id, tutor_id, status, columns }: Params,
 ): Promise<TSessionsResult[] | null> {
-	let query = supabase.from("sessions").select("*");
+	let query = supabase.from("sessions").select(columns?? "*");
 
 	if (session_id) query = query.eq("id", session_id);
 	if (tutor_id) query = query.eq("tutor_id", tutor_id);
@@ -21,5 +22,5 @@ export async function getSessionsbyId(
 		);
 		return null;
 	}
-	return (data as TSessionsResult[]) ?? null;
+	return (data as unknown as TSessionsResult[]) ?? null;
 }

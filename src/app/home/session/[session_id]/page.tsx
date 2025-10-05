@@ -10,6 +10,7 @@ import GeneralError from "@/components/app/shared/error";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 import { format, formatDate } from "date-fns";
 import GeneralLoading from "@/components/app/shared/general-loading";
+import { getSessionsbyId } from "@/data/queries/sessions/get-sessions-by-Id";
 
 type Params = Promise<{
 	session_id: string;
@@ -20,12 +21,13 @@ const Page = async ({ params }: { params: Params }) => {
 
 	const supabase = await createClient();
 
-	const [sessionData, enrollment_count] = await Promise.all([
+	const [sessionData, enrollment_count, sessions] = await Promise.all([
 		getSessionMatViewbyId(supabase, Number(session_id)),
 		await getEnrollmentCount(supabase, {
 			session_id: Number(session_id),
 			ss_status: ["enrolled", "pending_refund", "completed", "paid"],
 		}),
+		getSessionsbyId(supabase, { session_id: Number(session_id), columns: "learning_materials" })
 	]);
 
 	if (!sessionData || (!enrollment_count && enrollment_count !== 0)) {
@@ -69,6 +71,7 @@ const Page = async ({ params }: { params: Params }) => {
 		end_time,
 		max_students: sessionData.max_students,
 		enrolled_students: enrollment_count,
+		learning_materials: sessions ? sessions[0]["learning_materials"] : "[]"
 	};
 
 	return (

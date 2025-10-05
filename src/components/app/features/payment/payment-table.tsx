@@ -3,6 +3,7 @@
 import { formatDate, parseISO } from "date-fns";
 
 const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
+	console.log("data: ", data)
 	return (
 		<div className="mt-6 overflow-x-auto">
 			<div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">

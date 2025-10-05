@@ -32,6 +32,7 @@ const RefundStatus = async ({ ssId }: { ssId: number }) => {
 		return (
 			<div className="text-sm text-gray-500">No refund request found.</div>
 		);
+
 	const refund_report = data[0];
 	const status = refund_report.status ?? "pending";
 	const current = statusMap[status] || statusMap.pending;
@@ -60,6 +61,17 @@ const RefundStatus = async ({ ssId }: { ssId: number }) => {
 
 			<p className="text-sm mt-1">Reason: {reason}</p>
 			<p className="text-sm text-gray-500">Date: {createdDate}</p>
+
+			{refund_report.receipt && refund_report.status == "approved" && (
+				<div className="mt-3">
+					<p className="text-sm font-medium">Refund Slip:</p>
+					<img
+						src={refund_report.receipt}
+						alt="Refund slip"
+						className="mt-1 rounded-lg border max-w-xs"
+					/>
+				</div>
+			)}
 		</>
 	);
 };

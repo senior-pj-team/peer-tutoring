@@ -8,6 +8,5 @@ export async function getTutorCounts() {
 		console.error("Error fetching tutor counts:", error.message);
 		return null;
 	}
-
 	return data;
 }

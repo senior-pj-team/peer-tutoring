@@ -17,6 +17,5 @@ export async function getamountSummaries(
 		console.log("Error in get ammount summaries: ", error);
 		return null;
 	}
-	console.log(data);
 	return data as TAmountSummaries;
 }

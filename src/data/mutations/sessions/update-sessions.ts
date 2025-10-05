@@ -53,6 +53,9 @@ export const updateSession = async (
 		updateData.category_id = Number(values.category);
 	if (values?.paid !== undefined)
 		updateData.price = values.paid ? (values.amount ?? 0) : 0;
+	if(values?.learning_materials != undefined){
+		updateData.learning_materials= JSON.stringify(values.learning_materials);
+	}
 	if (tutor_id !== undefined) updateData.tutor_id = tutor_id;
 	if (status !== undefined) updateData.status = status;
 	if (paid_out_at !== undefined) updateData.paid_out_at = paid_out_at;

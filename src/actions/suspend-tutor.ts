@@ -39,7 +39,7 @@ export const suspendTutor = async (
   const { error: enqueueError } = await supabase.rpc("pgmq_enqueue", {
     queue_name,
     message,
-    delay_seconds: 0,
+    delay_seconds,
   });
 
   if (enqueueError) {
