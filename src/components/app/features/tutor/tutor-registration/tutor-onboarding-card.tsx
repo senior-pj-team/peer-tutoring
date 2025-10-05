@@ -69,14 +69,14 @@ export default function TutorOnboardingCard({
 		const title = `Your tutor registration request ${currentAction == "approve" ? "approved" : "rejected"}.`;
 		const detail =
 			currentAction == "approve"
-				? "Congratulations you have been approved as a tutor at Orion. Please comply with the terms and conditions as a tutor"
+				? "Congratulations you have been approved as a tutor at Peertube. Please comply with the terms and conditions as a tutor"
 				: "Sorry, your tutor registration request has been rejected";
 		const preview = `Tutor registration ${currentAction == "approve" ? "approved" : "rejected"}`;
 		await sendEmail({
 			preview,
 			title,
 			detail,
-			to: "williamkhant4@gmail.com", //user.email,
+			to: request.user.email, //user.email,
 		});
 	}, []);
 

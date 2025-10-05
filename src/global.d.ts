@@ -21,12 +21,6 @@ declare global {
 		tutor_rating: number | null;
 	};
 
-	type TSessionsMatViewResultRow = Omit<
-		DB["public"]["Views"]["session_tutor_mat_view"]["Row"],
-		"tutor"
-	> & {
-		tutor: TTutor | null;
-	};
 
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
@@ -97,8 +91,6 @@ declare global {
 			};
 		};
 	} | null;
-
-	type;
 
 	type TBankInfoJoinTutorResult = TBankInfoResult & {
 		user: TUser;
@@ -171,10 +163,7 @@ declare global {
 		rating: number;
 		count: number;
 	};
-	type TRatingStat = {
-		rating: number;
-		count: number;
-	};
+	
 	type TChat = {
 		chat_uuid: string;
 		chat_name: string;

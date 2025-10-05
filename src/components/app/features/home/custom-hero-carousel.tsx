@@ -53,7 +53,7 @@ export default function CustomHeroCarousel() {
 					image={true}
 				/>
 				<Item
-					cardTitle="Build your tutor career with Orion!"
+					cardTitle="Build your tutor career with Peertube!"
 					cardText={
 						<span className="text-gray-600 text-md leading-5.5">
 							You want become to help other students and get experience. Say

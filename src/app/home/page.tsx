@@ -17,7 +17,7 @@ export default function Home() {
 		<div className="py-10 px-5 w-full">
 			<div
 				className={`text-3xl font-extrabold ${roboto_mono.className} antialiased`}>
-				Welcome to ORION
+				Welcome to Peertube
 			</div>
 			<div className="xl:min-h-[24rem] lg:min-h-[20rem] min-h-[24rem] ">
 				<CustomHeroCarousel />

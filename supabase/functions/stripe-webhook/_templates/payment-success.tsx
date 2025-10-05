@@ -19,7 +19,7 @@ export const PaymentSuccessfulEmail = ({
 	price,
 	purchaseDate,
 	sessionStartTime,
-	supportEmail = "support@orion.com",
+	supportEmail = "support@peertube.digital",
 	appUrl = "https://localhost:3000/home",
 }: {
 	sessionImage: string | null;
@@ -54,7 +54,7 @@ export const PaymentSuccessfulEmail = ({
 					marginTop: "30px",
 					padding: "0px 0 50px",
 				}}>
-				{/* Orion Header */}
+				{/* Peertube Header */}
 				<Container
 					style={{
 						backgroundColor: "#f97316",
@@ -68,7 +68,7 @@ export const PaymentSuccessfulEmail = ({
 							color: "#ffffff",
 							lineHeight: "1.2",
 						}}>
-						Orion
+						Peertube
 					</Heading>
 				</Container>
 
@@ -195,7 +195,7 @@ export const PaymentSuccessfulEmail = ({
 							textDecoration: "none",
 							display: "inline-block",
 						}}>
-						Explore Orion
+						Explore Peertube
 					</Button>
 				</Container>
 

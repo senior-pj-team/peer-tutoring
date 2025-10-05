@@ -27,7 +27,6 @@ async function getNotificationPermissionAndToken() {
 			return await getFcmToken();
 		}
 	}
-
 	console.info("Notification permission is denied");
 	return null;
 }

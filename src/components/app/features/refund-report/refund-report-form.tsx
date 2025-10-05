@@ -28,6 +28,7 @@ import { insertNotification } from "@/data/mutations/notification/insert-notific
 import { useSupabase } from "@/hooks/use-supabase";
 import { toast } from "sonner";
 import { LoadingDots } from "../../shared/loading-dots";
+import { useAuth } from "@/components/providers/auth-provider";
 
 const initialState: ActionResponseType<string> = {
 	success: false,
@@ -75,6 +76,7 @@ const RefundReportForm = ({
 	);
 
 	const type = isReport ? (check ? "refund and report" : "report") : "refund";
+	const user = useAuth()
 
 	const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCheck(e.target.checked);
@@ -100,7 +102,7 @@ const RefundReportForm = ({
 	};
 
 	const sendResponseEmail = useCallback(async () => {
-		if (!state.success) return;
+		if (!state.success || !user.user?.email) return;
 
 		let title = "";
 		let detail = "";
@@ -130,7 +132,7 @@ const RefundReportForm = ({
 			preview,
 			title,
 			detail,
-			to: "williamkhant4@gmail.com",
+			to: user.user?.email,
 		});
 	}, [state.success, type]);
 	let title = "";

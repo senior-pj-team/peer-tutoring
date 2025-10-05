@@ -11,10 +11,10 @@ export function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Reduced gap from gap-12 → gap-8 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* ORION (Brand Section) */}
+          {/* Peertube (Brand Section) */}
           <div className="space-y-4 relative flex flex-col justify-between">
             <h3 className="text-2xl font-extrabold text-white tracking-tight">
-              ORION
+              Peertube
             </h3>
             <p className="text-gray-300 text-sm leading-relaxed max-w-xs">
               Tutoring for students, from students. Personalized learning at
@@ -140,11 +140,11 @@ export function Footer() {
             <ul className="space-y-2 text-gray-300 text-sm">
               <li>
                 <a
-                  href="mailto:support@orion.com"
+                  href="mailto:support@peertube.digital"
                   className="hover:text-white flex items-center space-x-2"
                 >
                   <span>📧</span>
-                  <span>support@orion.com</span>
+                  <span>support@peertube.digital</span>
                 </a>
               </li>
               <li>
@@ -166,7 +166,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
               <p className="text-gray-400 text-xs font-medium">
-                © 2025 ORION. All rights reserved.
+                © 2025 Peertube. All rights reserved.
               </p>
               <div className="flex space-x-6">
                 <Link

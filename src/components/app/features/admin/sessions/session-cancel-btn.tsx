@@ -54,7 +54,7 @@ export function SessionCancelBtn({
 			preview: "Session canceled ⚠️",
 			title: `Your ${session_name} session has been canceled`,
 			detail: `Unfortunenately, your ${session_name} session has been canceled by admin team due to inappropriate or false information. Please content to our admin team for furthur inquiry for this issue.`,
-			to: "nwai39771@gmail.com",
+			to: tutor_email,
 		});
 	}, [tutor_email]);
 	const sendNotification = useCallback(async () => {

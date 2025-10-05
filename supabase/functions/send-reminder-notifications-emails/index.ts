@@ -125,7 +125,7 @@ Deno.serve(async (req) => {
 			await Promise.all(
 				notifications.map((n) =>
 					resend.emails.send({
-						from: "welcome <onboarding@resend.dev>",
+						from: "admin <support@peertube.digital>",
 						to: ["williamkhant4@gmail.com"],
 						subject:
 							topic === "send reminder"
@@ -163,7 +163,7 @@ Deno.serve(async (req) => {
 			);
 
 			await resend.emails.send({
-				from: "welcome <onboarding@resend.dev>",
+				from: "admin <support@peertube.digital>>",
 				to: ["williamkhant4@gmail.com"],
 				subject: "Session Canceled — But Don't Worry, You're Still Awesome 💫",
 				html: email_template,

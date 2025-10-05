@@ -18,7 +18,7 @@ export const RefundEmail = ({
 	sessionName,
 	price,
 	purchaseDate,
-	supportEmail = "support@orion.com",
+	supportEmail = "support@peertube.digital",
 	appUrl = "https://localhost:3000/home",
 }: {
 	sessionImage: string | null;
@@ -53,7 +53,7 @@ export const RefundEmail = ({
 					marginTop: "30px",
 					padding: "0px 0 50px",
 				}}>
-				{/* Orion Header */}
+				{/* Peertube Header */}
 				<Container
 					style={{
 						backgroundColor: "#f97316",
@@ -67,7 +67,7 @@ export const RefundEmail = ({
 							color: "#ffffff",
 							lineHeight: "1.2",
 						}}>
-						Orion
+						Peertube
 					</Heading>
 				</Container>
 
@@ -178,10 +178,10 @@ export const RefundEmail = ({
 						color: "#333333",
 						fontWeight: 800,
 					}}>
-					Your payment is received by Orion. Though, we could not successfully
+					Your payment is received by Peertube. Though, we could not successfully
 					process your enrollment due to mutiple simultaneous enrollments. We
 					are deeply sorry and we will refund to you within 5 to 7 business
-					days. If you have not set up payment info in Orion, please set up so
+					days. If you have not set up payment info in Peertube, please set up so
 					that we can refund to you in a jit.
 				</Text>
 
@@ -198,7 +198,7 @@ export const RefundEmail = ({
 							textDecoration: "none",
 							display: "inline-block",
 						}}>
-						Explore Orion
+						Explore Peertube
 					</Button>
 				</Container>
 

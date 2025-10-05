@@ -49,7 +49,7 @@ export default function AppSideBar({
 							asChild
 							className="data-[slot=sidebar-menu-button]:!p-1.5">
 							<Link href="#">
-								<span className="font-semibold text-2xl text-white">Orion</span>
+								<span className="font-semibold text-2xl text-white">Peertube</span>
 							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>

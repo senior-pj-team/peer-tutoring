@@ -6,7 +6,7 @@ export default function LoginPage() {
 		<div className="grid min-h-screen lg:grid-cols-2">
 			<div className="flex flex-col gap-6 p-6 md:p-10">
 				<div className="flex justify-center gap-2 md:justify-start">
-					<div className="font-bold text-3xl cursor-pointer">Orion</div>
+					<div className="font-bold text-3xl cursor-pointer">Peertube</div>
 				</div>
 
 				<div className="flex flex-1 items-center justify-center">

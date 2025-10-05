@@ -15,7 +15,7 @@ export const EmailTemplate = ({
 	preview,
 	title,
 	detail,
-	supportEmail = "support@orion.com",
+	supportEmail = "support@peertube.digital",
 	appUrl = "https://localhost:3000/home",
 }: {
 	preview: string;
@@ -61,7 +61,7 @@ export const EmailTemplate = ({
 							color: "#ffffff",
 							lineHeight: "1.2",
 						}}>
-						Orion
+						Peertube
 					</Heading>
 				</Container>
 
@@ -163,7 +163,7 @@ export const EmailTemplate = ({
 							textDecoration: "none",
 							display: "inline-block",
 						}}>
-						Visit Orion
+						Visit Peertube
 					</Button>
 				</Container>
 

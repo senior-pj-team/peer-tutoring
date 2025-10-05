@@ -115,13 +115,13 @@ export default function GeneralSessionCard({
 									page !== "admin" &&
 									(
 										remainingTime == "Started" ?
-											<span className="font-red">Session closed ⌛</span>
+											<span className="text-xs font-extrabold text-primary">Session closed ⌛</span>
 											: remainingTime == "Soon" ?
-												<span className="font-red">Closing Soon ⌛</span>
+												<span className="text-xs font-extrabold text-primary">Closing Soon ⌛</span>
 												: remainingTime !== "Invalid time" &&
 												(
 													<span>
-														<span className=" text-xs font-extrabold text-primary">
+														<span className="text-xs font-extrabold text-primary">
 															{remainingTime} left to enroll ⌛
 														</span>{" "}
 													</span>

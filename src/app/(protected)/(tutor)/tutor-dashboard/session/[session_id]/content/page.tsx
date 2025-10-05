@@ -5,7 +5,7 @@ import GeneralError from "@/components/app/shared/error";
 import React from "react";
 import { getEnrollmentCount } from "@/data/queries/student-session/get-enrollment-count";
 
-const page = async ({ params }: { params: { session_id: string } }) => {
+const page = async ({ params }: { params: Promise<{ session_id: string }> }) => {
 	const { session_id } = await params;
 	const supabase = await createClient();
 	const session = await getSessionsbyId(supabase, {

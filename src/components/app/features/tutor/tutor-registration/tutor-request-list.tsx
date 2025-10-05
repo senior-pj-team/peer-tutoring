@@ -16,7 +16,6 @@ export default function TutorRequestList() {
 	} = useInfiniteTutorRequests();
 
 	const requests = data?.pages.flat() || [];
-	console.log("onboarding tutors: " ,requests);
 	if (isLoading) return <p>Loading...</p>;
 	if (isError) return <p>Something went wrong loading tutor requests.</p>;
 

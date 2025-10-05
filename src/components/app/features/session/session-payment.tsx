@@ -25,7 +25,7 @@ const SessionPayment = async ({
 	return (
 		<div className="p-6 ">
 			<div>
-				<h3 className="text-xl font-semibold mt-2">Orion</h3>
+				<h3 className="text-xl font-semibold mt-2">Peertube</h3>
 				<div className="flex flex-col text-gray-700 text-sm mt-2">
 					<span>No. 133 Tha Sut, Amphoe Mueang Chiang Rai</span>
 					<span>Chang Wat Chiang Rai</span>

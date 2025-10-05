@@ -63,16 +63,16 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 				},
 			)}>
 			<div className="flex items-center justify-between w-full">
-				<div className="flex gap-x-5 justify-around w-full md:w-[8rem] lg:w-[12rem] items-center">
+				<div className="flex gap-x-2 justify-around w-full md:w-[10rem] lg:w-[14rem] items-center">
 					<div className="md:hidden  flex items-center">
 						<button
 							onClick={() => setShowMobileSearch((prev) => !prev)}
 							className="text-gray-700 hover:text-orange-400 bg-transparent">
 							<Search size={22} />
 						</button>
-					</div>{" "}
+					</div>
 					<Link href="/home">
-						<div className="font-bold text-3xl cursor-pointer">Orion</div>
+						<div className="font-bold text-3xl cursor-pointer">Peertube</div>
 					</Link>
 					{user ? (
 						<div className="pt-2">

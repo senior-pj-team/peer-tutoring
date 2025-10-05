@@ -25,7 +25,7 @@ export async function sendEmail({
 			await render(EmailTemplate({ preview, title, detail })),
 		);
 		const { error } = await resend.emails.send({
-			from: "welcome <onboarding@resend.dev>",
+			from: "admin <support@peertube.digital>",
 			to: [to],
 			subject: preview,
 			html,
