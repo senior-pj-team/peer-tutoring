@@ -102,7 +102,7 @@ const SessionCard = ({
 		ss_status == "enrolled" ? getRemainingTime(start_time) : undefined;
 	const router = useRouter();
 	const supabase = useSupabase();
-	const {
+	let {
 		data: enrollments,
 		isLoading: enrollment_loading,
 		isError: enrollment_error,
@@ -112,11 +112,16 @@ const SessionCard = ({
 		["enrolled", "completed", "paid"],
 		enabled,
 	);
-	const {
+	let {
 		data: churneds,
 		isLoading: churneds_loading,
 		isError: churneds_error,
 	} = useEnrollmentCount(session_id ?? 0, supabase, ["refunded"], enabled);
+
+	if (!enabled) {
+		enrollments = null;
+		churneds = null;
+	}
 
 	const handleCardClick = () => {
 		if (page === "browse") return router.push(`/home/session/${session_id}`);
@@ -241,7 +246,7 @@ const SessionCard = ({
 							</div>
 							<div className="text-xs underline me-3">
 								<Link
-									href={`/tutor-view/${tutor_id}`}
+									href={`/home/tutor-view/${tutor_id}`}
 									onClick={(e) => e.stopPropagation()}>
 									{username ?? "Unknown tutor"}
 								</Link>

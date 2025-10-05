@@ -29,11 +29,10 @@ export function TransferActionDialog({
 	tutor_email,
 	start,
 	end,
-	amount,
 }: Params) {
 	const [isPending, startTransition] = useTransition();
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
-	const amountRef = useRef<number | null>(amount ?? null);
+	const amountRef = useRef<number | null>(null);
 	const supabase = useSupabase();
 	const queryClient = useQueryClient();
 	async function onSubmit(values: TApproveRefundTransferSchema) {
@@ -93,9 +92,9 @@ export function TransferActionDialog({
 				isPending={isPending}
 				onSubmit={onSubmit}
 				openDialog={openDialog}
-				setopenDialog={setOpenDialog}
+				setOpenDialog={setOpenDialog}
 				dialogTitle="Transfer Money To Tutor"
-				content={{ session_id, session_name, tutor_id, tutor_name, amount }}
+				content={{ session_id, session_name, tutor_id, tutor_name }}
 			/>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { getSumAmountToTutor } from "@/data/queries/student-session/get-sum-amount-to-tutor";
+import { getamountSummaries } from "@/data/queries/student-session/get-amount-summaries";
 import { useQuery } from "@tanstack/react-query";
 
 export function useSumAmountToTutorQuery(
@@ -9,7 +9,7 @@ export function useSumAmountToTutorQuery(
 	return useQuery({
 		queryKey: ["amount_to_tutor", session_id],
 		queryFn: async () => {
-			const result = await getSumAmountToTutor(supabase, session_id);
+			const result = await getamountSummaries(supabase, { session_id });
 			if (!result || result.length < 1)
 				throw Error(`Error fetching amount to tutor for: ${session_id}`);
 			return result;

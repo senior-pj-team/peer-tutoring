@@ -22,6 +22,7 @@ export async function getSessionsJoin(
 		held_until,
 		paid_out_at,
 		payment_evidence,
+		transferred_amount,
 		tutor:user!tutor_id!inner(
 			id,
 			profile_url,
@@ -35,8 +36,6 @@ export async function getSessionsJoin(
 	if (dateFilterCol && start && end) {
 		query = query.gte(`${dateFilterCol}`, start).lt(`${dateFilterCol} `, end);
 	}
-	console.log("hello");
-	console.log(offset, limit);
 	if (typeof offset === "number" && typeof limit === "number") {
 		query = query.range(offset, offset + limit - 1);
 	}

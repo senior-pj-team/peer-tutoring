@@ -67,7 +67,6 @@ export function useStudentSessionViewWithCount({
 	if (dateFilter && dateFilter.from && dateFilter.to) {
 		dateRange = getDateRange(dateFilter);
 	}
-	console.log("Hook called", datesAreValid);
 	return useQuery({
 		queryKey: [key, search, status, dateFilter, dateFilterCol, page, limit],
 		queryFn: async (): Promise<{

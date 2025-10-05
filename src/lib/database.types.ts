@@ -7,6 +7,11 @@ export type Json =
 	| Json[];
 
 export type Database = {
+	// Allows to automatically instantiate createClient with right options
+	// instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+	__InternalSupabase: {
+		PostgrestVersion: "12.2.3 (519615d)";
+	};
 	public: {
 		Tables: {
 			bank_info: {
@@ -436,6 +441,7 @@ export type Database = {
 					held_until: string | null;
 					id: number;
 					image: string | null;
+					learning_materials: Json;
 					location: string;
 					major: string | null;
 					max_students: number;
@@ -462,6 +468,7 @@ export type Database = {
 					held_until?: string | null;
 					id?: number;
 					image?: string | null;
+					learning_materials?: Json;
 					location: string;
 					major?: string | null;
 					max_students: number;
@@ -488,6 +495,7 @@ export type Database = {
 					held_until?: string | null;
 					id?: number;
 					image?: string | null;
+					learning_materials?: Json;
 					location?: string;
 					major?: string | null;
 					max_students?: number;
@@ -556,7 +564,6 @@ export type Database = {
 					amount_to_tutor: number | null;
 					created_at: string;
 					id: number;
-					refunded_amount: number | null;
 					refunded_at: string | null;
 					service_fees: number | null;
 					session_id: number;
@@ -571,7 +578,6 @@ export type Database = {
 					amount_to_tutor?: number | null;
 					created_at?: string;
 					id?: number;
-					refunded_amount?: number | null;
 					refunded_at?: string | null;
 					service_fees?: number | null;
 					session_id: number;
@@ -586,7 +592,6 @@ export type Database = {
 					amount_to_tutor?: number | null;
 					created_at?: string;
 					id?: number;
-					refunded_amount?: number | null;
 					refunded_at?: string | null;
 					service_fees?: number | null;
 					session_id?: number;
@@ -815,6 +820,7 @@ export type Database = {
 					description: string | null;
 					enrolled_at: string | null;
 					held_until: string | null;
+					learning_materials: Json | null;
 					location: string | null;
 					major: string | null;
 					max_students: number | null;
@@ -864,22 +870,23 @@ export type Database = {
 			};
 			get_amount_summaries: {
 				Args: {
+					p_end_date?: string;
 					p_session_id?: number;
 					p_start_date?: string;
-					p_end_date?: string;
 				};
 				Returns: {
-					sum_revenue: number;
-					sum_refunded: number;
+					sum_amount_from_student: number;
 					sum_amount_to_tutor: number;
+					sum_refunded: number;
+					sum_revenue: number;
 				}[];
 			};
 			get_chat_list: {
 				Args: { user_id: string };
 				Returns: {
-					chat_uuid: string;
 					chat_name: string;
 					chat_profile_url: string;
+					chat_uuid: string;
 					last_message: string;
 					last_sent_at: string;
 				}[];
@@ -930,8 +937,8 @@ export type Database = {
 			get_rating_stats: {
 				Args: { tid: string };
 				Returns: {
-					rating: number;
 					count: number;
+					rating: number;
 				}[];
 			};
 			get_tutor_counts: {
@@ -945,52 +952,53 @@ export type Database = {
 			get_tutor_session_stats: {
 				Args: { p_tutor_id: string };
 				Returns: {
-					upcoming_sessions: number;
-					completed_sessions: number;
-					archived_sessions: number;
 					all_sessions: number;
-					enrollments_for_upcoming_sessions: number;
-					churned_for_upcoming_sessions: number;
-					enrollments_for_completed_sessions: number;
-					churned_for_completed_sessions: number;
-					enrollments_for_archived_sessions: number;
-					churned_for_archived_sessions: number;
-					enrollments_for_all_sessions: number;
+					archived_sessions: number;
 					churned_for_all_sessions: number;
+					churned_for_archived_sessions: number;
+					churned_for_completed_sessions: number;
+					churned_for_upcoming_sessions: number;
+					completed_sessions: number;
+					enrollments_for_all_sessions: number;
+					enrollments_for_archived_sessions: number;
+					enrollments_for_completed_sessions: number;
+					enrollments_for_upcoming_sessions: number;
+					upcoming_sessions: number;
 				}[];
 			};
 			get_tutors_with_stats: {
 				Args: {
 					p_filter_tutor_id?: string;
-					p_min_rating?: number;
-					p_search_text?: string;
-					p_offset?: number;
 					p_limit?: number;
+					p_min_rating?: number;
+					p_offset?: number;
+					p_search_text?: string;
 				};
 				Returns: {
-					tutor_id: string;
-					profile_url: string;
-					username: string;
-					email: string;
-					tutor_rating: number;
-					school: string;
-					major: string;
-					year: string;
-					registered_tutor_at: string;
-					bio_highlight: string;
-					social_links: Json;
-					biography: string;
-					phone_number: string;
-					tutor_status: Database["public"]["Enums"]["tutor_status"];
-					suspend_until: string;
-					bank_name: string;
 					account_name: string;
 					account_number: string;
 					account_type: Database["public"]["Enums"]["bank_account_type"];
+					bank_name: string;
+					bio_highlight: string;
+					biography: string;
+					email: string;
+					major: string;
+					phone_number: string;
+					profile_url: string;
+					registered_tutor_at: string;
+					rep: number;
+					school: string;
+					social_links: Json;
+					suspend_until: string;
+					total_review_count: number;
 					total_session_count: number;
 					total_student_count: number;
-					total_review_count: number;
+					tutor_id: string;
+					tutor_rating: number;
+					tutor_status: Database["public"]["Enums"]["tutor_status"];
+					username: string;
 					warning_count: number;
+					year: string;
 				}[];
 			};
 			get_unread_message_count: {
@@ -1002,7 +1010,7 @@ export type Database = {
 				Returns: Json;
 			};
 			pgmq_enqueue: {
-				Args: { queue_name: string; message: Json; delay_seconds?: number };
+				Args: { delay_seconds?: number; message: Json; queue_name: string };
 				Returns: undefined;
 			};
 			process_expire_payment_jobs: {
@@ -1015,18 +1023,18 @@ export type Database = {
 			};
 			select_session_tutor_mat_view: {
 				Args: {
+					categories?: string[];
+					free_only?: boolean;
+					limit_count?: number;
+					max_price?: number;
+					min_price?: number;
+					offset_count?: number;
+					p_start_today?: boolean;
+					paid_only?: boolean;
+					s_status?: string[];
 					search_text?: string;
 					tutor_id?: string;
 					tutor_rating?: number;
-					categories?: string[];
-					free_only?: boolean;
-					paid_only?: boolean;
-					min_price?: number;
-					max_price?: number;
-					s_status?: string[];
-					p_start_today?: boolean;
-					limit_count?: number;
-					offset_count?: number;
 				};
 				Returns: Database["public"]["CompositeTypes"]["session_tutor_mat_view_result"];
 			};
@@ -1034,12 +1042,12 @@ export type Database = {
 				Args: { p_session_id?: number; p_tutor_id?: string };
 				Returns: {
 					holding: number;
-					refunded: number;
 					paid: number;
+					refunded: number;
 				}[];
 			};
 			update_session_status: {
-				Args: { session_id: number; new_status: string };
+				Args: { new_status: string; session_id: number };
 				Returns: undefined;
 			};
 		};
@@ -1085,21 +1093,28 @@ export type Database = {
 	};
 };
 
-type DefaultSchema = Database[Extract<keyof Database, "public">];
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<
+	keyof Database,
+	"public"
+>];
 
 export type Tables<
 	DefaultSchemaTableNameOrOptions extends
 		| keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-		| { schema: keyof Database },
+		| { schema: keyof DatabaseWithoutInternals },
 	TableName extends DefaultSchemaTableNameOrOptions extends {
-		schema: keyof Database;
+		schema: keyof DatabaseWithoutInternals;
 	}
-		? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-				Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+		? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+				DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
 		: never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-	? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-			Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+	schema: keyof DatabaseWithoutInternals;
+}
+	? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+			DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
 			Row: infer R;
 		}
 		? R
@@ -1117,14 +1132,16 @@ export type Tables<
 export type TablesInsert<
 	DefaultSchemaTableNameOrOptions extends
 		| keyof DefaultSchema["Tables"]
-		| { schema: keyof Database },
+		| { schema: keyof DatabaseWithoutInternals },
 	TableName extends DefaultSchemaTableNameOrOptions extends {
-		schema: keyof Database;
+		schema: keyof DatabaseWithoutInternals;
 	}
-		? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+		? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
 		: never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-	? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+	schema: keyof DatabaseWithoutInternals;
+}
+	? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
 			Insert: infer I;
 		}
 		? I
@@ -1140,14 +1157,16 @@ export type TablesInsert<
 export type TablesUpdate<
 	DefaultSchemaTableNameOrOptions extends
 		| keyof DefaultSchema["Tables"]
-		| { schema: keyof Database },
+		| { schema: keyof DatabaseWithoutInternals },
 	TableName extends DefaultSchemaTableNameOrOptions extends {
-		schema: keyof Database;
+		schema: keyof DatabaseWithoutInternals;
 	}
-		? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+		? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
 		: never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-	? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+	schema: keyof DatabaseWithoutInternals;
+}
+	? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
 			Update: infer U;
 		}
 		? U
@@ -1163,14 +1182,16 @@ export type TablesUpdate<
 export type Enums<
 	DefaultSchemaEnumNameOrOptions extends
 		| keyof DefaultSchema["Enums"]
-		| { schema: keyof Database },
+		| { schema: keyof DatabaseWithoutInternals },
 	EnumName extends DefaultSchemaEnumNameOrOptions extends {
-		schema: keyof Database;
+		schema: keyof DatabaseWithoutInternals;
 	}
-		? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+		? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
 		: never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-	? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+	schema: keyof DatabaseWithoutInternals;
+}
+	? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
 	: DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
 		? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
 		: never;
@@ -1178,14 +1199,16 @@ export type Enums<
 export type CompositeTypes<
 	PublicCompositeTypeNameOrOptions extends
 		| keyof DefaultSchema["CompositeTypes"]
-		| { schema: keyof Database },
+		| { schema: keyof DatabaseWithoutInternals },
 	CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-		schema: keyof Database;
+		schema: keyof DatabaseWithoutInternals;
 	}
-		? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+		? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
 		: never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-	? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+	schema: keyof DatabaseWithoutInternals;
+}
+	? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
 	: PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
 		? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
 		: never;

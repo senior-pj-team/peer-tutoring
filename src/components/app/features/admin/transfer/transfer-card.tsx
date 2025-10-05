@@ -82,7 +82,7 @@ export function TransferCard({
 									</AvatarFallback>
 								</Avatar>
 								<div className=" hover:underline cursor-pointer">
-									<Link href={`/tutor-view/${data.tutor.id}`}>
+									<Link href={`/home/tutor-view/${data.tutor.id}`}>
 										<span className="font-bold text-xs">
 											{data.tutor.username ?? "Unknown"}
 										</span>
@@ -106,7 +106,16 @@ export function TransferCard({
 					/>
 				) : (
 					<>
-						<TransferReceiptDialog receipt={data.payment_evidence} />
+						<TransferReceiptDialog
+							receipt={data.payment_evidence}
+							content={{
+								session_id: data.id,
+								session_name: data.session_name,
+								transferred_amount: data.transferred_amount,
+								tutor_id: data.tutor.id,
+								tutor_name: data.tutor.username,
+							}}
+						/>
 					</>
 				)}
 			</div>

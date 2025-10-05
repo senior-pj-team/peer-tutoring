@@ -78,6 +78,8 @@ export function ProfileForm({
 		}
 	};
 	const handleSubmit = async (values: TProfileSchema) => {
+		console.log(previewUrl);
+		console.log(profile_url);
 		try {
 			startTransition(async () => {
 				const response = await updateUserProfile(

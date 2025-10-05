@@ -35,7 +35,7 @@ type Params = {
 	dialogTitle: string;
 	onSubmit: (formValues: TApproveRefundTransferSchema) => Promise<void>;
 	openDialog: boolean;
-	setopenDialog: Dispatch<SetStateAction<boolean>>;
+	setOpenDialog: Dispatch<SetStateAction<boolean>>;
 	type: "refund" | "transfer";
 	content: {
 		session_id: number;
@@ -44,7 +44,6 @@ type Params = {
 		student_name?: string | null;
 		tutor_id: string;
 		tutor_name: string | null;
-		amount?: number | null;
 	};
 	ref?: RefObject<number | null>;
 };
@@ -53,7 +52,7 @@ export function ActionDialog({
 	dialogTitle,
 	onSubmit,
 	openDialog,
-	setopenDialog,
+	setOpenDialog,
 	type,
 	content,
 	ref,
@@ -85,24 +84,28 @@ export function ActionDialog({
 		openDialog,
 	);
 	const enabled_sum_query = type === "transfer" && openDialog ? true : false;
-	const { data: amount_to_tutor } = useSumAmountToTutorQuery(
+	const { data: sums } = useSumAmountToTutorQuery(
 		supabase,
 		content.session_id,
 		enabled_sum_query,
 	);
-	const amount: number | null | undefined =
-		amount_to_tutor && type === "transfer"
-			? amount_to_tutor[0].sum
-			: content.amount;
+	const amount_to_tutor_sums: number | null | undefined =
+		sums && type === "transfer" ? sums[0].sum_amount_to_tutor : null;
 
-	if (ref) ref.current = amount_to_tutor ? amount_to_tutor[0].sum : null;
+	const amount_from_student_sums: number | null | undefined =
+		sums && type === "transfer" ? sums[0].sum_amount_from_student : null;
+
+	const amount_from_stripe_sums: number | null | undefined =
+		sums && type === "transfer" ? sums[0].sum_revenue : null;
+
+	if (ref) ref.current = sums ? sums[0].sum_amount_to_tutor : null;
 
 	const bankInfo = !data ? undefined : data[0];
 
 	return (
 		<div>
 			{/* Approve Dialog */}
-			<Dialog open={openDialog} onOpenChange={setopenDialog}>
+			<Dialog open={openDialog} onOpenChange={setOpenDialog}>
 				<DialogContent
 					className="max-w-md sm:max-w-lg"
 					onOpenAutoFocus={(e) => e.preventDefault()}>
@@ -124,7 +127,7 @@ export function ActionDialog({
 							{content.student_id && (
 								<div className="flex justify-between">
 									<span className="text-gray-600">Student:</span>
-									<Link href={`/student-view/${content.student_id}`}>
+									<Link href={`/home/student-view/${content.student_id}`}>
 										<span className="hover:underline">
 											{content.student_name || "N/A"}
 										</span>
@@ -134,7 +137,7 @@ export function ActionDialog({
 
 							<div className="flex justify-between">
 								<span className="text-gray-600">Tutor:</span>
-								<Link href={`/tutor-view/${content.tutor_id}`}>
+								<Link href={`/home/tutor-view/${content.tutor_id}`}>
 									<span className="hover:underline">
 										{content.tutor_name || "N/A"}
 									</span>
@@ -142,8 +145,22 @@ export function ActionDialog({
 							</div>
 
 							<div className="flex justify-between">
-								<span className="text-gray-600">Amount:</span>
-								<span>{amount || "N/A"}฿</span>
+								<span className="text-gray-600">
+									Total amount to transfer :
+								</span>
+								<span className="font-extrabold">
+									{amount_to_tutor_sums || "N/A"} ฿
+								</span>
+							</div>
+							<div className="flex justify-between">
+								<span className="text-gray-600">
+									Total amount from student :
+								</span>
+								<span>{amount_from_student_sums || "N/A"} ฿</span>
+							</div>
+							<div className="flex justify-between">
+								<span className="text-gray-600">Total amount from stripe:</span>
+								<span>{amount_from_stripe_sums || "N/A"} ฿</span>
 							</div>
 						</div>
 
@@ -241,7 +258,7 @@ export function ActionDialog({
 										type="button"
 										onClick={() => {
 											form.reset();
-											setopenDialog(false);
+											setOpenDialog(false);
 										}}>
 										Cancel
 									</Button>

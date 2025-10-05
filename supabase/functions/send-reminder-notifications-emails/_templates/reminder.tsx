@@ -33,7 +33,9 @@ export const ReminderEmail = ({
 		<Preview>
 			{topic === "send reminders"
 				? "Reminder for upcoming session ⏳"
-				: "Session Completed 🚀"}
+				: topic === "send session complete"
+					? "Session Completed 🚀"
+					: "Session Canceled 🚫"}
 		</Preview>
 
 		<Body
@@ -84,7 +86,9 @@ export const ReminderEmail = ({
 					}}>
 					{topic === "send reminders"
 						? `Reminder for Upcoming Session ${sessionName} ⏳`
-						: `Congrats, ${sessionName} session Completed 🚀`}
+						: topic === "send session complete"
+							? `Congrats, ${sessionName} session completed 🚀`
+							: `Sorry, ${sessionName} session canceled`}
 				</Text>
 
 				<Row style={{ padding: "0 16px 24px" }}>
@@ -107,10 +111,24 @@ export const ReminderEmail = ({
 								</>
 							) : receipent === "student" &&
 							  topic === "send session complete" ? (
-								<></>
-							) : (
-								<></>
-							)}
+								<>
+									High five! 🙌 You’ve just wrapped up another awesome learning
+									session. Your brain got stronger, your skills got sharper, and
+									your tutor is super proud. 💪
+								</>
+							) : receipent === "tutor" && topic === "send session complete" ? (
+								<>
+									Session complete! 🎉 You’ve just helped another student learn,
+									grow, and get one step closer to success — all thanks to your
+									teaching magic. ✨
+								</>
+							) : receipent === "tutor" && topic === "send session cancel" ? (
+								<>
+									Looks like your upcoming session didn’t get any enrollments
+									this time, so we’ve had to cancel it. 😅 No worries though —
+									even the best classes have quiet days!
+								</>
+							) : null}
 						</Text>
 					</Column>
 				</Row>

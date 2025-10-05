@@ -113,6 +113,7 @@ declare global {
 		held_until: string | null;
 		paid_out_at: string | null;
 		payment_evidence: string | null;
+		transferred_amount: number | null;
 		tutor: {
 			id: string;
 			profile_url: string | null;
@@ -134,7 +135,9 @@ declare global {
 		DB["public"]["Functions"]["get_amount_summaries"]["Returns"];
 	type TSumAmountToTutor = {
 		session_id: number;
-		sum: number;
+		amount_to_tutor: number;
+		amount_from_student: number;
+		amount_from_stripe: number;
 	}[];
 	type TMonthlyProfits =
 		DB["public"]["Functions"]["get_monthly_profits"]["Returns"];

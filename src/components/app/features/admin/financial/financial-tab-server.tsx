@@ -66,7 +66,6 @@ export async function FinancialTabServer({
 						tutor_id={tutor_id}
 						tutor_name={tutor_name}
 						tutor_email={tutor_email}
-						amount={amountSummaries[0].sum_amount_to_tutor}
 					/>
 				) : (
 					!amountSummaries && (

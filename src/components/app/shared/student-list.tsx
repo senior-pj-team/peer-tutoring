@@ -76,7 +76,7 @@ const StudentList = async ({
 									</Avatar>
 									<div className="flex flex-col justify-left gap-2 space-y-0">
 										<Link
-											href={`/student-view/${studentSession.student_id}`}
+											href={`/home/student-view/${studentSession.student_id}`}
 											className="flex items-center gap-2 group">
 											<span className="font-medium group-hover:underline">
 												{studentSession.student_username ?? "Unnamed"}
