@@ -23,7 +23,7 @@ const LearningMaterials: React.FC<LearningMaterialsProps> = ({
           <a
             href={field.url}
             className={clsx(
-              "text-sm",
+              "text-sm italic hover:underline",
               isDisable
                 ? "text-orange-300 pointer-events-none"
                 : "text-orange-600 hover:text-orange-700"

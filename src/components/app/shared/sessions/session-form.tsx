@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import TipTap from "../tip-tap";
 import { Button } from "@/components/ui/button";
 import DatePicker from "../date-picker";
-import { addDays, formatDate, parseISO } from "date-fns";
+import { addDays, format, formatDate, parseISO } from "date-fns";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useEffect, useRef, useState, useTransition } from "react";
@@ -46,7 +46,6 @@ import { createSession } from "@/actions/create-session";
 import { editSession } from "@/actions/edit-session";
 import { cancelSession } from "@/actions/cancel-session";
 import { useRouter } from "next/navigation";
-import { formatTimeFromTimestamp } from "@/utils/app/get-formatted-time";
 import { LoadingDots } from "../loading-dots";
 import { Switch } from "@/components/ui/switch";
 import LearningMaterials from "./learning-material";
@@ -119,8 +118,8 @@ export default function SessionForm({
       description,
       requirements: requirement ?? "",
       date: isEdit ? new Date(start_time) : addDays(new Date(), 2),
-      startTime: start_time ? formatTimeFromTimestamp(start_time) : "",
-      endTime: end_time ? formatTimeFromTimestamp(end_time) : "",
+      startTime: start_time ? format(start_time, "HH:mm"): "unknown",
+      endTime: end_time ? format(end_time, "HH:mm") : "unknown",
       maxStudents: max_students ?? "",
       paid: !!price,
       amount: price,

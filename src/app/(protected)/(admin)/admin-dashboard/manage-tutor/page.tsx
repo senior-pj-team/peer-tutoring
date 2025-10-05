@@ -24,7 +24,7 @@ export default async function ManageTutorPage() {
 	const data = await getTutorCounts();
 	if (!data || data.length !== 1) return <GeneralError />;
 	const tutorCounts = data[0];
-
+	
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<div className="p-6 space-y-6">

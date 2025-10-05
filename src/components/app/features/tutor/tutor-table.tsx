@@ -126,7 +126,6 @@ export default function TutorTable() {
 			closeDialog();
 		});
 	};
-
 	return (
 		<div className="space-y-4">
 			<DebounceSearchBar
@@ -141,6 +140,7 @@ export default function TutorTable() {
 						<TableHead className="w-[300px]">Tutor</TableHead>
 						<TableHead>Engagement</TableHead>
 						<TableHead>Warnings</TableHead>
+						<TableHead>Reports</TableHead>
 						<TableHead>Status</TableHead>
 						<TableHead className="text-right"></TableHead>
 						<TableHead className="text-right"></TableHead>
@@ -181,13 +181,16 @@ export default function TutorTable() {
 									</div>
 								</TableCell>
 								<TableCell>
-									<p className="text-sm">⭐ {tutor.tutor_rating}</p>
+									<p className="text-sm">⭐ {Math.round(tutor.tutor_rating*10)/10} </p>
 									<p className="text-xs text-gray-500">
 										{tutor.total_session_count} sessions
 									</p>
 								</TableCell>
 								<TableCell>
 									<p className="text-sm font-medium">{tutor.warning_count}</p>
+								</TableCell>
+								<TableCell>
+									< p className="text-sm font-medium">{tutor.rep}</p>
 								</TableCell>
 								<TableCell>
 									<div className="flex flex-col items-start gap-1">

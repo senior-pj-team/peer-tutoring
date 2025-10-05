@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getTimeAgo } from "@/utils/app/get-time-ago";
+import { getTimeDifference } from "@/utils/app/get-remaining-time";
 import { Trash2 } from "lucide-react";
 
 export function Notification({
@@ -27,7 +27,7 @@ export function Notification({
 				<span className={cn("text-xs text-orange-500 mt-1")}>
 					{
 						<span className="text-xs text-gray-500">
-							{getTimeAgo(noti.created_at)}
+							{getTimeDifference(noti.created_at)}
 						</span>
 					}
 				</span>

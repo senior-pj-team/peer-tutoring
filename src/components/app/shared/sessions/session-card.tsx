@@ -13,7 +13,7 @@ import { Clock, UserRoundCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { getTimeDifference } from "@/utils/app/get-remaining-time";
 import { format, formatDate } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
@@ -99,7 +99,7 @@ const SessionCard = ({
 	const end = format(end_time!, "hh:mm a");
 	const date = formatDate(start_time ?? "NA", "yyyy MMMM dd");
 	const remaining_time =
-		ss_status == "enrolled" ? getRemainingTime(start_time) : undefined;
+		ss_status == "enrolled" ? getTimeDifference(start_time) : undefined;
 	const router = useRouter();
 	const supabase = useSupabase();
 	let {

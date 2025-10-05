@@ -6,7 +6,7 @@ import Rating from "../../features/rating-review/rating";
 import { useRouter } from "next/navigation";
 import { CustomHoverCard } from "./custom-hover-card";
 import { shimmer, toBase64 } from "@/utils/app/shimmer";
-import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { getTimeDifference } from "@/utils/app/get-remaining-time";
 import { cn } from "@/lib/utils";
 import { subHours } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,7 @@ export default function GeneralSessionCard({
 	className?: string;
 }) {
 	const router = useRouter();
-	const remainingTime = getRemainingTime(
+	const remainingTime = getTimeDifference(
 		subHours(content.start_time ?? "", 24).toISOString(),
 	);
 	const keywords = ["hour", "minute", "Soon", "Started"];

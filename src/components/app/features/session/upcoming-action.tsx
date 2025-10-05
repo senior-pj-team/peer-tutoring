@@ -1,6 +1,6 @@
 import React from "react";
 import RefundReportBtn from "../refund-report/refund-report-btn";
-import { getRemainingTime } from "@/utils/app/get-remaining-time";
+import { getTimeDifference } from "@/utils/app/get-remaining-time";
 
 const UpcomingAction = ({
 	start,
@@ -9,7 +9,7 @@ const UpcomingAction = ({
 	start: string | null;
 	ssId: number | null;
 }) => {
-	const remainingTime = getRemainingTime(start);
+	const remainingTime = getTimeDifference(start);
 
 	return (
 		<>
