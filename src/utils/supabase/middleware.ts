@@ -45,7 +45,8 @@ export async function updateSession(request: NextRequest) {
 	} = await supabase.auth.getUser();
 
 	const { pathname } = request.nextUrl;
-
+	console.log("user from middleware: ", user);
+	console.log("path name: ", pathname);
 	if (
 		!user &&
 		!PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"))
