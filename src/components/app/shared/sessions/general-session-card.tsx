@@ -24,7 +24,6 @@ export default function GeneralSessionCard({
 	const remainingTime = getTimeDifference(
 		subHours(content.start_time ?? "", 24).toISOString(),
 	);
-	const keywords = ["hour", "minute", "Soon", "Started"];
 
 	return (
 		<div>
@@ -112,14 +111,24 @@ export default function GeneralSessionCard({
 										{content.status}
 									</Badge>
 								)}
-								{page !== "admin" &&
-									keywords.some((kw) => remainingTime.includes(kw)) && (
-										<div className="flex items-center gap-1 ">
-											<span className="text-[0.75rem] text-red-800 font-bold">
-												{remainingTime} left to enroll
-											</span>
-										</div>
-									)}
+								{
+									page !== "admin" &&
+									(
+										remainingTime == "Started" ?
+											<span className="font-red">Session closed ⌛</span>
+											: remainingTime == "Soon" ?
+												<span className="font-red">Closing Soon ⌛</span>
+												: remainingTime !== "Invalid time" &&
+												(
+													<span>
+														<span className=" text-xs font-extrabold text-primary">
+															{remainingTime} left to enroll ⌛
+														</span>{" "}
+													</span>
+
+												)
+									)
+								}
 							</div>
 						</CardHeader>
 					</HoverCardTrigger>

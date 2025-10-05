@@ -76,7 +76,7 @@ export default function TutorOnboardingCard({
 			preview,
 			title,
 			detail,
-			to: "nwai39771@gmail.com", //user.email,
+			to: "williamkhant4@gmail.com", //user.email,
 		});
 	}, []);
 
@@ -108,7 +108,7 @@ export default function TutorOnboardingCard({
 						<div className="space-y-1">
 							<h3 className="text-lg font-semibold text-gray-900">
 								<Link
-									href={`/student-view/${user.id}`}
+									href={`/home/student-view/${user.id}`}
 									className="hover:underline">
 									{user.username}
 								</Link>

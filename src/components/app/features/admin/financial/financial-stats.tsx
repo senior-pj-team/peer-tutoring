@@ -1,60 +1,29 @@
 "use client";
 
 import FinancialStatsCard from "@/components/app/shared/financial-card";
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectLabel,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+
 import { UseAmountSummariesQuery } from "@/hooks/use-amount-summaries";
 import { useSupabase } from "@/hooks/use-supabase";
-import { getDateRangeWithOptionalEnd } from "@/utils/app/get-date-range";
-import { useMemo, useState } from "react";
+import { getDateRange } from "@/utils/app/get-date-range";
+import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DatePickerWithRange } from "@/components/app/shared/date-range-picker";
 
 export function FinancialStats() {
 	const supabase = useSupabase();
-	const [period, setPeriod] = useState<string>("all time");
-	const dateRange = useMemo(() => {
-		const now = new Date();
-		const dateRange: DateRange = {
-			from:
-				period === "last 30 days"
-					? new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
-					: period === "last 7 days"
-						? new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-						: undefined,
-			to: now,
-		};
-		return getDateRangeWithOptionalEnd(dateRange);
-	}, [period]);
+	const [dateFilter, setDateFilter] = useState<DateRange | undefined>(
+		undefined,
+	);
 	const { data, isError, isLoading } = UseAmountSummariesQuery({
 		supabase,
-		start: dateRange.start_date,
-		end: dateRange.end_date,
+		start: getDateRange(dateFilter).start_date,
+		end: getDateRange(dateFilter).end_date,
 	});
 
 	return (
 		<div>
-			{" "}
-			<Select onValueChange={setPeriod}>
-				<SelectTrigger className="w-[12rem]">
-					<SelectValue placeholder="Select period" />
-				</SelectTrigger>
-				<SelectContent>
-					<SelectGroup>
-						<SelectLabel>Periods</SelectLabel>
-						<SelectItem value="all time">all time</SelectItem>
-						<SelectItem value="last 7 days">Last 7 days</SelectItem>
-						<SelectItem value="last 30 days">Last 30 days</SelectItem>
-					</SelectGroup>
-				</SelectContent>
-			</Select>
+			<DatePickerWithRange date={dateFilter} setDate={setDateFilter} />
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-4 w-full">
 				{isLoading &&
 					Array.from({ length: 4 }).map((_, idx) => (

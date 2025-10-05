@@ -1,6 +1,5 @@
 import React from "react";
 import Tabs from "@/components/app/shared/tabs";
-import { Button } from "@/components/ui/button";
 
 const layout = async ({
 	children,

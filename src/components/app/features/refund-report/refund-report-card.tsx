@@ -267,7 +267,7 @@ export default function RefundReportCard({
 								</Avatar>
 								<div>
 									<p className="text-sm font-medium text-gray-800 hover:underline">
-										<Link href={`/tutor-view/${tutor?.id}`}>
+										<Link href={`/home/tutor-view/${tutor?.id}`}>
 											{tutor?.username ?? "Unknown"}
 										</Link>
 									</p>
@@ -290,7 +290,7 @@ export default function RefundReportCard({
 								</Avatar>
 								<div>
 									<p className="text-sm font-medium text-gray-800 hover:underline">
-										<Link href={`/student-view/${student?.id}`}>
+										<Link href={`/home/student-view/${student?.id}`}>
 											{student?.username ?? "Unknown"}
 										</Link>
 									</p>
@@ -468,7 +468,7 @@ export default function RefundReportCard({
 				isPending={isPending}
 				onSubmit={handleApproveConfirm}
 				openDialog={isApproveDialogOpen}
-				setopenDialog={setIsApproveDialogOpen}
+				setOpenDialog={setIsApproveDialogOpen}
 				dialogTitle="Refund money to student"
 				content={{
 					session_id: data.student_session.session.id,
@@ -477,7 +477,6 @@ export default function RefundReportCard({
 					tutor_name: data.student_session.session.tutor.username,
 					student_id: data.student_session.student.id ?? "",
 					student_name: data.student_session.student.username,
-					amount: data.student_session.amount_from_stripe,
 				}}
 			/>
 		</>

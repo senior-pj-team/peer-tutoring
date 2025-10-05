@@ -39,11 +39,8 @@ export async function updateUserProfile(
 	}
 	const userData = validatedResult.data;
 	const supabase = await createClient();
-	let uploadedUrl: string | null = null;
+	let uploadedUrl: string | null = previewUrl;
 
-	console.log("old or profile_url: ", profile_url);
-	console.log("previewUrl: ", previewUrl);
-	console.log("upload url:, ", userData.profile_url);
 	if (userData.profile_url) {
 		uploadedUrl = await uploadImage(userData.profile_url, supabase, {
 			path: "profile-images/",
@@ -61,6 +58,12 @@ export async function updateUserProfile(
 				imageUrl: profile_url,
 			});
 	}
+
+	if (profile_url && !previewUrl)
+		await deleteImage(supabase, {
+			path: "profile-images/",
+			imageUrl: profile_url,
+		});
 
 	const updateResult = await updateUser(supabase, {
 		userData,

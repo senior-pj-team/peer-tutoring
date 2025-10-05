@@ -75,7 +75,12 @@ export default async function layout({
 	return (
 		<div>
 			<SidebarProvider>
-				<AppSideBar variant="inset" collapsible="icon" menus={menus} />
+				<AppSideBar
+					variant="inset"
+					collapsible="icon"
+					menus={menus}
+					admin={true}
+				/>
 
 				<SidebarInset>
 					<SiteHeader />

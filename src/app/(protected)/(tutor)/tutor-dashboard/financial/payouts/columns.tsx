@@ -52,7 +52,7 @@ export const columns: ColumnDef<TStudentSessionViewResult>[] = [
 					</Avatar>
 
 					<div className="flex flex-col overflow-hidden">
-						<Link href={`/student-view/${row.original.student_id}`}>
+						<Link href={`/home/student-view/${row.original.student_id}`}>
 							<span className="font-medium text-sm text-gray-800 hover:underline truncate max-w-[200px]">
 								{row.original.student_username ?? "-"}
 							</span>

@@ -172,7 +172,7 @@ export default function TutorTable() {
 										</Avatar>
 										<div>
 											<p className="font-medium hover:underline">
-												<Link href={`/tutor-view/${tutor.tutor_id}`}>
+												<Link href={`/home/tutor-view/${tutor.tutor_id}`}>
 													{tutor?.username ?? "Unknown"}
 												</Link>
 											</p>

@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "@/app/(auth)/actions";
 import {
 	Sidebar,
 	SidebarContent,
@@ -13,6 +14,9 @@ import {
 } from "@/components/ui/sidebar";
 import { Book } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { FaSignOutAlt } from "react-icons/fa";
+import { toast } from "sonner";
 
 type Menus = {
 	title: string;
@@ -22,8 +26,17 @@ type Menus = {
 
 export default function AppSideBar({
 	menus,
+	admin,
 	...props
-}: { menus: Menus[] } & React.ComponentProps<typeof Sidebar>) {
+}: { menus: Menus[]; admin?: boolean } & React.ComponentProps<typeof Sidebar>) {
+	async function handleSignOut() {
+		const { error } = await signOut();
+		if (error) {
+			toast("Log out Error!");
+		} else {
+			redirect("/");
+		}
+	}
 	return (
 		<Sidebar
 			collapsible="offcanvas"
@@ -64,12 +77,21 @@ export default function AppSideBar({
 			</SidebarContent>
 			<SidebarFooter className="bg-gray-900">
 				<SidebarMenuItem>
-					<Link href="/home">
-						<SidebarMenuButton className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2">
-							<Book size={18} />
-							<span>Go to Student</span>
+					{admin ? (
+						<SidebarMenuButton
+							className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2"
+							onClick={handleSignOut}>
+							<FaSignOutAlt size={18} />
+							<span>Sign Out</span>
 						</SidebarMenuButton>
-					</Link>
+					) : (
+						<Link href="/home">
+							<SidebarMenuButton className="cursor-pointer text-white hover:bg-gray-700 hover:text-white p-5 mb-2">
+								<Book size={18} />
+								<span>Go to Student</span>
+							</SidebarMenuButton>
+						</Link>
+					)}
 				</SidebarMenuItem>
 			</SidebarFooter>
 		</Sidebar>

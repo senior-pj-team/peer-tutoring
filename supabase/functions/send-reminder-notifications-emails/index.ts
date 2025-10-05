@@ -93,7 +93,7 @@ Deno.serve(async (req) => {
 				.insert(notifications);
 
 			if (insert_noti_error) {
-				throw insert_noti_error;
+				console.log("notification error");
 			}
 
 			const sessionStartTime_date = new Date(start_time);
@@ -103,28 +103,34 @@ Deno.serve(async (req) => {
 				{ month: "short" },
 			)} ${sessionStartTime_date.getFullYear()}`;
 
-			const tutor_email_template = await renderAsync(
-				React.createElement(ReminderEmail, {
-					sessionName: session_name,
-					sessionStartTime: sessionStartTime,
-					receipent: "tutor",
-					type: topic,
-				}),
-			);
-			const student_email_template = await renderAsync(
-				React.createElement(ReminderEmail, {
-					sessionName: session_name,
-					sessionStartTime: sessionStartTime,
-					receipent: "student",
-					type: topic,
-				}),
-			);
+			const [tutor_email_template, student_email_template] = await Promise.all([
+				renderAsync(
+					React.createElement(ReminderEmail, {
+						sessionName: session_name,
+						sessionStartTime: sessionStartTime,
+						receipent: "tutor",
+						type: topic,
+					}),
+				),
+				renderAsync(
+					React.createElement(ReminderEmail, {
+						sessionName: session_name,
+						sessionStartTime: sessionStartTime,
+						receipent: "student",
+						type: topic,
+					}),
+				),
+			]);
+
 			await Promise.all(
 				notifications.map((n) =>
 					resend.emails.send({
 						from: "welcome <onboarding@resend.dev>",
 						to: ["williamkhant4@gmail.com"],
-						subject: "Reminder for upcoming session!",
+						subject:
+							topic === "send reminder"
+								? "Reminder for upcoming session 🚀"
+								: "Another Session Done — You Rock 🌟",
 						html:
 							n.type === "student"
 								? student_email_template
@@ -132,6 +138,36 @@ Deno.serve(async (req) => {
 					}),
 				),
 			);
+		} else if (topic === "send session cancel") {
+			const { session_name, tutor_id } = job.message;
+			const { error: insert_noti_error } = await supabase
+				.from("notification")
+				.insert({
+					title: "Session Canceled",
+					body: `Sorry, ${session_name} session has been due to no enrollments - You can check it in your tutor dashboard`,
+					status: "new",
+					user_id: tutor_id,
+					type: "tutor",
+				});
+
+			if (insert_noti_error) {
+				console.log("notification error");
+			}
+
+			const email_template = await renderAsync(
+				React.createElement(ReminderEmail, {
+					sessionName: session_name,
+					receipent: "tutor",
+					type: topic,
+				}),
+			);
+
+			await resend.emails.send({
+				from: "welcome <onboarding@resend.dev>",
+				to: ["williamkhant4@gmail.com"],
+				subject: "Session Canceled — But Don't Worry, You're Still Awesome 💫",
+				html: email_template,
+			});
 		}
 	}
 

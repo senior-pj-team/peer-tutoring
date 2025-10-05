@@ -1,23 +1,11 @@
 import { differenceInMilliseconds } from "date-fns";
 
 export const getTimeDifference = (time: string | undefined | null): string => {
-	if (!time) return "";
+	if (!time) return "Invalid time";
 	const diffMs = differenceInMilliseconds(time, new Date());
 	// past event
 	if (diffMs <= 0) {
-		const diffMinutes = Math.floor(Math.abs(diffMs) / (1000 * 60));
-		const diffHours = Math.floor(Math.abs(diffMs) / (1000 * 60 * 60));
-		const diffDays = Math.floor(Math.abs(diffMs) / (1000 * 60 * 60 * 24));
-
-		if (diffDays > 0) {
-			return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-		} else if (diffHours > 0) {
-			return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-		} else if (diffMinutes > 0) {
-			return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
-		} else {
-			return "Just now";
-		}
+		return "Started";
 	}
 
 	// future event

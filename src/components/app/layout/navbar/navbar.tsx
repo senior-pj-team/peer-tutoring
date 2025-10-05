@@ -102,14 +102,14 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 					<SearchBar />
 				</div>
 
-				{user ? (
+				{user && user.user_role !== "admin" ? (
 					<div className="hidden lg:flex  items-center justify-around gap-x-2 ">
 						{user.user_role === "student" && (
 							<Link href="/become-tutor">
 								<HoverCustomCard content="Become a tutor" />
 							</Link>
 						)}
-						{(user.user_role === "tutor" || user.user_role === "admin") && (
+						{user.user_role === "tutor" && (
 							<Link href="/tutor-dashboard/sessions/upcoming-sessions">
 								<HoverCustomCard content="Go to tutor dashboard" />
 							</Link>
@@ -175,6 +175,14 @@ export default function Navbar({ user }: { user: UserSession | null }) {
 							/>
 						</Link>
 					</div>
+				) : user?.user_role === "admin" ? (
+					<Link href="/admin-dashboard/browse-session">
+						<Button
+							variant="outline"
+							className="hidden md:block cursor-pointer hover:bg-orange-500 hover:text-white">
+							Go to admin dashboard
+						</Button>
+					</Link>
 				) : (
 					<Link href={"/login"}>
 						<Button

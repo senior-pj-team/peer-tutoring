@@ -92,7 +92,7 @@ export default function TutorCard({
 									className="mx-auto text-orange-400 underline hover:text-orange-500  text-md font-bold leading-5.5 md:hidden"
 									onClick={(e) => {
 										e.stopPropagation();
-										router.push(`/tutor-view/${tutor.tutor_id}`);
+										router.push(`/home/tutor-view/${tutor.tutor_id}`);
 									}}>
 									View Profile
 								</span>
@@ -145,7 +145,7 @@ export default function TutorCard({
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
-								router.push(`/tutor-view/${tutor.tutor_id}`);
+								router.push(`/home/tutor-view/${tutor.tutor_id}`);
 							}}
 							variant="outline"
 							className="border-orange-500 text-orange-600 font-semibold hover:bg-orange-50 hover:text-orange-700 hover:border-orange-400 hover:ring-2 hover:ring-orange-500  transition-all duration-200 cursor-pointer">

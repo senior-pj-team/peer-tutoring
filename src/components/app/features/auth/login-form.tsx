@@ -9,7 +9,6 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"form">) {
 	return (
 		<form className={cn("flex flex-col gap-6", className)} {...props}>
-			{/* Login Heading and Motto */}
 			<div className="flex flex-col items-center gap-4 text-center">
 				<h1 className="text-2xl font-bold">Welcome Back</h1>
 				<div className="mt-4">
@@ -17,7 +16,6 @@ export function LoginForm({
 				</div>
 			</div>
 
-			{/* Google Login */}
 			<Button
 				variant="outline"
 				className="w-full cursor-pointer"
@@ -31,7 +29,6 @@ export function LoginForm({
 				Sign in with Google
 			</Button>
 
-			{/* Sign-up Link */}
 			<div className="text-center text-sm mt-4 font-extrabold text-primary">
 				Only your university mail is allowed for authetication.🔐
 			</div>

@@ -100,7 +100,9 @@ export function SessionHeader({
 							</AvatarFallback>
 						</Avatar>
 						<div className="text-xs underline mx-3">
-							<Link href={`/tutor-view/${tutor?.tutor_id}`}>{tutor?.name}</Link>
+							<Link href={`/home/tutor-view/${tutor?.tutor_id}`}>
+								{tutor?.name}
+							</Link>
 						</div>
 						|
 						<Rating

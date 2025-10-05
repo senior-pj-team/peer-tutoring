@@ -119,8 +119,8 @@ const SessionCard = ({
 	} = useEnrollmentCount(session_id ?? 0, supabase, ["refunded"], enabled);
 
 	if(!enabled){
-		enrollments=null;
-		churneds=null;
+		enrollments = null;
+		churneds = null;
 	}
 
 	const handleCardClick = () => {
@@ -246,7 +246,7 @@ const SessionCard = ({
 							</div>
 							<div className="text-xs underline me-3">
 								<Link
-									href={`/tutor-view/${tutor_id}`}
+									href={`/home/tutor-view/${tutor_id}`}
 									onClick={(e) => e.stopPropagation()}>
 									{username ?? "Unknown tutor"}
 								</Link>

@@ -9,17 +9,39 @@ export async function GET(request: Request) {
 	const supabase = await createClient();
 	if (code) {
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
+		if (error) {
+			return NextResponse.redirect(`${origin}/error/auth-error`);
+		}
+		const {
+			data: { user },
+			error: userError,
+		} = await supabase.auth.getUser();
 
-		if (!error) {
-			const forwardedHost = request.headers.get("x-forwarded-host");
-			const isLocalEnv = process.env.NODE_ENV === "development";
-			if (isLocalEnv) {
-				return NextResponse.redirect(`${origin}${next}/home`);
-			} else if (forwardedHost) {
-				return NextResponse.redirect(`https://${forwardedHost}${next}/home`);
-			} else {
-				return NextResponse.redirect(`${origin}${next}/home`);
-			}
+		if (userError || !user) {
+			return NextResponse.redirect(`${origin}/error/auth-error`);
+		}
+		const { data: userRow, error: dbError } = await supabase
+			.from("user")
+			.select("role")
+			.eq("auth_user_id", user.id)
+			.single();
+
+		if (dbError || !userRow) {
+			return NextResponse.redirect(`${origin}/error/auth-error`);
+		}
+
+		const forwardedHost = request.headers.get("x-forwarded-host");
+		const isLocalEnv = process.env.NODE_ENV === "development";
+		let baseUrl = origin;
+		if (!isLocalEnv && forwardedHost) {
+			baseUrl = `https://${forwardedHost}`;
+		}
+		if (userRow.role === "admin") {
+			return NextResponse.redirect(
+				`${baseUrl}${next}/admin-dashboard/browse-session`,
+			);
+		} else {
+			return NextResponse.redirect(`${baseUrl}${next}/home`);
 		}
 	}
 

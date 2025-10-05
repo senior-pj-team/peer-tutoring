@@ -69,7 +69,7 @@ export default async function layout({
 		);
 	}
 
-	if (userData.role !== "tutor" && userData.role !== "admin") {
+	if (userData.role !== "tutor") {
 		return <div className="pt-5 px-5"> Access Denied for this page </div>;
 	}
 

@@ -51,7 +51,13 @@ export async function FinancialTabServer({
 			) : status === "archived" && paid_out_at ? (
 				<Badge className="bg-green-50 mb-4">
 					<div className="text-sm font-bold text-green-500">{`You have transferred on ${format(paid_out_at, "dd MMMM yyyy hh:mm a")}`}</div>
-					<TransferReceiptDialog receipt={receipt} />
+					<TransferReceiptDialog receipt={receipt} content={{
+						session_id,
+						session_name,
+						tutor_id,
+						tutor_name,
+						transferred_amount: sum_amount_to_tutor,
+					}} />
 				</Badge>
 			) : status === "open" || status === "closed" || status === "cancelled" ? (
 				<Badge className="bg-red-50 mb-4">
@@ -66,7 +72,6 @@ export async function FinancialTabServer({
 						tutor_id={tutor_id}
 						tutor_name={tutor_name}
 						tutor_email={tutor_email}
-						amount={amountSummaries[0].sum_amount_to_tutor}
 					/>
 				) : (
 					!amountSummaries && (
