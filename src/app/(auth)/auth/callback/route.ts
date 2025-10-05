@@ -7,6 +7,7 @@ export async function GET(request: Request) {
 	const code = searchParams.get("code");
 	const next = searchParams.get("next") ?? "/";
 	const supabase = await createClient();
+	console.log("Origin: ", origin);
 	if (code) {
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
 		if (error) {
@@ -33,6 +34,7 @@ export async function GET(request: Request) {
 		const forwardedHost = request.headers.get("x-forwarded-host");
 		const isLocalEnv = process.env.NODE_ENV === "development";
 		let baseUrl = origin;
+		console.log("@@: ", forwardedHost, " ", isLocalEnv, " ", baseUrl);
 		if (!isLocalEnv && forwardedHost) {
 			baseUrl = `https://${forwardedHost}`;
 		}
