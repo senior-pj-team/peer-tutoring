@@ -34,7 +34,7 @@ export async function submitTutorRegistration(
 		isChecked: formData.isChecked,
 		bankId: formData.bankId,
 	});
-	console.log(parsed.error?.message);
+
 	if (!parsed.success) {
 		return {
 			success: false,
@@ -72,7 +72,7 @@ export async function submitTutorRegistration(
 		tutorData: {
 			school: school,
 			major: major,
-			year: year,
+			year: String(year),
 			phone_number: phone_number,
 			studentId_photo: uploadedUrl?? "",
 		},

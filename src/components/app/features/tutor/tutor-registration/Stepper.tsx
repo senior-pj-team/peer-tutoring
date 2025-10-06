@@ -13,7 +13,6 @@ import { Form } from "@/components/ui/form";
 import { tutorFormSchema, tutorFormSchemaT } from "@/schema/tutor-form-schema";
 import { submitTutorRegistration } from "@/actions/submit-tutor-registration";
 import { insertNotification } from "@/data/mutations/notification/insert-notification";
-import { sendEmail } from "@/actions/send-email";
 import { useSupabase } from "@/hooks/use-supabase";
 import { getUserSession } from "@/utils/get-user-session";
 import { useState, useTransition } from "react";
