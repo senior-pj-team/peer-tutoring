@@ -32,7 +32,9 @@ export async function GET(request: Request) {
 		}
 
 		const forwardedHost = request.headers.get("x-forwarded-host");
+
 		const isLocalEnv = process.env.NODE_ENV === "development";
+
 		let baseUrl = origin;
 		console.log("@@: ", forwardedHost, " ", isLocalEnv, " ", baseUrl);
 		if (!isLocalEnv && forwardedHost) {

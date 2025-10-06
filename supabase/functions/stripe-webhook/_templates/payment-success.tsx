@@ -19,8 +19,8 @@ export const PaymentSuccessfulEmail = ({
 	price,
 	purchaseDate,
 	sessionStartTime,
-	supportEmail = "support@peertube.digital",
-	appUrl = "https://localhost:3000/home",
+	supportEmail = "admin <support@peertube.digital>",
+	appUrl = "https://peertube-digital.vercel.app/home",
 }: {
 	sessionImage: string | null;
 	sessionName: string;

@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
 					token: fcm_token,
 					webpush: {
 						fcmOptions: {
-							link: "https://localhost:3000",
+							link: "https://peertube.digital",
 						},
 						notification: {
 							title: payload.record.title,
@@ -80,7 +80,7 @@ Deno.serve(async (req) => {
 						},
 
 						data: {
-							link: "https://localhost:3000",
+							link: "https://peertube.digital",
 							type: payload.record.type,
 						},
 					},

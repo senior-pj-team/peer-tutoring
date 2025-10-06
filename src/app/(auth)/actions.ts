@@ -8,7 +8,7 @@ export async function signIn() {
 	const origin = (await headers()).get("origin");
 	console.log("origin from sign in form: ", origin);
 	const supabase = await createClient();
-
+	console.log("origin from signIn server action ", origin);
 	const { error, data } = await supabase.auth.signInWithOAuth({
 		provider: "google",
 		options: {

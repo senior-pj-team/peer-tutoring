@@ -17,8 +17,8 @@ export const ReminderEmail = ({
 	sessionStartTime,
 	receipent,
 	topic,
-	supportEmail = "support@peertube.digital",
-	appUrl = "https://localhost:3000/home",
+	supportEmail = "admin <support@peertube.digital>",
+	appUrl = "https://peertube-digital.vercel.app/home",
 }: {
 	sessionName: string;
 	sessionStartTime: string;

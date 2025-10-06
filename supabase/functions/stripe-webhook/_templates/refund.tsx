@@ -18,8 +18,8 @@ export const RefundEmail = ({
 	sessionName,
 	price,
 	purchaseDate,
-	supportEmail = "support@peertube.digital",
-	appUrl = "https://localhost:3000/home",
+	supportEmail = "admin <support@peertube.digital>",
+	appUrl = "https://peertube-digital.vercel.app/home",
 }: {
 	sessionImage: string | null;
 	sessionName: string;
@@ -178,11 +178,19 @@ export const RefundEmail = ({
 						color: "#333333",
 						fontWeight: 800,
 					}}>
+<<<<<<< HEAD
 					Your payment is received by Peertube. Though, we could not successfully
 					process your enrollment due to mutiple simultaneous enrollments. We
 					are deeply sorry and we will refund to you within 5 to 7 business
 					days. If you have not set up payment info in Peertube, please set up so
 					that we can refund to you in a jit.
+=======
+					Your payment is received by Peertube. Though, we could not
+					successfully process your enrollment due to mutiple simultaneous
+					enrollments. We are deeply sorry and we will refund to you within 5 to
+					7 business days. If you have not set up payment info in Peertube,
+					please set up so that we can refund to you in a jit.
+>>>>>>> 0e2d5ba (edge function app url fixed)
 				</Text>
 
 				{/* Button */}

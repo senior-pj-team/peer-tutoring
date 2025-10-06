@@ -130,7 +130,7 @@ function PaymentForm({ student_session_id }: { student_session_id: number }) {
 			const res = await stripe.confirmPayment({
 				elements,
 				confirmParams: {
-					return_url: "https://localhost:3000/checkout/status",
+					return_url: "https://peertube.digital/checkout/status",
 				},
 				redirect: "if_required",
 			});

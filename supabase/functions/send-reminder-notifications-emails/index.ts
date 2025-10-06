@@ -88,6 +88,7 @@ Deno.serve(async (req) => {
 					type: "tutor_reminder",
 				},
 			];
+
 			const { error: insert_noti_error } = await supabase
 				.from("notification")
 				.insert(notifications);
@@ -121,12 +122,12 @@ Deno.serve(async (req) => {
 					}),
 				),
 			]);
-
+			const to_emails = [...studentsResData.map((s) => s.email), tutorEmail];
 			await Promise.all(
 				notifications.map((n) =>
 					resend.emails.send({
 						from: "admin <support@peertube.digital>",
-						to: ["williamkhant4@gmail.com"],
+						to: to_emails,
 						subject:
 							topic === "send reminder"
 								? "Reminder for upcoming session 🚀"
@@ -140,6 +141,14 @@ Deno.serve(async (req) => {
 			);
 		} else if (topic === "send session cancel") {
 			const { session_name, tutor_id } = job.message;
+			const response = await supabase
+				.from("user")
+				.select("email")
+				.eq("id", tutor_id)
+				.single();
+			if (response.error) {
+				throw "No tutor email found to send cancel session email";
+			}
 			const { error: insert_noti_error } = await supabase
 				.from("notification")
 				.insert({
@@ -163,8 +172,8 @@ Deno.serve(async (req) => {
 			);
 
 			await resend.emails.send({
-				from: "admin <support@peertube.digital>>",
-				to: ["williamkhant4@gmail.com"],
+				from: "admin <support@peertube.digital>",
+				to: [response.data?.email],
 				subject: "Session Canceled — But Don't Worry, You're Still Awesome 💫",
 				html: email_template,
 			});

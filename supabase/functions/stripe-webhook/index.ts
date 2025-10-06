@@ -181,8 +181,8 @@ Deno.serve(async (req) => {
 					}),
 				);
 				const { error } = await resend.emails.send({
-					from: "welcome <onboarding@resend.dev>",
-					to: ["williamkhant4@gmail.com"],
+					from: "admin <support@peertube.digital>",
+					to: [ss_data.student.email],
 					subject: "Session Enrollment Failed!",
 					html,
 				});
@@ -272,8 +272,8 @@ Deno.serve(async (req) => {
 			);
 
 			const { error } = await resend.emails.send({
-				from: "welcome <onboarding@resend.dev>",
-				to: ["williamkhant4@gmail.com"],
+				from: "admin <support@peertube.digital>",
+				to: [ss_data.student.email],
 				subject: "Session Enrollment Successful!",
 				html,
 			});

@@ -15,8 +15,8 @@ export const EmailTemplate = ({
 	preview,
 	title,
 	detail,
-	supportEmail = "support@peertube.digital",
-	appUrl = "https://localhost:3000/home",
+	supportEmail = "admin <support@peertube.digital>",
+	appUrl = "https://peertube-digital.vercel.app/home",
 }: {
 	preview: string;
 	title: string;

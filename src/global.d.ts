@@ -21,7 +21,6 @@ declare global {
 		tutor_rating: number | null;
 	};
 
-
 	// query result types
 	type TSessionsResult = DB["public"]["Tables"]["sessions"]["Row"];
 	type TTutorWithStatsResult =
@@ -163,7 +162,7 @@ declare global {
 		rating: number;
 		count: number;
 	};
-	
+
 	type TChat = {
 		chat_uuid: string;
 		chat_name: string;
