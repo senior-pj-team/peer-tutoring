@@ -11,7 +11,7 @@ type Params = {
 type TTutorData = {
 	school: string;
 	major: string;
-	year: string;
+	year?: string;
 	phone_number: string;
 	studentId_photo: string | null;
 };

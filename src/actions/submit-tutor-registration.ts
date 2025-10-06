@@ -72,7 +72,7 @@ export async function submitTutorRegistration(
 		tutorData: {
 			school: school,
 			major: major,
-			year: year,
+			year: year?.toString(),
 			phone_number: phone_number,
 			studentId_photo: uploadedUrl?? "",
 		},
