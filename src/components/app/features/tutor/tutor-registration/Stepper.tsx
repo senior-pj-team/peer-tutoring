@@ -40,7 +40,7 @@ export default function HorizontalStepper({
 		defaultValues: {
 			school: userData?.school ?? "",
 			major: userData?.major ?? "",
-			year: Number(userData?.year)?? "",
+			year: String(userData?.year)?? "",
 			phone_number: userData?.phone_number ?? "",
 			bankName: "",
 			accountName: "",

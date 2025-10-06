@@ -72,18 +72,17 @@ export async function submitTutorRegistration(
 		tutorData: {
 			school: school,
 			major: major,
-			year: String(year),
+			year: year,
 			phone_number: phone_number,
 			studentId_photo: uploadedUrl?? "",
 		},
 		uploadedUrl: uploadedUrl,
 		user_id: user.user_id,
 	});
-
 	if (!updateResult) {
 		return {
 			success: false,
-			error: { message: "Something went wrong" },
+			error: { message: "Something went wrong 1" },
 		};
 	}
 
@@ -97,7 +96,7 @@ export async function submitTutorRegistration(
 		if (!updateResult) {
 			return {
 				success: false,
-				error: { message: "Something went wrong" },
+				error: { message: "Something went wrong 2" },
 			};
 		}
 	} else if (type == "tutor_transfer") {
@@ -114,13 +113,13 @@ export async function submitTutorRegistration(
 		if (insertResult) {
 			return {
 				success: false,
-				error: { message: "Something went wrong" },
+				error: { message: "Something went wrong 3" },
 			};
 		}
 	} else {
 		return {
 			success: false,
-			error: { message: "Something went wrong" },
+			error: { message: "Something went wrong 4" },
 		};
 	}
 

@@ -3,8 +3,8 @@ import { z } from "zod";
 export const tutorFormSchema = z.object({
 	school: z.string().max(100, "School must be less then 100 characters long"),
 	major: z.string().max(100, "Major must be less then 100 characters long"),
-	// year: z.string().max(10, "Year is invalid"),
-	year: z.coerce.number({ message: "Year is invalid" }).optional(),
+	year: z.string().max(10, "Year is invalid"),
+	//year: z.coerce.number({ message: "Year is invalid" }).optional(),
 	phone_number: z.string().or(z.literal("")),
 
 	bankName: z
