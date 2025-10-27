@@ -1,16 +1,19 @@
 import { z } from "zod";
 
 export const tutorFormSchema = z.object({
-	school: z.string().max(100, "School must be less then 100 characters long"),
-	major: z.string().max(100, "Major must be less then 100 characters long"),
-	// year: z.string().max(10, "Year is invalid"),
-	year: z.coerce.number({ message: "Year is invalid" }).optional(),
-	phone_number: z.string().or(z.literal("")),
-
+	school: z.string().min(1, "School is required").max(100, "School must be less then 100 characters long"),
+	major: z.string().min(1, "Major is required").max(100, "Major must be less then 100 characters long"),
+	year: z.coerce.number({ message: "Year is invalid" }).min(1, "Year is required"),
+	phone_number: z.string()
+		.min(1, "Phone number is required")
+		.max(20, "Phone number must be less than 20 characters long"),
 	bankName: z
 		.string()
 		.min(1, "Bank name is required")
 		.max(100, "Bank name must be less then 100 characters long"),
+	otherBank: z
+			.string()
+			.max(100, "Bank name must be less then 100 characters long"),
 	accountName: z
 		.string()
 		.min(1, "Bank account name is required")

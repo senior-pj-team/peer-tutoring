@@ -9,6 +9,7 @@ export async function verifyTutorRequests(
 ): Promise<ActionResponseType<string>> {
 	const supabase = await createClient();
 	let student: TUser[] | null;
+	console.log("action from server: ", action);
 	if (action == "approve") {
 		student = await updateUser(supabase, {
 			updateObj: {

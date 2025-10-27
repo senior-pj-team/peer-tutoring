@@ -32,14 +32,14 @@ export default function TutorOnboardingCard({
 }) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
-	const [currentAction, setCurrentAction] = useState<ActionType | null>(null);
+	const [currentAction, setCurrentAction] = useState<ActionType>("approve");
 
 	const supabase = useSupabase();
 	const user = request.user;
 
 	const handleAction = (action: ActionType) => {
-		setCurrentAction(action);
 		startTransition(async () => {
+			setCurrentAction(action);
 			const response = await verifyTutorRequests(action, request.user_id);
 
 			if (response.success) {
@@ -51,8 +51,8 @@ export default function TutorOnboardingCard({
 					),
 				});
 				await Promise.all([
-					await sendResponseEmail(),
-					await sendNotification(),
+					await sendResponseEmail(action),
+					await sendNotification(action),
 				]);
 			} else {
 				toast.error("Something went wrong", {
@@ -65,13 +65,13 @@ export default function TutorOnboardingCard({
 			console.log("2");
 		});
 	};
-	const sendResponseEmail = useCallback(async () => {
-		const title = `Your tutor registration request ${currentAction == "approve" ? "approved" : "rejected"}.`;
+	const sendResponseEmail = useCallback(async (action: ActionType) => {
+		const title = `Your tutor registration request is ${action == "approve" ? "approved" : "rejected"}.`;
 		const detail =
-			currentAction == "approve"
+			action == "approve"
 				? "Congratulations you have been approved as a tutor at Peertube. Please comply with the terms and conditions as a tutor"
 				: "Sorry, your tutor registration request has been rejected";
-		const preview = `Tutor registration ${currentAction == "approve" ? "approved" : "rejected"}`;
+		const preview = `Tutor registration ${action == "approve" ? "approved" : "rejected"}`;
 		await sendEmail({
 			preview,
 			title,
@@ -80,10 +80,10 @@ export default function TutorOnboardingCard({
 		});
 	}, []);
 
-	const sendNotification = async () => {
+	const sendNotification = async (action: ActionType) => {
 		if (!user) return;
-		const title = `Tutor registration ${currentAction == "approve" ? "approved" : "rejected"}`;
-		const body = `Your tutor registration request has been approved on. ${formatDate(Date.now(), "yyyy MMMM dd")}`;
+		const title = `Tutor registration ${action == "approve" ? "approved" : "rejected"}`;
+		const body = `Your tutor registration request has been ${action == "approve" ? "approved" : "rejected"} on. ${formatDate(Date.now(), "yyyy MMMM dd")}`;
 		await insertNotification(supabase, title, body, user.id, "student");
 	};
 

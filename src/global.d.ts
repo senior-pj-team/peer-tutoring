@@ -64,6 +64,7 @@ declare global {
 			student_id: string;
 			ss_status: TStudentSessionStatus;
 			amount_from_stripe: number | null;
+			amount_from_student: number | null;
 			student: {
 				id: string | null;
 				profile_url: string | null;
@@ -80,6 +81,7 @@ declare global {
 				max_students: number | null;
 				start_time: string | null;
 				end_time: string | null;
+				price: number | null;
 				tutor: {
 					id: string | null;
 					profile_url: string | null;

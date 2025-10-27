@@ -117,6 +117,12 @@ const NotificationList = ({
 								}}
 							/>
 						))}
+						{
+							data.pages.flat().length == 0 &&
+							<span className="text-sm font-extrabold text-gray-400">
+								No notifications to show
+							</span>
+						}
 					</ul>
 				}
 
@@ -140,7 +146,7 @@ const NotificationList = ({
 							</div>
 						) : (
 							<span className="text-sm font-extrabold text-gray-400">
-								No notifications to show
+								End of notification
 							</span>
 						)}
 					</div>

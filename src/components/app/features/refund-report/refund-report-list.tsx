@@ -78,7 +78,7 @@ export default function RefundReportList({
 					<Ban className="w-12 h-12 mb-4 text-gray-400" />
 					<p className="text-lg font-medium">No data found</p>
 					<p className="text-sm text-gray-400">
-						There are currently no refund and report
+						There are currently no requests
 					</p>
 				</div>
 			)}

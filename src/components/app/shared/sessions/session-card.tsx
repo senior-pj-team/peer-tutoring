@@ -50,6 +50,7 @@ const SessionCard = ({
 	let tutor_rating: number | null = 0;
 	let tutor_id: string | null = "";
 	let enabled: boolean = false;
+	
 	if (!student_session && !refund_report && !session) return null;
 
 	if (student_session) {
@@ -58,8 +59,8 @@ const SessionCard = ({
 		ss_status = student_session.student_session_status;
 		image = student_session.session_image ?? "";
 		session_name = student_session.session_name ?? "";
-		course_code = student_session.course_code ?? "no info";
-		course_name = student_session.course_name ?? "no info";
+		course_code = !!student_session.course_code ? student_session.course_code : "Unknown course code";
+		course_name = !!student_session.course_name ? student_session.course_name : "Unknown course name";
 		start_time = student_session.session_start_time ?? "";
 		end_time = student_session.session_end_time ?? "";
 		profile_url = student_session.tutor_profile_url;
@@ -72,9 +73,9 @@ const SessionCard = ({
 		image = refund_report.student_session.session.image ?? "";
 		session_name = refund_report.student_session.session.session_name ?? "";
 		course_code =
-			refund_report.student_session.session.course_code ?? "no info";
+			refund_report.student_session.session.course_code ?? "Unknown course code";
 		course_name =
-			refund_report.student_session.session.course_name ?? "no info";
+			refund_report.student_session.session.course_name ?? "unknown course name";
 		start_time = refund_report.student_session.session.start_time ?? "";
 		end_time = refund_report.student_session.session.end_time ?? "";
 		profile_url =
@@ -88,8 +89,8 @@ const SessionCard = ({
 		s_status = session.status;
 		image = session.image ?? "";
 		session_name = session.session_name ?? "";
-		course_code = session.course_code ?? "no info";
-		course_name = session.course_name ?? "no info";
+		course_code = session.course_code ?? "Unknown course code";
+		course_name = session.course_name ?? "unknown course name";
 		start_time = session.start_time ?? "";
 		end_time = session.end_time ?? "";
 		enabled = true;
@@ -135,6 +136,8 @@ const SessionCard = ({
 
 		router.push(nextPage);
 	};
+
+	console.log("@@@",profile_url && username && tutor_rating) ;
 
 	return (
 		<Card
@@ -186,7 +189,7 @@ const SessionCard = ({
 				</CardTitle>
 
 				<CardDescription className="px-3 w-full min-w-0 flex lg:text-xs md:text-[0.65rem]">
-					<span className="me-1">{course_code}</span>|
+					<span className="me-1">{course_code}</span>{course_code && course_name && "|"}
 					<span className="ms-1 font-medium truncate overflow-hidden text-ellipsis flex-1">
 						{course_name}
 					</span>
@@ -226,7 +229,7 @@ const SessionCard = ({
 				)}
 
 				<div className="px-3 mt-2 w-full">
-					{profile_url && username && tutor_rating && (
+					{(student_session || refund_report) && (
 						<div className="flex items-center flex-wrap">
 							<div className="relative w-8 h-8 rounded-full overflow-hidden me-3 shrink-0">
 								<Avatar>

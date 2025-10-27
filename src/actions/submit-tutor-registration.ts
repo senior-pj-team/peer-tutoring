@@ -28,6 +28,7 @@ export async function submitTutorRegistration(
 		phone_number: formData.phone_number,
 		type: formData.type,
 		bankName: formData.bankName,
+		otherBank: formData.otherBank,
 		accountName: formData.accountName,
 		accountNumber: formData.accountNumber,
 		studentIdPhoto: formData.studentIdPhoto,
@@ -49,12 +50,13 @@ export async function submitTutorRegistration(
 		phone_number,
 		type,
 		bankName,
+		otherBank,
 		accountName,
 		accountNumber,
 		studentIdPhoto,
 		bankId,
 	} = parsed.data;
-
+	
 	let uploadedUrl: string | null = null;
 		if (studentIdPhoto) {
 			uploadedUrl = await uploadImage(studentIdPhoto, supabase, {
@@ -103,7 +105,7 @@ export async function submitTutorRegistration(
 		const insertResult = await upsertBankInfo(supabase, {
 			user_id: user.user_id,
 			bankData: {
-				bank_name: bankName,
+				bank_name: bankName === "Other"? otherBank : bankName,
 				account_name: accountName,
 				account_number: accountNumber,
 				account_type: type,
