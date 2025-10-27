@@ -29,7 +29,7 @@ export default async function Sessions({
 	searchParams: Params;
 }) {
 	const params = await searchParams;
-
+	
 	return (
 		<div className="lg:px-[6rem] lg:pt-[4rem] md:px-[4rem] md:pt-[3rem] px-[3rem] pt-[2rem] w-full pb-[2rem]">
 			{(params.search ||
@@ -40,7 +40,8 @@ export default async function Sessions({
 					Result for &quot;
 					{params.search ??
 						params.category ??
-						(params.free ? "Free Sessions" : params.closing_soon)}
+						 params.rating ? `Tutor Rating ${params.rating} ⭐` :  
+						(params.free.toLowerCase() === "true" ? "Free Sessions" : params.paid.toLowerCase()=== "true" ? "Paid Sessions" : params.closing_soon)}
 					&quot;
 				</span>
 			)}

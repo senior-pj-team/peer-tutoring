@@ -1,9 +1,9 @@
 "use client";
 
 import { formatDate, parseISO } from "date-fns";
+import Link from "next/link";
 
 const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
-	console.log("data: ", data)
 	return (
 		<div className="mt-6 overflow-x-auto">
 			<div className="min-w-full xl:min-w-[60vw] inline-block align-middle border border-gray-200">
@@ -29,7 +29,9 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 										key={`purchase-${index}`}
 										className="hover:bg-gray-50 transition duration-150">
 										<td className="px-6 py-4 whitespace-nowrap">
-											{eachData.session_name || "-"}
+											<Link href={`/home/session/${eachData.session_id}`} className="hover:underline">
+										 		{eachData.session_name || "-"}
+											</Link>
 										</td>
 										<td className="px-6 py-4 text-gray-500 whitespace-nowrap">
 											{formatDate(
@@ -43,7 +45,7 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 										<td className="px-6 py-4 text-green-600 font-medium whitespace-nowrap">
 											Purchased
 										</td>
-									</tr>,
+									</tr>
 								);
 							}
 
@@ -69,7 +71,7 @@ const PaymentTable = ({ data }: { data: TStudentSessionViewResult[] }) => {
 										<td className="px-6 py-4 text-red-600 font-medium whitespace-nowrap">
 											Refunded
 										</td>
-									</tr>,
+									</tr>
 								);
 							}
 

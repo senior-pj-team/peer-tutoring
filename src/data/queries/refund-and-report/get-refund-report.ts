@@ -11,7 +11,6 @@ export const getRefundReport = async (
 	if (ss_id) query = query.eq("ss_id", ss_id);
 
 	const { data, error } = await query.order("created_at", { ascending: false });
-	console.log("data: ", data);
 	if (error) {
 		console.error("Error fetching refund report:", error);
 		return null;

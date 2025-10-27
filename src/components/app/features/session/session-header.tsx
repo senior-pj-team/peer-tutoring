@@ -43,10 +43,20 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 					<div className="mt-5 text-gray-500">
 						<div className="space-y-1 my-3">
 							<div className="text-sm">
-								<span>{course_code} </span>|<span> {course_name}</span>
+								<span>{course_code} </span>
+									{
+										course_code && course_name &&
+										"|"
+									}
+								<span> {course_name}</span>
 							</div>
 							<div className="text-xs font-extrabold">
-								<span> {school} ● </span> <span>{major}</span>
+								<span> {school} </span> 
+								{
+									school && major &&
+									<> {" "} ● {" "}</>
+								}
+								<span>{major}</span>
 							</div>
 						</div>
 						<div className="flex items-center">
@@ -70,7 +80,7 @@ const SessionHeader = ({ data }: { data: TSessionHeaderData }) => {
 							|
 							<Rating
 								className="ms-3"
-								rating={tutor_rating?.toFixed(1) as unknown as number}
+								rating={(tutor_rating?.toFixed(1)?? 0) as number}
 							/>
 						</div>
 					</div>

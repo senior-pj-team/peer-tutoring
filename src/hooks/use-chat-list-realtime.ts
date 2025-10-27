@@ -8,7 +8,7 @@ export function useChatListRealtime(
 ) {
 	useEffect(() => {
 		const channel: RealtimeChannel = supabase
-			.channel("realtime-chatlist")
+			.channel(`realtime-chatlist-${userId}`)
 			.on(
 				"postgres_changes",
 				{
@@ -17,7 +17,6 @@ export function useChatListRealtime(
 					table: "chat",
 				},
 				(payload) => {
-					console.log("inserted payload: ", payload);
 					reload();
 				},
 			)
@@ -29,7 +28,6 @@ export function useChatListRealtime(
 					table: "chat",
 				},
 				(payload) => {
-					console.log(" uploaded payload: ", payload);
 					reload();
 				},
 			)

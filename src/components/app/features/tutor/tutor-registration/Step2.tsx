@@ -85,7 +85,6 @@ export default function Step2({ bankData }: Step2Props) {
 			{/* Form Fields */}
 			<div className="grid gap-4">
 				{/* Bank Name */}
-				{!useExisting && (
 					<FormField
 						control={form.control}
 						name="bankName"
@@ -118,11 +117,10 @@ export default function Step2({ bankData }: Step2Props) {
 							</FormItem>
 						)}
 					/>
-				)}
-				{(bankName === "Other" || useExisting) && (
+				{(bankName === "Other") && (
 					<FormField
 						control={form.control}
-						name="bankName"
+						name="otherBank"
 						render={({ field }) => (
 							<FormItem className="grid w-full items-center gap-y-2">
 								<FormLabel

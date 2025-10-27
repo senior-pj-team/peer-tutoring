@@ -16,6 +16,7 @@ export async function getRefundReportJoin(
       student_id,
       ss_status: status,
       amount_from_stripe,
+      amount_from_student,
       student: user!inner(
           id,
           profile_url,
@@ -32,6 +33,7 @@ export async function getRefundReportJoin(
         max_students,
         start_time,
         end_time,
+        price,
         tutor: user!inner(
           id,
           profile_url,

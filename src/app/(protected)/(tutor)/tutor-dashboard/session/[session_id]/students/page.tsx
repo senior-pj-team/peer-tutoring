@@ -38,7 +38,7 @@ const page = async ({ params }: { params: Params }) => {
 				/>
 			</div>
 			<Suspense fallback={<GeneralLoading />}>
-				<StudentList session_id={session_id} />
+				<StudentList session_id={session_id} isPaid={!!amounts.paid}/>
 			</Suspense>
 		</div>
 	);

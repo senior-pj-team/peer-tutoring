@@ -1,7 +1,7 @@
 "use client";
 
 import { format, formatDate, parseISO } from "date-fns";
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useCallback, useState, useTransition } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarFallback } from "@/utils/app/get-avatar-fallback";
@@ -477,6 +477,9 @@ export default function RefundReportCard({
 					tutor_name: data.student_session.session.tutor.username,
 					student_id: data.student_session.student.id ?? "",
 					student_name: data.student_session.student.username,
+					session_price: data.student_session.session.price,
+					amount_from_student: data.student_session.amount_from_student,
+					amount_to_refund: data.student_session.amount_from_stripe
 				}}
 			/>
 		</>
