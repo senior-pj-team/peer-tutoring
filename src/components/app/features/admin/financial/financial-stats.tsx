@@ -50,7 +50,7 @@ export function FinancialStats() {
 							message="Total received profits"
 							stats={Number(
 								(
-									(data[0].sum_revenue ?? 0) -
+									(data[0].sum_revenue_paid ?? 0) -
 									(data[0].sum_amount_to_tutor ?? 0)
 								).toFixed(2),
 							)}
