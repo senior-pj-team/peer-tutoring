@@ -1,7 +1,6 @@
 "use client";
 
 import FinancialStatsCard from "@/components/app/shared/financial-card";
-
 import { UseAmountSummariesQuery } from "@/hooks/use-amount-summaries";
 import { useSupabase } from "@/hooks/use-supabase";
 import { getDateRange } from "@/utils/app/get-date-range";

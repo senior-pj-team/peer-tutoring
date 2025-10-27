@@ -53,7 +53,7 @@ const Page = async ({ params }: { params: Params }) => {
 						<div className="mt-4 text-xl font-semibold mb-3">
 							{tutorStats.username}
 						</div>
-						{user && (
+						{user && user.user_role!="admin" && (
 							<GoToChatButton
 								user1_id={tutor_id}
 								user2_id={user ? user.user_id : null}
