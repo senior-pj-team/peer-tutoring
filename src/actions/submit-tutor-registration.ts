@@ -84,7 +84,7 @@ export async function submitTutorRegistration(
 	if (!updateResult) {
 		return {
 			success: false,
-			error: { message: "Something went wrong 1" },
+			error: { message: "Something went wrong" },
 		};
 	}
 
@@ -98,7 +98,7 @@ export async function submitTutorRegistration(
 		if (!updateResult) {
 			return {
 				success: false,
-				error: { message: "Something went wrong 2" },
+				error: { message: "Something went wrong" },
 			};
 		}
 	} else if (type == "tutor_transfer") {
@@ -112,16 +112,16 @@ export async function submitTutorRegistration(
 				other_bank: "",
 			},
 		});
-		if (insertResult) {
+		if (!insertResult) {
 			return {
 				success: false,
-				error: { message: "Something went wrong 3" },
+				error: { message: "Something went wrong" },
 			};
 		}
 	} else {
 		return {
 			success: false,
-			error: { message: "Something went wrong 4" },
+			error: { message: "Something went wrong" },
 		};
 	}
 
