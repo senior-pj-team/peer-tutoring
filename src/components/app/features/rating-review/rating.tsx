@@ -19,7 +19,7 @@ const Rating = ({
 }) => {
 	return (
 		<div className={"flex items-center text-sm " + className}>
-			{rating > 0 && [1, 2, 3, 4, 5].map((star) => (
+			{[1, 2, 3, 4, 5].map((star) => (
 				<Star
 					key={star}
 					size={size}
@@ -42,7 +42,7 @@ const Rating = ({
 							</p>
 						)
 						: (
-							<p className="text-xs font-medium text-gray-500 text-center">No rating</p>
+							<p className="text-xs font-medium text-gray-500 text-center">No tutor rating</p>
 						)
 				)}
 			</div>
