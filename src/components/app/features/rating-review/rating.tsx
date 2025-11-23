@@ -29,15 +29,21 @@ const Rating = ({
 			))}
 			<div className={cn(searchBar ? "ms-2" : "ms-3")}>
 				{showText && (
-					<p
-						className={cn(
-							searchBar
-								? "text-[0.65rem] font-medium text-gray-500 text-center"
-								: "text-xs font-medium text-gray-500 text-center",
-						)}>
-						{Math.floor(rating * 10) / 10} / 5 
-						{/* truncated */}
-					</p>
+					rating > 0 ?
+						(
+							<p
+								className={cn(
+									searchBar
+										? "text-[0.65rem] font-medium text-gray-500 text-center"
+										: "text-xs font-medium text-gray-500 text-center",
+								)}>
+								{Math.floor(rating * 10) / 10} / 5
+								{/* truncated */}
+							</p>
+						)
+						: (
+							<p className="text-xs font-medium text-gray-500 text-center">No rating</p>
+						)
 				)}
 			</div>
 		</div>
