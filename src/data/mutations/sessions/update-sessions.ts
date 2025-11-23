@@ -51,8 +51,10 @@ export const updateSession = async (
 	if (values?.location !== undefined) updateData.location = values.location;
 	if (values?.category !== undefined)
 		updateData.category_id = Number(values.category);
-	if (values?.paid !== undefined)
+	if (values?.paid !== undefined) {
 		updateData.price = values.paid ? (values.amount ?? 0) : 0;
+		updateData.service_fee = values.paid ? ((values.amount ?? 0) * 0.15) : 0;
+	}
 	if(values?.learning_materials != undefined){
 		updateData.learning_materials= JSON.stringify(values.learning_materials);
 	}

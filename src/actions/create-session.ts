@@ -13,7 +13,6 @@ import { addDays } from "date-fns";
 export const createSession = async (
 	rawValues: SessionSchemaT,
 ): Promise<ActionResponseType<any>> => {
-	console.log(rawValues);
 	const result = sessionSchema.safeParse(rawValues);
 	if (!result.success)
 		return {
