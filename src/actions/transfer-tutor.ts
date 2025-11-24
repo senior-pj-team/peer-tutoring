@@ -62,7 +62,7 @@ export async function transferTutor(
 		{ ss_ids: [] as number[], transferred_amount: 0 },
 	);
 
-	const refundData= await getRefundReportJoin(supabase, {session_id});
+	const refundData= await getRefundReportJoin(supabase, {session_id, status: ['pending']});
 	if(refundData && refundData?.length>0){
 		console.log("RefundData: ", refundData);
 		return {
