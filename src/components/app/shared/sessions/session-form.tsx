@@ -213,6 +213,7 @@ export default function SessionForm({
             previewUrl
           );
         } else {
+          console.log("Frontend formvalues: ", formValues);
           response = await createSession(formValues);
         }
         const actionType = isEdit ? "updated" : "created";

@@ -21,8 +21,11 @@ export const createSession = async (
 		};
 	const values = result.data;
 
+	console.log("backend values: ", values);
+
 	const start = getDateWithTime(values.date, values.startTime);
 	const end = getDateWithTime(values.date, values.endTime);
+	
 	const user = await getUserSession();
 
 	if (!user?.user_id) {
@@ -63,7 +66,7 @@ export const createSession = async (
 			};
 		}
 	}
-
+	console.log("backend time: ", start, end, values.date );
 	const insertResult = await insertSession(
 		values,
 		uploadedUrl,

@@ -51,7 +51,7 @@ export default function DatePicker({
 						selected={field.value ? new Date(field.value) : undefined}
 						onSelect={field.onChange}
 						disabled={(date) => {
-							const twoDaysFromNow = addDays(new Date(), 2);
+							const twoDaysFromNow = addDays(new Date(), 1);
 							return date < twoDaysFromNow;
 						}}
 					/>
