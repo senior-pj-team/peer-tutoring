@@ -51,7 +51,7 @@ const Page = async ({ params }: { params: Params }) => {
 		tutor_profile_url: sessionData.tutor!.tutor_profile,
 		tutor_id: sessionData.tutor?.tutor_id!,
 	};
-
+	console.log("session data: ", sessionData);
 	const date = sessionData.start_time
 		? formatDate(sessionData.start_time, "dd MMMM yyyy")
 		: "Unknown";
@@ -61,6 +61,8 @@ const Page = async ({ params }: { params: Params }) => {
 	const end_time = sessionData.end_time
 		? format(sessionData.end_time, "hh:mm a")
 		: "Unknown";
+	
+	console.log("after format: ", start_time, end_time);
 
 	const contentData = {
 		description: sessionData.description,
