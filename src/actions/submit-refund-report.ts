@@ -7,6 +7,7 @@ import { insertRefundReport } from "@/data/mutations/refund-report/insert-refund
 import { getRefundReport } from "@/data/queries/refund-and-report/get-refund-report";
 import { differenceInHours, parseISO } from "date-fns";
 import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
+import { getBankInfoByUser } from "@/data/queries/bank-info/get-bank-info-by-user";
 
 const schema = z.object({
 	reason: z.string().min(1),
@@ -44,6 +45,18 @@ export async function submitRefundOrReport(
 	}
 
 	const { reason, description, type, ss_id } = parsed.data;
+	let hasBank= false;
+	if(type=='refund' || type=='refund and report'){
+	   const data= await getBankInfoByUser(supabase, {user_id: user.user_id, account_type: ['student_refund', 'refund_transfer']});
+	   hasBank = Array.isArray(data) && data.length > 0;
+	}
+
+	if(!hasBank){
+		return {
+			success: false,
+			error: { message: "Please fill in your bank information in profile setting first." },
+		};
+	}
 
 	const existingReq = (await getRefundReport(supabase, { ss_id: ss_id })) ?? [];
 	if (existingReq.length > 0) {

@@ -9,6 +9,7 @@ export default async function TopTutorsSection() {
 	const tutors = await getTutorWithStats(supabase, {
 		p_min_rating: 4.5,
 	});
+	console.log("tutors: ", tutors);
 	if (!tutors) {
 		return (
 			<div className="mt-5 px-10 w-full h-60">

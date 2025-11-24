@@ -10,6 +10,7 @@ export const getTutorWithStats = async (
 	supabase: TSupabaseClient,
 	{ p_min_rating, p_filter_tutor_id, p_offset, p_limit, search }: Params,
 ): Promise<TTutorWithStatsResult | null> => {
+	console.log("argument values: ", p_min_rating, p_filter_tutor_id, p_offset, p_limit, search)
 	const { data, error } = await supabase.rpc("get_tutors_with_stats", {
 		p_min_rating,
 		p_filter_tutor_id,
