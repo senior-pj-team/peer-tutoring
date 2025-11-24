@@ -63,15 +63,10 @@ const Page = async ({ params }: { params: Params }) => {
 		tutor_id: sessionData.tutor_id ?? "",
 		session_status: sessionData.session_status,
 	};
+	console.log("SessionData: ", sessionData);
 
 	const date = sessionData.session_start_time
 		? formatDate(sessionData.session_start_time, "dd MMMM yyyy")
-		: "Unknown";
-	const start_time = sessionData.session_start_time
-		? format(sessionData.session_start_time, "hh:mm a")
-		: "Unknown";
-	const end_time = sessionData.session_end_time
-		? format(sessionData.session_end_time, "hh:mm a")
 		: "Unknown";
 
 	const contentData = {
@@ -79,8 +74,8 @@ const Page = async ({ params }: { params: Params }) => {
 		requirement: sessionData.requirement,
 		location: sessionData.location,
 		date,
-		start_time,
-		end_time,
+		start_time: sessionData.session_start_time,
+		end_time: sessionData.session_end_time,
 		max_students: sessionData.max_students,
 		enrolled_students: enrollment_count,
 		learning_materials: session[0].learning_materials
