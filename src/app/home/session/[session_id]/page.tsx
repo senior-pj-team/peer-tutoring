@@ -55,22 +55,14 @@ const Page = async ({ params }: { params: Params }) => {
 	const date = sessionData.start_time
 		? formatDate(sessionData.start_time, "dd MMMM yyyy")
 		: "Unknown";
-	const start_time = sessionData.start_time
-		? format(sessionData.start_time, "hh:mm a")
-		: "Unknown";
-	const end_time = sessionData.end_time
-		? format(sessionData.end_time, "hh:mm a")
-		: "Unknown";
-	
-	console.log("after format: ", start_time, end_time);
 
 	const contentData = {
 		description: sessionData.description,
 		requirement: sessionData.requirement,
 		location: sessionData.location,
 		date,
-		start_time,
-		end_time,
+		start_time: sessionData.start_time,
+		end_time: sessionData.end_time,
 		max_students: sessionData.max_students,
 		enrolled_students: enrollment_count,
 		learning_materials: sessions ? sessions[0]["learning_materials"] : "[]"

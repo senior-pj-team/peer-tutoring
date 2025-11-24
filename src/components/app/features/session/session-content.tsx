@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import Expandable from "@/components/app/shared/expandable-text";
 import {
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import { Json } from "@/lib/database.types";
 import LearningMaterials from "../../shared/sessions/learning-material";
+import { format } from "date-fns";
 
 type TSessionContentData = {
 	description: string | null;
@@ -89,7 +91,7 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 						<div className="space-x-1">
 							<span className="font-semibold">Start Time:</span>
 							<span className="text-green-700 text-[0.85rem] font-extrabold">
-								{start_time ?? "N/A"}
+								{start_time ? format(start_time, "hh:mm a")?? "unknown" : "N/A"}
 							</span>
 						</div>
 					</div>
@@ -98,7 +100,7 @@ const SessionContent = ({ data }: { data: TSessionContentData }) => {
 						<div className="space-x-1">
 							<span className="font-semibold">End Time:</span>
 							<span className="text-green-700 text-[0.85rem] font-extrabold">
-								{end_time ?? "N/A"}
+								{end_time ? format(end_time, "hh:mm a")?? "unknown" : "N/A"}
 							</span>
 						</div>
 					</div>

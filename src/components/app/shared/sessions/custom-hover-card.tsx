@@ -16,8 +16,7 @@ export function CustomHoverCard({
 	const closingDate = format(closing, "dd MMMM yyyy");
 
 	console.log("Custom Hover Card: ", content.start_time
-						? formatDate(content.start_time, "dd MMMM yyyy")
-						: "N/A");
+						? format(content.start_time, "hh:mm a") : "N/A");
 
 	return (
 		<HoverCardContent
