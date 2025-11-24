@@ -15,6 +15,10 @@ export function CustomHoverCard({
 	const closingHour = format(closing, "HH:mm a");
 	const closingDate = format(closing, "dd MMMM yyyy");
 
+	console.log("Custom Hover Card: ", content.start_time
+						? formatDate(content.start_time, "dd MMMM yyyy")
+						: "N/A");
+
 	return (
 		<HoverCardContent
 			className="w-80 drop-shadow-md py-4 px-5 bg-white hidden md:block"

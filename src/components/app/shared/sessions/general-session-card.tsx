@@ -24,6 +24,7 @@ export default function GeneralSessionCard({
 	const remainingTime = getTimeDifference(
 		subHours(content.start_time ?? "", 24).toISOString(),
 	);
+	console.log("General Session Card content: ", content);
 
 	return (
 		<div>
