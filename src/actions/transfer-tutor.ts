@@ -3,7 +3,7 @@
 import { uploadImage } from "@/data/mutations/image-bucket/upload-image";
 import { updateSession } from "@/data/mutations/sessions/update-sessions";
 import { updateStudentSession } from "@/data/mutations/student-session/update-student-session";
-import { getRatingReview } from "@/data/queries/rating-and-review/get-rating-review-user-view";
+import { getRefundReportJoin } from "@/data/queries/refund-and-report/get-refund-report-join";
 import { getStudentSessionView } from "@/data/queries/student-session/get-student-session-view";
 import {
 	approveRefundTransferSchema,
@@ -62,8 +62,9 @@ export async function transferTutor(
 		{ ss_ids: [] as number[], transferred_amount: 0 },
 	);
 
-	const refundData= await getRatingReview(supabase, {session_id});
+	const refundData= await getRefundReportJoin(supabase, {session_id});
 	if(refundData && refundData?.length>0){
+		console.log("RefundData: ", refundData);
 		return {
 			success: false,
 			error: { message: "Tutor cannot be paid due to refund or report"},
